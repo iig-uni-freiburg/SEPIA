@@ -153,7 +153,8 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		T transition = getTransition(transitionName);
 		for(F relation: transition.getIncomingRelations()){
 			String inputPlaceName = relation.getPlace().getName();
-			newMarking.set(inputPlaceName, newMarking.get(inputPlaceName).difference(relation.getConstraint()));
+			Multiset<String> oldState = (newMarking.get(inputPlaceName) == null ? new Multiset<String>() : newMarking.get(inputPlaceName).clone());
+			newMarking.set(inputPlaceName, oldState.difference(relation.getConstraint()));
 		
 		}
 		for(F relation: transition.getOutgoingRelations()){

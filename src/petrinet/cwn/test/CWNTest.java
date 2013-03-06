@@ -21,6 +21,7 @@ import petrinet.cwn.CWNMarking;
 import petrinet.cwn.CWNPlace;
 import types.Multiset;
 import validate.ParameterException;
+import exception.PNSoundnessException;
 import exception.PNValidationException;
 
 /**
@@ -311,7 +312,31 @@ public class CWNTest {
 		
 	}
 	
-	
+	/**
+	    * Test the method for checking soundness
+	    * Focus on the "option to complete" related part of soundness
+	    *
+	    */
+	   @Test
+	   public void testCWNSoundnessOptionToComplete() throws ParameterException {
+
+	       // Create the standard cwn which is sound
+	       CWN soundCwn1 = createValidCWN();
+
+	       try {
+	           soundCwn1.checkSoundness();
+	       } catch (PNSoundnessException e) {
+	           fail("A sound CWN was reported to not be sound (PNSoundnessException)");
+	       } catch (PNValidationException e) {
+	           fail("A sound CWN was reported to not be sound (PNValidationException)");
+	       } catch (Exception e) {
+
+	           e.printStackTrace();
+
+	       }
+
+	   }
+
 	
 
 	/**
