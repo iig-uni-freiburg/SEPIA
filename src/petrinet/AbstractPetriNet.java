@@ -1,16 +1,6 @@
 package petrinet;
 
 
-import event.RelationConstraintListener;
-import event.TokenEvent;
-import event.TokenListener;
-import event.TransitionEvent;
-import event.TransitionListener;
-import exception.PNException;
-import exception.PNSoundnessException;
-import exception.PNValidationException;
-import graph.traverse.Traversable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,9 +10,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import traverse.Traversable;
 import validate.ParameterException;
 import validate.ParameterException.ErrorCode;
 import validate.Validate;
+import event.RelationConstraintListener;
+import event.TokenEvent;
+import event.TokenListener;
+import event.TransitionEvent;
+import event.TransitionListener;
+import exception.PNException;
+import exception.PNSoundnessException;
+import exception.PNValidationException;
 
 /**
  * Abstract class for defining Petri nets and their properties.<br>

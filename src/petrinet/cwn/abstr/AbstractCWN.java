@@ -1,12 +1,5 @@
 package petrinet.cwn.abstr;
 
-import event.RelationConstraintEvent;
-import event.TransitionEvent;
-import exception.PNException;
-import exception.PNSoundnessException;
-import exception.PNValidationException;
-import graph.traverse.TraversalUtils;
-
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,9 +7,15 @@ import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.cpn.abstr.AbstractCPN;
+import traverse.TraversalUtils;
 import types.Multiset;
 import util.ReachabilityUtils;
 import validate.ParameterException;
+import event.RelationConstraintEvent;
+import event.TransitionEvent;
+import exception.PNException;
+import exception.PNSoundnessException;
+import exception.PNValidationException;
 
 public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 								  T extends AbstractCWNTransition<F>, 
