@@ -312,31 +312,7 @@ public class CWNTest {
 		
 	}
 	
-	/**
-	    * Test the method for checking soundness
-	    * Focus on the "option to complete" related part of soundness
-	    *
-	    */
-	   @Test
-	   public void testCWNSoundnessOptionToComplete() throws ParameterException {
-
-	       // Create the standard cwn which is sound
-	       CWN soundCwn1 = createValidCWN();
-
-	       try {
-	           soundCwn1.checkSoundness();
-	       } catch (PNSoundnessException e) {
-	           fail("A sound CWN was reported to not be sound (PNSoundnessException)");
-	       } catch (PNValidationException e) {
-	           fail("A sound CWN was reported to not be sound (PNValidationException)");
-	       } catch (Exception e) {
-
-	           e.printStackTrace();
-
-	       }
-
-	   }
-
+	
 	
 
 	/**
@@ -368,6 +344,53 @@ public class CWNTest {
 		
 	}
 	
+	
+	
+	/**
+	 * Test the method for checking soundness
+	 * Focus on the "option to complete" related part of soundness
+	 * 
+	 */
+	@Test(timeout=60000)//i.e. 20 seconds
+	public void testCWNSoundnessOptionToComplete() throws ParameterException {
+		
+		
+		
+		
+		// Create the standard cwn which is sound
+		CWN soundCwn1 = createValidCWN();		
+		
+		try {			
+			soundCwn1.checkSoundness();
+		} catch (PNSoundnessException e) {
+			fail("A sound CWN was reported to not be sound (PNSoundnessException)");
+		} catch (PNValidationException e) {			
+			fail("A sound CWN was reported to not be sound (PNValidationException)");
+		}
+		
+			
+		//Create a cwn which does not create a black token in the sink place
+		CWN unSoundCwn1 = createValidCWN();
+		removeBlackFromRelationT3P3(unSoundCwn1);
+		try {			
+			unSoundCwn1.checkSoundness();
+			fail("A unsound CWN was not detected as unsound");
+		} catch (PNSoundnessException e) {} catch (PNValidationException e) {	}
+		
+		
+		//Create a cwn which has a livelock and thus not the option to complete
+		CWN unSoundCwn2 = createValidCWN();
+		addLiveLock(unSoundCwn2);
+		
+		
+		try {			
+			unSoundCwn2.checkSoundness();
+			fail("A unsound CWN was not detected as unsound");
+		} catch (PNSoundnessException e) {} catch (PNValidationException e) {	}
+		
+		
+		
+	}
 	
 	
 	
@@ -450,6 +473,49 @@ public class CWNTest {
 			}
 						
 			return cwn;
+		}
+		
+
+		//Creates a petri net which contains a livelock.
+		private void addLiveLock(CWN origCWN) throws ParameterException{
+			
+			//add the places
+			origCWN.addPlace("pl1");
+			origCWN.addPlace("pl2");
+			
+			//add transitions
+			origCWN.addTransition("tl1");
+			origCWN.addTransition("tl2");
+			
+			//add the flow relations connecting the nre
+			//places and transitions
+			origCWN.addFlowRelationPT("pl1", "tl2");
+			origCWN.addFlowRelationPT("pl2", "tl1");
+			origCWN.addFlowRelationTP("tl2", "pl2");
+			origCWN.addFlowRelationTP("tl1", "pl1");
+			
+			//connect the livelock to the rest of the net
+			CWNFlowRelation f = origCWN.addFlowRelationPT("p2", "tl1");
+			Multiset<String> constraint = f.getConstraint();
+			constraint.add("red");	
+			f.setConstraint(constraint);
+		}
+			
+		
+		
+		//Creates a petri net which does not create a token in the sink place
+		private void removeBlackFromRelationT3P3(CWN origCWN) throws ParameterException{
+			
+			for( CWNFlowRelation f : origCWN.getFlowRelations()){
+				if(f.getSource().getName().equals("t3") && f.getTarget().getName().equals("t3")){
+					Multiset<String> constraint = f.getConstraint();
+					constraint.remove("black");
+					constraint.add("pink");
+					f.setConstraint(constraint);
+					
+				}
+			}
+			
 		}
 
 	
