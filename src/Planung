@@ -1,0 +1,6 @@
+initial marking kann mehrere places betreffen
+graphics:
+  name offset
+  position+dimension
+integer -> token klasse
+firing rules

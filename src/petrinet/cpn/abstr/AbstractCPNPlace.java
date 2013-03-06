@@ -1,0 +1,243 @@
+package petrinet.cpn.abstr;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import misc.SetUtils;
+import petrinet.AbstractPlace;
+import types.Multiset;
+import validate.ParameterException;
+import validate.ParameterException.ErrorCode;
+import validate.Validate;
+import event.CapacityEvent;
+import event.TokenEvent;
+
+public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractPlace<E, Multiset<String>>{
+	
+	private int numTokens = 0;
+	/**
+	 * Capacity for individual colors.
+	 */
+	private Map<String, Integer> colorCapacity = new HashMap<String, Integer>();
+	
+	public AbstractCPNPlace(String name, String label) throws ParameterException {
+		super(name, label);
+		state = new Multiset<String>();
+	}
+	public AbstractCPNPlace(String name) throws ParameterException {
+		super(name);
+		state = new Multiset<String>();
+	}
+	
+	public int getTokenCount(){
+		return numTokens;
+	}
+	
+	public void setColorCapacity(String color, int value) throws ParameterException{
+		Validate.notNull(color);
+		Validate.bigger(value, 0);
+		
+		// Check if place already contains more tokens of the given color
+		// as the new capacity for this color.
+		if(getTokens(color) > value)
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "Place already contains more tokens of color \""+color+"\" than the new capacity for this color.");
+
+		int oldCapacity = capacity;
+		if(colorCapacity.containsKey(color)){
+			capacity -= colorCapacity.get(color);
+		}
+		colorCapacity.put(color, value);
+		if(capacity == -1){
+			capacity = 0;
+		}
+		capacity += value;
+		if(capacity != oldCapacity)
+			capacityListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
+	}
+	
+	public void removeColorCapacity(String color) throws ParameterException{
+		Validate.notNull(color);
+		int oldCapacity = capacity;
+		if(!colorCapacity.containsKey(color))
+			return;
+		capacity -= colorCapacity.get(color);
+		colorCapacity.remove(color);
+		if(capacity == 0){
+			capacity = -1;
+		}
+		if(capacity != oldCapacity)
+			capacityListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
+	}
+	
+	public int getColorCapacity(String color) throws ParameterException{
+		Validate.notNull(color);
+		if(getCapacity() > 0){
+			//There are color capacities.
+			if(colorCapacity.containsKey(color)){
+				return colorCapacity.get(color);
+			} else {
+				return 0;
+			}
+		} else {
+			return -1;
+		}
+	}
+	
+	public boolean hasCapacityRestriction(String color) throws ParameterException{
+		return getColorCapacity(color) > -1;
+	}
+	
+	/**
+	 * A CPN-Place does not allow to set the capacity explicitly.<br>
+	 * The overall capacity of a place is the sum of all color capacities.
+	 */
+	@Override
+	public void setCapacity(int capacity) throws ParameterException {
+		throw new UnsupportedOperationException("Use setColorCapacity() instead.");
+	}
+	
+	@Override
+	protected void addTokens(Multiset<String> tokens) throws ParameterException {
+		Validate.notNull(tokens);
+		for(String color: tokens.support()){
+			addTokens(color, tokens.multiplicity(color));
+		}
+	}
+	
+	@Override
+	protected void removeTokens(Multiset<String> tokens) throws ParameterException {
+		Validate.notNull(tokens);
+		for(String color: tokens.support()){
+			removeTokens(color, tokens.multiplicity(color));
+		}
+	}
+	
+	protected void addTokens(String color, int number)  throws ParameterException{
+		Validate.notNull(color);
+		setTokens(color, state.multiplicity(color) + number);
+	}
+	
+	protected void setTokens(String color, int number) throws ParameterException{
+		Validate.notNull(color);
+		Validate.notNegative(number);
+		if(capacity > -1)
+			Validate.smallerEqual(getTokenCountWithout(color)+number, capacity, "Place cannot hold more than "+capacity+" tokens");
+		if(getColorCapacity(color) == 0)
+			throw new ParameterException(ErrorCode.CONSTRAINT, "Place cannot hold tokens of color "+ color);
+		if(getColorCapacity(color) > 0)
+			Validate.smallerEqual(number, colorCapacity.get(color), "Place cannot hold more than "+colorCapacity.get(color)+" tokens of color "+color);
+		
+		
+		int oldMultiplicity = state.multiplicity(color);
+		state.setMultiplicity(color, number);
+		initiateStateChecks();
+		
+		checkTokenDifference(color, oldMultiplicity, number);
+	}
+	
+	private int getTokenCountWithout(String color) throws ParameterException{
+		Validate.notNull(color);
+		if(!state.contains(color))
+			return numTokens;
+		return numTokens - state.multiplicity(color);
+	}
+	
+	protected void removeTokens(String color, int number) throws ParameterException {
+		Validate.notNegative(number);
+		Validate.notNull(color);
+		if(!state.contains(color))
+			return;
+		if(number > state.multiplicity(color))
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot remove "+ number +" tokens, place only contains " + state.multiplicity(color)+ " tokens.");
+		
+		setTokens(color, state.multiplicity(color)-number);
+	}
+	
+	protected void removeTokens(String color) throws ParameterException {
+		Validate.notNull(color);
+		if(!state.contains(color))
+			return;
+		setTokens(color, 0);
+	}
+	
+	@Override
+	public void setEmptyState() {
+//		List<String> colors = new ArrayList<String>(state.support());
+//		try {
+//			for(String color: colors)
+//				removeTokens(color);
+//		} catch (ParameterException e) {}
+		state.clear();
+	}
+	
+	@Override
+	public boolean canConsume(Multiset<String> state) throws ParameterException {
+		validateState(state);
+		for(String color: state.support()){
+			if(hasCapacityRestriction(color)){
+				if(this.getState().multiplicity(color) + state.multiplicity(color) > getColorCapacity(color)){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	private void notifyTokensRemoved(String color, int removedTokens){
+		TokenEvent<AbstractCPNPlace<E>> o = new TokenEvent<AbstractCPNPlace<E>>(this, removedTokens, color);
+		tokenListenerSupport.notifyTokensRemoved(o);
+	}
+	
+	private void notifyTokensAdded(String color, int addedTokens){
+		TokenEvent<AbstractCPNPlace<E>> o = new TokenEvent<AbstractCPNPlace<E>>(this, addedTokens, color);
+		tokenListenerSupport.notifyTokensAdded(o);
+	}
+	
+	protected int getTokens(String color) throws ParameterException {
+		Validate.notNull(color);
+		return getState().multiplicity(color);
+	}
+	
+	private void checkTokenDifference(String color, int oldValue, int newValue){
+		if(newValue < oldValue){
+			notifyTokensRemoved(color, oldValue - newValue);
+			numTokens -= oldValue - newValue;
+		} else if(newValue > oldValue){
+			notifyTokensAdded(color, newValue - oldValue);
+			numTokens += newValue - oldValue;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected void stateChange(Multiset<String> oldState, Multiset<String> newState) {
+		for(String color: SetUtils.union(oldState.support(), newState.support())){
+			try {
+				checkTokenDifference(color, oldState.multiplicity(color), newState.multiplicity(color));
+			} catch (ParameterException e) {}
+		}
+	}
+	
+	@Override
+	public boolean hasEmptyState() {
+		return state.isEmpty();
+	}
+	
+	@Override
+	protected void validateState(Multiset<String> state) throws ParameterException {
+		super.validateState(state);
+		if(capacity > -1)
+			Validate.smallerEqual(state.size(), capacity, "Place cannot hold more than "+capacity+" tokens");
+		for(String color: state.support()){
+			if(colorCapacity.containsKey(color))
+				Validate.smallerEqual(state.multiplicity(color), colorCapacity.get(color), "Place cannot hold more than "+capacity+" tokens of color "+color);
+		}
+	}
+	
+	@Override
+	public String toPNML() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
