@@ -35,8 +35,13 @@ public class AbstractCWNUtils {
 	public static void validCompletion(@SuppressWarnings("rawtypes") AbstractCWN cwn) throws ParameterException, PNSoundnessException{
 		Validate.notNull(cwn);
 		
-		@SuppressWarnings("unchecked")
+		System.out.println("Befor BuldMarkinggraph .....");
+		
+		@SuppressWarnings("unchecked")		
 		Graph<AbstractCWNMarking> markingGraph = ReachabilityUtils.buildMarkingGraph(cwn);
+		
+		System.out.println("After BuldMarkinggraph .....");
+		
 		Set<Vertex<AbstractCWNMarking>> drains = new HashSet<Vertex<AbstractCWNMarking>>(markingGraph.getDrains());
 		for(Vertex<AbstractCWNMarking> drainVertex : drains){			
 			if(!isEndState(drainVertex.getElement(), cwn)){

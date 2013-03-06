@@ -235,10 +235,16 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * Depending on token changes outgoing transitions may get enabled/disabled.
 	 */
 	protected void initiateStateChecks() {
+		
+		
 		for(AbstractFlowRelation<? extends AbstractPlace<E,S>, ? extends AbstractTransition<E,S>, S> r: outgoingRelations) {
+			
+		
 			r.getTransition().checkState();
 		}
 		for(AbstractFlowRelation<? extends AbstractPlace<E,S>, ? extends AbstractTransition<E,S>, S> r: incomingRelations) {
+			
+		
 			r.getTransition().checkState();
 		}
 	}

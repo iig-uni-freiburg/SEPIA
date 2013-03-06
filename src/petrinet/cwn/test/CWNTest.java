@@ -21,6 +21,7 @@ import petrinet.cwn.CWNMarking;
 import petrinet.cwn.CWNPlace;
 import types.Multiset;
 import validate.ParameterException;
+import exception.PNException;
 import exception.PNSoundnessException;
 import exception.PNValidationException;
 
@@ -349,16 +350,16 @@ public class CWNTest {
 	/**
 	 * Test the method for checking soundness
 	 * Focus on the "option to complete" related part of soundness
+	 * @throws PNException 
 	 * 
 	 */
-	@Test(timeout=60000)//i.e. 20 seconds
-	public void testCWNSoundnessOptionToComplete() throws ParameterException {
-		
-		
-		
-		
+	@Test(timeout=5)//i.e. 20 seconds
+	public void testCWNSoundnessOptionToComplete() throws ParameterException, PNException {
+				
 		// Create the standard cwn which is sound
-		CWN soundCwn1 = createValidCWN();		
+		CWN soundCwn1 = createValidCWN();	
+	
+
 		
 		try {			
 			soundCwn1.checkSoundness();
@@ -431,7 +432,7 @@ public class CWNTest {
 			marking.set("p0", mset);
 												
 			
-			//create the cwn with all tokens in P0
+			//create the cwn with one black token in P0
 			cwn = new CWN(places, transitions, marking);
 			
 			//Set bounds for all places 

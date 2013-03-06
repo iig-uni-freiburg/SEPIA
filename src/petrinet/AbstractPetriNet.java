@@ -1003,6 +1003,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void transitionEnabled(TransitionEvent<? extends AbstractTransition<F, S>> e) {
+		
 		enabledTransitions.add((T) e.getSource());
 	}
 
@@ -1012,7 +1013,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	@Override
 	public void transitionDisabled(TransitionEvent<? extends AbstractTransition<F, S>> e) {
-		enabledTransitions.remove(e.getSource());
+		
+
+		enabledTransitions.remove((T)e.getSource());
 	}
 
 	/**

@@ -165,15 +165,24 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @see AbstractTransition#additionalEnablingConstraintsHold()
 	 */
 	public void checkState() {
-		boolean oldEnabledState = isEnabled();
+		
+		
+		
+		boolean oldEnabledState = isEnabled();				
 		
 		enabled = true;
 		if(!enoughTokensInInputPlaces()){
 			enabled = false;
 		}
+		
+	
+		
 		if(!enoughSpaceInOutputPlaces()){
 			enabled = false;
 		}
+		
+	
+		
 		if(enabled && !oldEnabledState){
 			listenerSupport.notifyEnabling(new TransitionEvent<AbstractTransition<E,S>>(this));
 		} else if(!enabled && oldEnabledState){

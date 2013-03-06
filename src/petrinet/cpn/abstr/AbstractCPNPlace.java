@@ -168,6 +168,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 //				removeTokens(color);
 //		} catch (ParameterException e) {}
 		state.clear();
+		initiateStateChecks();
 	}
 	
 	@Override
