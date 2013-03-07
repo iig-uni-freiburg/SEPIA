@@ -1,6 +1,5 @@
 package petrinet.cwn;
 
-import java.util.Collection;
 import java.util.Set;
 
 import petrinet.cwn.abstr.AbstractCWN;
@@ -17,27 +16,6 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 			throws ParameterException {
 		super(places, transitions, initialMarking);
 	}	
-	
-	public Collection<CWNPlace> getInputPlaces(){
-		return getSourcePlaces();
-	}
-	
-	public CWNPlace getInputPlace(){
-		if(sourcePlaces.isEmpty())
-			return null;
-		return getSourcePlaces().iterator().next();
-	}
-	
-	public Collection<CWNPlace> getOutputPlaces(){
-		return getDrainPlaces();
-	}
-	
-	public CWNPlace getOutputPlace(){
-		if(drainPlaces.isEmpty())
-			return null;
-		return getDrainPlaces().iterator().next();
-	}
-
 	
 	//------- Creation methods ----------------------------------------------------------------------
 	
