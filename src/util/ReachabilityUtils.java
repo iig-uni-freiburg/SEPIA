@@ -142,76 +142,42 @@ public class ReachabilityUtils {
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is nor bounded.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <P extends AbstractPlace<F,S>, 
-				   T extends AbstractTransition<F,S>, 
-				   F extends AbstractFlowRelation<P,T,S>, 
-				   M extends AbstractMarking<S>, 
-				   S extends Object> 
-	
-				   Graph<M> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S> petriNet) throws ParameterException{
-		
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		
-		
-		
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+
+	Graph<M> buildMarkingGraph(AbstractPetriNet<P, T, F, M, S> petriNet)
+			throws ParameterException {
+
 		Validate.notNull(petriNet);
-		if(petriNet.isBounded() != Boundedness.BOUNDED)
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
-		
+		if (petriNet.isBounded() != Boundedness.BOUNDED)
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY,
+					"Cannot determine marking graph for unbounded nets.");
+
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
 		Set<M> allKnownStates = new HashSet<M>();
-		//LinkedList<M> allKnownStates = new LinkedList<M>();
-		
+
 		allKnownStates.add(petriNet.getInitialMarking());
-		
 		Graph<M> markingGraph = new Graph<M>();
 		queue.offer(petriNet.getInitialMarking());
-		
 
-		System.out.println("Initial queue:" + queue);
-		
 		try {
-			while(!queue.isEmpty()){
+			while (!queue.isEmpty()) {
 				M queueMarking = queue.poll();
-				
-				System.out.println("next queue marking: " + queueMarking);
-				
 				petriNet.setMarking(queueMarking);
-								
-				markingGraph.addElement((M) queueMarking.clone());			
-				
-				for(T enabledTransition: petriNet.getEnabledTransitions()){
-					
-					System.out.println("enabledTransition: " + enabledTransition);
-					
+				markingGraph.addElement((M) queueMarking.clone());
+
+				for (T enabledTransition : petriNet.getEnabledTransitions()) {
+
 					M newMarking = petriNet.fireCheck(enabledTransition.getName());
-					
-					System.out.println("marking reched by firing: " + newMarking);
-					if(!allKnownStates.contains(newMarking)){
-						
-						System.out.println("öööööööööööööööööööööööööööööööööööö");
-						System.out.println("AllKnownStates: " + allKnownStates);
-						System.out.println("The new State: " + newMarking);
-						System.out.println("öööööööööööööööööööööööööööööööööööö");
-						
-						System.out.println("Add unseen marking: ");
-						
+
+					if (!allKnownStates.contains(newMarking)) {
 						queue.offer((M) newMarking.clone());
 						allKnownStates.add((M) newMarking.clone());
-						
 						markingGraph.addElement((M) newMarking.clone());
 					}
 					markingGraph.addEdge(queueMarking, newMarking);
 				}
 			}
-		} catch(ParameterException e){
+		} catch (ParameterException e) {
 			e.printStackTrace();
 		} catch (PNException e) {
 			e.printStackTrace();
