@@ -556,6 +556,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		places.remove(placeName);
 		sourcePlaces.remove(placeName);
 		drainPlaces.remove(placeName);
+		initialMarking.remove(placeName);
+		marking.remove(placeName);
 		return true;
 	}
 	
