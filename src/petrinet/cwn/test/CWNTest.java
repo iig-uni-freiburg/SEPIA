@@ -9,14 +9,13 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashSet;
-import java.util.Set;
+
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import petrinet.cwn.CWN;
-import petrinet.cwn.CWNFlowRelation;
 import petrinet.cwn.CWNMarking;
 import petrinet.cwn.CWNPlace;
 import types.Multiset;
@@ -117,11 +116,10 @@ public class CWNTest {
 		try {
 			validCwn.checkValidity();
 		} catch (PNValidationException e) {
-			e.printStackTrace();
 			fail("A valid CWN is detected as invalid!");
 		}
 
-		// create a cwn with a non valid amount of input places
+		// create a cwn with to many input places
 		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
 		CWNTestUtils.addSecondInputPlaceP4(invalidCwn1);
 		try {
@@ -130,7 +128,7 @@ public class CWNTest {
 		} catch (PNValidationException e) {
 		}
 
-		// create a cwn with a non valid amount of output places
+		// create a cwn with to many output places
 		CWN invalidCwn2 = CWNTestUtils.createValidCWN();
 		CWNTestUtils.addSecondOutputPlaceP5(invalidCwn2);
 		try {
@@ -139,7 +137,7 @@ public class CWNTest {
 		} catch (PNValidationException e) {
 		}
 
-		// create a cwn with a non valid amount of input and output places
+		// create a cwn with to many input and output places
 		CWN invalidCwn3 = CWNTestUtils.createValidCWN();
 		CWNTestUtils.addSecondInputPlaceP4(invalidCwn3);
 		CWNTestUtils.addSecondOutputPlaceP5(invalidCwn3);
@@ -150,25 +148,36 @@ public class CWNTest {
 		}
 
 		// create a CWN without an input place
-		CWN invalidCwn4 = CWNTestUtils.createValidCWN();
-		invalidCwn4.removePlace("p0");
-				
-		
+		CWN invalidCwn4 = CWNTestUtils.createValidCWN();		
+		CWNTestUtils.removeInputPlace(invalidCwn4);
+	
 		try {
 			invalidCwn4.checkValidity();
 			fail("An ivalid CWN (without any inputplaces) is detected as valid!");
 		} catch (PNValidationException e) {
 		}
-
+ 
 		// create a CWN without an output place
 		CWN invalidCwn5 = CWNTestUtils.createValidCWN();
-		invalidCwn5.removePlace("p3");
+		CWNTestUtils.removeOutputPlace(invalidCwn5);
 		try {
 			invalidCwn5.checkValidity();
 			fail("An ivalid CWN (without any outputplaces) is detected as valid!");
 		} catch (PNValidationException e) {
 		}
-
+		
+		
+		//create a cwn without a black token in the input place
+		CWN invalidCwn6 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.removeTokensFromInputPlace(invalidCwn6);
+		
+		try {
+			invalidCwn6.checkValidity();
+			fail("An ivalid CWN (with an empty inputplace) is detected as valid!");
+		} catch (PNValidationException e) {
+			System.out.println(e);
+		}
+		
 	}
 	
 	
@@ -354,7 +363,7 @@ public class CWNTest {
 	 * @throws PNException 
 	 * 
 	 */
-	@Test(timeout=100)//i.e. 20 seconds
+	@Test(timeout=1000)//i.e. 1 second
 	public void testCWNSoundnessOptionToComplete() throws ParameterException, PNException {
 				
 		// Create the standard cwn which is sound
@@ -400,7 +409,28 @@ public class CWNTest {
 	
 
 	
-
+	/**
+	 * Test the method for checking soundness
+	 * Focus on the "No Dead Transition" related part of soundness
+	 * @throws PNException 
+	 * 
+	 */
+	@Test(timeout=1000)//i.e. 1 second
+	public void testCWNSoundnessNoDeadTransition() throws ParameterException, PNException {
+		
+		// Create the standard cwn which is sound
+	    CWN unSoundCwn1 = CWNTestUtils.createValidCWN();
+	    
+	    //add a dead transition
+	    CWNTestUtils.addDeadTransition(unSoundCwn1);
+	    
+	    try {			
+	    	unSoundCwn1.checkSoundness();
+			fail("A unsound CWN was not detected as unsound");
+		} catch (PNSoundnessException e) {} catch (PNValidationException e) {	}
+	    
+		
+	}
 
 		
 		

@@ -200,7 +200,59 @@ public class CWNTestUtils {
 		
 	
 	
+	//Adds a dead transition to the standard CWN
+	static void addDeadTransition(CWN origCWN) throws ParameterException{
+		
+		
+		//Add the transition
+		origCWN.addTransition("Tdead");
+		
+		//connect the transition to place p1 and p2 i.e.:
+		//p1 --[black,pink]--> Tdead --[black,pink]--> p2
+		CWNFlowRelation f1 = origCWN.addFlowRelationPT("p1", "Tdead",true);
+		CWNFlowRelation f2 = origCWN.addFlowRelationTP("Tdead", "p2",true);
+		
+		//configure the flow relations
+		f1.addConstraint("pink", 1);
+		f2.addConstraint("pink", 1);
+		
+	}
 	
 	
+	
+	    //Removes place p0 from the standard cwn and conncts t0 to p1 (as input place).
+		static void removeInputPlace(CWN origCWN) throws ParameterException{
+			
+			//remove p0
+			origCWN.removePlace("p0");
+			
+			//Connect p1 and t0
+			origCWN.addFlowRelationPT("p1", "t0", true);
+		} 
 
+		
+	    //Removes place p3 from the standard cwn and conncts t3 to p2 (as input place).
+		static void removeOutputPlace(CWN origCWN) throws ParameterException{
+			
+			//remove p3
+			origCWN.removePlace("p3");
+			
+			//Connect p1 and t0
+			origCWN.addFlowRelationTP("t3", "p2", true);
+		} 
+		
+		
+		 //Sets an invalid initial marking ==> no token in the input place
+		static void removeTokensFromInputPlace(CWN origCWN) throws ParameterException{
+			
+			//get the initial marking and clear p0
+			CWNMarking m = origCWN.getInitialMarking();
+		
+			//remove p3
+			Multiset<String> state = origCWN.getPlace("p0").getState();
+			state.clear();						
+			m.set("p0", state);
+									
+		} 
+		
 }
