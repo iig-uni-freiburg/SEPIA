@@ -50,7 +50,7 @@ public class PNGenerator {
 	
 	public static void main(String[] args) throws Exception {
 		PTNet ptNet = sharedResource(20, 2);
-		System.out.println(ptNet);
+		
 		
 //		for(int i=0; i<10; i++){
 //			System.out.println(ptNet.getMarking());

@@ -128,12 +128,11 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 	@Override
 	public void checkSoundness() throws PNSoundnessException, PNValidationException {
 		super.checkSoundness();
-		System.out.println("Passed super");
+		
 		
 		// Requirement 1: Option to complete
 		try {
-			AbstractCWNUtils.validCompletion(this);
-			System.out.println("validCompletion :-)");
+			AbstractCWNUtils.validCompletion(this);			
 		} catch (ParameterException e1) {}
 		
 		// Requirement 2: No dead transitions

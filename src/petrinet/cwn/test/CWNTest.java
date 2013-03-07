@@ -342,6 +342,7 @@ public class CWNTest {
 		} catch (PNValidationException e) {			
 		}	
 		
+		System.out.println();
 		
 	}
 	
