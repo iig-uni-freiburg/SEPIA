@@ -5,8 +5,12 @@ import graph.Graph;
 import graph.exception.VertexNotFoundException;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractMarking;
@@ -146,22 +150,62 @@ public class ReachabilityUtils {
 	
 				   Graph<M> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S> petriNet) throws ParameterException{
 		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		
+		
+		
 		Validate.notNull(petriNet);
 		if(petriNet.isBounded() != Boundedness.BOUNDED)
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
 		
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
+		Set<M> allKnownStates = new HashSet<M>();
+		//LinkedList<M> allKnownStates = new LinkedList<M>();
+		
+		allKnownStates.add(petriNet.getInitialMarking());
+		
 		Graph<M> markingGraph = new Graph<M>();
 		queue.offer(petriNet.getInitialMarking());
+		
+
+		System.out.println("Initial queue:" + queue);
+		
 		try {
 			while(!queue.isEmpty()){
 				M queueMarking = queue.poll();
+				
+				System.out.println("next queue marking: " + queueMarking);
+				
 				petriNet.setMarking(queueMarking);
-				markingGraph.addElement((M) queueMarking.clone());
+								
+				markingGraph.addElement((M) queueMarking.clone());			
+				
 				for(T enabledTransition: petriNet.getEnabledTransitions()){
+					
+					System.out.println("enabledTransition: " + enabledTransition);
+					
 					M newMarking = petriNet.fireCheck(enabledTransition.getName());
-					if(!queue.contains(newMarking)){
-						queue.offer(newMarking);
+					
+					System.out.println("marking reched by firing: " + newMarking);
+					if(!allKnownStates.contains(newMarking)){
+						
+						System.out.println("öööööööööööööööööööööööööööööööööööö");
+						System.out.println("AllKnownStates: " + allKnownStates);
+						System.out.println("The new State: " + newMarking);
+						System.out.println("öööööööööööööööööööööööööööööööööööö");
+						
+						System.out.println("Add unseen marking: ");
+						
+						queue.offer((M) newMarking.clone());
+						allKnownStates.add((M) newMarking.clone());
+						
 						markingGraph.addElement((M) newMarking.clone());
 					}
 					markingGraph.addEdge(queueMarking, newMarking);

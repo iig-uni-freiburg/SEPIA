@@ -353,7 +353,7 @@ public class CWNTest {
 	 * @throws PNException 
 	 * 
 	 */
-	@Test(timeout=5)//i.e. 20 seconds
+	@Test(timeout=100)//i.e. 20 seconds
 	public void testCWNSoundnessOptionToComplete() throws ParameterException, PNException {
 				
 		// Create the standard cwn which is sound
@@ -373,6 +373,8 @@ public class CWNTest {
 		//Create a cwn which does not create a black token in the sink place
 		CWN unSoundCwn1 = createValidCWN();
 		removeBlackFromRelationT3P3(unSoundCwn1);
+		
+		
 		try {			
 			unSoundCwn1.checkSoundness();
 			fail("A unsound CWN was not detected as unsound");
@@ -508,11 +510,11 @@ public class CWNTest {
 		private void removeBlackFromRelationT3P3(CWN origCWN) throws ParameterException{
 			
 			for( CWNFlowRelation f : origCWN.getFlowRelations()){
-				if(f.getSource().getName().equals("t3") && f.getTarget().getName().equals("t3")){
+				if(f.getSource().getName().equals("t3") && f.getTarget().getName().equals("p3")){
 					Multiset<String> constraint = f.getConstraint();
 					constraint.remove("black");
 					constraint.add("pink");
-					f.setConstraint(constraint);
+					f.setConstraint(constraint);										
 					
 				}
 			}
