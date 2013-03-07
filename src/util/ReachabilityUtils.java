@@ -5,12 +5,8 @@ import graph.Graph;
 import graph.exception.VertexNotFoundException;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractMarking;
