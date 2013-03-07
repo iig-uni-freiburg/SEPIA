@@ -53,7 +53,7 @@ public class CWNTest {
 	public void testCWN() throws ParameterException {
 		
 		//Create the standard cwn
-		CWN cwn = createValidCWN();
+		CWN cwn = CWNTestUtils.createValidCWN();
 		
 		//This cwn has exactly one input (p0) and one output place (p3)
 		
@@ -72,9 +72,9 @@ public class CWNTest {
 		
 		//Create a CPN with more than one input and output place
 		//CWN invalidCwn = createMultiInOutPlaceCWN();
-		CWN invalidCwn = createValidCWN();
-		addSecondInputPlaceP4(invalidCwn);
-		addSecondOutputPlaceP5(invalidCwn);
+		CWN invalidCwn = CWNTestUtils.createValidCWN();
+		CWNTestUtils.addSecondInputPlaceP4(invalidCwn);
+		CWNTestUtils.addSecondOutputPlaceP5(invalidCwn);
 
 		//Check input place
 				inPlaces = new HashSet<CWNPlace>(invalidCwn.getInputPlaces());
@@ -113,7 +113,7 @@ public class CWNTest {
 	public void testCWNValidityInputOutPutPlaces() throws ParameterException {
 
 		// Create the standard cwn which is valid
-		CWN validCwn = createValidCWN();
+		CWN validCwn = CWNTestUtils.createValidCWN();
 		try {
 			validCwn.checkValidity();
 		} catch (PNValidationException e) {
@@ -122,8 +122,8 @@ public class CWNTest {
 		}
 
 		// create a cwn with a non valid amount of input places
-		CWN invalidCwn1 = createValidCWN();
-		addSecondInputPlaceP4(invalidCwn1);
+		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.addSecondInputPlaceP4(invalidCwn1);
 		try {
 			invalidCwn1.checkValidity();
 			fail("An ivalid CWN (with two inputplaces) is detected as valid!");
@@ -131,8 +131,8 @@ public class CWNTest {
 		}
 
 		// create a cwn with a non valid amount of output places
-		CWN invalidCwn2 = createValidCWN();
-		addSecondOutputPlaceP5(invalidCwn2);
+		CWN invalidCwn2 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.addSecondOutputPlaceP5(invalidCwn2);
 		try {
 			invalidCwn2.checkValidity();
 			fail("An ivalid CWN (with two inputplaces) is detected as valid!");
@@ -140,9 +140,9 @@ public class CWNTest {
 		}
 
 		// create a cwn with a non valid amount of input and output places
-		CWN invalidCwn3 = createValidCWN();
-		addSecondInputPlaceP4(invalidCwn3);
-		addSecondOutputPlaceP5(invalidCwn3);
+		CWN invalidCwn3 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.addSecondInputPlaceP4(invalidCwn3);
+		CWNTestUtils.addSecondOutputPlaceP5(invalidCwn3);
 		try {
 			invalidCwn3.checkValidity();
 			fail("An ivalid CWN (with two inputplaces) is detected as valid!");
@@ -150,7 +150,7 @@ public class CWNTest {
 		}
 
 		// create a CWN without an input place
-		CWN invalidCwn4 = createValidCWN();
+		CWN invalidCwn4 = CWNTestUtils.createValidCWN();
 		invalidCwn4.removePlace("p0");
 				
 		
@@ -161,7 +161,7 @@ public class CWNTest {
 		}
 
 		// create a CWN without an output place
-		CWN invalidCwn5 = createValidCWN();
+		CWN invalidCwn5 = CWNTestUtils.createValidCWN();
 		invalidCwn5.removePlace("p3");
 		try {
 			invalidCwn5.checkValidity();
@@ -181,7 +181,7 @@ public class CWNTest {
 	public void testCWNValidityMarking() throws ParameterException {
 		
 		// Create the standard cwn which is valid
-		CWN invalidCwn1 = createValidCWN();
+		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
 		
 		//setup some markings used lateron
 		//black black in p0
@@ -267,7 +267,7 @@ public class CWNTest {
 	public void testCWNValidityConnectedness() throws ParameterException {
 		
 		// Create the standard cwn which is valid
-		CWN invalidCwn1 = createValidCWN();
+		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
 		
 		//Add a transitin without any relations
 		invalidCwn1.addTransition("TUnconnected");
@@ -325,7 +325,7 @@ public class CWNTest {
 	public void testCWNValidityBoundedness() throws ParameterException {
 		
 		// Create the standard cwn which is valid
-		CWN invalidCwn1 = createValidCWN();
+		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
 		
 		//Make all places unbounded
 		for(CWNPlace p :invalidCwn1.getPlaces()){
@@ -358,7 +358,7 @@ public class CWNTest {
 	public void testCWNSoundnessOptionToComplete() throws ParameterException, PNException {
 				
 		// Create the standard cwn which is sound
-		CWN soundCwn1 = createValidCWN();	
+		CWN soundCwn1 = CWNTestUtils.createValidCWN();	
 	
 
 		
@@ -372,8 +372,8 @@ public class CWNTest {
 		
 			
 		//Create a cwn which does not create a black token in the sink place
-		CWN unSoundCwn1 = createValidCWN();
-		removeBlackFromRelationT3P3(unSoundCwn1);
+		CWN unSoundCwn1 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.removeBlackFromRelationT3P3(unSoundCwn1);
 		
 		
 		try {			
@@ -383,8 +383,8 @@ public class CWNTest {
 		
 		
 		//Create a cwn which has a livelock and thus not the option to complete
-		CWN unSoundCwn2 = createValidCWN();
-		addLiveLock(unSoundCwn2);
+		CWN unSoundCwn2 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.addLiveLock(unSoundCwn2);
 		
 		
 		try {			
@@ -398,195 +398,13 @@ public class CWNTest {
 	
 	
 	
-	    //Creates the standard cwn.
-		//The standard cpn has four places and four transitions.
-		//                	 -> t1
-		//              	/       \
-		//    p0 -> T0-> p1|         p2 -> t3 -> p3
-		//              	\       /
-		//               	 <- t2<-
-		// 
-		//p0: black
-		private CWN createValidCWN(){
-			
-			CWN cwn = null;
-			
-			
-			try {
-			//Create places	
-			Set<String>  places = new HashSet<String>();
-			places.add("p0");
-			places.add("p1");
-			places.add("p2");
-			places.add("p3");
-			
-			
-			//create transitions
-			Set<String>  transitions = new HashSet<String>();
-			transitions.add("t0");
-			transitions.add("t1");
-			transitions.add("t2");
-			transitions.add("t3");
-					
-			//create the the token colors used in the initial marking		
-			Multiset<String> mset = new Multiset<String>();							
-			mset.add("black");
-			CWNMarking marking = new CWNMarking();
-			marking.set("p0", mset);
-												
-			
-			//create the cwn with one black token in P0
-			cwn = new CWN(places, transitions, marking);
-			
-			//Set bounds for all places 
-			//p0 contains only black			
-			cwn.getPlace("p0").setColorCapacity("black", 2);
-			//p1 contains black and green
-			cwn.getPlace("p1").setColorCapacity("black", 2);
-			cwn.getPlace("p1").setColorCapacity("green", 2);
-			//p2 contains black and red
-			cwn.getPlace("p2").setColorCapacity("black", 2);
-			cwn.getPlace("p2").setColorCapacity("red", 2);
-			//p3 contains black
-			cwn.getPlace("p3").setColorCapacity("black", 2);
-			
-			
-			
-			//Add the flow relation					
-			CWNFlowRelation f1 = cwn.addFlowRelationPT("p0", "t0", true);
-			CWNFlowRelation f2 = cwn.addFlowRelationTP("t0", "p1", true);
-			CWNFlowRelation f3 = cwn.addFlowRelationPT("p1", "t1", true);
-			CWNFlowRelation f4 = cwn.addFlowRelationTP("t1", "p2", true);
-			CWNFlowRelation f5 = cwn.addFlowRelationPT("p2", "t2", true);
-			CWNFlowRelation f6 = cwn.addFlowRelationTP("t2", "p1", true);
-			CWNFlowRelation f7 = cwn.addFlowRelationPT("p2", "t3", true);
-			CWNFlowRelation f8 = cwn.addFlowRelationTP("t3", "p3", true);
-				
-			//configure flow reltions
-			f2.addConstraint("green", 1);
-			f3.addConstraint("green", 1);
-			f4.addConstraint("red", 1);
-			f5.addConstraint("red", 1);
-			f6.addConstraint("green", 1);
-			f7.addConstraint("red", 1);
-				
-				
-			} catch (ParameterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-						
-			return cwn;
-		}
-		
-
-		//Creates a petri net which contains a livelock.
-		private void addLiveLock(CWN origCWN) throws ParameterException{
-			
-			//add the places
-			origCWN.addPlace("pl1");
-			origCWN.addPlace("pl2");
-			
-			//add transitions
-			origCWN.addTransition("tl1");
-			origCWN.addTransition("tl2");
-			
-			//add the flow relations connecting the nre
-			//places and transitions
-			origCWN.addFlowRelationPT("pl1", "tl2");
-			origCWN.addFlowRelationPT("pl2", "tl1");
-			origCWN.addFlowRelationTP("tl2", "pl2");
-			origCWN.addFlowRelationTP("tl1", "pl1");
-			
-			//connect the livelock to the rest of the net
-			CWNFlowRelation f = origCWN.addFlowRelationPT("p2", "tl1");
-			Multiset<String> constraint = f.getConstraint();
-			constraint.add("red");	
-			f.setConstraint(constraint);
-		}
-			
-		
-		
-		//Creates a petri net which does not create a token in the sink place
-		private void removeBlackFromRelationT3P3(CWN origCWN) throws ParameterException{
-			
-			for( CWNFlowRelation f : origCWN.getFlowRelations()){
-				if(f.getSource().getName().equals("t3") && f.getTarget().getName().equals("p3")){
-					Multiset<String> constraint = f.getConstraint();
-					constraint.remove("black");
-					constraint.add("pink");
-					f.setConstraint(constraint);										
-					
-				}
-			}
-			
-		}
 
 	
-	
-	    //Creates a cwn with two input places
-		//by adding a place to the standard cwn
-		//                	 -> t1
-		//              	/       \
-		//    p0 -> T0-> p1|         p2 -> t3 -> p3
-		//        /     	\       /       
-		//     p4       	 <- t2<-          
-		// 
-		//p0: black
-		private void addSecondInputPlaceP4(CWN origCWN){
-			
-												
-			try {
-			//Add place	
-		    origCWN.addPlace("p4");		    
-			
-			//Add two flow relation					
-			CWNFlowRelation f9 = origCWN.addFlowRelationPT("p4", "t0", true);			
-		
-			//put a black token in p4
-			Multiset<String> mp4 =  new Multiset<String>();
-			mp4.add("black");
-			origCWN.getMarking().set("p4", mp4);
-			
-			} catch (ParameterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}									
-		}
+
+
 		
 		
-		
-		
-		
-		//Creates a cwn with two output places
-		//by adding a place to the standard cwn
-		//                	 -> t1
-		//              	/       \
-		//    p0 -> T0-> p1|         p2 -> t3 -> p3
-		//              	\       /       \
-		//              	 <- t2<-          ->p5
-		// 
-		//p0: black
-		private void addSecondOutputPlaceP5(CWN origCWN){
-												
-			
-			try {
-			//Add place			    
-			origCWN.addPlace("p5");
-			
-			//Add flow relation								
-			CWNFlowRelation f10 = origCWN.addFlowRelationTP("t3", "p5", true);
-		
-			
-			} catch (ParameterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-									
-		}
- 
-		
-		
+
 		
 
 }
