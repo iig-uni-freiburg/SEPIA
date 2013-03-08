@@ -268,7 +268,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @throws PNValidationException 
 	 * @see AbstractCPNFlowRelation#hasConstraints()
 	 */
-	@Override
+	@Override 
 	public void checkValidity() throws PNValidationException {
 		super.checkValidity();
 		for(AbstractCPNFlowRelation<?,?> relation: relations.values()){

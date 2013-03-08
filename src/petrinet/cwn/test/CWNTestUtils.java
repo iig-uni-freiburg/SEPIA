@@ -63,8 +63,8 @@ public class CWNTestUtils {
 		//p3 contains black
 		cwn.getPlace("p3").setColorCapacity("black", 2);
 		
-		
-		
+		 
+		 
 		//Add the flow relation					
 		CWNFlowRelation f1 = cwn.addFlowRelationPT("p0", "t0", true);
 		CWNFlowRelation f2 = cwn.addFlowRelationTP("t0", "p1", true);
@@ -183,8 +183,9 @@ public class CWNTestUtils {
 		//add transitions
 		origCWN.addTransition("tl1");
 		origCWN.addTransition("tl2");
+		origCWN.addTransition("tConncet");
 		
-		//add the flow relations connecting the nre
+		//add the flow relations connecting the 
 		//places and transitions
 		origCWN.addFlowRelationPT("pl1", "tl2");
 		origCWN.addFlowRelationPT("pl2", "tl1");
@@ -192,10 +193,11 @@ public class CWNTestUtils {
 		origCWN.addFlowRelationTP("tl1", "pl1");
 		
 		//connect the livelock to the rest of the net
-		CWNFlowRelation f = origCWN.addFlowRelationPT("p2", "tl1");
-		Multiset<String> constraint = f.getConstraint();
-		constraint.add("red");	
-		f.setConstraint(constraint);
+		CWNFlowRelation f1 = origCWN.addFlowRelationPT("p2", "tConncet",true);
+		f1.addConstraint("red", 1);		
+		CWNFlowRelation f2 = origCWN.addFlowRelationTP("tConncet", "pl2",true);
+		
+		
 	}
 		
 	
@@ -252,7 +254,98 @@ public class CWNTestUtils {
 			Multiset<String> state = origCWN.getPlace("p0").getState();
 			state.clear();						
 			m.set("p0", state);
+			 
+			//set the new marking
+			origCWN.setInitialMarking(m);
 									
 		} 
+		
+		
+		 //Sets an invalid initial marking ==> no black token in the input place but a colored tokens
+		static void addColoredTokensToInputPlace(CWN origCWN, int amount, String color) throws ParameterException{
+
+			
+			//add a colored token
+			//get the initial marking
+			CWNMarking m = origCWN.getInitialMarking();
+		
+			//remove p3
+			Multiset<String> state = origCWN.getPlace("p0").getState();
+			
+			for(int i = 1; i<= amount; i++){
+				state.add(color);
+			}						
+			m.set("p0", state);
+			
+			//set the new marking
+			origCWN.setInitialMarking(m);
+			
+		}
+		
+		
+
+		 //Adds an unconncetd transition to the net i.e. a transition wich is conncetd to new places
+		static void addCompletelyUnconectedTransition(CWN origCWN) throws ParameterException{
+			
+			//add the transition
+			origCWN.addTransition("TUnconnceted");
+			
+			//add places
+			origCWN.addPlace("pUnconncetedInput");
+			origCWN.addPlace("pUnconncetedOutput");
+			
+			//add a token to the input place			
+			CWNMarking initialMarking = origCWN.getInitialMarking();
+			initialMarking.set("pUnconncetedInput", new Multiset<String>("black"));
+			
+			//add flow relations
+			origCWN.addFlowRelationPT("pUnconncetedInput", "TUnconnceted",true);
+			origCWN.addFlowRelationTP( "TUnconnceted", "pUnconncetedInput", true);
+			
+		}
+		
+		
+		
+		//Create a realy simple petri net
+		
+		//create a simple cwn with one inputplace, one output place and one transition
+		//pIn --black--> t0 --black-->pOut
+		static CWN createSimpleCWN() throws ParameterException{
+		//create the two places
+		Set<String>  places = new HashSet<String>();
+		places.add("pIn");
+		places.add("pOut");
+		
+		
+		
+		//create transition
+		Set<String>  transitions = new HashSet<String>();
+		transitions.add("t0");
+		
+		//create the the token colors used in the initial marking		
+		Multiset<String> mset = new Multiset<String>();							
+		mset.add("black");
+		CWNMarking marking = new CWNMarking();
+		marking.set("pIn", mset);
+													
+				
+		//create the cwn with one black token in P0
+		CWN cwn = new CWN(places, transitions, marking);
+				
+		 
+		//Add the flow relation					
+		CWNFlowRelation inRel = cwn.addFlowRelationPT("pIn", "t0", true);
+		CWNFlowRelation outRel = cwn.addFlowRelationTP("t0", "pOut", true);
+		
+		//Set bounds for all places 
+		//p0 contains only black			
+		cwn.getPlace("pIn").setColorCapacity("black", 2);
+		cwn.getPlace("pOut").setColorCapacity("black", 2);
+		
+		return cwn;
+		
+		}
+		
+	
 		
 }

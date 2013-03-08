@@ -39,6 +39,8 @@ public class AbstractCWNUtils {
 		Graph<AbstractCWNMarking> markingGraph = ReachabilityUtils.buildMarkingGraph(cwn);
 		
 		
+		
+		
 		Set<Vertex<AbstractCWNMarking>> drains = new HashSet<Vertex<AbstractCWNMarking>>(markingGraph.getDrains());
 		for(Vertex<AbstractCWNMarking> drainVertex : drains){			
 			if(!isEndState(drainVertex.getElement(), cwn)){
@@ -65,12 +67,11 @@ public class AbstractCWNUtils {
 	 * <code>false</code> otherwise. 
 	 */
 	private static boolean isEndState(AbstractCWNMarking traversalMarking, @SuppressWarnings("rawtypes") AbstractCWN cwn){
+
+		// Check if output place contains tokens
 		if(traversalMarking.contains(cwn.getOutputPlace().getName())){
 			try{
-				// Check if output place contains tokens
-				if(!traversalMarking.contains(cwn.getOutputPlace().getName())){
-					return false;
-				}
+												
 				// Check if output place contains at least one control flow token
 				if(traversalMarking.get(cwn.getOutputPlace().getName()).multiplicity(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR) > 0){
 					return true;

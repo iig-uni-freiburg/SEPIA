@@ -55,37 +55,37 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public static void main(String[] args) throws Exception{
-		CWN cwn = new CWN();
-		cwn.addPlace("p1");
-		cwn.addPlace("p2");
-		cwn.addPlace("p3");
-		cwn.addPlace("p4");
-		cwn.addPlace("p5");
-		cwn.addPlace("p6");
-		cwn.addTransition("t1");
-		cwn.addTransition("t2");
-		cwn.addTransition("t3");
-		cwn.addTransition("t4");
-		cwn.addFlowRelationPT("p1", "t1");
-		cwn.addFlowRelationTP("t1", "p2");
-		cwn.addFlowRelationTP("t1", "p3");
-		cwn.addFlowRelationPT("p2", "t2");
-		cwn.addFlowRelationPT("p3", "t3");
-		cwn.addFlowRelationTP("t2", "p4");
-		cwn.addFlowRelationTP("t3", "p5");
-		cwn.addFlowRelationPT("p4", "t4");
-		cwn.addFlowRelationPT("p5", "t4");
-		cwn.addFlowRelationTP("t4", "p6");
-		CWNMarking initialMarking = new CWNMarking();
-		Multiset<String> markingInput = new Multiset<String>();
-		markingInput.add("black");
-//		markingInput.put("green", 1);
-		initialMarking.set("p1", markingInput);
-		cwn.setInitialMarking(initialMarking);
-		
-		cwn.checkSoundness();
-	}
+//	
+//	public static void main(String[] args) throws Exception{
+//		CWN cwn = new CWN();
+//		cwn.addPlace("p1");
+//		cwn.addPlace("p2");
+//		cwn.addPlace("p3");
+//		cwn.addPlace("p4");
+//		cwn.addPlace("p5");
+//		cwn.addPlace("p6");
+//		cwn.addTransition("t1");
+//		cwn.addTransition("t2");
+//		cwn.addTransition("t3");
+//		cwn.addTransition("t4");
+//		cwn.addFlowRelationPT("p1", "t1");
+//		cwn.addFlowRelationTP("t1", "p2");
+//		cwn.addFlowRelationTP("t1", "p3");
+//		cwn.addFlowRelationPT("p2", "t2");
+//		cwn.addFlowRelationPT("p3", "t3");
+//		cwn.addFlowRelationTP("t2", "p4");
+//		cwn.addFlowRelationTP("t3", "p5");
+//		cwn.addFlowRelationPT("p4", "t4");
+//		cwn.addFlowRelationPT("p5", "t4");
+//		cwn.addFlowRelationTP("t4", "p6");
+//		CWNMarking initialMarking = new CWNMarking();
+//		Multiset<String> markingInput = new Multiset<String>();
+//		markingInput.add("black");
+////		markingInput.put("green", 1);
+//		initialMarking.set("p1", markingInput);
+//		cwn.setInitialMarking(initialMarking);
+//		
+//		cwn.checkSoundness();
+//	}
 
 }

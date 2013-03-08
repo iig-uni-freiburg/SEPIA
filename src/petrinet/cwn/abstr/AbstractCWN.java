@@ -76,14 +76,18 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		// Check if there is only one input/output place
 		P input = null;
 		Collection<P> sourcePlaces = getSourcePlaces();
-		if(sourcePlaces.isEmpty())
+
+		 
+		if(sourcePlaces.isEmpty())			
 			throw new PNValidationException("CWN has no input place.");
+		
+		
 		if(sourcePlaces.size() > 1)
 			throw new PNValidationException("CWN has more than one input place: " + sourcePlaces);
 		input = sourcePlaces.iterator().next();
 		
 		P output = null;
-		Collection<P> drainPlaces = getDrainPlaces();
+		Collection<P> drainPlaces = getDrainPlaces(); 
 		if(drainPlaces.isEmpty())
 			throw new PNValidationException("CWN has no output place.");
 		if(drainPlaces.size() > 1)
@@ -130,13 +134,12 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		super.checkSoundness();
 		
 		
-		// Requirement 1: Option to complete
+		// Requirement 1: Option to complete + proper completion
 		try {
 			AbstractCWNUtils.validCompletion(this);			
-		} catch (ParameterException e1) {}
+
 		
-		// Requirement 2: No dead transitions
-		try {
+		// Requirement 2: No dead transitions		
 			Set<T> deadTransitions = ReachabilityUtils.getDeadTransitions(this);
 			if(!deadTransitions.isEmpty())
 				throw new PNSoundnessException("CWN has dead transitions: " + deadTransitions);
@@ -152,7 +155,7 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		M newMarking = cloneMarking();
 		T transition = getTransition(transitionName);
 		for(F relation: transition.getIncomingRelations()){
-			String inputPlaceName = relation.getPlace().getName();
+			String inputPlaceName = relation.getPlace().getName();			
 			Multiset<String> oldState = (newMarking.get(inputPlaceName) == null ? new Multiset<String>() : newMarking.get(inputPlaceName).clone());
 			newMarking.set(inputPlaceName, oldState.difference(relation.getConstraint()));
 		

@@ -1,4 +1,4 @@
-package petrinet.cwn.abstr;
+package petrinet.cwn.test;
 
 import static org.junit.Assert.*;
 
@@ -9,11 +9,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.org.apache.xpath.internal.operations.Mult;
+
 import exception.PNSoundnessException;
 
 import petrinet.cwn.CWN;
 import petrinet.cwn.CWNFlowRelation;
 import petrinet.cwn.CWNMarking;
+import petrinet.cwn.abstr.AbstractCWNUtils;
 import types.Multiset;
 import validate.ParameterException;
 
@@ -30,41 +33,9 @@ public class AbstractCWNUtilsTest {
 	@Test
 	public void testValidCompletion() throws ParameterException {
 	
-		//create a simple cwn with one inputplace, one output place and one transition
-		//pIn --black--> t0 --black-->pOut
-		
-		//create the two places
-		Set<String>  places = new HashSet<String>();
-		places.add("pIn");
-		places.add("pOut");
-		
-		
-		
-		//create transition
-		Set<String>  transitions = new HashSet<String>();
-		transitions.add("t0");
-		
-		//create the the token colors used in the initial marking		
-		Multiset<String> mset = new Multiset<String>();							
-		mset.add("black");
-		CWNMarking marking = new CWNMarking();
-		marking.set("pIn", mset);
-													
+		//Get a simple CWN
+		CWN cwn = CWNTestUtils.createSimpleCWN();
 				
-		//create the cwn with one black token in P0
-		CWN cwn = new CWN(places, transitions, marking);
-				
-		 
-		//Add the flow relation					
-		CWNFlowRelation inRel = cwn.addFlowRelationPT("pIn", "t0", true);
-		CWNFlowRelation outRel = cwn.addFlowRelationTP("t0", "pOut", true);
-		
-		//Set bounds for all places 
-		//p0 contains only black			
-		cwn.getPlace("pIn").setColorCapacity("black", 1);
-		cwn.getPlace("pOut").setColorCapacity("black", 1);
-					
-		
 		//////////////////////////
 		//The net is valid now  //
 		//////////////////////////
@@ -80,6 +51,13 @@ public class AbstractCWNUtilsTest {
 		//Add a pink token to the outrelation  //
 		//The net is still valid               //
 		/////////////////////////////////////////
+		CWNFlowRelation outRel = null;
+		for(CWNFlowRelation f : cwn.getFlowRelations()){
+			if(f.getTarget().getName().equals("pOut")){
+				outRel = f;
+			}
+		}
+		
 		outRel.addConstraint("pink", 1);				
 		cwn.getPlace("pOut").setColorCapacity("pink", 1);
 		
@@ -107,19 +85,27 @@ public class AbstractCWNUtilsTest {
 		} catch (PNSoundnessException e) {
 		}
 		
-		///////////////////////////////////////
-		//remove all constraints from outrel //
-		//The net gets invalid by doing so   //
-		///////////////////////////////////////
-		outRel.setConstraint(new Multiset<String>());
-		
-		System.out.println(cwn);
+		//////////////////////////////////////////////////////////////////////////
+		//change the net to contain a non terminal state where a black token is //
+		//in a place other than the sink place. ==> add a black token to the    //
+		//sink place in the inital marking                                      //
+		//////////////////////////////////////////////////////////////////////////
+		CWNMarking newInitialMarking = new CWNMarking();
+		Multiset<String> b1 = new Multiset<String>();
+		Multiset<String> b2 = new Multiset<String>();
+		b1.add("black");
+		b2.add("black");		
+		newInitialMarking.set("pIn", b1);
+		newInitialMarking.set("pOut", b2);
+		cwn.setInitialMarking(newInitialMarking);
 		try {
 			AbstractCWNUtils.validCompletion(cwn);
 			fail("A invalid net was reported to be valid!");
 		} catch (PNSoundnessException e) {
 		}
 		
+				
+		 
 	}
 
 }

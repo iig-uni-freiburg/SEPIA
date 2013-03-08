@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 import org.junit.After;
@@ -16,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import petrinet.cwn.CWN;
+import petrinet.cwn.CWNFlowRelation;
 import petrinet.cwn.CWNMarking;
 import petrinet.cwn.CWNPlace;
 import types.Multiset;
@@ -117,7 +119,7 @@ public class CWNTest {
 			validCwn.checkValidity();
 		} catch (PNValidationException e) {
 			fail("A valid CWN is detected as invalid!");
-		}
+		} 
 
 		// create a cwn with to many input places
 		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
@@ -125,7 +127,7 @@ public class CWNTest {
 		try {
 			invalidCwn1.checkValidity();
 			fail("An ivalid CWN (with two inputplaces) is detected as valid!");
-		} catch (PNValidationException e) {
+		} catch (PNValidationException e) {			
 		}
 
 		// create a cwn with to many output places
@@ -167,16 +169,7 @@ public class CWNTest {
 		}
 		
 		
-		//create a cwn without a black token in the input place
-		CWN invalidCwn6 = CWNTestUtils.createValidCWN();
-		CWNTestUtils.removeTokensFromInputPlace(invalidCwn6);
-		
-		try {
-			invalidCwn6.checkValidity();
-			fail("An ivalid CWN (with an empty inputplace) is detected as valid!");
-		} catch (PNValidationException e) {
-			System.out.println(e);
-		}
+
 		
 	}
 	
@@ -192,7 +185,7 @@ public class CWNTest {
 		// Create the standard cwn which is valid
 		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
 		
-		//setup some markings used lateron
+		//setup some markings used later on
 		//black black in p0
 		Multiset<String> placeStatebb = new Multiset<String>("black","black");		
 		CWNMarking p0bb = new CWNMarking();		
@@ -203,7 +196,7 @@ public class CWNTest {
 		CWNMarking empty = new CWNMarking();		
 		empty.set("p0", placeStateEmpty);
 				
-		// black all empty in p0
+		// black in p0 and p3
 		Multiset<String> placeStateP0P3 = new Multiset<String>("black");
 		CWNMarking p0p3 = new CWNMarking();
 		p0p3.set("p0", placeStateP0P3);
@@ -219,6 +212,15 @@ public class CWNTest {
 		CWNMarking p0g = new CWNMarking();
 		p0g.set("p0", placeStateGreen);
 
+		
+		// green and red token in an inputplace
+		Multiset<String> placeStateGreenRed = new Multiset<String>("green", "red");
+		CWNMarking p0gr = new CWNMarking();
+		p0gr.set("p0", placeStateGreenRed);
+
+				
+		
+		//All needed markings are set up here
 		
 		// Set two tokens to place p0
 		invalidCwn1.setInitialMarking(p0bb);
@@ -264,6 +266,20 @@ public class CWNTest {
 		} catch (PNValidationException e) {
 		}			
 		
+		
+		//Set one green and one red token to p0
+		invalidCwn1.setInitialMarking(p0gr);	
+		try {
+			invalidCwn1.checkValidity();
+			fail("An ivalid CWN (with one green and one red token in the input place) is detected as valid!");
+		} catch (PNValidationException e) {
+		}	
+		
+		
+		//change the petriNet to not produce black tokens in the outputplace
+		
+		
+		
 	}  
 	
 	
@@ -278,47 +294,34 @@ public class CWNTest {
 		// Create the standard cwn which is valid
 		CWN invalidCwn1 = CWNTestUtils.createValidCWN();
 		
-		//Add a transitin without any relations
-		invalidCwn1.addTransition("TUnconnected");
+		//Add a unconnceted transition 
+		CWNTestUtils.addCompletelyUnconectedTransition(invalidCwn1);		
 		
 		//Check whether the cwn is valid	
 		try {
 			invalidCwn1.checkValidity();
 			fail("An ivalid CWN (which is not strongly connected) is detected as valid!");
-		} catch (PNValidationException e) {			
+		} catch (PNValidationException e) {		
+			
 		}	
 		 		
-		//Tidy up
-		invalidCwn1.removeTransition("TUnconnected");
+
 		
+		//Add a livelock
+		CWN invalidCwn2 = CWNTestUtils.createValidCWN();
+		CWNTestUtils.addLiveLock(invalidCwn2);
+
+		 
 		
-		//Add a transition which is only connected via incomming arcs
-		invalidCwn1.addTransition("TOnlyIncommingConnections");
-		invalidCwn1.addFlowRelationPT("p1", "TOnlyIncommingConnections");
-		invalidCwn1.addFlowRelationPT("p2", "TOnlyIncommingConnections");
 		
 		//Check whether the cwn is valid	
 		try {
-			invalidCwn1.checkValidity();
-			fail("An ivalid CWN (with a transtion only having incomming arcs) is detected as valid!");
-		} catch (PNValidationException e) {			
-		}			
-		//Tidy up
-		invalidCwn1.removeTransition("TOnlyIncommingConnections");
+			invalidCwn2.checkValidity();
+			fail("An ivalid CWN (which is not strongly connected) is detected as valid!");
+		} catch (PNValidationException e) {	
+		}		
 		
-		// Add a transition which is only connected via outgoing arcs
-		invalidCwn1.addTransition("TOnlyOutgoingConnections");
-		invalidCwn1.addFlowRelationTP("TOnlyOutgoingConnections", "p1");
-		invalidCwn1.addFlowRelationTP("TOnlyOutgoingConnections", "p2");
 
-		// Check whether the cwn is valid
-		try {
-			invalidCwn1.checkValidity();
-			fail("An ivalid CWN (with a transtion only having outgoing arcs) is detected as valid!");
-		} catch (PNValidationException e) {
-		}
-		// Tidy up
-		invalidCwn1.removeTransition("TOnlyOutgoingConnections");
 		
 	}
 	
@@ -381,11 +384,12 @@ public class CWNTest {
 		
 			
 		//Create a cwn which does not create a black token in the sink place
-		CWN unSoundCwn1 = CWNTestUtils.createValidCWN();
+		CWN unSoundCwn1 = CWNTestUtils.createValidCWN();		
 		CWNTestUtils.removeBlackFromRelationT3P3(unSoundCwn1);
 		
-		
+		 
 		try {			
+			
 			unSoundCwn1.checkSoundness();
 			fail("A unsound CWN was not detected as unsound");
 		} catch (PNSoundnessException e) {} catch (PNValidationException e) {	}
@@ -431,9 +435,6 @@ public class CWNTest {
 	    
 		
 	}
-
-		
-		
 
 		
 
