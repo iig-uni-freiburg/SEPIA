@@ -12,6 +12,7 @@ import org.junit.Test;
 import petrinet.snet.Labeling;
 import petrinet.snet.SNet;
 import petrinet.snet.SNetMarking;
+import petrinet.snet.SecurityLevel;
 import types.Multiset;
 import validate.ParameterException;
 
@@ -79,6 +80,10 @@ public class LabelingTest {
 		placeMarking.add("black");
 		m.set("p0", placeMarking);
 		
+		Multiset<String> placeMarking2 = new Multiset<String>();
+		placeMarking2.add("green");
+		m.set("p1", placeMarking2);
+		
 		//Create an SNet
 		sNet = new SNet(places, transitions, m);
 		
@@ -98,9 +103,15 @@ public class LabelingTest {
 	}
 
 	
-	//Test the constructors
+	//***************************
+	//** Test the constructors **
+	//***************************
+	
+	//////////////////////////////////
+	//Test the "empty" constructor  //
+	//////////////////////////////////
 	@Test
-	public void testLabeling(){
+	public void testEmpltyLabelingConstructor(){
 		
 		//////////////////////////////////
 		//Test the "empty" constructor  //
@@ -125,23 +136,129 @@ public class LabelingTest {
 			fail("An exception should have been thrown!");
 		} catch (ParameterException e) {}
 		
-		
-		
-		//////////////////////////////////
-		//Test the "empty" constructor  //
-		//////////////////////////////////
+	}
+	
+	
+	
+	/////////////////////////////////////////
+	//Test the sNet, Subjects constructor  //
+	/////////////////////////////////////////
+	@Test
+	public void testSNetSubjectLabelingConstructor(){
+	
+		Labeling l2 = null;
 		try {
-			Labeling l2 = new Labeling(sNet, subjects);
+			l2 = new Labeling(sNet, subjects);
 		} catch (ParameterException e) {
 			e.printStackTrace();
 			fail("Cannot create SNet!");
 		}
 		
+		//Check whether the activities are setup right
+		assertFalse(l2.getActivities().isEmpty());		
+		try {
+			assertNull(l2.getActivityClassification("fail"));
+			fail("An exception should have been thrown!");
+		} catch (ParameterException e) {}
+		
+		try {
+			assertEquals(SecurityLevel.LOW, l2.getActivityClassification("t0"));
+		} catch (ParameterException e) {
+			fail("Not able to get the classification of an activity");
+		}
 		
 		
+		//Check whether the attributes are setup right
+		assertFalse(l2.getAttributes().isEmpty());		
+		try {
+			assertNull(l2.getAttributeClassification("fail"));
+			fail("An exception should have been thrown!");
+		} catch (ParameterException e) {}
+		
+		try {
+			assertEquals(SecurityLevel.LOW, l2.getAttributeClassification("green"));
+		} catch (ParameterException e) {
+			fail("Not able to get the classification of an attribute");
+		}
+		
+		
+		
+		//Check whether the subjects are setup right
+		assertFalse(l2.getSubjects().isEmpty());
+		try {
+			l2.getSubjectClearance("fail");
+			fail("An exception should have been thrown!");
+		} catch (ParameterException e) {}
+		
+		try {
+			assertEquals(SecurityLevel.LOW, l2.getSubjectClearance("s0"));
+		} catch (ParameterException e) {
+			fail("Not able to get the clearence of a subject");
+		}				
 		
 	}
 
+	
+	/////////////////////////////////////////
+	//Test the sNet, Subjects, DefaultSecurityLevel constructor  //
+	/////////////////////////////////////////
+	@Test
+	public void testSNetSubjectDefaultLabelingConstructor(){
+	
+		Labeling l2 = null;
+		try {
+			l2 = new Labeling(sNet, subjects, SecurityLevel.HIGH);
+		} catch (ParameterException e) {
+			e.printStackTrace();
+			fail("Cannot create SNet!");
+		}
+		
+		//Check whether the activities are setup right
+		assertFalse(l2.getActivities().isEmpty());		
+		try {
+			assertNull(l2.getActivityClassification("fail"));
+			fail("An exception should have been thrown!");
+		} catch (ParameterException e) {}
+		
+		try {
+			assertEquals(SecurityLevel.HIGH, l2.getActivityClassification("t0"));
+		} catch (ParameterException e) {
+			fail("Not able to get the classification of an activity");
+		}
+		
+		
+		//Check whether the attributes are setup right
+		assertFalse(l2.getAttributes().isEmpty());		
+		try {
+			assertNull(l2.getAttributeClassification("fail"));
+			fail("An exception should have been thrown!");
+		} catch (ParameterException e) {}
+		
+		try {
+			assertEquals(SecurityLevel.HIGH, l2.getAttributeClassification("green"));
+		} catch (ParameterException e) {
+			fail("Not able to get the classification of an attribute");
+		}
+		
+		
+		
+		//Check whether the subjects are setup right
+		assertFalse(l2.getSubjects().isEmpty());
+		try {
+			l2.getSubjectClearance("fail");
+			fail("An exception should have been thrown!");
+		} catch (ParameterException e) {}
+		
+		try {
+			assertEquals(SecurityLevel.HIGH, l2.getSubjectClearance("s0"));
+		} catch (ParameterException e) {
+			fail("Not able to get the clearence of a subject");
+		}				
+		
+	}
+
+	
+	
 //	@Test
 //	public void testGetActivities() {
 //		fail("Not yet implemented");

@@ -18,7 +18,7 @@ public class Labeling {
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>
 	 */
-	public static final SecurityLevel defaultSecurityLevel = SecurityLevel.LOW;
+	public static SecurityLevel defaultSecurityLevel = SecurityLevel.LOW;
 	
 	/**
 	 * This map contains the classification of process activities (Petri net transitions).<br>
@@ -64,6 +64,7 @@ public class Labeling {
 					Collection<String> attributes,
 					Collection<String> subjects, 
 					SecurityLevel defaultSecurityLevel) throws ParameterException{
+				
 		
 		initialize(activities, attributes, subjects, defaultSecurityLevel);
 	}
@@ -79,9 +80,11 @@ public class Labeling {
 			   				Collection<String> subjects, 
 			   				SecurityLevel defaultSecurityLevel) throws ParameterException{
 		
+		Labeling.defaultSecurityLevel = defaultSecurityLevel;
 		addActivities(activities);
 		addAttributes(attributes);
 		addSubjects(subjects);
+	
 	}
 	
 	public Set<String> getActivities(){

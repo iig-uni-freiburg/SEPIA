@@ -64,6 +64,10 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 		for(T transition: transitions.values()){
 			colors.addAll(transition.getProcessedColors());
 		}
+		
+		for(P place : places.values()){
+			colors.addAll(place.getState().support());
+		}
 		return colors;
 	}
 	
