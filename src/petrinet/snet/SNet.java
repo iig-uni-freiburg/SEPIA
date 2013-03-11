@@ -35,7 +35,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	 * <li>Subject descriptors: Subjects assigned to process activities.</li>
 	 * </ul>
 	 */
-	private AnalysisContext analysisContext = new AnalysisContext();
+	private AnalysisContext analysisContext = null;
 	
 	public SNet() throws ParameterException {
 		super();
@@ -43,7 +43,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 		marking = new SNetMarking();
 	}
 
-	public SNet(Set<String> places, 
+	public SNet(Set<String> places,  
 			    Set<String> transitions, 
 			    SNetMarking initialMarking) throws ParameterException {
 		super(places, transitions, initialMarking);
@@ -51,8 +51,10 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	
 	@Override
 	protected void initialize(){
+		super.initialize();
 		regularTransitions = new HashMap<String, RegularSNetTransition>();
 		declassificationTransitions = new HashMap<String, DeclassificationTransition>();
+		analysisContext = new AnalysisContext();
 	}
 	
 	public Collection<RegularSNetTransition> getRegularTransitions(){
@@ -67,10 +69,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	protected void addTransition(AbstractSNetTransition transition) throws ParameterException {
 		super.addTransition(transition);
 		
-		if(transition instanceof RegularSNetTransition) {
-			
-			System.out.println(regularTransitions);
-			
+		if(transition instanceof RegularSNetTransition) {						
 			regularTransitions.put(transition.getName(), (RegularSNetTransition) transition);
 		} else if(transition instanceof DeclassificationTransition) {
 			declassificationTransitions.put(transition.getName(), (DeclassificationTransition) transition);

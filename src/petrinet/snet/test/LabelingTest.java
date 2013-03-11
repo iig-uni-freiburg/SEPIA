@@ -130,7 +130,12 @@ public class LabelingTest {
 		//////////////////////////////////
 		//Test the "empty" constructor  //
 		//////////////////////////////////
-		//Labeling l2 = new Labeling(sNet, subjects);
+		try {
+			Labeling l2 = new Labeling(sNet, subjects);
+		} catch (ParameterException e) {
+			e.printStackTrace();
+			fail("Cannot create SNet!");
+		}
 		
 		
 		

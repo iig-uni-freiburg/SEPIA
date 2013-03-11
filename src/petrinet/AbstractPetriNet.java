@@ -135,6 +135,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	public AbstractPetriNet(){
 
+		
 		initialize();
 		initialMarking = createNewMarking();
 		marking = createNewMarking();
