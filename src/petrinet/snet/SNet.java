@@ -22,8 +22,8 @@ import exception.PNValidationException;
 
 public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlowRelation, SNetMarking> {
 	
-	private Map<String, RegularSNetTransition> regularTransitions = new HashMap<String, RegularSNetTransition>();
-	private Map<String, DeclassificationTransition> declassificationTransitions = new HashMap<String, DeclassificationTransition>();
+	private Map<String, RegularSNetTransition> regularTransitions = null;
+	private Map<String, DeclassificationTransition> declassificationTransitions = null;
 	
 	/**
 	 * The analysis context of the S-Net.<br>
@@ -49,6 +49,12 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 		super(places, transitions, initialMarking);
 	}
 	
+	@Override
+	protected void initialize(){
+		regularTransitions = new HashMap<String, RegularSNetTransition>();
+		declassificationTransitions = new HashMap<String, DeclassificationTransition>();
+	}
+	
 	public Collection<RegularSNetTransition> getRegularTransitions(){
 		return Collections.unmodifiableCollection(regularTransitions.values());
 	}
@@ -62,13 +68,16 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 		super.addTransition(transition);
 		
 		if(transition instanceof RegularSNetTransition) {
+			
+			System.out.println(regularTransitions);
+			
 			regularTransitions.put(transition.getName(), (RegularSNetTransition) transition);
 		} else if(transition instanceof DeclassificationTransition) {
 			declassificationTransitions.put(transition.getName(), (DeclassificationTransition) transition);
 		}
 		analysisContext.getLabeling().addActivities(transition.getName());
 	}
-	
+	 
 	@Override
 	public boolean removeTransition(String transitionName) throws ParameterException{
 		if(super.removeTransition(transitionName)){

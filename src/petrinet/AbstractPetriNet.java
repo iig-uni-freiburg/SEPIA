@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import petrinet.snet.RegularSNetTransition;
+
 import traverse.Traversable;
 import validate.ParameterException;
 import validate.ParameterException.ErrorCode;
@@ -132,12 +134,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The next enabled transition is chosen randomly.
 	 */
 	public AbstractPetriNet(){
-//		try {
-//			flowControl = new DefaultFlow<P,T,F>(this);
-//		} catch (ParameterException e) {
-//			//Cannot happen since "this" is not null.
-//			e.printStackTrace();
-//		}
+
+		initialize();
 		initialMarking = createNewMarking();
 		marking = createNewMarking();
 	}
@@ -150,10 +148,19 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @throws ParameterException If some parameters are <code>null</code> or contain <code>null</code>-values.
 	 */
 	public AbstractPetriNet(Set<String> places, Set<String> transitions) throws ParameterException {
-		this();
+		this();			
 		addTransitions(transitions);
 		addPlaces(places);
 	}
+	
+	
+	/**
+	 * Initialization method for basic properties and fields. <br>
+	 * Called by default constructor.
+	 */
+	protected void initialize(){};
+	
+	
 	
 	//------- Basic properties ----------------------------------------------------------------------
 	

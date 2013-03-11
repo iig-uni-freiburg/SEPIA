@@ -255,7 +255,7 @@ public class Labeling {
 		return subjectClearance.get(subjectDescriptor);
 	}
 	
-	
+	 
 	//------- Parameter validation -----------------------------------------------------------------------------------
 	
 	protected void validateActivity(String activity) throws ParameterException{

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import org.junit.Test;
 
 import petrinet.cpn.FiringRule;
+import validate.ParameterException;
 
 /**
  * @author boehr
@@ -28,12 +29,22 @@ public class FiringRuleTest {
 		//Add an empty requirement
 		HashMap<String, Integer> requirement = new HashMap<String, Integer>();
 		requirement.put("black", 0);
-		f.addRequirement("p0", requirement);
-		assertFalse(f.containsRequirements());
+		try {
+			f.addRequirement("p0", requirement);
+			fail("Allowed to add empty requirement!");
+		} catch (ParameterException e) {
+		}
+		assertFalse(f.containsRequirements()); 
 		
+		HashMap<String, Integer> requirement2 = new HashMap<String, Integer>();
 		//Add a requirement		
-		requirement.put("green", 3);
-		f.addRequirement("p0", requirement);
+		requirement2.put("green", 3);
+		try {
+			f.addRequirement("p0", requirement2);
+		} catch (ParameterException e) {
+			System.out.println(e);
+			fail("Did not allow to add a valid requirement!");
+		}
 		assertTrue(f.containsRequirements());
 		
 	}
@@ -49,12 +60,20 @@ public class FiringRuleTest {
 		//Add an empty production
 		HashMap<String, Integer> productions = new HashMap<String, Integer>();
 		productions.put("black", 0);
-		f.addProduction("p0", productions);
+		try {
+			f.addProduction("p0", productions);
+			fail("Allowed to add an empty production!");
+		} catch (ParameterException e) {}
 		assertFalse(f.containsProductions());
 		
-		//Add a production		
-		productions.put("green", 3);
-		f.addProduction("p0", productions);
+		//Add a production	
+		HashMap<String, Integer> productions2 = new HashMap<String, Integer>();
+		productions2.put("green", 3);
+		try {
+			f.addProduction("p0", productions2);
+		} catch (ParameterException e) {
+			fail("Did not allow to add a valid production!");
+		}
 		assertTrue(f.containsProductions());
 	}
 

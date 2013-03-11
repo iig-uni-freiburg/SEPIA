@@ -1,7 +1,9 @@
 package petrinet.cpn;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import validate.ParameterException;
 import validate.Validate;
@@ -16,9 +18,18 @@ public class FiringRule {
 		return !requiredTokens.isEmpty();
 	}
 	
-	public void addRequirement(String placeName, Map<String, Integer> requirement){
+	public void addRequirement(String placeName, Map<String, Integer> requirement) throws ParameterException{
+		Validate.notNull(placeName);
+		Validate.notNull(requirement);
+		Validate.noNullElements(requirement.keySet());
+		Validate.noNullElements(requirement.values());
+		
+		for(Integer tokens : requirement.values()){
+			Validate.bigger(tokens, 0);				
+		}		
 		requiredTokens.put(placeName, requirement);
 	}
+	
 	
 	public void addRequirement(String placeName, String color, Integer tokens) throws ParameterException{
 		Validate.notNull(placeName);
@@ -37,7 +48,16 @@ public class FiringRule {
 		return !producedTokens.isEmpty();
 	}
 	
-	public void addProduction(String placeName, Map<String, Integer> production){
+	public void addProduction(String placeName, Map<String, Integer> production) throws ParameterException{
+		Validate.notNull(placeName);
+		Validate.notNull(production);
+		Validate.noNullElements(production.keySet());
+		Validate.noNullElements(production.values());
+		
+		for(Integer tokens : production.values()){
+			Validate.bigger(tokens, 0);				
+		}	
+		
 		producedTokens.put(placeName, production);
 	}
 	
