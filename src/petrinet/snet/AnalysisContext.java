@@ -24,7 +24,7 @@ public class AnalysisContext {
 	}
 	
 	public AnalysisContext(SNet sNet, Collection<String> subjects) throws ParameterException{
-		this(new Labeling(sNet, subjects, Labeling.defaultSecurityLevel));
+		this(new Labeling(sNet, subjects));
 	}
 	
 	public AnalysisContext(SNet sNet, Collection<String> subjects, SecurityLevel defaultSecurityLevel) throws ParameterException{
@@ -41,7 +41,7 @@ public class AnalysisContext {
 	public AnalysisContext(Collection<String> activities,
 			   Collection<String> attributes,
 			   Collection<String> subjects) throws ParameterException{
-		this(new Labeling(activities, attributes, subjects, Labeling.defaultSecurityLevel));
+		this(new Labeling(activities, attributes, subjects));
 	}
 	
 	public Set<String> getActivities(){

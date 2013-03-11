@@ -18,7 +18,14 @@ public class Labeling {
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>
 	 */
-	public static SecurityLevel defaultSecurityLevel = SecurityLevel.LOW;
+	public static final SecurityLevel DEFAULT_SECURITY_LEVEL = SecurityLevel.LOW;
+
+	/**
+	 * Default security level used for initializing classification-, clearance- and labeling-maps which
+	 * can be changed for each instance.<br>
+	 */
+	private SecurityLevel defaultSecurityLevel = DEFAULT_SECURITY_LEVEL;
+	
 	
 	/**
 	 * This map contains the classification of process activities (Petri net transitions).<br>
@@ -51,7 +58,7 @@ public class Labeling {
 	public Labeling(){};
 	
 	public Labeling(SNet sNet, Collection<String> subjects) throws ParameterException{
-		this(PNUtils.getSetFromTransitions(sNet.getTransitions()), sNet.getTokenColors(), subjects, Labeling.defaultSecurityLevel);
+		this(PNUtils.getSetFromTransitions(sNet.getTransitions()), sNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
 	}
 	
 	public Labeling(SNet sNet, 
@@ -72,7 +79,7 @@ public class Labeling {
 	public Labeling(Collection<String> activities,
 			   		Collection<String> attributes,
 			   		Collection<String> subjects) throws ParameterException{
-		this(activities, attributes, subjects, Labeling.defaultSecurityLevel);
+		this(activities, attributes, subjects, DEFAULT_SECURITY_LEVEL);
 	}
 	
 	private void initialize(Collection<String> activities,
@@ -80,7 +87,7 @@ public class Labeling {
 			   				Collection<String> subjects, 
 			   				SecurityLevel defaultSecurityLevel) throws ParameterException{
 		
-		Labeling.defaultSecurityLevel = defaultSecurityLevel;
+		this.defaultSecurityLevel = defaultSecurityLevel;
 		addActivities(activities);
 		addAttributes(attributes);
 		addSubjects(subjects);
@@ -279,6 +286,17 @@ public class Labeling {
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown subject descriptor: " + subject);
 	}
 	
+	
+	
+	
+	public SecurityLevel getDefaultSecurityLevel() {
+		return defaultSecurityLevel;
+	}
+
+	public void setDefaultSecurityLevel(SecurityLevel defaultSecurityLevel) {
+		this.defaultSecurityLevel = defaultSecurityLevel;
+	}
+
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
