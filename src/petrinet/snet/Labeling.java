@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import petrinet.cpn.abstr.AbstractCPN;
+
 import util.PNUtils;
 import validate.ParameterException;
 import validate.ParameterException.ErrorCode;
@@ -126,6 +128,7 @@ public class Labeling {
 	public boolean removeActivities(Collection<String> activities) throws ParameterException{
 		Validate.notNull(activities);
 		Validate.noNullElements(activities);
+				
 		
 		if(activities.isEmpty())
 			return false;
@@ -201,6 +204,10 @@ public class Labeling {
 		
 		boolean modified = false;
 		for(String attribute: attributes){
+			
+			if(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR.equals(attribute))
+				continue;
+								
 			if(this.attributes.add(attribute)){
 				attributeClassification.put(attribute, defaultSecurityLevel);
 				modified = true;
@@ -300,7 +307,7 @@ public class Labeling {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		try{
+		try{ 
 			builder.append("Activities: ");
 			for(String activity: activities){
 				builder.append(activity);
@@ -321,7 +328,7 @@ public class Labeling {
 			}
 			builder.append('\n');
 			
-			builder.append("  Subjects: ");
+			builder.append("Subjects: ");
 			for(String subject: subjects){
 				builder.append(subject);
 				builder.append('[');

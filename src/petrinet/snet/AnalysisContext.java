@@ -21,7 +21,7 @@ public class AnalysisContext {
 	public AnalysisContext(Labeling labeling) throws ParameterException{
 		Validate.notNull(labeling);
 		this.labeling = labeling;
-	}
+	} 
 	
 	public AnalysisContext(SNet sNet, Collection<String> subjects) throws ParameterException{
 		this(new Labeling(sNet, subjects));
@@ -63,11 +63,11 @@ public class AnalysisContext {
 	@SuppressWarnings("unchecked")
 	public void setLabeling(Labeling labeling) throws ParameterException{
 		Validate.notNull(labeling);
-		if(!SetUtils.containSameElements(new HashSet<String>(subjectDescriptors.values()), labeling.getSubjects()))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Labeling must contain the same subjects than the analysis context.");
+		if(!labeling.getSubjects().containsAll(subjectDescriptors.values()))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Labeling must contain all subjects assigned to transitions.");
 		this.labeling = labeling;
 	}
-	
+	  
 	public void setSubjectDescriptor(String activity, String subject) throws ParameterException{
 		labeling.validateActivity(activity);
 		labeling.validateSubject(subject);
