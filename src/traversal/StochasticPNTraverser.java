@@ -18,17 +18,17 @@ import validate.Validate;
  * @author Thomas Stocker
  *
  */
-public class StochasticPNTraverser extends RandomPNTraverser {
+public class StochasticPNTraverser<T extends AbstractTransition<?,?>> extends RandomPNTraverser<T> {
 	
 	public static final int DEFAULT_TOLERANCE_DENOMINATOR = 1000;
-	private HashMap<AbstractTransition<?,?>, StochasticValueGenerator<AbstractTransition<?,?>>> flowProbabilities = new HashMap<AbstractTransition<?,?>, StochasticValueGenerator<AbstractTransition<?,?>>>();
+	private HashMap<T, StochasticValueGenerator<T>> flowProbabilities = new HashMap<T, StochasticValueGenerator<T>>();
 	private int toleranceDenominator;
 	
-	public StochasticPNTraverser(AbstractPetriNet<?,?,?,?,?> net) throws ParameterException {
+	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?> net) throws ParameterException {
 		this(net, DEFAULT_TOLERANCE_DENOMINATOR);
 	}
 
-	public StochasticPNTraverser(AbstractPetriNet<?,?,?,?,?> net, int toleranceDenominator) throws ParameterException {
+	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?> net, int toleranceDenominator) throws ParameterException {
 		super(net);
 		Validate.biggerEqual(toleranceDenominator, 1, "Denominator must be >=1.");
 		this.toleranceDenominator = toleranceDenominator;
@@ -38,20 +38,20 @@ public class StochasticPNTraverser extends RandomPNTraverser {
 		addFlowProbability(net.getTransition(fromTransitionID), net.getTransition(toTransitionID), probability);
 	}
 	
-	public void addFlowProbability(AbstractTransition<?,?> fromTransition, AbstractTransition<?,?> toTransition, double probability) throws ParameterException{
+	public void addFlowProbability(T fromTransition, T toTransition, double probability) throws ParameterException{
 		Validate.notNull(fromTransition);
 		Validate.notNull(toTransition);
 		Validate.inclusiveBetween(0.0, 1.0, probability);
-		StochasticValueGenerator<AbstractTransition<?,?>> chooser = flowProbabilities.get(fromTransition);
+		StochasticValueGenerator<T> chooser = flowProbabilities.get(fromTransition);
 		if(chooser == null){
-			chooser = new StochasticValueGenerator<AbstractTransition<?,?>>(toleranceDenominator);
+			chooser = new StochasticValueGenerator<T>(toleranceDenominator);
 			flowProbabilities.put(fromTransition, chooser);
 		}
 		chooser.addProbability(toTransition, probability);
 	}
 
 	@Override
-	public AbstractTransition<?,?> chooseNextTransition(List<AbstractTransition<?,?>> enabledTransitions) throws InconsistencyException, ParameterException{
+	public T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException, ParameterException{
 		if(!flowProbabilities.containsKey(net.getLastFiredTransition()))
 			return super.chooseNextTransition(enabledTransitions);
 		if(!isValid())
@@ -62,7 +62,7 @@ public class StochasticPNTraverser extends RandomPNTraverser {
 		if(enabledTransitions.isEmpty())
 			return null;
 		
-		AbstractTransition<?,?> nextTransition = null;
+		T nextTransition = null;
 		try {
 			nextTransition = flowProbabilities.get(net.getLastFiredTransition()).getNextValue();
 		} catch (ValueGenerationException e) {
@@ -81,7 +81,7 @@ public class StochasticPNTraverser extends RandomPNTraverser {
 	 * @see StochasticValueGenerator#isValid()
 	 */
 	public boolean isValid(){
-		for(StochasticValueGenerator<AbstractTransition<?,?>> chooser: flowProbabilities.values())
+		for(StochasticValueGenerator<T> chooser: flowProbabilities.values())
 			if(!chooser.isValid())
 				return false;
 		return true;

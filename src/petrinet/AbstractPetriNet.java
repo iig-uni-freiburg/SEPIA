@@ -310,7 +310,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	}
 	
 	/**
-	 * Adds a transition with the given name to the Petri net.<br>
+	 * Adds a transition with the given name and label to the Petri net.<br>
 	 * Transitions names have to be unique. In case the net already contains a transition with
 	 * the given name, no transition is added to the net.
 	 * @param transitionName The name for the Petri net transition.
@@ -320,9 +320,38 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
 	public boolean addTransition(String transitionName, String transitionLabel) throws ParameterException{
+		return addTransition(transitionName, transitionLabel, false);
+	}
+	
+	/**
+	 * Adds a transition with the given name and silent-state to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the Petri net transition.
+	 * @param isSilent The silent state of the transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @throws ParameterException If the transition name is <code>null</code>.
+	 */
+	public boolean addTransition(String transitionName, boolean isSilent) throws ParameterException{
+		return addTransition(transitionName, transitionName, isSilent);
+	}
+	
+	/**
+	 * Adds a transition with the given name, label and silent-state to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the Petri net transition.
+	 * @param transitionLabel the label for the Petri net transition.
+	 * @param isSilent The silent state of the transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @throws ParameterException If the transition name is <code>null</code>.
+	 */
+	public boolean addTransition(String transitionName, String transitionLabel, boolean isSilent) throws ParameterException{
 		if(containsTransition(transitionName))
 			return false;
-		addTransition(createNewTransition(transitionName, transitionLabel));
+		addTransition(createNewTransition(transitionName, transitionLabel, isSilent));
 		return true;
 	}
 	
@@ -399,7 +428,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param name The name for the new transition.
 	 * @return A new transition of type <code>T</code> with the given name.
 	 */
-	protected abstract T createNewTransition(String name, String label) throws ParameterException;
+	protected abstract T createNewTransition(String name, String label, boolean isSilent) throws ParameterException;
 	
 	
 	//------- Places ---------------------------------------------------------------------------------
@@ -1023,9 +1052,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	@Override
 	public void transitionDisabled(TransitionEvent<? extends AbstractTransition<F, S>> e) {
-		
-
-		enabledTransitions.remove((T)e.getSource());
+		enabledTransitions.remove((T) e.getSource());
 	}
 
 	/**

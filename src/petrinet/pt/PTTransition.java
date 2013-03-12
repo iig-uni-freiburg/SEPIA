@@ -13,12 +13,12 @@ public class PTTransition extends AbstractPTTransition<PTFlowRelation> {
 		super(name, label);
 	}
 	
-	public PTTransition(String name, boolean isEmpty) throws ParameterException{
-		super(name, isEmpty);
+	public PTTransition(String name, boolean isSilent) throws ParameterException{
+		super(name, isSilent);
 	}
 	
-	public PTTransition(String name, String label, boolean isEmpty) throws ParameterException{
-		super(name, label, isEmpty);
+	public PTTransition(String name, String label, boolean isSilent) throws ParameterException{
+		super(name, label, isSilent);
 	}
 
 }

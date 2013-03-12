@@ -16,12 +16,12 @@ private final String pnmlFormat = "<transition id=\"%s\">%n <name><text>%s</text
 		super(name, label);
 	}
 	
-	public AbstractPTTransition(String name, boolean isEmpty) throws ParameterException{
-		super(name, isEmpty);
+	public AbstractPTTransition(String name, boolean isSilent) throws ParameterException{
+		super(name, isSilent);
 	}
 	
-	public AbstractPTTransition(String name, String label, boolean isEmpty) throws ParameterException{
-		super(name, label, isEmpty);
+	public AbstractPTTransition(String name, String label, boolean isSilent) throws ParameterException{
+		super(name, label, isSilent);
 	}
 
 	@Override

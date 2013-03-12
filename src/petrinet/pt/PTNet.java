@@ -40,8 +40,8 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	}
 
 	@Override
-	protected PTTransition createNewTransition(String name, String label) throws ParameterException{
-		return new PTTransition(name, label);
+	protected PTTransition createNewTransition(String name, String label, boolean isSilent) throws ParameterException{
+		return new PTTransition(name, label, isSilent);
 	}
 
 	@Override

@@ -221,9 +221,9 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	}	
 
 	@Override
-	protected AbstractSNetTransition createNewTransition(String name, String label) 
+	protected AbstractSNetTransition createNewTransition(String name, String label, boolean isSilent) 
 			throws ParameterException {
-		return new RegularSNetTransition(name, label);
+		return new RegularSNetTransition(name, label, isSilent);
 	}
 
 	@Override

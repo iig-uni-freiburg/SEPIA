@@ -16,16 +16,16 @@ import validate.Validate;
  * 
  * @author Thomas Stocker
  */
-public class RandomPNTraverser extends PNTraverser {
+public class RandomPNTraverser<T extends AbstractTransition<?,?>> extends PNTraverser<T> {
 	
-	RandomChooser<AbstractTransition<?,?>> randomChooser = new RandomChooser<AbstractTransition<?,?>>();
+	RandomChooser<T> randomChooser = new RandomChooser<T>();
 
-	public RandomPNTraverser(AbstractPetriNet<?,?,?,?,?> net) throws ParameterException {
+	public RandomPNTraverser(AbstractPetriNet<?,T,?,?,?> net) throws ParameterException {
 		super(net);
 	}
 
 	@Override
-	public AbstractTransition<?,?> chooseNextTransition(List<AbstractTransition<?,?>> enabledTransitions) throws InconsistencyException, ParameterException{
+	public T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException, ParameterException{
 		if(!isValid())
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot provide transitions in invalid state.");
 		Validate.notNull(enabledTransitions);

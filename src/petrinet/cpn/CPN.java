@@ -24,8 +24,8 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	}
 
 	@Override
-	protected CPNTransition createNewTransition(String name, String label) throws ParameterException {
-		return new CPNTransition(name, label);
+	protected CPNTransition createNewTransition(String name, String label, boolean isSilent) throws ParameterException {
+		return new CPNTransition(name, label, isSilent);
 	}
 
 	@Override

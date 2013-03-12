@@ -1,17 +1,10 @@
 package petrinet.cwn.test;
 
-import static org.junit.Assert.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.org.apache.xpath.internal.operations.Mult;
-
-import exception.PNSoundnessException;
 
 import petrinet.cwn.CWN;
 import petrinet.cwn.CWNFlowRelation;
@@ -19,8 +12,9 @@ import petrinet.cwn.CWNMarking;
 import petrinet.cwn.abstr.AbstractCWNUtils;
 import types.Multiset;
 import validate.ParameterException;
+import exception.PNSoundnessException;
 
-public class AbstractCWNUtilsTest {
+public class AbstractCWNUtilsTest { 
 
 	@Before
 	public void setUp() throws Exception {

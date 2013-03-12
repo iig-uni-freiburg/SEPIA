@@ -9,13 +9,17 @@ import validate.ParameterException;
 import validate.Validate;
 
 
-public abstract class PNTraverser {
+public abstract class PNTraverser<T extends AbstractTransition<?,?>> {
 	
-	protected AbstractPetriNet<?,?,?,?,?> net;
+	protected AbstractPetriNet<?,T,?,?,?> net;
 	
-	public PNTraverser(AbstractPetriNet<?,?,?,?,?> net) throws ParameterException{
+	public PNTraverser(AbstractPetriNet<?,T,?,?,?> net) throws ParameterException{
 		Validate.notNull(net);
 		this.net = net;
+	}
+	
+	public AbstractPetriNet<?,?,?,?,?> getPetriNet(){
+		return net;
 	}
 
 	
@@ -32,6 +36,6 @@ public abstract class PNTraverser {
 	 * @return The next enabled transition to fire.
 	 * @throws InconsistencyException If the flow control is not in valid state.
 	 */
-	public abstract AbstractTransition<?,?> chooseNextTransition(List<AbstractTransition<?,?>> enabledTransitions) throws InconsistencyException, ParameterException;
+	public abstract T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException, ParameterException;
 	
 }

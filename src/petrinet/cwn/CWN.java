@@ -25,9 +25,9 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 	}
 
 	@Override
-	protected CWNTransition createNewTransition(String name, String label) 
+	protected CWNTransition createNewTransition(String name, String label, boolean isSilent) 
 			throws ParameterException {
-		return new CWNTransition(name, label);
+		return new CWNTransition(name, label, isSilent);
 	}
 
 	@Override

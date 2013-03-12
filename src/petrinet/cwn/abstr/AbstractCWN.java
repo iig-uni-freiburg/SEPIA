@@ -109,7 +109,7 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 			
 		// Check connectedness of short-circuited net.
 		try {
-			T connector = createNewTransition("connector", "connector");
+			T connector = createNewTransition("connector", "connector", true);
 			addTransition(connector);
 			addFlowRelationPT(output.getName(), "connector");
 			addFlowRelationTP("connector", input.getName());

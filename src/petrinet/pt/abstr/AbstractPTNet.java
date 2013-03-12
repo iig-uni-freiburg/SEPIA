@@ -33,7 +33,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 	 * String format for plain output.
 	 * @see #toString()
 	 */
-	private static final String toStringFormat = "Petri-Net: %s%n          places: %s %n     transitions: %s %n   flow-relation: %n%s %n initial marking: %s";
+	private static final String toStringFormat = "Petri-Net: %s%n          places: %s %n     transitions: %s %n   flow-relation: %n%s %n initial marking: %s %n  actual marking: %s %n";
 		
 	/**
 	 * Creates a new P/T-Net.
@@ -134,7 +134,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 			relationBuilder.append(relation);
 			relationBuilder.append('\n');
 		}
-		return String.format(toStringFormat, name, places.values(), transitions.values(), relationBuilder.toString(), initialMarking);
+		return String.format(toStringFormat, name, places.values(), transitions.values(), relationBuilder.toString(), initialMarking, marking);
 	}
 	
 	@Override
