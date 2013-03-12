@@ -113,6 +113,8 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 			addTransition(connector);
 			addFlowRelationPT(output.getName(), "connector");
 			addFlowRelationTP("connector", input.getName());
+			
+			
 			if(!TraversalUtils.isStronglyConnected(this, input)){
 				throw new PNValidationException("CWN is not strongly connected.");
 			}
@@ -127,27 +129,26 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 	 * Soundness checking of CWNs requires to build the marking graph of the net under consideration.
 	 * This only works for bounded nets, i.e. nets for which the {@link AbstractPetriNet#isBounded()} method returns {@link Boundedness#BOUNDED}<br>
 	 * If the boundedness property is set explicitly, the method may not halt.
-	 * @see AbstractCPN#checkSoundness();
+	 * @see AbstractCPN#checkSoundness(boolean)
 	 */
 	@Override
-	public void checkSoundness() throws PNSoundnessException, PNValidationException {
-		super.checkSoundness();
-		
+	public void checkSoundness(boolean checkValidity) throws PNValidationException, PNSoundnessException {
+		super.checkSoundness(checkValidity);
 		
 		// Requirement 1: Option to complete + proper completion
 		try {
-			AbstractCWNUtils.validCompletion(this);			
+			AbstractCWNUtils.validCompletion(this);
 
-		
-		// Requirement 2: No dead transitions		
+			// Requirement 2: No dead transitions
 			Set<T> deadTransitions = ReachabilityUtils.getDeadTransitions(this);
-			if(!deadTransitions.isEmpty())
+			if (!deadTransitions.isEmpty())
 				throw new PNSoundnessException("CWN has dead transitions: " + deadTransitions);
 		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
-		
 	}
+	
+
 	
 	@Override
 	public M fireCheck(String transitionName) throws ParameterException, PNException {

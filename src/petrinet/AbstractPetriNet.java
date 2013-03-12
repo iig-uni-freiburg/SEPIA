@@ -1006,9 +1006,25 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @throws PNValidationException
 	 */
 	public void checkSoundness() throws PNValidationException,PNSoundnessException{
-		checkValidity();
+		checkSoundness(true);
 	}
 	
+	/**
+	 * Checks if the Petri net is soundness.<br>
+	 * In contrast to validity, Soundness of a net relates to more complex net properties,
+	 * such as reachability properties or specific structural restrictions.
+	 * Subclasses may define the soundness of a net e.g. in terms of specific constraints
+	 * and must throw PNSoundnessExceptions in case any constraint is violated.<br>
+	 * <br>
+	 * Soundness implies validity.<br>
+	 * Before soundness is checked, validity is checked first.
+	 * @param checkValidity Indicates, if the method also checks the validity of the net as a precondition.
+	 * @throws PNValidationException
+	 */
+	public void checkSoundness(boolean checkValidity) throws PNValidationException,PNSoundnessException{
+		if(checkValidity)
+			checkValidity();
+	}
 	
 	//------- Interface Methods ----------------------------------------------------------------------
 	

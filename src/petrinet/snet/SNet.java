@@ -54,10 +54,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 		super.initialize();
 		regularTransitions = new HashMap<String, RegularSNetTransition>();
 		declassificationTransitions = new HashMap<String, DeclassificationTransition>();
-		analysisContext = new AnalysisContext();
-		
-		System.out.println(regularTransitions);
-		
+		analysisContext = new AnalysisContext();		
 	}
 	
 	public Collection<RegularSNetTransition> getRegularTransitions(){
@@ -163,8 +160,9 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	@Override
 	public void checkValidity() throws PNValidationException {
 		super.checkValidity();
+		
 		try{			
-			super.checkSoundness();
+			super.checkSoundness(false);
 		} catch(PNSoundnessException e){
 			throw new PNValidationException("The underlying CWN of this S-Net is not sound.\n:" + e.getMessage());
 		}
@@ -174,19 +172,33 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	
 	protected void checkAnalysisContextValidity() throws PNValidationException{
 		
+		//Check if there is a subject descriptor for every transition
+		try{
+			for(AbstractSNetTransition transition: getTransitions()){
+				if(getAnalysisContext().getSubjectDescriptor(transition.getName()) == null)
+					throw new PNValidationException("Transition without subject descriptor: "  + transition.getName());
+			}
+		} catch(ParameterException e){
+			e.printStackTrace();
+		}
+		
 		// Check security level consistency for regular transitions.
 		for(String attribute: getAnalysisContext().getAttributes()){
 			for(RegularSNetTransition transition: getRegularTransitions()){
 				if(transition.processesColor(attribute)){
 					// If the access modes of an activity contain CREATE for an attribute,
 					// the classification of the attribute must equal the clearance of the assigned subject.
-					if((transition).getAccessModes(attribute).contains(AccessMode.CREATE)){
-						try {
+					try{
+					if(transition.getAccessModes(attribute).contains(AccessMode.CREATE)){
+						try {							
 							if(!getAnalysisContext().getLabeling().getAttributeClassification(attribute).equals(getAnalysisContext().getLabeling().getSubjectClearance(getAnalysisContext().getSubjectDescriptor(transition.getName()))))
 								throw new InconsistencyException("Security level of attribute \""+attribute+"\" does not match the security level of the subject creating it.");
 						} catch (ParameterException e) {
 							throw new PNValidationException("Inconsistency exception in assigned analysis context:\n" + e.getMessage());
 						}
+					}
+					}catch(ParameterException e){
+						e.printStackTrace();
 					}
 				}
 			}

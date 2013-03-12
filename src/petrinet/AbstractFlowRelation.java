@@ -151,7 +151,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * @param transition The transition whose name is used for automatic name determination.
 	 */
 	protected void setName(P place, T transition){
-		if(directionPT){
+		if(directionPT){						
 			name = String.format(nameFormatPT, place.getName(), transition.getName());
 		} else {
 			name = String.format(nameFormatTP, transition.getName(), place.getName());

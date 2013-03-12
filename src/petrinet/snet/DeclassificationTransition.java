@@ -69,9 +69,13 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 						throw new PNValidationException("There is another declassification transition which produces color \""+color+"\"");
 				}
 			} else {
+				try{
 				for(String color: getProducedColors()){
 					if(otherTransition.producesColor(color) && ((RegularSNetTransition) otherTransition).getAccessModes(color).contains(AccessMode.CREATE))
 						throw new PNValidationException("There is another net transition which creates tokens of color \""+color+"\"");
+				}
+				}catch(ParameterException e){
+					e.printStackTrace();
 				}
 			}
 		}

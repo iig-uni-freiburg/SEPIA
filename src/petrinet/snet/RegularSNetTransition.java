@@ -135,8 +135,9 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return Collections.unmodifiableMap(accessModes);
 	}
 	
-	public Set<AccessMode> getAccessModes(String color){
-		if(accessModes.containsKey(color))
+	public Set<AccessMode> getAccessModes(String color) throws ParameterException{
+		Validate.notNull(color);
+		if(!accessModes.containsKey(color))
 			return new HashSet<AccessMode>();
 		return Collections.unmodifiableSet(accessModes.get(color));
 	}
@@ -183,11 +184,13 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return false;
 	}
 	
-	public Set<String> getProcessedColors(AccessMode... accessModes){
+	public Set<String> getProcessedColors(AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		return getProcessedColors(Arrays.asList(accessModes));
 	}
 	
-	public Set<String> getProcessedColors(Collection<AccessMode> accessModes){
+	public Set<String> getProcessedColors(Collection<AccessMode> accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
 		for(String processedColor: getProcessedColors()){
 			if(getAccessModes(processedColor).containsAll(accessModes)){
@@ -197,11 +200,13 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return result;
 	}
 	
-	public Set<String> getConsumedColors(AccessMode... accessModes){
+	public Set<String> getConsumedColors(AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		return getConsumedColors(Arrays.asList(accessModes));
 	}
 	
-	public Set<String> getConsumedColors(Collection<AccessMode> accessModes){
+	public Set<String> getConsumedColors(Collection<AccessMode> accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
 		for(String consumedColor: getConsumedColors()){
 			if(getAccessModes(consumedColor).containsAll(accessModes)){
@@ -211,11 +216,13 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return result;
 	}
 	
-	public Set<String> getProducedColors(AccessMode... accessModes){
+	public Set<String> getProducedColors(AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		return getProducedColors(Arrays.asList(accessModes));
 	}
 	
-	public Set<String> getProducedColors(Collection<AccessMode> accessModes){
+	public Set<String> getProducedColors(Collection<AccessMode> accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
 		for(String producedColor: getProducedColors()){
 			if(getAccessModes(producedColor).containsAll(accessModes)){

@@ -37,10 +37,7 @@ public class AbstractCWNUtils {
 		
 		@SuppressWarnings("unchecked")		
 		Graph<AbstractCWNMarking> markingGraph = ReachabilityUtils.buildMarkingGraph(cwn);
-		
-		
-		
-		
+	
 		Set<Vertex<AbstractCWNMarking>> drains = new HashSet<Vertex<AbstractCWNMarking>>(markingGraph.getDrains());
 		for(Vertex<AbstractCWNMarking> drainVertex : drains){			
 			if(!isEndState(drainVertex.getElement(), cwn)){
