@@ -12,9 +12,11 @@ import petrinet.cpn.test.FiringRuleTest;
 import petrinet.cwn.test.AbstractCWNUtilsTest;
 import petrinet.cwn.test.CWNTest;
 import petrinet.cwn.test.CWNTransitionTest;
+import petrinet.snet.test.AnalysisContextTest;
+import petrinet.snet.test.LabelingTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({FiringRuleTest.class, CPNFlowRelationTest.class, CPNTransitionTest.class, CPNPlaceTest.class, CPNTest.class, CWNTest.class, CWNTransitionTest.class, AbstractCWNUtilsTest.class})
+@SuiteClasses({FiringRuleTest.class, CPNFlowRelationTest.class, CPNTransitionTest.class, CPNPlaceTest.class, CPNTest.class, CWNTest.class, CWNTransitionTest.class, AbstractCWNUtilsTest.class, LabelingTest.class, AnalysisContextTest.class})
 public class AllTests {
 
 }

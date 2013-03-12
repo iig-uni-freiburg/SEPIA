@@ -22,8 +22,8 @@ import exception.PNValidationException;
 
 public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlowRelation, SNetMarking> {
 	
-	private Map<String, RegularSNetTransition> regularTransitions = null;
-	private Map<String, DeclassificationTransition> declassificationTransitions = null;
+	private Map<String, RegularSNetTransition> regularTransitions;
+	private Map<String, DeclassificationTransition> declassificationTransitions;
 	
 	/**
 	 * The analysis context of the S-Net.<br>
@@ -35,7 +35,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	 * <li>Subject descriptors: Subjects assigned to process activities.</li>
 	 * </ul>
 	 */
-	private AnalysisContext analysisContext = null;
+	private AnalysisContext analysisContext;
 	
 	public SNet() throws ParameterException {
 		super();
@@ -55,6 +55,9 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 		regularTransitions = new HashMap<String, RegularSNetTransition>();
 		declassificationTransitions = new HashMap<String, DeclassificationTransition>();
 		analysisContext = new AnalysisContext();
+		
+		System.out.println(regularTransitions);
+		
 	}
 	
 	public Collection<RegularSNetTransition> getRegularTransitions(){
@@ -69,7 +72,8 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	protected void addTransition(AbstractSNetTransition transition) throws ParameterException {
 		super.addTransition(transition);
 		
-		if(transition instanceof RegularSNetTransition) {						
+		if(transition instanceof RegularSNetTransition) {				
+			
 			regularTransitions.put(transition.getName(), (RegularSNetTransition) transition);
 		} else if(transition instanceof DeclassificationTransition) {
 			declassificationTransitions.put(transition.getName(), (DeclassificationTransition) transition);
@@ -223,6 +227,9 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	@Override
 	protected AbstractSNetTransition createNewTransition(String name, String label, boolean isSilent) 
 			throws ParameterException {
+		
+
+		
 		return new RegularSNetTransition(name, label, isSilent);
 	}
 

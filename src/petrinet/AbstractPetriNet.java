@@ -363,10 +363,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @throws ParameterException If the given transition is <code>null</code>.
 	 */
 	protected void addTransition(T transition) throws ParameterException {
+		
+		
 		Validate.notNull(transition);
 		transitions.put(transition.getName(), transition);
+				
 		try {
-			transition.addTransitionListener(this);
+			transition.addTransitionListener(this);									
 			enabledTransitions.add(transition);
 		} catch (ParameterException e) {
 			// Cannot happen, since "this" is not null
