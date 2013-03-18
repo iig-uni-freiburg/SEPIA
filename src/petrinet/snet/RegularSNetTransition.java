@@ -37,8 +37,8 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 
 	public RegularSNetTransition(String name) throws ParameterException {
 		super(name);
-	}
-
+	}  
+  
 	@SuppressWarnings("unchecked")
 	public void setGuardDataContainer(GuardDataContainer dataContainer) throws ParameterException{
 		Validate.notNull(dataContainer);

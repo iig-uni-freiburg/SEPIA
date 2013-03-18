@@ -631,15 +631,7 @@ public class RegularSNetTransitionTest {
 
 	
 	
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getGuards()}.
-//	 */
-//	@Test
-//	public void testGetGuards() {
-//		fail("Not yet implemented");
-//	}
-//
-	
+
 	
 	
 	/**

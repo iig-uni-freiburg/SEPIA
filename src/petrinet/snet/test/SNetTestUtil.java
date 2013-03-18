@@ -6,12 +6,15 @@ package petrinet.snet.test;
 import java.util.Arrays;
 
 import petrinet.snet.AccessMode;
+import petrinet.snet.AnalysisContext;
+import petrinet.snet.DeclassificationTransition;
 import petrinet.snet.Labeling;
 import petrinet.snet.RegularSNetTransition;
 import petrinet.snet.SNet;
 import petrinet.snet.SNetFlowRelation;
 import petrinet.snet.SNetMarking;
 import petrinet.snet.SNetPlace;
+import petrinet.snet.SecurityLevel;
 import types.Multiset;
 import validate.ParameterException;
 
@@ -49,8 +52,7 @@ public class SNetTestUtil {
 	//creates blue
 	
 	public static SNet createSimpleSnet() throws ParameterException{
-		
-	
+			
 		
 		//create the SNet
 		SNet sNet = new SNet();				
@@ -131,18 +133,91 @@ public class SNetTestUtil {
 		
 		
 		//create labeling
-		Labeling l = new Labeling(sNet, Arrays.asList("Karl", "Heinz", "Becker"));
+		Labeling l = new Labeling(sNet, Arrays.asList("S1", "S2", "S3"));
 		sNet.getAnalysisContext().setLabeling(l);
 		
 		//add subjcet descriptors
-		sNet.getAnalysisContext().setSubjectDescriptor("tIn", "Karl");
-		sNet.getAnalysisContext().setSubjectDescriptor("t0", "Heinz");
-		sNet.getAnalysisContext().setSubjectDescriptor("tOut", "Becker");
+		sNet.getAnalysisContext().setSubjectDescriptor("tIn", "S1");
+		sNet.getAnalysisContext().setSubjectDescriptor("t0", "S2");
+		sNet.getAnalysisContext().setSubjectDescriptor("tOut", "S3");
 		
 		
 		return sNet;
 		
 		
 	}
+	
+	
+	//creates the same SNet as createSimpleSnet but with a declassification transition
+	public static SNet createSimpleSnetWithDeclassification() throws ParameterException{
+		
+		SNet simpleSNet = createSimpleSnet();
+		
+		
+		//create additional transitions
+		simpleSNet.addDeclassificationTransition("td");		
+		simpleSNet.addTransition("t1");
+		
+		//create one additional place
+		simpleSNet.addPlace("p4");
+		simpleSNet.getPlace("p4").setColorCapacity("black", 1);
+		simpleSNet.getPlace("p4").setColorCapacity("yellow", 1);
+		
+		//add flowrelations
+		SNetFlowRelation f11 = simpleSNet.addFlowRelationPT("p1", "td");
+		SNetFlowRelation f12 = simpleSNet.addFlowRelationTP("td", "p4");
+		SNetFlowRelation f13 = simpleSNet.addFlowRelationPT("p4", "t1");
+		SNetFlowRelation f14 = simpleSNet.addFlowRelationTP("t1", "pOut");
+		
+		//add constraints
+		f11.addConstraint("red", 1); 
+		f12.addConstraint("yellow", 1);
+		f13.addConstraint("yellow", 1);
+		//f14.addConstraint("black", 1);
+		
+		//create labeling
+		Labeling l = new Labeling(simpleSNet, Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+		
+		//Set subject clearence
+		l.setSubjectClearance("sh0",SecurityLevel.HIGH);
+		l.setSubjectClearance("sh1",SecurityLevel.HIGH);
+		l.setSubjectClearance("sh2",SecurityLevel.HIGH);
+		l.setSubjectClearance("sh3",SecurityLevel.HIGH);		
+		l.setSubjectClearance("sl0",SecurityLevel.LOW);
+		
+		//set transition classification
+		l.setActivityClassification("tIn", SecurityLevel.HIGH);
+		l.setActivityClassification("t0", SecurityLevel.HIGH);
+		l.setActivityClassification("tOut", SecurityLevel.HIGH);
+		//l.setActivityClassification("td", SecurityLevel.HIGH);
+		l.setActivityClassification("t1", SecurityLevel.LOW);
+		
+		//set token color classification
+		l.setAttributeClassification("green", SecurityLevel.HIGH);
+		l.setAttributeClassification("red", SecurityLevel.HIGH);
+		l.setAttributeClassification("blue", SecurityLevel.HIGH);
+		l.setAttributeClassification("yellow", SecurityLevel.LOW);
+		
+		//Create a new analysis context
+		AnalysisContext ac = new AnalysisContext();
+		ac.setLabeling(l);
+		
+		//Assign subjects to transitions
+		ac.setSubjectDescriptor("tIn", "sh0");
+		ac.setSubjectDescriptor("t0", "sh1");
+		ac.setSubjectDescriptor("tOut", "sh2");
+		ac.setSubjectDescriptor("td", "sh3");
+		ac.setSubjectDescriptor("t1", "sl0");
+				
+		
+		//set the labeling
+		simpleSNet.setAnalysisContext(ac);
+		
+		
+		return simpleSNet;
+		
+	}
+	
+	
 	
 }

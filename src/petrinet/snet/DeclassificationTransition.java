@@ -52,7 +52,7 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 		// Property 3: The sets of consumed colors and produced colors have no elements in common
 		consumedAttributes = getConsumedAttributes();
 		int numberOfConsumedAttributes = consumedAttributes.size();
-		consumedAttributes.retainAll(getProducedColors());
+		consumedAttributes.removeAll(getProducedAttributes());  
 		if(consumedAttributes.size() < numberOfConsumedAttributes)
 			throw new PNValidationException("The sets of consumed and produced token colors must not have common elements.");
 		
