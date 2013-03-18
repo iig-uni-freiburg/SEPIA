@@ -91,13 +91,14 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 			for(String producedColor: producedColors){
 				if(!assignedAttributes.contains(producedColor) && getConsumedTokens(consumedAttribute) == getProducedTokens(producedColor)){
 					assignedAttributes.add(consumedAttribute);
+					break;
 				}
 			}
 		}
-		if(!assignedAttributes.containsAll(producedColors))
+		if(!assignedAttributes.containsAll(consumedAttributes))
 			throw new PNValidationException("For at least one input token color, there is no output token color where the number of produced/consumed tokens equals.");
 		
-	}
+	}  
 
 	@Override
 	public String toPNML() {
