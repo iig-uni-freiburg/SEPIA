@@ -3,6 +3,8 @@ package petrinet.snet;
 import java.util.HashSet;
 import java.util.Set;
 
+import misc.SetUtils;
+
 import petrinet.cpn.abstr.AbstractCPN;
 import validate.ParameterException;
 import exception.PNValidationException;
@@ -50,10 +52,8 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 			throw new PNValidationException("Declassificators must consume at least one colored token (which is not the control flow token).");
 		
 		// Property 3: The sets of consumed colors and produced colors have no elements in common
-		consumedAttributes = getConsumedAttributes();
-		int numberOfConsumedAttributes = consumedAttributes.size();
-		consumedAttributes.removeAll(getProducedAttributes());  
-		if(consumedAttributes.size() < numberOfConsumedAttributes)
+		
+		if(!SetUtils.intersection(getConsumedAttributes(), getProducedAttributes()).isEmpty())
 			throw new PNValidationException("The sets of consumed and produced token colors must not have common elements.");
 		
 		// Property 4: No other net transition creates a token with the same color than any of the produced colors of this transition.
@@ -63,13 +63,13 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 		otherNetTransitions.remove(this);
 		for(AbstractSNetTransition otherTransition: otherNetTransitions){
 			if(otherTransition.isDeclassificator()){
-				for(String color: getProducedColors()){
+				for(String color: getProducedAttributes()){
 					if(otherTransition.producesColor(color))
 						throw new PNValidationException("There is another declassification transition which produces color \""+color+"\"");
 				}
 			} else {
 				try{
-				for(String color: getProducedColors()){
+				for(String color: getProducedAttributes()){
 					if(otherTransition.producesColor(color) && ((RegularSNetTransition) otherTransition).getAccessModes(color).contains(AccessMode.CREATE))
 						throw new PNValidationException("There is another net transition which creates tokens of color \""+color+"\"");
 				}
@@ -80,21 +80,21 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 		}
 		
 		// Property 5: Token color constraints
-		consumedAttributes = getConsumedColors();
-		Set<String> producedColors = getProducedColors();
+		consumedAttributes = getConsumedAttributes();
+		Set<String> producedColors = getProducedAttributes();
 		// 4 a) For each input token color there is one output token color.
 		if(consumedAttributes.size() != producedColors.size())
 			throw new PNValidationException("The number of consumed token colors does not match the number of produced token colors.");
 		// 4 b) The number of consumed tokens for each color matches the number of produced tokens for another color.
-		Set<String> assignedColors = new HashSet<String>();
-		for(String consumedColor: consumedAttributes){
+		Set<String> assignedAttributes = new HashSet<String>();
+		for(String consumedAttribute: consumedAttributes){
 			for(String producedColor: producedColors){
-				if(!assignedColors.contains(producedColor) && getConsumedTokens(consumedColor) == getProducedTokens(producedColor)){
-					assignedColors.add(consumedColor);
+				if(!assignedAttributes.contains(producedColor) && getConsumedTokens(consumedAttribute) == getProducedTokens(producedColor)){
+					assignedAttributes.add(consumedAttribute);
 				}
 			}
 		}
-		if(!assignedColors.containsAll(producedColors))
+		if(!assignedAttributes.containsAll(producedColors))
 			throw new PNValidationException("For at least one input token color, there is no output token color where the number of produced/consumed tokens equals.");
 		
 	}
