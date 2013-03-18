@@ -53,6 +53,8 @@ public class DeclassificationTransitionTest {
 			System.out.println(td.getConsumedAttributes());
 			System.out.println(td.getProducedAttributes());
 			
+			System.out.println(td.getConsumedTokens("red"));
+			System.out.println(td.getProducedTokens("yellow"));
 			
 			
 			td.checkValidity();
