@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import petrinet.cpn.abstr.AbstractCPN;
+
 import validate.ParameterException;
 import validate.ParameterException.ErrorCode;
 import validate.Validate;
@@ -98,6 +100,8 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 	
 	public void setAccessMode(String tokenColor, Collection<AccessMode> colorAccessModes) throws ParameterException{
 		Validate.notNull(tokenColor);
+		if(tokenColor.equals(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot set access mode for control flow token color.");
 		Validate.notNull(colorAccessModes);
 		Validate.noNullElements(colorAccessModes);
 		
@@ -105,6 +109,7 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 	}
 	
 	public void setAccessMode(String tokenColor, AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		setAccessMode(tokenColor, Arrays.asList(accessModes));
 	}
 	
@@ -143,6 +148,7 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 	}
 	
 	public boolean addAccessMode(String color, AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
 		return addAccessMode(color, Arrays.asList(accessModes));
 	}
 	
@@ -184,15 +190,21 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return false;
 	}
 	
-	public Set<String> getProcessedColors(AccessMode... accessModes) throws ParameterException{
-		Validate.notNull(accessModes);
-		return getProcessedColors(Arrays.asList(accessModes));
+	public Set<String> getProcessedAttributes(){
+		Set<String> processedColors = super.getProcessedColors();
+		processedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
+		return processedColors;
 	}
 	
-	public Set<String> getProcessedColors(Collection<AccessMode> accessModes) throws ParameterException{
+	public Set<String> getProcessedAttributes(AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
+		return getProcessedAttributes(Arrays.asList(accessModes));
+	}
+	
+	public Set<String> getProcessedAttributes(Collection<AccessMode> accessModes) throws ParameterException{
 		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
-		for(String processedColor: getProcessedColors()){
+		for(String processedColor: getProcessedAttributes()){
 			if(getAccessModes(processedColor).containsAll(accessModes)){
 				result.add(processedColor);
 			}
@@ -200,15 +212,22 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return result;
 	}
 	
-	public Set<String> getConsumedColors(AccessMode... accessModes) throws ParameterException{
-		Validate.notNull(accessModes);
-		return getConsumedColors(Arrays.asList(accessModes));
+	public Set<String> getConsumedAttributes(){
+		Set<String> consumedColors = super.getConsumedColors();
+		consumedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
+		return consumedColors;
 	}
 	
-	public Set<String> getConsumedColors(Collection<AccessMode> accessModes) throws ParameterException{
+
+	public Set<String> getConsumedAttributes(AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
+		return getConsumedAttributes(Arrays.asList(accessModes));
+	}
+	
+	public Set<String> getConsumedAttributes(Collection<AccessMode> accessModes) throws ParameterException{
 		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
-		for(String consumedColor: getConsumedColors()){
+		for(String consumedColor: getConsumedAttributes()){
 			if(getAccessModes(consumedColor).containsAll(accessModes)){
 				result.add(consumedColor);
 			}
@@ -216,15 +235,21 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return result;
 	}
 	
-	public Set<String> getProducedColors(AccessMode... accessModes) throws ParameterException{
-		Validate.notNull(accessModes);
-		return getProducedColors(Arrays.asList(accessModes));
+	public Set<String> getProducedAttributes(){
+		Set<String> producedColors = super.getProducedColors();
+		producedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
+		return producedColors;
 	}
 	
-	public Set<String> getProducedColors(Collection<AccessMode> accessModes) throws ParameterException{
+	public Set<String> getProducedAttributes(AccessMode... accessModes) throws ParameterException{
+		Validate.notNull(accessModes);
+		return getProducedAttributes(Arrays.asList(accessModes));
+	}
+	
+	public Set<String> getProducedAttributes(Collection<AccessMode> accessModes) throws ParameterException{
 		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
-		for(String producedColor: getProducedColors()){
+		for(String producedColor: getProducedAttributes()){
 			if(getAccessModes(producedColor).containsAll(accessModes)){
 				result.add(producedColor);
 			}
