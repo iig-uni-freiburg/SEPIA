@@ -14,10 +14,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import constraint.AbstractConstraint;
+import constraint.NumberConstraint;
+import constraint.NumberOperator;
+import constraint.StringConstraint;
+import constraint.StringOperator;
+
 import exception.PNValidationException;
 
 import petrinet.snet.AccessMode;
 import petrinet.snet.DeclassificationTransition;
+import petrinet.snet.GuardDataContainer;
 import petrinet.snet.RegularSNetTransition;
 import petrinet.snet.SNet;
 import petrinet.snet.SNetPlace;
@@ -38,7 +45,7 @@ public class RegularSNetTransitionTest {
 	@Test
 	public void testRegularSNetTransitionString() {
 		RegularSNetTransition rst = null;
-		try {
+		try { 
 			  rst = new RegularSNetTransition("TransitionName");
 		} catch (ParameterException e) {
 			fail("Unable to create RegularSNetTransition.");
@@ -129,11 +136,10 @@ public class RegularSNetTransitionTest {
 			fail("CheckValidity throws an exception for a valid SNet transition.");
 		}
 		
-		
-	
-		
-
 	}
+	
+	
+	
 	
 	
 	
@@ -347,6 +353,41 @@ public class RegularSNetTransitionTest {
 		assertTrue("An enabled transition is reported to be disabled",trans.isEnabled());
 	}	
 	
+
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#checkState()}.
+	 * Check whether an enabled transition is reported to be enabled
+	 * and a disable transition to be disabled based on guards
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testCheckStateGuard() throws ParameterException {
+		
+		//Get a simple standard SNet and two of its transitions		
+		SNet sNet = SNetTestUtil.createSimpleSnet();				
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("tIn");
+		
+		//create aGuardDataContainer
+		TestGuardDataContainer tgdc = new TestGuardDataContainer(sNet.getTokenColors());
+		
+		//create two guards
+		NumberConstraint trueConstraint = new NumberConstraint("green", NumberOperator.IN_INTERVAL, -1,1);
+		NumberConstraint falseConstraint = new NumberConstraint("green", NumberOperator.IN_INTERVAL, 2,3);
+		
+		//check state with true constraint		
+		trans.setGuardDataContainer(tgdc);
+		trans.addGuard(trueConstraint);
+		trans.checkState();
+		assertTrue("An enabled transition is reported to be disabled",trans.isEnabled());
+		
+		//check state with additional false constraint		
+		trans.addGuard(falseConstraint);
+		trans.checkState();
+		assertFalse("An disabled transition is reported to be enabled",trans.isEnabled());
+		
+		
+	}
+
 	
 
 	/**
@@ -366,16 +407,108 @@ public class RegularSNetTransitionTest {
 
 	
 
+
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#setGuardDataContainer(petrinet.snet.GuardDataContainer)}.
+	 * Try to set an valid instance of TestGuradDataContainer as a GuardDataContainer.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testSetGuardDataContainer() throws ParameterException {
+		
+		//create the simple standard SNet
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		//Create an instance of TestGuardDataContainer
+		TestGuardDataContainer tgdc = new TestGuardDataContainer(sNet.getTokenColors());		
+		trans.setGuardDataContainer(tgdc);
+		
+		//Test is ok if no exception gets thrown!
+	}
 	
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#setGuardDataContainer(petrinet.snet.GuardDataContainer)}.
-//	 */
-//	@Test
-//	public void testSetGuardDataContainer() {
-//		fail("Not yet implemented");
-//	}
-//
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#setGuardDataContainer(petrinet.snet.GuardDataContainer)}.
+	 * Try to set an invalid instance of TestGuradDataContainer as a GuardDataContainer.
+	 * @throws ParameterException 
+	 */
+	@Test(expected=ParameterException.class)
+	public void testSetGuardDataContainerInvalid() throws ParameterException {
+		
+		//create the simple standard SNet
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		
+		//Create an invald instance of TestGuardDataContainer
+		Set<String> colors = sNet.getTokenColors();
+		colors.remove("green");
+		TestGuardDataContainer tgdc = new TestGuardDataContainer(colors);		
+		trans.setGuardDataContainer(tgdc);
+		
+		//Test is ok if a parameter exception is thrown
+	}
+	
+	
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#setGuardDataContainer(petrinet.snet.GuardDataContainer)}.
+	 * Try to set an valid instance of TestGuradDataContainer as a GuardDataContainer.
+	 * Add Gurds additionally to check whether the gurads and the container fit.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testSetGuardDataContainerGuardFit() throws ParameterException {
+		
+		//create the simple standard SNet
+		SNet sNet = null;
+		try {
+			sNet = SNetTestUtil.createSimpleSnet();
+		} catch (ParameterException e) {
+			fail("Cannot create SNet");
+		}
+		
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		//Create an instance of TestGuardDataContainer (must be added before guard)
+		TestGuardDataContainer tgdc = new TestGuardDataContainer(sNet.getTokenColors());		
+		try {
+			trans.setGuardDataContainer(tgdc);
+		} catch (ParameterException e) {
+			fail("Exception while setting a vaild GuardDataContainer");
+		}
+		
+		//add guards
+		NumberConstraint guard = null;
+		try {
+			guard = new NumberConstraint("green", NumberOperator.NOT_IN_INTERVAL, -1, 1);
+		} catch (ParameterException e) {
+			fail("Cannot create NumberConstraint");
+		}
+		
+		try {
+			trans.addGuard(guard);
+		} catch (ParameterException e) {
+			fail("Cannot add a valid guard!");
+		}
+		
+		
+		
+		
+		//Create an instance of TestGuardDataContainer
+		//check whether the data container is compatible with the guard
+		TestGuardDataContainer tgdc2 = new TestGuardDataContainer(sNet.getTokenColors(), String.class);		
+		try {
+			trans.setGuardDataContainer(tgdc2);
+			fail("Invaild GuardDataContainer was set successfully!");
+		} catch (ParameterException e) {
+			
+		}
+		
+	
+		
+		
+	}
+	
 	
 	
 	/**
@@ -404,23 +537,100 @@ public class RegularSNetTransitionTest {
 	
 	
 	
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#addGuard(constraint.AbstractConstraint)}.
-//	 */
-//	@Test
-//	public void testAddGuard() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#removeGuard(constraint.AbstractConstraint)}.
-//	 */
-//	@Test
-//	public void testRemoveGuard() {
-//		fail("Not yet implemented");
-//	}
-//
+
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#addGuard(constraint.AbstractConstraint)}.
+	 * Try to add various invalid guards
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testAddGuard(){
+		SNet sNet=null;
+		try {
+			sNet = SNetTestUtil.createSimpleSnet();
+		} catch (ParameterException e) {
+			fail("Cannot create SNet");
+		}
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("tIn");
+		
+		//Try to add an guard before adding a guraddatecontainer				
+		try {
+			NumberConstraint nc = new NumberConstraint("green", NumberOperator.IN_INTERVAL, -1,1);
+			trans.addGuard(nc);
+			fail("Guard was added without a GuardDataContainer beeing set.");
+		} catch (ParameterException e) {}
+		
+		//Add the missing guard datacontainer
+		TestGuardDataContainer tgdc = new TestGuardDataContainer(sNet.getTokenColors());
+		try {
+			trans.setGuardDataContainer(tgdc);
+		} catch (ParameterException e1) {
+			fail("Cannot set GuardDataContainer!");
+		}
+		
+		//Try to add an guard which contains colors not processed by the transition
+		try {
+			NumberConstraint nc = new NumberConstraint("pink", NumberOperator.IN_INTERVAL, -1,1);
+			trans.addGuard(nc);
+			fail("Guard was added with colors not processed by the transtion");
+		} catch (ParameterException e) {}
+		
+	
+		
+		//Try to add an guard which has no values incommen with the data container
+		try {
+			NumberConstraint nc = new NumberConstraint("green", NumberOperator.IN_INTERVAL, -1,1);
+			RegularSNetTransition t0 = (RegularSNetTransition)sNet.getTransition("t0");
+			t0.setGuardDataContainer(tgdc);
+			tgdc.removeAttribute("green");			
+			t0.addGuard(nc);
+			fail("Guard was added with colors not contained in the GuardDataContainer");
+		} catch (ParameterException e) {
+		}
+		
+		//Try to add an guard which is not compatible
+		try {
+			StringConstraint sc = new StringConstraint("green", StringOperator.EQUAL, "fail");
+			
+			RegularSNetTransition t0 = (RegularSNetTransition)sNet.getTransition("t0");
+			t0.setGuardDataContainer(new TestGuardDataContainer(sNet.getTokenColors()));
+			tgdc.removeAttribute("green");			
+			t0.addGuard(sc);
+			fail("Guard was added which has values of the wrong type.");
+		} catch (ParameterException e) {			
+		}	
+		 
+		
+	}  
+
+	
+	
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#removeGuard(constraint.AbstractConstraint)}.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testRemoveGuard() throws ParameterException {
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("tIn");
+		
+		//Get the gurads and check there are no guards initially
+		Set<AbstractConstraint<?>> guards = trans.getGuards();
+		assertTrue(guards.isEmpty());
+		
+		//add a guard and make sure it is really there
+		trans.setGuardDataContainer(new TestGuardDataContainer(sNet.getTokenColors()));
+		NumberConstraint nc = new NumberConstraint("green", NumberOperator.LARGER, -3); 
+		trans.addGuard(nc);
+		assertFalse(guards.isEmpty());
+		
+		//remove it again
+		trans.removeGuard(nc);
+		assertTrue(guards.isEmpty());
+	}
+
+	
+	
 //	/**
 //	 * Test method for {@link petrinet.snet.RegularSNetTransition#getGuards()}.
 //	 */
@@ -518,84 +728,101 @@ public class RegularSNetTransitionTest {
 	
 	
 	
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#addAccessMode(java.lang.String, java.util.Collection)}.
-//	 */
-//	@Test
-//	public void testAddAccessModeStringCollectionOfAccessMode() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#removeAccessMode(java.lang.String, petrinet.snet.AccessMode[])}.
-//	 */
-//	@Test
-//	public void testRemoveAccessModeStringAccessModeArray() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#removeAccessMode(java.lang.String, java.util.Collection)}.
-//	 */
-//	@Test
-//	public void testRemoveAccessModeStringCollectionOfAccessMode() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#removeAccessModes(java.lang.String)}.
-//	 */
-//	@Test
-//	public void testRemoveAccessModes() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getProcessedColors(petrinet.snet.AccessMode[])}.
-//	 */
-//	@Test
-//	public void testGetProcessedColorsAccessModeArray() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getProcessedColors(java.util.Collection)}.
-//	 */
-//	@Test
-//	public void testGetProcessedColorsCollectionOfAccessMode() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getConsumedColors(petrinet.snet.AccessMode[])}.
-//	 */
-//	@Test
-//	public void testGetConsumedColorsAccessModeArray() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getConsumedColors(java.util.Collection)}.
-//	 */
-//	@Test
-//	public void testGetConsumedColorsCollectionOfAccessMode() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getProducedColors(petrinet.snet.AccessMode[])}.
-//	 */
-//	@Test
-//	public void testGetProducedColorsAccessModeArray() {
-//		fail("Not yet implemented");
-//	}
-//
-//	/**
-//	 * Test method for {@link petrinet.snet.RegularSNetTransition#getProducedColors(java.util.Collection)}.
-//	 */
-//	@Test
-//	public void testGetProducedColorsCollectionOfAccessMode() {
-//		fail("Not yet implemented");
-//	}
+
+
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#removeAccessMode(java.lang.String, petrinet.snet.AccessMode[])}.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testRemoveAccessModeStringAccessModeArray() throws ParameterException {
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		//remove a non existent access mode				
+		assertFalse("Removing an non existent access mode returned true", trans.removeAccessMode("pink", AccessMode.READ));
+		
+		
+		//remove the read access
+		trans.removeAccessMode("green", AccessMode.READ);
+		Set<AccessMode> greenModes = trans.getAccessModes("green");
+		assertTrue("An access mode got not removed", greenModes.isEmpty());
+		
+		//remove all access modes and then try to remove one more
+		      
+		trans.removeAccessModes("green");
+		trans.removeAccessModes("red");
+		trans.removeAccessModes("blue");
+		assertFalse("Removing an non existent access mode returned true", trans.removeAccessModes("green"));
+		
+		
+	}
+	
+	
+	
+
+	
+	
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#getProcessedColors(petrinet.snet.AccessMode[])}.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testGetProcessedColorsAccessModeArray() throws ParameterException {
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		//get the colors which are processed by t0 with read access
+		Set<String> colors = trans.getProcessedAttributes(AccessMode.READ);
+		
+		Set<String> greenSet = new HashSet<String>();
+		greenSet.add("green");
+		assertTrue("Wrong colors returned.", colors.equals(greenSet));
+		
+	}
+
+
+	
+	
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#getConsumedColors(petrinet.snet.AccessMode[])}.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testGetConsumedColorsAccessModeArray() throws ParameterException {
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		//get the colors which are processed by t0 with read access
+		Set<String> colors = trans.getConsumedAttributes(AccessMode.DELETE);
+		
+		Set<String> redSet = new HashSet<String>();
+		redSet.add("red");
+		assertTrue("Wrong colors returned.", colors.equals(redSet));
+	}
+
+	
+	
+	
+
+	/**
+	 * Test method for {@link petrinet.snet.RegularSNetTransition#getProducedColors(petrinet.snet.AccessMode[])}.
+	 * @throws ParameterException 
+	 */
+	@Test
+	public void testGetProducedColorsAccessModeArray() throws ParameterException {
+		SNet sNet = SNetTestUtil.createSimpleSnet();
+		RegularSNetTransition trans = (RegularSNetTransition)sNet.getTransition("t0");
+		
+		//get the colors which are processed by t0 with read access
+		Set<String> colors = trans.getProducedAttributes(AccessMode.CREATE);
+		
+		Set<String> blueSet = new HashSet<String>();
+		blueSet.add("blue");
+		assertTrue("Wrong colors returned.", colors.equals(blueSet));
+	}
+	
+	
+
 
 }

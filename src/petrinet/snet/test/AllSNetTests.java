@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AnalysisContextTest.class, LabelingTest.class, AnalysisContextTest.class })
+@SuiteClasses({ AnalysisContextTest.class, LabelingTest.class, AnalysisContextTest.class, RegularSNetTransitionTest.class })
 public class AllSNetTests {
 
 }
