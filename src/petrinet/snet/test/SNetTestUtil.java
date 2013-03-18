@@ -23,15 +23,27 @@ import validate.ParameterException;
 public class SNetTestUtil {
 
 	
-	//Create a SNet with just one transition.
-	//The transition has two input and two output places.
-	//The transition consumes black from p0 and p1.
-	//The transition consumes green from p0.
-	//The transition consumes red from p1.
-	//The transition produces green from p2.
-	//The transition produces blue from p3.
+	//Create a SNet with just three transition.
+	//The transition t0 has two input and two output places.
+	//The transition t0 consumes black from p0 and p1.
+	//The transition t0 consumes green from p0.
+	//The transition t0 consumes red from p1.
+	//The transition t0 produces green in p2.
+	//The transition t0 produces blue in p3.
 	//
-	//==>
+	//The transition tIn has one input and two output places.
+	//The transition tIn consumes black from pIn.
+	//The transition tIn produces green in p0.
+	//The transition tIn produces red in p1.
+	//The transition tIn produces black in p0 an p1.
+	//
+	//The transition tOut has two input and one output places.
+	//The transition tOut consumes black from p2 and p3.
+	//The transition tOut consumes green from p2.
+	//The transition tOut consumes blue from p3.
+	//The transition tOut produces black in pOut.		
+	//
+	//t0 ==>
 	//processes green
 	//deletes red
 	//creates blue
