@@ -81,15 +81,15 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 		
 		// Property 5: Token color constraints
 		consumedAttributes = getConsumedAttributes();
-		Set<String> producedColors = getProducedAttributes();
+		Set<String> producedAttributes = getProducedAttributes();
 		// 4 a) For each input token color there is one output token color.
-		if(consumedAttributes.size() != producedColors.size())
+		if(consumedAttributes.size() != producedAttributes.size())
 			throw new PNValidationException("The number of consumed token colors does not match the number of produced token colors.");
 		// 4 b) The number of consumed tokens for each color matches the number of produced tokens for another color.
 		Set<String> assignedAttributes = new HashSet<String>();
 		for(String consumedAttribute: consumedAttributes){
-			for(String producedColor: producedColors){
-				if(!assignedAttributes.contains(producedColor) && getConsumedTokens(consumedAttribute) == getProducedTokens(producedColor)){
+			for(String producedAttribute: producedAttributes){
+				if(!assignedAttributes.contains(producedAttribute) && getConsumedTokens(consumedAttribute) == getProducedTokens(producedAttribute)){
 					assignedAttributes.add(consumedAttribute);
 					break;
 				}
