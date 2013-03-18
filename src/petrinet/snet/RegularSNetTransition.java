@@ -190,12 +190,6 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return false;
 	}
 	
-	public Set<String> getProcessedAttributes(){
-		Set<String> processedColors = super.getProcessedColors();
-		processedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
-		return processedColors;
-	}
-	
 	public Set<String> getProcessedAttributes(AccessMode... accessModes) throws ParameterException{
 		Validate.notNull(accessModes);
 		return getProcessedAttributes(Arrays.asList(accessModes));
@@ -212,13 +206,6 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		return result;
 	}
 	
-	public Set<String> getConsumedAttributes(){
-		Set<String> consumedColors = super.getConsumedColors();
-		consumedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
-		return consumedColors;
-	}
-	
-
 	public Set<String> getConsumedAttributes(AccessMode... accessModes) throws ParameterException{
 		Validate.notNull(accessModes);
 		return getConsumedAttributes(Arrays.asList(accessModes));
@@ -233,12 +220,6 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 			}
 		}
 		return result;
-	}
-	
-	public Set<String> getProducedAttributes(){
-		Set<String> producedColors = super.getProducedColors();
-		producedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
-		return producedColors;
 	}
 	
 	public Set<String> getProducedAttributes(AccessMode... accessModes) throws ParameterException{

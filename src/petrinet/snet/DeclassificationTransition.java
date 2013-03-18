@@ -45,16 +45,15 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 		
 		// Property 2: The declassification transition must be effective, i.e. 
 		//             consume at least one colored token (which is not the control flow token).
-		Set<String> consumedColors = getConsumedColors();
-		consumedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
-		if(consumedColors.isEmpty())
+		Set<String> consumedAttributes = getConsumedAttributes();
+		if(consumedAttributes.isEmpty())
 			throw new PNValidationException("Declassificators must consume at least one colored token (which is not the control flow token).");
 		
 		// Property 3: The sets of consumed colors and produced colors have no elements in common
-		consumedColors = getConsumedColors();
-		int numberOfConsumedColors = consumedColors.size();
-		consumedColors.retainAll(getProducedColors());
-		if(consumedColors.size() < numberOfConsumedColors)
+		consumedAttributes = getConsumedAttributes();
+		int numberOfConsumedAttributes = consumedAttributes.size();
+		consumedAttributes.retainAll(getProducedColors());
+		if(consumedAttributes.size() < numberOfConsumedAttributes)
 			throw new PNValidationException("The sets of consumed and produced token colors must not have common elements.");
 		
 		// Property 4: No other net transition creates a token with the same color than any of the produced colors of this transition.
@@ -81,14 +80,14 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 		}
 		
 		// Property 5: Token color constraints
-		consumedColors = getConsumedColors();
+		consumedAttributes = getConsumedColors();
 		Set<String> producedColors = getProducedColors();
 		// 4 a) For each input token color there is one output token color.
-		if(consumedColors.size() != producedColors.size())
+		if(consumedAttributes.size() != producedColors.size())
 			throw new PNValidationException("The number of consumed token colors does not match the number of produced token colors.");
 		// 4 b) The number of consumed tokens for each color matches the number of produced tokens for another color.
 		Set<String> assignedColors = new HashSet<String>();
-		for(String consumedColor: consumedColors){
+		for(String consumedColor: consumedAttributes){
 			for(String producedColor: producedColors){
 				if(!assignedColors.contains(producedColor) && getConsumedTokens(consumedColor) == getProducedTokens(producedColor)){
 					assignedColors.add(consumedColor);
