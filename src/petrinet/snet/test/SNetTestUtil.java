@@ -148,10 +148,21 @@ public class SNetTestUtil {
 	}
 	
 	
+	public static SNet createSimpleSnetWithDeclassificationNoAC() throws ParameterException{
+		return createSimpleSnetWithDeclassification(false);
+	}
+
 	//creates the same SNet as createSimpleSnet but with a declassification transition
 	public static SNet createSimpleSnetWithDeclassification() throws ParameterException{
+		return createSimpleSnetWithDeclassification(true);
+	}
+
 		
-		SNet simpleSNet = createSimpleSnet();
+	
+	//creates the same SNet as createSimpleSnet but with a declassification transition
+	public static SNet createSimpleSnetWithDeclassification(boolean setAnalysisContext) throws ParameterException{
+		
+		SNet simpleSNet = createSimpleSnet(); 
 		
 		
 		//create additional transitions
@@ -175,6 +186,8 @@ public class SNetTestUtil {
 		f13.addConstraint("yellow", 1);
 		//f14.addConstraint("black", 1);
 		
+		if(setAnalysisContext){
+		
 		//create labeling
 		Labeling l = new Labeling(simpleSNet, Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 		
@@ -187,9 +200,9 @@ public class SNetTestUtil {
 		
 		//set transition classification
 		l.setActivityClassification("tIn", SecurityLevel.HIGH);
-		l.setActivityClassification("t0", SecurityLevel.HIGH);
+		l.setActivityClassification("t0", SecurityLevel.HIGH); 
 		l.setActivityClassification("tOut", SecurityLevel.HIGH);
-		//l.setActivityClassification("td", SecurityLevel.HIGH);
+		l.setActivityClassification("td", SecurityLevel.HIGH);
 		l.setActivityClassification("t1", SecurityLevel.LOW);
 		
 		//set token color classification
@@ -212,7 +225,7 @@ public class SNetTestUtil {
 		
 		//set the labeling
 		simpleSNet.setAnalysisContext(ac);
-		
+		}
 		
 		return simpleSNet;
 		

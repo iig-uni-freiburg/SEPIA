@@ -477,5 +477,20 @@ public class DeclassificationTransitionTest {
 		assertFalse(dt.isSilent());		
 		
 	}
+	
+	
+	@Test
+	public void testToPNML() {
+		
+		DeclassificationTransition dt = null;
+		try {
+			dt = new DeclassificationTransition(dSNet, "dec");
+		} catch (ParameterException e) {
+			fail("Cannot create DeclassificationTransition.");
+		}
+		
+		assertNull(dt.toPNML());
+		
+	}
 
 }

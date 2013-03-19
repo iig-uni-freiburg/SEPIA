@@ -217,7 +217,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 						throw new PNValidationException("Generated attributes of declassification transitions must be LOW");
 				} catch (ParameterException e) {
 					throw new PNValidationException("Inconsistency exception in assigned analysis context:\n" + e.getMessage());
-				}
+ 				} 
 			}
 			
 			// Check if transition is classified HIGH
@@ -272,48 +272,48 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 		return null;
 	}
 	
-	public static void main(String[] args) throws Exception{
-		SNet snet = new SNet();
-		snet.addPlace("p1");
-		snet.addPlace("p2");
-		snet.addPlace("p3");
-		snet.addPlace("p4");
-		snet.addPlace("p5");
-		snet.addPlace("p6");
-		snet.addTransition("t1");
-		snet.addTransition("t2");
-		snet.addTransition("t3");
-		snet.addTransition("t4");
-		snet.addFlowRelationPT("p1", "t1");
-		snet.addFlowRelationTP("t1", "p2");
-		snet.addFlowRelationTP("t1", "p3");
-		snet.addFlowRelationPT("p2", "t2");
-		snet.addFlowRelationPT("p3", "t3");
-		snet.addFlowRelationTP("t2", "p4");
-		snet.addFlowRelationTP("t3", "p5");
-		snet.addFlowRelationPT("p4", "t4");
-		snet.addFlowRelationPT("p5", "t4");
-		snet.addFlowRelationTP("t4", "p6");
-		SNetMarking initialMarking = new SNetMarking();
-		Multiset<String> markingInput = new Multiset<String>();
-		markingInput.add("black");
-//		markingInput.put("green", 1);
-		initialMarking.set("p1", markingInput);
-		snet.setInitialMarking(initialMarking);
-		
-		System.out.println(snet);
-		System.out.println(snet.getEnabledTransitions());
-		snet.fire("t1");
-		System.out.println(snet.getEnabledTransitions());
-		snet.fire("t2");
-		System.out.println(snet.getEnabledTransitions());
-		snet.fire("t3");
-		System.out.println(snet.getEnabledTransitions());
-		snet.fire("t4");
-		System.out.println(snet.getEnabledTransitions());
-		snet.setBoundedness(Boundedness.BOUNDED);
-		
-		snet.checkSoundness();
-	}
+//	public static void main(String[] args) throws Exception{
+//		SNet snet = new SNet();
+//		snet.addPlace("p1");
+//		snet.addPlace("p2");
+//		snet.addPlace("p3");
+//		snet.addPlace("p4");
+//		snet.addPlace("p5");
+//		snet.addPlace("p6");
+//		snet.addTransition("t1");
+//		snet.addTransition("t2");
+//		snet.addTransition("t3");
+//		snet.addTransition("t4");
+//		snet.addFlowRelationPT("p1", "t1");
+//		snet.addFlowRelationTP("t1", "p2");
+//		snet.addFlowRelationTP("t1", "p3");
+//		snet.addFlowRelationPT("p2", "t2");
+//		snet.addFlowRelationPT("p3", "t3");
+//		snet.addFlowRelationTP("t2", "p4");
+//		snet.addFlowRelationTP("t3", "p5");
+//		snet.addFlowRelationPT("p4", "t4");
+//		snet.addFlowRelationPT("p5", "t4");
+//		snet.addFlowRelationTP("t4", "p6");
+//		SNetMarking initialMarking = new SNetMarking();
+//		Multiset<String> markingInput = new Multiset<String>();
+//		markingInput.add("black");
+////		markingInput.put("green", 1);
+//		initialMarking.set("p1", markingInput);
+//		snet.setInitialMarking(initialMarking);
+//		
+//		System.out.println(snet);
+//		System.out.println(snet.getEnabledTransitions());
+//		snet.fire("t1");
+//		System.out.println(snet.getEnabledTransitions());
+//		snet.fire("t2");
+//		System.out.println(snet.getEnabledTransitions());
+//		snet.fire("t3");
+//		System.out.println(snet.getEnabledTransitions());
+//		snet.fire("t4");
+//		System.out.println(snet.getEnabledTransitions());
+//		snet.setBoundedness(Boundedness.BOUNDED);
+//		
+//		snet.checkSoundness();
+//	}
 
 }
