@@ -7,6 +7,10 @@ public abstract class AbstractCWNPlace<E extends AbstractCWNFlowRelation<? exten
 																		 ? extends AbstractCWNTransition<E>>> 
 
 										 extends AbstractCPNPlace<E> {
+	
+	protected AbstractCWNPlace(){
+		super();
+	}
 
 	public AbstractCWNPlace(String name, String label) throws ParameterException {
 		super(name, label);

@@ -4,6 +4,10 @@ import petrinet.cwn.abstr.AbstractCWNPlace;
 import validate.ParameterException;
 
 public class SNetPlace extends AbstractCWNPlace<SNetFlowRelation> {
+	
+	protected SNetPlace(){
+		super();
+	}
 
 	public SNetPlace(String name, String label) throws ParameterException {
 		super(name, label);
@@ -17,6 +21,11 @@ public class SNetPlace extends AbstractCWNPlace<SNetFlowRelation> {
 	public String toPNML() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected SNetPlace newInstance() {
+		return new SNetPlace();
 	}
 
 }

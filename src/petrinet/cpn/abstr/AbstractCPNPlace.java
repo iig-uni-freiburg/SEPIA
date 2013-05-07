@@ -20,6 +20,10 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	 */
 	private Map<String, Integer> colorCapacity = new HashMap<String, Integer>();
 	
+	protected AbstractCPNPlace(){
+		super();
+	}
+	
 	public AbstractCPNPlace(String name, String label) throws ParameterException {
 		super(name, label);
 		state = new Multiset<String>();
@@ -27,6 +31,11 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	public AbstractCPNPlace(String name) throws ParameterException {
 		super(name);
 		state = new Multiset<String>();
+	}
+	
+	@Override
+	public Multiset<String> getState() {
+		return state.clone();
 	}
 	
 	public int getTokenCount(){
@@ -235,6 +244,20 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		}
 	}
 	
+	
+	
+	@Override
+	public AbstractCPNPlace<E> clone() {
+		AbstractCPNPlace<E> result = (AbstractCPNPlace<E>) super.clone();
+		for(String color: colorCapacity.keySet()){
+			try {
+				result.setColorCapacity(color, colorCapacity.get(color));
+			} catch (ParameterException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
 	@Override
 	public String toPNML() {
 		// TODO Auto-generated method stub

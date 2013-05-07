@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import petrinet.snet.RegularSNetTransition;
-
 import traverse.Traversable;
 import validate.ParameterException;
 import validate.ParameterException.ErrorCode;
@@ -1108,6 +1106,34 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		}
 	}
 	
+	//------- clone ----------------------------------------------------------------------------------
+	
+	public AbstractPetriNet<P,T,F,M,S> clone(){
+		AbstractPetriNet<P,T,F,M,S> result = newInstance();
+		Map<T,T> clonedTransitions = new HashMap<T,T>();
+		Map<P,P> clonedPlaces = new HashMap<P,P>();
+		try{
+			for(T ownTransition: getTransitions()){
+				clonedTransitions.put(ownTransition, (T) ownTransition.clone());
+				result.addTransition(clonedTransitions.get(ownTransition));
+			}
+			for(P ownPlace: getPlaces()){
+				clonedPlaces.put(ownPlace, (P) ownPlace.clone());
+				result.addPlace(clonedPlaces.get(ownPlace));
+			}
+			for(F ownRelation: getFlowRelations()){
+				result.addFlowRelation((F) ownRelation.clone(clonedPlaces.get(ownRelation.getPlace()),
+														     clonedTransitions.get(ownRelation.getTransition()), 
+														     ownRelation.getDirectionPT()));
+			}
+			result.setInitialMarking((M) getInitialMarking().clone());
+		}catch(ParameterException e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public abstract AbstractPetriNet<P,T,F,M,S> newInstance();
 	
 	//------- toString -------------------------------------------------------------------------------
 

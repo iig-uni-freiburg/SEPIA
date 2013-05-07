@@ -8,6 +8,10 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 
 private final String pnmlFormat = "<transition id=\"%s\">%n <name><text>%s</text></name>%n</transition>%n";
 	
+	protected AbstractPTTransition(){
+		super();
+	}
+
 	public AbstractPTTransition(String name) throws ParameterException {
 		super(name);
 	}
@@ -65,6 +69,18 @@ private final String pnmlFormat = "<transition id=\"%s\">%n <name><text>%s</text
 		return true;
 	}
 	
+	@Override
+	public AbstractPTTransition<E> clone() {
+		AbstractPTTransition<E> result = (AbstractPTTransition<E>) newInstance();
+		try {
+			result.setName(getName());
+			result.setLabel(getLabel());
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	@Override
 	public String toPNML() {
 		return String.format(pnmlFormat, getName(), getLabel());

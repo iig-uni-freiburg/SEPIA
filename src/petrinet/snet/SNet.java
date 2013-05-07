@@ -37,7 +37,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	 */
 	private AnalysisContext analysisContext;
 	
-	public SNet() throws ParameterException {
+	public SNet() {
 		super();
 		initialMarking = new SNetMarking();
 		marking = new SNetMarking();
@@ -315,5 +315,10 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 //		
 //		snet.checkSoundness();
 //	}
+
+	@Override
+	public SNet newInstance() {
+		return new SNet();
+	}
 
 }

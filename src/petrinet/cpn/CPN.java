@@ -117,4 +117,9 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 		System.out.println(net.getMarking());
 	}
 
+	@Override
+	public CPN newInstance() {
+		return new CPN();
+	}
+
 }

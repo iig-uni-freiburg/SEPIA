@@ -4,14 +4,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 import misc.SetUtils;
-
-import petrinet.cpn.abstr.AbstractCPN;
 import validate.ParameterException;
+import validate.Validate;
 import exception.PNValidationException;
 
 public class DeclassificationTransition extends AbstractSNetTransition{
 	
 	protected SNet sNet = null;
+	
+	protected DeclassificationTransition(){
+		super();
+	}
 	
 	public DeclassificationTransition(SNet sNet, String name, String label, boolean isEmpty) throws ParameterException {
 		super(name, label, isEmpty);
@@ -99,11 +102,34 @@ public class DeclassificationTransition extends AbstractSNetTransition{
 			throw new PNValidationException("For at least one input token color, there is no output token color where the number of produced/consumed tokens equals.");
 		
 	}  
+	
+	protected void setSNet(SNet sNet) throws ParameterException{
+		Validate.notNull(sNet);
+		this.sNet = sNet;
+	}
 
 	@Override
 	public String toPNML() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected DeclassificationTransition newInstance() {
+		return new DeclassificationTransition();
+	}
+
+	@Override
+	public DeclassificationTransition clone() {
+		DeclassificationTransition result = (DeclassificationTransition) super.clone();
+		try {
+			result.setSNet(sNet);
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 
 }

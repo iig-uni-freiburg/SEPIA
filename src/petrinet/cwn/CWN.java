@@ -3,7 +3,6 @@ package petrinet.cwn;
 import java.util.Set;
 
 import petrinet.cwn.abstr.AbstractCWN;
-import types.Multiset;
 import validate.ParameterException;
 
 public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking> {
@@ -87,5 +86,10 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 //		
 //		cwn.checkSoundness();
 //	}
+
+	@Override
+	public CWN newInstance() {
+		return new CWN();
+	}
 
 }

@@ -48,6 +48,10 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	
 	//------- Constructors ----------------------------------------------------------------------------
 	
+	protected AbstractTransition(){
+		super();
+	}
+	
 	/**
 	 * Creates a new transition with the given name.
 	 * @param name The name for the new Transition.
@@ -260,5 +264,16 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l) throws ParameterException {
 		listenerSupport.removeTransitionListener(l);
 	}
+	
+	//------- clone ----------------------------------------------------------------------------------
+	
+	@Override
+	protected abstract AbstractTransition<E,S> newInstance();
 
+	@Override
+	public AbstractTransition<E,S> clone() {
+		AbstractTransition<E,S> result = (AbstractTransition<E,S>) newInstance();
+		result.setSilent(isSilent());
+		return result;
+	}
 }

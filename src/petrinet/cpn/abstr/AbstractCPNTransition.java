@@ -9,6 +9,10 @@ import validate.ParameterException;
 
 public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractTransition<E, Multiset<String>> {
 
+	protected AbstractCPNTransition(){
+		super();
+	}
+	
 	public AbstractCPNTransition(String name, boolean isEmpty) throws ParameterException {
 		super(name, isEmpty);
 	}
@@ -173,6 +177,11 @@ public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? 
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public AbstractCPNTransition<E> clone() {
+		return (AbstractCPNTransition<E>) super.clone();
 	}
 	
 	

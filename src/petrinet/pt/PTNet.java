@@ -84,5 +84,10 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 		
 		System.out.println(ReachabilityUtils.containsDeadTransitions(net));
 	}
+
+	@Override
+	public PTNet newInstance() {
+		return new PTNet();
+	}
 	
 }

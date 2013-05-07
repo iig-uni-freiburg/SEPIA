@@ -4,6 +4,10 @@ import petrinet.cpn.abstr.AbstractCPNPlace;
 import validate.ParameterException;
 
 public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
+	
+	protected CPNPlace(){
+		super();
+	}
 
 	public CPNPlace(String name) throws ParameterException {
 		super(name);
@@ -17,6 +21,11 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	public String toPNML() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected CPNPlace newInstance() {
+		return new CPNPlace();
 	}
 	
 }

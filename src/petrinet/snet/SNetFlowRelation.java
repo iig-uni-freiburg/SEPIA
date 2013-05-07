@@ -18,5 +18,17 @@ public class SNetFlowRelation extends AbstractCWNFlowRelation<SNetPlace, Abstrac
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public SNetFlowRelation clone(SNetPlace place, AbstractSNetTransition transition, boolean directionPT) {
+		SNetFlowRelation result = null;
+		try{
+			result = new SNetFlowRelation(place, transition);
+			result.setDirectionPT(directionPT);
+		} catch(ParameterException e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }

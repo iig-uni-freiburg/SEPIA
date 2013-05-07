@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import petrinet.cpn.abstr.AbstractCPN;
-
 import validate.ParameterException;
 import validate.ParameterException.ErrorCode;
 import validate.Validate;
@@ -22,6 +21,10 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 	protected Map<String, Set<AccessMode>> accessModes = new HashMap<String, Set<AccessMode>>();
 	protected GuardDataContainer dataContainer = null;
 	protected Set<AbstractConstraint<?>> guards = new HashSet<AbstractConstraint<?>>();
+	
+	protected RegularSNetTransition(){
+		super(); 
+	}
 	
 	public RegularSNetTransition(String name, boolean isEmpty) throws ParameterException {
 		super(name, isEmpty);
@@ -144,7 +147,7 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		Validate.notNull(color);
 		if(!accessModes.containsKey(color))
 			return new HashSet<AccessMode>();
-		return Collections.unmodifiableSet(accessModes.get(color));
+		return new HashSet<AccessMode>(accessModes.get(color));
 	}
 	
 	public boolean addAccessMode(String color, AccessMode... accessModes) throws ParameterException{
@@ -284,6 +287,31 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 	public String toPNML() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+
+	@Override
+	public RegularSNetTransition clone() {
+		RegularSNetTransition result = (RegularSNetTransition) super.clone();
+		try {
+			result.setGuardDataContainer(dataContainer);
+			for(AbstractConstraint<?> guard: guards){
+				result.addGuard(guard.clone());
+			}
+			
+			for(String color: accessModes.keySet()){
+				result.setAccessMode(color, getAccessModes(color));
+			}
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	protected RegularSNetTransition newInstance() {
+		return new RegularSNetTransition();
 	}
 	
 }

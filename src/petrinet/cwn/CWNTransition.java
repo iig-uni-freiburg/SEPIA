@@ -4,6 +4,10 @@ import petrinet.cwn.abstr.AbstractCWNTransition;
 import validate.ParameterException;
 
 public class CWNTransition extends AbstractCWNTransition<CWNFlowRelation> {
+	
+	protected CWNTransition(){
+		super();
+	}
 
 	public CWNTransition(String name, boolean isEmpty) throws ParameterException {
 		super(name, isEmpty);
@@ -25,6 +29,11 @@ public class CWNTransition extends AbstractCWNTransition<CWNFlowRelation> {
 	public String toPNML() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected CWNTransition newInstance() {
+		return new CWNTransition();
 	}
 	
 	

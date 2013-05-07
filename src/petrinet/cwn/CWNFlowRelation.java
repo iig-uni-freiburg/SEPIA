@@ -19,4 +19,16 @@ public class CWNFlowRelation extends AbstractCWNFlowRelation<CWNPlace, CWNTransi
 		return null;
 	}
 	
+	@Override
+	public CWNFlowRelation clone(CWNPlace place, CWNTransition transition, boolean directionPT) {
+		CWNFlowRelation result = null;
+		try {
+			result = new CWNFlowRelation(place, transition);
+			result.setDirectionPT(directionPT);
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

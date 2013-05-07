@@ -54,6 +54,10 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	
 	//------- Constructors --------------------------------------------------------------------------
 	
+	protected AbstractPlace(){
+		super();
+	}
+	
 	/**
 	 * Creates a new place with the given name.
 	 * @param name The name for the new Place.
@@ -145,9 +149,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @return The actual state of the place.
 	 * @see AbstractPlace#state
 	 */
-	public S getState(){
-		return state;
-	}
+	public abstract S getState();
 	
 	/**
 	 * Sets the state of the place in terms of number and kind of tokens if the place is not already in this state.<br>
@@ -314,5 +316,21 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	public void removeCapacityListener(CapacityListener<AbstractPlace<E,S>> l) throws ParameterException {
 		capacityListenerSupport.removeCapacityListener(l);
 	}
-
+	
+	//------- clone ----------------------------------------------------------------------------------
+	
+	@Override
+	protected abstract AbstractPlace<E,S> newInstance();
+	
+	@Override
+	public AbstractPlace<E,S> clone() {
+		AbstractPlace<E,S> result = (AbstractPlace<E,S>) newInstance();
+		try {
+			result.setCapacity(getCapacity());
+			result.setState(getState());
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

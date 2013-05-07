@@ -7,6 +7,10 @@ import petrinet.cwn.abstr.AbstractCWNTransition;
 import validate.ParameterException;
 
 public abstract class AbstractSNetTransition extends AbstractCWNTransition<SNetFlowRelation> {
+	
+	protected AbstractSNetTransition(){
+		super();
+	}
 
 	public AbstractSNetTransition(String name, boolean isEmpty) throws ParameterException {
 		super(name, isEmpty);
@@ -43,5 +47,12 @@ public abstract class AbstractSNetTransition extends AbstractCWNTransition<SNetF
 	}
 
 	public abstract boolean isDeclassificator();
+
+	@Override
+	public AbstractSNetTransition clone() {
+		return (AbstractSNetTransition) super.clone();
+	}
+	
+	
 	
 }

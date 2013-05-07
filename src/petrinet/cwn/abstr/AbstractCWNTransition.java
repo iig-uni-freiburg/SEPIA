@@ -10,6 +10,10 @@ public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? 
 
 											  extends AbstractCPNTransition<E> {
 
+	protected AbstractCWNTransition(){
+		super();
+	}
+	
 	public AbstractCWNTransition(String name, boolean isEmpty) throws ParameterException {
 		super(name, isEmpty);
 	}
@@ -42,6 +46,13 @@ public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? 
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public AbstractCWNTransition<E> clone() {
+		return (AbstractCWNTransition<E>) super.clone();
+	}
+	
+	
 	
 	
 	

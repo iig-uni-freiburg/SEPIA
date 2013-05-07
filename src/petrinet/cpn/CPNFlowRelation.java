@@ -27,4 +27,16 @@ public class CPNFlowRelation extends AbstractCPNFlowRelation<CPNPlace, CPNTransi
 		return null;
 	}
 
+	@Override
+	public CPNFlowRelation clone(CPNPlace place, CPNTransition transition, boolean directionPT) {
+		CPNFlowRelation result = null;
+		try {
+			result = new CPNFlowRelation(place, transition);
+			result.setDirectionPT(directionPT);
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

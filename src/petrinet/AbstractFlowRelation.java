@@ -58,8 +58,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
 	public AbstractFlowRelation(P place, T transition) throws ParameterException {
-		directionPT = true;
-		setValues(transition, place);
+		this(place, transition, true);
 	}
 	
 	/**
@@ -70,7 +69,11 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
 	public AbstractFlowRelation(T transition, P place) throws ParameterException {
-		directionPT = false;
+		this(place, transition, false);
+	}
+	
+	protected AbstractFlowRelation(P place, T transition, boolean directionPT) throws ParameterException{
+		this.directionPT = directionPT;
 		setValues(transition, place);
 	}
 	
@@ -113,6 +116,10 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 */
 	public boolean getDirectionPT() {
 		return directionPT;
+	}
+	
+	protected void setDirectionPT(boolean directionPT){
+		this.directionPT = directionPT;
 	}
 	
 	/**
@@ -279,5 +286,9 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * @return The PNML-representation of the relation in String format.
 	 */
 	public abstract String toPNML(int count);
+	
+	//------- clone ----------------------------------------------------------------------------------
+	
+	public abstract AbstractFlowRelation<P,T,S> clone(P place, T transition, boolean directionPT);
 	
 }

@@ -24,6 +24,10 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	 */
 	protected final String pnmlFormat = "<place id=\"%s\">%n <name><text>%s</text></name>%n</place>%n";
 	
+	protected AbstractPTPlace(){
+		super();
+	}
+	
 	/**
 	 * Constructs a new P/T Net place with the given name<br>
 	 * and sets the number of tokens to 0.
@@ -95,6 +99,12 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 		Validate.notNegative(state);
 		if(capacity > -1)
 			Validate.smallerEqual(state, capacity, "Place cannot hold more than "+capacity+" tokens");
+	}
+	
+
+	@Override
+	public Integer getState() {
+		return new Integer(state);
 	}
 
 	@Override

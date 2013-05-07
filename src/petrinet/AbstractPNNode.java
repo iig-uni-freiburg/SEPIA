@@ -58,6 +58,10 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	//------- Constructors ---------------------------------------------------------------------------
 	
+	protected AbstractPNNode(){
+		super();
+	}
+	
 	/**
 	 * Creates a new Petri net node, using the given name.<br>
 	 * Ba default, the label of the node equals the name.
@@ -352,5 +356,19 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @return The PNML-representation of the node in String format.
 	 */
 	public abstract String toPNML();
+	
+	protected abstract AbstractPNNode<E> newInstance();
+	
+	@Override
+	public AbstractPNNode<E> clone() {
+		AbstractPNNode<E> result = (AbstractPNNode<E>) newInstance();
+		try {
+			result.setName(getName());
+			result.setLabel(getLabel());
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }

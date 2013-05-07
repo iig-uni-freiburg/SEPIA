@@ -4,7 +4,7 @@ import petrinet.AbstractFlowRelation;
 import validate.ParameterException;
 import validate.Validate;
 
-public class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends AbstractPTFlowRelation<P,T>>, T extends AbstractPTTransition<? extends AbstractPTFlowRelation<P,T>>> extends AbstractFlowRelation<P, T, Integer> {
+public abstract class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends AbstractPTFlowRelation<P,T>>, T extends AbstractPTTransition<? extends AbstractPTFlowRelation<P,T>>> extends AbstractFlowRelation<P, T, Integer> {
 
 	private final String pnmlPrefix = "arc_";
 	private final String pnmlFormat = "<arc id=\"%s\" source=\"%s\" target=\"%s\"></arc>%n";
@@ -60,6 +60,13 @@ public class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends Abstract
 	
 	private String getPNMLID() {
 		return pnmlPrefix+name.toLowerCase();
+	}
+	
+	
+
+	@Override
+	public Integer getConstraint() {
+		return new Integer(constraint);
 	}
 	
 }
