@@ -233,16 +233,10 @@ public class SNetTest {
 	@Test
 	public void testSNet() {
 		
-		SNet sNet = null;
-		try {
-			sNet = new SNet();
-		} catch (ParameterException e) {
-			fail("Cannot create SNet!");
-		}
+		SNet sNet = new SNet();
 		
 		assertTrue(sNet.getMarking().isEmpty());
 		assertTrue(sNet.getInitialMarking().isEmpty());
-		
 		
 	}
 
