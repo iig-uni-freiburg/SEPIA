@@ -18,7 +18,7 @@ public abstract class PNTraverser<T extends AbstractTransition<?,?>> {
 		this.net = net;
 	}
 	
-	public AbstractPetriNet<?,?,?,?,?> getPetriNet(){
+	public AbstractPetriNet<?,T,?,?,?> getPetriNet(){
 		return net;
 	}
 

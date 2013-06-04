@@ -151,7 +151,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 		for(F r: getFlowRelations())
 			builder.append(r.toPNML(count++));
 		builder.append(newLine);
-		return String.format(pnmlFormat, "PetriNet", builder.toString());
+		return String.format(pnmlFormat, getName(), builder.toString());
 	}
 	
 }

@@ -12,6 +12,6 @@ public interface GuardDataContainer {
 	public Object getValueForAttribute(String attribute) throws Exception;
 	
 	@SuppressWarnings("rawtypes")
-	public Class getAttributeValueType(String attribute) throws ParameterException;
+	public Class getAttributeValueClass(String attribute) throws ParameterException;
 
 }

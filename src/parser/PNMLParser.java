@@ -36,7 +36,7 @@ public class PNMLParser {
 			switch (type) {
 			case XMLStreamConstants.START_ELEMENT:
 				if (stax.getLocalName().equals("net")) {
-					petriNet.setName(stax.getLocalName());
+					petriNet.setName(stax.getAttributeValue(null, "id"));
 				} else if (stax.getLocalName().equals("place")) {
 					nodeType = NodeType.PLACE;
 					nodeID = getID(stax);

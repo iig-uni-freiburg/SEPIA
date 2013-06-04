@@ -44,7 +44,7 @@ public class TestGuardDataContainer implements GuardDataContainer {
 	 * @see petrinet.snet.GuardDataContainer#getAttributeValueType(java.lang.String)
 	 */
 	@Override
-	public Class getAttributeValueType(String attribute) throws ParameterException {
+	public Class getAttributeValueClass(String attribute) throws ParameterException {
 
 		//It is a container of integers
 		return valueClass;

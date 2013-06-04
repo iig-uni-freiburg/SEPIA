@@ -276,4 +276,5 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 		result.setSilent(isSilent());
 		return result;
 	}
+
 }

@@ -52,7 +52,7 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 		
 		// Check if the type of generated values matches the type of guard attributes.
 		for(AbstractConstraint<?> guard: guards){
-			if(!dataContainer.getAttributeValueType(guard.getElement()).isAssignableFrom(guard.getParameterClass()))
+			if(!dataContainer.getAttributeValueClass(guard.getElement()).isAssignableFrom(guard.getParameterClass()))
 				throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Type of generated values for attribute \""+guard.getElement()+"\" does not match the expected value type of constraint \""+ guard +"\".");
 		}
 		this.dataContainer = dataContainer;
@@ -124,10 +124,10 @@ public class RegularSNetTransition extends AbstractSNetTransition {
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot add constraint for attribute which is not processed by the transition");
 		if(!dataContainer.getAttributes().contains(guard.getElement()))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot add constraint for attribute for which the data container does not produce values.");
-		if(!guard.getParameterClass().isAssignableFrom(dataContainer.getAttributeValueType(guard.getElement())))
+		if(!guard.getParameterClass().isAssignableFrom(dataContainer.getAttributeValueClass(guard.getElement())))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Type mismatch for guard element and produced values within the assigned data container.\n" +
 																	"Guard requires values of type \""+ guard.getParameters()[0].getClass()+"\"\n" + 
-																	"Generated values are of type \""+ dataContainer.getAttributeValueType(guard.getElement()) +"\"");
+																	"Generated values are of type \""+ dataContainer.getAttributeValueClass(guard.getElement()) +"\"");
 		return guards.add(guard);
 	}
 	

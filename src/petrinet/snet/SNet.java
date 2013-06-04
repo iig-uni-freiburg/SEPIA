@@ -137,7 +137,7 @@ public class SNet extends AbstractCWN<SNetPlace, AbstractSNetTransition, SNetFlo
 	
 	public void setAnalysisContext(AnalysisContext analysisContext) throws ParameterException{
 		Validate.notNull(analysisContext);
-		if(!analysisContext.getActivities().containsAll(PNUtils.getListFromTransitions(getTransitions())))
+		if(!analysisContext.getActivities().containsAll(PNUtils.getNameListFromTransitions(getTransitions())))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all Petri net transitions as activities.");
 		this.analysisContext = analysisContext;
 	}
