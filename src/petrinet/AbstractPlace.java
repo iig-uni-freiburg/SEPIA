@@ -343,5 +343,5 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @return The PNML-representation of the transition in String format.
 	 * @return
 	 */
-	public abstract String toPNML(Integer initialMarking);
+	public abstract String toPNML(S initialMarking);
 }

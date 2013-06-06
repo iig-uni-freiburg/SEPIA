@@ -1,6 +1,7 @@
 package petrinet.cwn;
 
 import petrinet.cwn.abstr.AbstractCWNPlace;
+import types.Multiset;
 import validate.ParameterException;
 
 public class CWNPlace extends AbstractCWNPlace<CWNFlowRelation> {
@@ -18,7 +19,7 @@ public class CWNPlace extends AbstractCWNPlace<CWNFlowRelation> {
 	}
 
 	@Override
-	public String toPNML(Integer initialMarking) {
+	public String toPNML(Multiset<String> initialMarking) {
 		// TODO Auto-generated method stub
 		return null;
 	}

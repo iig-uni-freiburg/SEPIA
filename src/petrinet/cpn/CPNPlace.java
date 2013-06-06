@@ -1,6 +1,7 @@
 package petrinet.cpn;
 
 import petrinet.cpn.abstr.AbstractCPNPlace;
+import types.Multiset;
 import validate.ParameterException;
 
 public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
@@ -18,7 +19,7 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	}
 
 	@Override
-	public String toPNML(Integer initialMarking) {
+	public String toPNML(Multiset<String> initialMarking) {
 		// TODO Auto-generated method stub
 		return null;
 	}

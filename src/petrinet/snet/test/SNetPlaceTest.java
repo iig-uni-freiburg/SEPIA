@@ -3,11 +3,14 @@
  */
 package petrinet.snet.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 import petrinet.snet.SNetPlace;
+import types.Multiset;
 import validate.ParameterException;
 
 /**
@@ -64,8 +67,14 @@ public class SNetPlaceTest {
 		} catch (ParameterException e) {
 			fail("Cannot create SNetPlace");
 		}
-		
-		assertNull(p.toPNML(1));
+		Multiset<String> initialPlaceMarking = new Multiset<String>();
+		try {
+			initialPlaceMarking.add("black");
+		} catch (ParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertNull(p.toPNML(initialPlaceMarking));
 	}
 
 }
