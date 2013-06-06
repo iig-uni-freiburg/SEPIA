@@ -276,5 +276,14 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 		result.setSilent(isSilent());
 		return result;
 	}
+	
+	//------- toString --------------------------------------------------------------------------------
+	
+	/**
+	 * Retrieves the PNML-representation of the Petri net transition.<br>
+	 * This method is abstract and requires subclasses to implement specific representations.
+	 * @return The PNML-representation of the transition in String format.
+	 */
+	public abstract String toPNML();
 
 }

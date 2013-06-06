@@ -259,7 +259,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		return result;
 	}
 	@Override
-	public String toPNML() {
+	public String toPNML(Integer initialMarking) {
 		// TODO Auto-generated method stub
 		return null;
 	}

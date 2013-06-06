@@ -18,7 +18,7 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	}
 
 	@Override
-	public String toPNML() {
+	public String toPNML(Integer initialMarking) {
 		// TODO Auto-generated method stub
 		return null;
 	}

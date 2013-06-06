@@ -350,13 +350,6 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		return String.format(toStringFormat, name, label);
 	}
 	
-	/**
-	 * Retrieves the PNML-representation of the Petri net node.<br>
-	 * This method is abstract and requires subclasses to implement specific representations.
-	 * @return The PNML-representation of the node in String format.
-	 */
-	public abstract String toPNML();
-	
 	protected abstract AbstractPNNode<E> newInstance();
 	
 	@Override

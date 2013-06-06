@@ -333,4 +333,15 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 		}
 		return result;
 	}
+	
+	//------- toString --------------------------------------------------------------------------------
+	
+	/**
+	 * Retrieves the PNML-representation of the Petri net place.<br>
+	 * This method is abstract and requires subclasses to implement specific representations.
+	 * @param initialMarking The number of tokens in this place according to the initial marking
+	 * @return The PNML-representation of the transition in String format.
+	 * @return
+	 */
+	public abstract String toPNML(Integer initialMarking);
 }

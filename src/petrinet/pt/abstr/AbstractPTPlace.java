@@ -23,7 +23,11 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	 * The String format used for the PNML representation of the P/T Net place.
 	 */
 	protected final String pnmlFormat = "<place id=\"%s\">%n <name><text>%s</text></name>%n</place>%n";
-	
+	/**
+	 * The String format used for the PNML representation of the P/T Net place (with initial marking).
+	 */
+	protected final String pnmlFormatWithMarking = "<place id=\"%s\">%n <name><text>%s</text></name>%n <initialMarking><text>%s</text></initialMarking></place>%n";
+
 	protected AbstractPTPlace(){
 		super();
 	}
@@ -108,8 +112,10 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	}
 
 	@Override
-	public String toPNML() {
-		return String.format(pnmlFormat, getName(), getLabel());
+	public String toPNML(Integer initialMarking) {
+		if(initialMarking == null || initialMarking < 1)
+			return String.format(pnmlFormat, getName(), getLabel());
+		return String.format(pnmlFormatWithMarking, getName(), getLabel(), initialMarking);
 	}
 
 }

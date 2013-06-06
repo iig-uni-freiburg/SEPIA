@@ -142,7 +142,11 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 		StringBuilder builder = new StringBuilder();
 		String newLine = System.getProperty("line.separator");
 		for(P p: getPlaces())
-			builder.append(p.toPNML());
+			try {
+				builder.append(p.toPNML(getInitialMarking().get(p.getName())));
+			} catch (ParameterException e) {
+				e.printStackTrace();
+			}
 		builder.append(newLine);
 		for(T t: getTransitions())
 			builder.append(t.toPNML());

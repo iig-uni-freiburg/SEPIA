@@ -65,7 +65,7 @@ public class SNetPlaceTest {
 			fail("Cannot create SNetPlace");
 		}
 		
-		assertNull(p.toPNML());
+		assertNull(p.toPNML(1));
 	}
 
 }
