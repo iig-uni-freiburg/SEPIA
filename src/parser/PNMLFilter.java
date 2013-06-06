@@ -10,10 +10,13 @@ public class PNMLFilter extends FileFilter {
 
 	@Override
 	public boolean accept(File f) {
-		if (f.isDirectory()) {
+		if (f == null || f.isDirectory()) {
 	        return false;
 	    }
-		return FileUtils.getExtension(f).equals("pnml");
+		String extension = FileUtils.getExtension(f);
+		if(extension == null)
+			return false;
+		return extension.equals("pnml");
 	}
 
 	@Override

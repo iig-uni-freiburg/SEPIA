@@ -21,7 +21,7 @@ public class PNMLParser {
 	private static String lastTransition;
 	private static String nodeID;
 	
-	public static PTNet parsePNML(String path) throws XMLStreamException, ParameterException {
+	public static PTNet parsePNML(String path, boolean replaceSpacesInTransitionLabels) throws XMLStreamException, ParameterException {
 		PTMarking marking = new PTMarking();
 		petriNet = new PTNet();
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -86,7 +86,7 @@ public class PNMLParser {
 						}
 						break;
 					case TRANSITION:
-						petriNet.getTransition(lastTransition).setLabel(stax.getText());
+						petriNet.getTransition(lastTransition).setLabel(stax.getText().replace(' ', '_'));
 						petriNet.getTransition(lastTransition).setSilent(stax.getText().startsWith("_"));
 						break;
 					}
