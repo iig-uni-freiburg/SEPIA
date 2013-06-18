@@ -258,6 +258,8 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		}
 		return result;
 	}
+	
+	
 	@Override
 	public String toPNML(Multiset<String> initialMarking) {
 		// TODO Auto-generated method stub
