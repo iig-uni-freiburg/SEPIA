@@ -12,14 +12,14 @@ import petrinet.cpn.test.FiringRuleTest;
 import petrinet.cwn.test.AbstractCWNUtilsTest;
 import petrinet.cwn.test.CWNTest;
 import petrinet.cwn.test.CWNTransitionTest;
-import petrinet.snet.test.AnalysisContextTest;
-import petrinet.snet.test.DeclassificationTransitionTest;
-import petrinet.snet.test.LabelingTest;
-import petrinet.snet.test.RegularSNetTransitionTest;
-import petrinet.snet.test.SNetPlaceTest;
+import petrinet.ifnet.test.AnalysisContextTest;
+import petrinet.ifnet.test.DeclassificationTransitionTest;
+import petrinet.ifnet.test.LabelingTest;
+import petrinet.ifnet.test.RegularIFNetTransitionTest;
+import petrinet.ifnet.test.IFNetPlaceTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({FiringRuleTest.class, CPNFlowRelationTest.class, CPNTransitionTest.class, CPNPlaceTest.class, CPNTest.class, CWNTest.class, CWNTransitionTest.class, AbstractCWNUtilsTest.class, LabelingTest.class, AnalysisContextTest.class, RegularSNetTransitionTest.class, DeclassificationTransitionTest.class, SNetPlaceTest.class })
+@SuiteClasses({FiringRuleTest.class, CPNFlowRelationTest.class, CPNTransitionTest.class, CPNPlaceTest.class, CPNTest.class, CWNTest.class, CWNTransitionTest.class, AbstractCWNUtilsTest.class, LabelingTest.class, AnalysisContextTest.class, RegularIFNetTransitionTest.class, DeclassificationTransitionTest.class, IFNetPlaceTest.class })
 public class AllTests {
 
 }
