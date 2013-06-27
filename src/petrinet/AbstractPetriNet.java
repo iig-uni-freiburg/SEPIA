@@ -13,8 +13,8 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
 
-import traverse.Traversable;
 import event.RelationConstraintListener;
 import event.TokenEvent;
 import event.TokenListener;

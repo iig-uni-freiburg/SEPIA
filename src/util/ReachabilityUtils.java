@@ -3,9 +3,9 @@ package util;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import exception.PNException;
-import graph.Graph;
-import graph.exception.VertexNotFoundException;
 
 import java.util.HashSet;
 import java.util.Set;

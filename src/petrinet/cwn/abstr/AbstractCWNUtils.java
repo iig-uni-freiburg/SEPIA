@@ -2,9 +2,9 @@ package petrinet.cwn.abstr;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
+import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import exception.PNSoundnessException;
-import graph.Graph;
-import graph.Vertex;
 
 import java.util.HashSet;
 import java.util.Set;
