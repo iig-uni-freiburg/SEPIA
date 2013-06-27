@@ -2,9 +2,10 @@ package petrinet.pt;
 
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.pt.abstr.AbstractPTNet;
 import util.ReachabilityUtils;
-import validate.ParameterException;
 import exception.PNException;
 
 public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{

@@ -5,10 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.invation.code.toval.types.HashList;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import petrinet.AbstractTransition;
-import types.HashList;
-import validate.ParameterException;
-import validate.Validate;
 
 public class PNUtils {
 	

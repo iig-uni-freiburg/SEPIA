@@ -2,8 +2,9 @@ package petrinet.cwn;
 
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cwn.abstr.AbstractCWN;
-import validate.ParameterException;
 
 public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking> {
 

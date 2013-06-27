@@ -3,14 +3,15 @@ package petrinet.cwn.abstr;
 import java.util.Collection;
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.cpn.abstr.AbstractCPN;
 import traverse.TraversalUtils;
-import types.Multiset;
 import util.ReachabilityUtils;
-import validate.ParameterException;
 import event.RelationConstraintEvent;
 import event.TransitionEvent;
 import exception.PNException;

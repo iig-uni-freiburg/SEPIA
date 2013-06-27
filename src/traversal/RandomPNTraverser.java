@@ -2,13 +2,14 @@ package traversal;
 
 import java.util.List;
 
-import misc.valuegeneration.RandomChooser;
+import de.invation.code.toval.misc.valuegeneration.RandomChooser;
+import de.invation.code.toval.validate.InconsistencyException;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
-import validate.InconsistencyException;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
 
 /**
  * This flow control chooses the next transition to fire 

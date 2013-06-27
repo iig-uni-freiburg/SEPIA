@@ -2,12 +2,13 @@ package petrinet.pt.abstr;
 
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.pt.PTNet;
-import validate.ParameterException;
-import validate.Validate;
 import event.RelationConstraintEvent;
 import event.TransitionEvent;
 

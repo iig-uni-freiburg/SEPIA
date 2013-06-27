@@ -1,7 +1,7 @@
 package petrinet.ifnet;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.cwn.abstr.AbstractCWNMarking;
-import validate.ParameterException;
 
 public class IFNetMarking extends AbstractCWNMarking {
 

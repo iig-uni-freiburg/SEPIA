@@ -7,8 +7,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.ifnet.GuardDataContainer;
-import validate.ParameterException;
 
 /**
  * An implemetation of the interface GuardDataContainer used to test SNets.

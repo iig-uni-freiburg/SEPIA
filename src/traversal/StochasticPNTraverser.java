@@ -3,13 +3,14 @@ package traversal;
 import java.util.HashMap;
 import java.util.List;
 
-import misc.valuegeneration.StochasticValueGenerator;
-import misc.valuegeneration.ValueGenerationException;
+import de.invation.code.toval.misc.valuegeneration.StochasticValueGenerator;
+import de.invation.code.toval.misc.valuegeneration.ValueGenerationException;
+import de.invation.code.toval.validate.InconsistencyException;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
-import validate.InconsistencyException;
-import validate.ParameterException;
-import validate.Validate;
 
 /**
  * This flow control chooses the next transition to fire 

@@ -2,9 +2,10 @@ package petrinet.ifnet;
 
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cpn.abstr.AbstractCPN;
 import petrinet.cwn.abstr.AbstractCWNTransition;
-import validate.ParameterException;
 
 public abstract class AbstractIFNetTransition extends AbstractCWNTransition<IFNetFlowRelation> {
 	

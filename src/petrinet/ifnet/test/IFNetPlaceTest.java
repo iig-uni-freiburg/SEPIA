@@ -9,9 +9,10 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.ifnet.IFNetPlace;
-import types.Multiset;
-import validate.ParameterException;
 
 /**
  * @author boehr

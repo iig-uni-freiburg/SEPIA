@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import petrinet.cpn.abstr.AbstractCPN;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
-import constraint.AbstractConstraint;
+import de.invation.code.toval.constraint.AbstractConstraint;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import event.TransitionEvent;
 import exception.PNValidationException;
 

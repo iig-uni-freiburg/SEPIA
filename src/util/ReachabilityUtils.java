@@ -1,5 +1,8 @@
 package util;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import exception.PNException;
 import graph.Graph;
 import graph.exception.VertexNotFoundException;
@@ -14,9 +17,6 @@ import petrinet.AbstractPetriNet;
 import petrinet.AbstractPetriNet.Boundedness;
 import petrinet.AbstractPlace;
 import petrinet.AbstractTransition;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
 
 /**
  * This class provides methods concerned with reachability issues of Petri nets.<br>

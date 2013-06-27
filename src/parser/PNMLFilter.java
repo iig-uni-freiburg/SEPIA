@@ -4,7 +4,8 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import file.FileUtils;
+import de.invation.code.toval.file.FileUtils;
+
 
 public class PNMLFilter extends FileFilter {
 

@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import validate.ParameterException;
-import validate.Validate;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 
 /**
  * This class defines a Petri net state in form of a marking.<br>

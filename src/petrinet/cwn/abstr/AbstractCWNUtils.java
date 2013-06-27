@@ -1,5 +1,7 @@
 package petrinet.cwn.abstr;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import exception.PNSoundnessException;
 import graph.Graph;
 import graph.Vertex;
@@ -10,8 +12,6 @@ import java.util.Set;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractPetriNet.Boundedness;
 import util.ReachabilityUtils;
-import validate.ParameterException;
-import validate.Validate;
 
 
 public class AbstractCWNUtils {

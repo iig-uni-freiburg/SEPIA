@@ -3,9 +3,10 @@ package petrinet.cpn.abstr;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.AbstractTransition;
-import types.Multiset;
-import validate.ParameterException;
 
 public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractTransition<E, Multiset<String>> {
 

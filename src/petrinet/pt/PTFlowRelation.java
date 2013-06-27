@@ -1,7 +1,7 @@
 package petrinet.pt;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.pt.abstr.AbstractPTFlowRelation;
-import validate.ParameterException;
 
 public class PTFlowRelation extends AbstractPTFlowRelation<PTPlace, PTTransition> {
 	

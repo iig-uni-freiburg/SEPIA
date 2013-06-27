@@ -2,7 +2,8 @@ package petrinet.ifnet;
 
 import java.util.Set;
 
-import validate.ParameterException;
+import de.invation.code.toval.validate.ParameterException;
+
 
 
 public interface GuardDataContainer {

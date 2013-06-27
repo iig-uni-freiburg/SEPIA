@@ -1,7 +1,7 @@
 package petrinet.cpn;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.cpn.abstr.AbstractCPNMarking;
-import validate.ParameterException;
 
 public class CPNMarking extends AbstractCPNMarking {
 

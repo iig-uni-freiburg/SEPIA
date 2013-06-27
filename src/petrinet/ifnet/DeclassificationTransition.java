@@ -3,9 +3,10 @@ package petrinet.ifnet;
 import java.util.HashSet;
 import java.util.Set;
 
-import misc.SetUtils;
-import validate.ParameterException;
-import validate.Validate;
+import de.invation.code.toval.misc.SetUtils;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import exception.PNValidationException;
 
 public class DeclassificationTransition extends AbstractIFNetTransition{

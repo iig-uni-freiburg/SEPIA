@@ -1,9 +1,9 @@
 package petrinet.cpn.abstr;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import petrinet.AbstractFlowRelation;
-import types.Multiset;
-import validate.ParameterException;
-import validate.Validate;
 
 public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? extends AbstractCPNFlowRelation<P,T>>, 
 											  T extends AbstractCPNTransition<? extends AbstractCPNFlowRelation<P,T>>> 

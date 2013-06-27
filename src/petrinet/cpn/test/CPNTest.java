@@ -8,13 +8,14 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cpn.CPN;
 import petrinet.cpn.CPNFlowRelation;
 import petrinet.cpn.CPNMarking;
 import petrinet.cpn.CPNTransition;
 import petrinet.cpn.FiringRule;
-import types.Multiset;
-import validate.ParameterException;
 import exception.PNException;
 import exception.PNSoundnessException;
 import exception.PNValidationException;

@@ -1,11 +1,11 @@
 package petrinet.transform;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractMarking;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractPlace;
 import petrinet.AbstractTransition;
-import validate.ParameterException;
 
 public class PNTransformationFactory {
 

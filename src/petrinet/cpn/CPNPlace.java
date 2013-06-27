@@ -1,8 +1,8 @@
 package petrinet.cpn;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.cpn.abstr.AbstractCPNPlace;
-import types.Multiset;
-import validate.ParameterException;
 
 public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	

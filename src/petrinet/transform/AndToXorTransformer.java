@@ -1,12 +1,12 @@
 package petrinet.transform;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractMarking;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractPlace;
 import petrinet.AbstractTransition;
-import validate.ParameterException;
-import validate.Validate;
 
 public class AndToXorTransformer<P extends AbstractPlace<F,S>, 
 								 T extends AbstractTransition<F,S>, 

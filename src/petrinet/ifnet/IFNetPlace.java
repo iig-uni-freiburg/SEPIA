@@ -1,8 +1,8 @@
 package petrinet.ifnet;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.cwn.abstr.AbstractCWNPlace;
-import types.Multiset;
-import validate.ParameterException;
 
 public class IFNetPlace extends AbstractCWNPlace<IFNetFlowRelation> {
 	

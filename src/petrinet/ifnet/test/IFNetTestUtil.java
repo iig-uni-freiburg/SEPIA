@@ -5,6 +5,9 @@ package petrinet.ifnet.test;
 
 import java.util.Arrays;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.ifnet.AccessMode;
 import petrinet.ifnet.AnalysisContext;
 import petrinet.ifnet.DeclassificationTransition;
@@ -15,8 +18,6 @@ import petrinet.ifnet.IFNetFlowRelation;
 import petrinet.ifnet.IFNetMarking;
 import petrinet.ifnet.IFNetPlace;
 import petrinet.ifnet.SecurityLevel;
-import types.Multiset;
-import validate.ParameterException;
 
 /**
  * Methods often used during testing of SNets.

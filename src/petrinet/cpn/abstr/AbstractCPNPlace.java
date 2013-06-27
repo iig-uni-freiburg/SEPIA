@@ -3,12 +3,13 @@ package petrinet.cpn.abstr;
 import java.util.HashMap;
 import java.util.Map;
 
-import misc.SetUtils;
+import de.invation.code.toval.misc.SetUtils;
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+
 import petrinet.AbstractPlace;
-import types.Multiset;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
 import event.CapacityEvent;
 import event.TokenEvent;
 

@@ -9,8 +9,9 @@ import java.util.HashMap;
 
 import org.junit.Test;
 
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cpn.FiringRule;
-import validate.ParameterException;
 
 /**
  * @author boehr

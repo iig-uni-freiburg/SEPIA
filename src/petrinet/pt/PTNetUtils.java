@@ -3,8 +3,9 @@ package petrinet.pt;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import validate.ParameterException;
-import validate.Validate;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 
 public class PTNetUtils {
 	

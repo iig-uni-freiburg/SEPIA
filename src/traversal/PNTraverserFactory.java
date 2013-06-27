@@ -1,7 +1,7 @@
 package traversal;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.AbstractPetriNet;
-import validate.ParameterException;
 
 public class PNTraverserFactory {
 	

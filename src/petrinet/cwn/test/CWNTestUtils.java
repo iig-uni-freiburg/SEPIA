@@ -3,11 +3,12 @@ package petrinet.cwn.test;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cwn.CWN;
 import petrinet.cwn.CWNFlowRelation;
 import petrinet.cwn.CWNMarking;
-import types.Multiset;
-import validate.ParameterException;
 
 public class CWNTestUtils {
 	

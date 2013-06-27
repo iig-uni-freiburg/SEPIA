@@ -1,7 +1,7 @@
 package petrinet.cpn;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.cpn.abstr.AbstractCPNTransition;
-import validate.ParameterException;
 
 public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	

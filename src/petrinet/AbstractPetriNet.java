@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+
 import traverse.Traversable;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
 import event.RelationConstraintListener;
 import event.TokenEvent;
 import event.TokenListener;

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractMarking;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractPlace;
 import petrinet.AbstractTransition;
 
-import validate.ParameterException;
 
 /**
  * This class provides methods for Petri net refinement.<br>

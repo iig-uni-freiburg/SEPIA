@@ -6,10 +6,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import misc.SetUtils;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
+import de.invation.code.toval.misc.SetUtils;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+
 
 public class AnalysisContext {
 	

@@ -1,6 +1,6 @@
 package petrinet;
 
-import validate.ParameterException;
+import de.invation.code.toval.validate.ParameterException;
 import event.TransitionEvent;
 import event.TransitionListener;
 import event.TransitionListenerSupport;

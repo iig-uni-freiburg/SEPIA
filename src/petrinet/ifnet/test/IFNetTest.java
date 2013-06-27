@@ -14,6 +14,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import exception.PNValidationException;
 
 import petrinet.ifnet.AnalysisContext;
@@ -24,8 +27,6 @@ import petrinet.ifnet.IFNet;
 import petrinet.ifnet.IFNetFlowRelation;
 import petrinet.ifnet.IFNetMarking;
 import petrinet.ifnet.SecurityLevel;
-import types.Multiset;
-import validate.ParameterException;
 
 /**
  * @author boehr

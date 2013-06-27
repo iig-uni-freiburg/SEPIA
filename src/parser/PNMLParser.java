@@ -8,10 +8,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
+import de.invation.code.toval.validate.InconsistencyException;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.pt.PTMarking;
 import petrinet.pt.PTNet;
-import validate.InconsistencyException;
-import validate.ParameterException;
 
 
 public class PNMLParser {

@@ -1,7 +1,7 @@
 package petrinet.cwn;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.cwn.abstr.AbstractCWNTransition;
-import validate.ParameterException;
 
 public class CWNTransition extends AbstractCWNTransition<CWNFlowRelation> {
 	

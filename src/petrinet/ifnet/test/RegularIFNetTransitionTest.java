@@ -14,11 +14,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import constraint.AbstractConstraint;
-import constraint.NumberConstraint;
-import constraint.NumberOperator;
-import constraint.StringConstraint;
-import constraint.StringOperator;
+import de.invation.code.toval.constraint.AbstractConstraint;
+import de.invation.code.toval.constraint.NumberConstraint;
+import de.invation.code.toval.constraint.NumberOperator;
+import de.invation.code.toval.constraint.StringConstraint;
+import de.invation.code.toval.constraint.StringOperator;
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
 
 import exception.PNValidationException;
 
@@ -28,8 +30,6 @@ import petrinet.ifnet.GuardDataContainer;
 import petrinet.ifnet.RegularIFNetTransition;
 import petrinet.ifnet.IFNet;
 import petrinet.ifnet.IFNetPlace;
-import types.Multiset;
-import validate.ParameterException;
 
 /**
  * @author boehr
@@ -539,7 +539,7 @@ public class RegularIFNetTransitionTest {
 	
 
 	/**
-	 * Test method for {@link petrinet.ifnet.RegularIFNetTransition#addGuard(constraint.AbstractConstraint)}.
+	 * Test method for {@link petrinet.ifnet.RegularIFNetTransition#addGuard(de.invation.code.toval.constraint.AbstractConstraint)}.
 	 * Try to add various invalid guards
 	 * @throws ParameterException 
 	 */
@@ -606,7 +606,7 @@ public class RegularIFNetTransitionTest {
 	
 	
 	/**
-	 * Test method for {@link petrinet.ifnet.RegularIFNetTransition#removeGuard(constraint.AbstractConstraint)}.
+	 * Test method for {@link petrinet.ifnet.RegularIFNetTransition#removeGuard(de.invation.code.toval.constraint.AbstractConstraint)}.
 	 * @throws ParameterException 
 	 */
 	@Test

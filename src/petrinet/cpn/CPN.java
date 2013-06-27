@@ -2,9 +2,10 @@ package petrinet.cpn;
 
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cpn.abstr.AbstractCPN;
-import types.Multiset;
-import validate.ParameterException;
 import exception.PNException;
 
 public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking> {

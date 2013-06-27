@@ -1,8 +1,8 @@
 package petrinet.pt.abstr;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import petrinet.AbstractMarking;
-import validate.ParameterException;
-import validate.Validate;
 
 public abstract class AbstractPTMarking extends AbstractMarking<Integer> {
 	

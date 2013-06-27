@@ -10,13 +10,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cpn.abstr.AbstractCPN;
 import petrinet.ifnet.Labeling;
 import petrinet.ifnet.IFNet;
 import petrinet.ifnet.IFNetMarking;
 import petrinet.ifnet.SecurityLevel;
-import types.Multiset;
-import validate.ParameterException;
 
 public class LabelingTest {
 

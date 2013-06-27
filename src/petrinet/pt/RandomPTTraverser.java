@@ -1,8 +1,8 @@
 package petrinet.pt;
 
+import de.invation.code.toval.validate.ParameterException;
 import petrinet.AbstractPetriNet;
 import traversal.RandomPNTraverser;
-import validate.ParameterException;
 
 public class RandomPTTraverser extends RandomPNTraverser<PTTransition> {
 

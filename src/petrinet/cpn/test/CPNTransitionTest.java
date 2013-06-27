@@ -16,13 +16,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.ParameterException;
+
 import petrinet.cpn.CPN;
 import petrinet.cpn.CPNFlowRelation;
 import petrinet.cpn.CPNMarking;
 import petrinet.cpn.CPNPlace;
 import petrinet.cpn.CPNTransition;
-import types.Multiset;
-import validate.ParameterException;
 
 /**
  * @author boehr

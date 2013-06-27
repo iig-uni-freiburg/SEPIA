@@ -1,9 +1,9 @@
 package generator;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import petrinet.pt.PTMarking;
 import petrinet.pt.PTNet;
-import validate.ParameterException;
-import validate.Validate;
 
 
 public class PNGenerator {

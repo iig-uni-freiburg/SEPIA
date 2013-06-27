@@ -2,9 +2,10 @@ package event;
 
 import java.util.HashSet;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+
 import petrinet.AbstractPlace;
-import validate.ParameterException;
-import validate.Validate;
 
 public class TokenListenerSupport<P extends AbstractPlace<?,?>> {
 	

@@ -7,15 +7,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
+import de.invation.code.toval.validate.InconsistencyException;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
+
 import petrinet.AbstractFlowRelation;
 import petrinet.cpn.abstr.AbstractCPN;
 import petrinet.cwn.abstr.AbstractCWN;
-import types.Multiset;
 import util.PNUtils;
-import validate.InconsistencyException;
-import validate.ParameterException;
-import validate.ParameterException.ErrorCode;
-import validate.Validate;
 import event.RelationConstraintEvent;
 import exception.PNSoundnessException;
 import exception.PNValidationException;
