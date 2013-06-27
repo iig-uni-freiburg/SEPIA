@@ -266,7 +266,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public <N extends AbstractPNNode<E>> E getRelationFrom(N node) throws ParameterException{
 		Validate.notNull(node);
 		for(E incomingRelation: incomingRelations){
-			if(incomingRelation.getPlace().equals(node)){
+			if(incomingRelation.getSource().equals(node)){
 				return incomingRelation;
 			}
 		}
@@ -284,7 +284,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public <N extends AbstractPNNode<E>> E getRelationTo(N node) throws ParameterException{
 		Validate.notNull(node);
 		for(E outgoingRelation: outgoingRelations){
-			if(outgoingRelation.getPlace().equals(node)){
+			if(outgoingRelation.getTarget().equals(node)){
 				return outgoingRelation;
 			}
 		}
