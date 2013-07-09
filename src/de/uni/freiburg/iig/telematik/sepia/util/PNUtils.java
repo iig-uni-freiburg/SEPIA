@@ -6,16 +6,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import petrinet.AbstractTransition;
-import petrinet.pt.PTMarking;
-import petrinet.pt.PTNet;
-import petrinet.pt.PTTransition;
-import petrinet.pt.RandomPTTraverser;
 import de.invation.code.toval.math.MathUtils;
 import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.RandomPTTraverser;
 import de.uni.freiburg.iig.telematik.sepia.traversal.PNTraverser;
 
 public class PNUtils {

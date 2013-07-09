@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.traversal;
 
 import de.invation.code.toval.validate.ParameterException;
-import petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 
 public class PNTraverserFactory {
 	

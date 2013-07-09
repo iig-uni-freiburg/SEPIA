@@ -4,8 +4,8 @@ import java.util.HashSet;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
-import petrinet.AbstractPlace;
 
 public class CapacityListenerSupport<P extends AbstractPlace<?,?>> {
 	

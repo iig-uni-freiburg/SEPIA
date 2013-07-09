@@ -1,6 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
-import petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 
 public interface RelationConstraintListener<E extends AbstractFlowRelation<?,?,?>> {
 	

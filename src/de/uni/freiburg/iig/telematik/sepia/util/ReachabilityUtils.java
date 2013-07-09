@@ -6,17 +6,17 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import petrinet.AbstractFlowRelation;
-import petrinet.AbstractMarking;
-import petrinet.AbstractPetriNet;
-import petrinet.AbstractPetriNet.Boundedness;
-import petrinet.AbstractPlace;
-import petrinet.AbstractTransition;
 
 /**
  * This class provides methods concerned with reachability issues of Petri nets.<br>

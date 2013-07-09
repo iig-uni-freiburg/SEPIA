@@ -5,9 +5,9 @@ import java.util.List;
 import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
-import petrinet.AbstractPetriNet;
-import petrinet.AbstractTransition;
 
 
 public abstract class PNTraverser<T extends AbstractTransition<?,?>> {

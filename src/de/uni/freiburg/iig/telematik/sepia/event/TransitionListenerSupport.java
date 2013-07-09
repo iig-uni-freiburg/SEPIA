@@ -4,8 +4,8 @@ import java.util.HashSet;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
-import petrinet.AbstractTransition;
 
 public class TransitionListenerSupport<T extends AbstractTransition<?,?>> {
 	

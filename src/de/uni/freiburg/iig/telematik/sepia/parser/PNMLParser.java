@@ -10,9 +10,9 @@ import javax.xml.transform.stream.StreamSource;
 
 import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
-import petrinet.pt.PTMarking;
-import petrinet.pt.PTNet;
 
 
 public class PNMLParser {

@@ -2,7 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 
 import java.util.EventObject;
 
-import petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+
 
 @SuppressWarnings("serial")
 public class TokenEvent<P extends AbstractPlace<?,?>> extends EventObject {

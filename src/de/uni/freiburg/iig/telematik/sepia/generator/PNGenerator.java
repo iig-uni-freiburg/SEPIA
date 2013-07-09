@@ -2,8 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.generator;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import petrinet.pt.PTMarking;
-import petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 
 public class PNGenerator {

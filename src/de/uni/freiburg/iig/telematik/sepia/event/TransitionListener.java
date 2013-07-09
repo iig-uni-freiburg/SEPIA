@@ -1,6 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
-import petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 public interface TransitionListener<T extends AbstractTransition<?,?>> {
 
