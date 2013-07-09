@@ -1,4 +1,4 @@
-package parser;
+package de.uni.freiburg.iig.telematik.sepia.parser;
 
 import java.io.File;
 

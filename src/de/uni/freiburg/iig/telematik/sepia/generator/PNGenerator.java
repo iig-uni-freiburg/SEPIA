@@ -1,4 +1,4 @@
-package generator;
+package de.uni.freiburg.iig.telematik.sepia.generator;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
