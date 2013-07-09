@@ -10,15 +10,15 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 import petrinet.cpn.CPN;
 import petrinet.cpn.CPNFlowRelation;
 import petrinet.cpn.CPNMarking;
 import petrinet.cpn.CPNTransition;
 import petrinet.cpn.FiringRule;
-import exception.PNException;
-import exception.PNSoundnessException;
-import exception.PNValidationException;
 
 public class CPNTest {
 	

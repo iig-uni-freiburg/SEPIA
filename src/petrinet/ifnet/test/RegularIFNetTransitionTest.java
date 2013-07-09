@@ -21,8 +21,8 @@ import de.invation.code.toval.constraint.StringConstraint;
 import de.invation.code.toval.constraint.StringOperator;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
-import exception.PNValidationException;
 
 import petrinet.ifnet.AccessMode;
 import petrinet.ifnet.DeclassificationTransition;

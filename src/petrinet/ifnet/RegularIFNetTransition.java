@@ -13,8 +13,8 @@ import de.invation.code.toval.constraint.AbstractConstraint;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
-import event.TransitionEvent;
-import exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 public class RegularIFNetTransition extends AbstractIFNetTransition {
 	

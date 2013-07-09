@@ -2,8 +2,8 @@ package petrinet.pt.abstr;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
 import petrinet.AbstractPlace;
-import event.TokenEvent;
 
 /**
  * Abstract class that defines general properties for places of place/transition nets (P/T Nets).<br>

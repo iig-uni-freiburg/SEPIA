@@ -12,14 +12,14 @@ import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.cpn.abstr.AbstractCPN;
 import petrinet.cwn.abstr.AbstractCWN;
 import util.PNUtils;
-import event.RelationConstraintEvent;
-import exception.PNSoundnessException;
-import exception.PNValidationException;
 
 public class IFNet extends AbstractCWN<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking> {
 	

@@ -1,4 +1,4 @@
-package exception;
+package de.uni.freiburg.iig.telematik.sepia.exception;
 
 
 public class PNInconsistencyException extends PNException {

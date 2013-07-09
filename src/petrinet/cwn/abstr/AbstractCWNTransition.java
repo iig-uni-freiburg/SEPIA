@@ -1,9 +1,9 @@
 package petrinet.cwn.abstr;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import petrinet.cpn.abstr.AbstractCPN;
 import petrinet.cpn.abstr.AbstractCPNTransition;
-import exception.PNValidationException;
 
 public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? extends AbstractCWNPlace<E>, 
 																			  ? extends AbstractCWNTransition<E>>> 

@@ -4,7 +4,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
-import exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 
 import java.util.HashSet;
 import java.util.Set;

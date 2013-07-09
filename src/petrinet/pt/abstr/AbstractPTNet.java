@@ -4,13 +4,13 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.pt.PTNet;
-import event.RelationConstraintEvent;
-import event.TransitionEvent;
 
 /**
  * Abstract class for defining P/T-Nets, which are a special kind of Petri nets

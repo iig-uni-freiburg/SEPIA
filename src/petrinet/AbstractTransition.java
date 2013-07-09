@@ -1,11 +1,11 @@
 package petrinet;
 
 import de.invation.code.toval.validate.ParameterException;
-import event.TransitionEvent;
-import event.TransitionListener;
-import event.TransitionListenerSupport;
-import exception.PNException;
-import exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionListenerSupport;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 /**
  * 

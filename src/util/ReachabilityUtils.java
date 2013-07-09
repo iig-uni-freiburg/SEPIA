@@ -5,7 +5,7 @@ import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
-import exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 
 import java.util.HashSet;
 import java.util.Set;

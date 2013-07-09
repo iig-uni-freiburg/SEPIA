@@ -4,9 +4,9 @@ import java.util.Set;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 
 import petrinet.cpn.abstr.AbstractCPN;
-import exception.PNException;
 
 public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking> {
 	

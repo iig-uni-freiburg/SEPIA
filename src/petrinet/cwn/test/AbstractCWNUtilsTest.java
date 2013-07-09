@@ -8,12 +8,12 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 
 import petrinet.cwn.CWN;
 import petrinet.cwn.CWNFlowRelation;
 import petrinet.cwn.CWNMarking;
 import petrinet.cwn.abstr.AbstractCWNUtils;
-import exception.PNSoundnessException;
 
 public class AbstractCWNUtilsTest { 
 

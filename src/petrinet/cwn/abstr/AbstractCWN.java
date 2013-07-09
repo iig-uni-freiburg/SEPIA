@@ -6,17 +6,17 @@ import java.util.Set;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.cpn.abstr.AbstractCPN;
 import util.ReachabilityUtils;
-import event.RelationConstraintEvent;
-import event.TransitionEvent;
-import exception.PNException;
-import exception.PNSoundnessException;
-import exception.PNValidationException;
 
 public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 								  T extends AbstractCWNTransition<F>, 

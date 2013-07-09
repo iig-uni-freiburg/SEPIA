@@ -6,8 +6,8 @@ import java.util.Set;
 import de.invation.code.toval.misc.SetUtils;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
-import exception.PNValidationException;
 
 public class DeclassificationTransition extends AbstractIFNetTransition{
 	

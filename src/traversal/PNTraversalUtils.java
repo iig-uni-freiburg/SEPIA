@@ -7,13 +7,13 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractMarking;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractPlace;
 import petrinet.AbstractTransition;
-import exception.PNException;
 
 public class PNTraversalUtils {
 

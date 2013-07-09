@@ -3,10 +3,10 @@ package petrinet.pt;
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 
 import petrinet.pt.abstr.AbstractPTNet;
 import util.ReachabilityUtils;
-import exception.PNException;
 
 public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{
 	

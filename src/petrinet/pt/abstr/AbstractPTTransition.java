@@ -1,8 +1,8 @@
 package petrinet.pt.abstr;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import petrinet.AbstractTransition;
-import event.TransitionEvent;
 
 public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? extends AbstractPTPlace<E>, ? extends AbstractPTTransition<E>>> extends AbstractTransition<E,Integer>{
 

@@ -14,15 +14,15 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintListener;
+import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.TokenListener;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
-import event.RelationConstraintListener;
-import event.TokenEvent;
-import event.TokenListener;
-import event.TransitionEvent;
-import event.TransitionListener;
-import exception.PNException;
-import exception.PNSoundnessException;
-import exception.PNValidationException;
 
 /**
  * Abstract class for defining Petri nets and their properties.<br>

@@ -16,8 +16,8 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
-import exception.PNValidationException;
 
 import petrinet.ifnet.AnalysisContext;
 import petrinet.ifnet.DeclassificationTransition;

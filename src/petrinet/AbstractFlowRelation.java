@@ -2,8 +2,8 @@ package petrinet;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import event.RelationConstraintListener;
-import event.RelationConstraintListenerSupport;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintListener;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintListenerSupport;
 
 /**
  * Abstract class that defines general properties for flow relations between Petri net places and transitions.<br>

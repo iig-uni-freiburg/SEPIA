@@ -1,4 +1,4 @@
-package event;
+package de.uni.freiburg.iig.telematik.sepia.event;
 
 import java.util.HashSet;
 

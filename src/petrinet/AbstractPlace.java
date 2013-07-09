@@ -4,13 +4,13 @@ import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.CapacityListener;
+import de.uni.freiburg.iig.telematik.sepia.event.CapacityListenerSupport;
+import de.uni.freiburg.iig.telematik.sepia.event.TokenListener;
+import de.uni.freiburg.iig.telematik.sepia.event.TokenListenerSupport;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
-import event.CapacityEvent;
-import event.CapacityListener;
-import event.CapacityListenerSupport;
-import event.TokenListener;
-import event.TokenListenerSupport;
-import exception.PNValidationException;
 
 /**
  * Abstract class that defines general properties for Petri net places.<br>

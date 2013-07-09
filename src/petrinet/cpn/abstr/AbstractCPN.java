@@ -8,14 +8,14 @@ import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.cpn.FiringRule;
-import event.RelationConstraintEvent;
-import event.TransitionEvent;
-import exception.PNValidationException;
 
 /**
  * Class for defining Colored Petri nets (CPNs), which are a special kind of Petri nets
