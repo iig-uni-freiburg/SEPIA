@@ -15,11 +15,11 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.cpn.abstr.AbstractCPN;
 import petrinet.cwn.abstr.AbstractCWN;
-import util.PNUtils;
 
 public class IFNet extends AbstractCWN<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking> {
 	

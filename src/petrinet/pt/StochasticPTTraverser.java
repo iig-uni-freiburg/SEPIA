@@ -1,8 +1,8 @@
 package petrinet.pt;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.traversal.StochasticPNTraverser;
 import petrinet.AbstractPetriNet;
-import traversal.StochasticPNTraverser;
 
 public class StochasticPTTraverser extends StochasticPNTraverser<PTTransition> {
 

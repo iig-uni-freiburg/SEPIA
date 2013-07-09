@@ -1,4 +1,4 @@
-package util;
+package de.uni.freiburg.iig.telematik.sepia.util;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,12 +11,12 @@ import petrinet.pt.PTMarking;
 import petrinet.pt.PTNet;
 import petrinet.pt.PTTransition;
 import petrinet.pt.RandomPTTraverser;
-import traversal.PNTraverser;
 import de.invation.code.toval.math.MathUtils;
 import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.traversal.PNTraverser;
 
 public class PNUtils {
 	

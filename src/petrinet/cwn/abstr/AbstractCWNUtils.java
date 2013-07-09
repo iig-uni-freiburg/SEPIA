@@ -5,13 +5,13 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
 import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractPetriNet.Boundedness;
-import util.ReachabilityUtils;
 
 
 public class AbstractCWNUtils {

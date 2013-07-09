@@ -11,10 +11,10 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 import petrinet.cpn.abstr.AbstractCPN;
 
-import util.PNUtils;
 
 public class Labeling {
 	

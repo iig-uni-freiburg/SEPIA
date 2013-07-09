@@ -11,12 +11,12 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
 import petrinet.AbstractFlowRelation;
 import petrinet.AbstractPetriNet;
 import petrinet.AbstractTransition;
 import petrinet.cpn.abstr.AbstractCPN;
-import util.ReachabilityUtils;
 
 public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 								  T extends AbstractCWNTransition<F>, 

@@ -1,4 +1,4 @@
-package util;
+package de.uni.freiburg.iig.telematik.sepia.util;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;

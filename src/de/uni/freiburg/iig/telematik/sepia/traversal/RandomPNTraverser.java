@@ -1,4 +1,4 @@
-package traversal;
+package de.uni.freiburg.iig.telematik.sepia.traversal;
 
 import java.util.List;
 

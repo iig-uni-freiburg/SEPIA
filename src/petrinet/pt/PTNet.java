@@ -4,9 +4,9 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
 import petrinet.pt.abstr.AbstractPTNet;
-import util.ReachabilityUtils;
 
 public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{
 	

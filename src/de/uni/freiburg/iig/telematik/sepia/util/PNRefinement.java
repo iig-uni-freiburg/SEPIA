@@ -1,4 +1,4 @@
-package util;
+package de.uni.freiburg.iig.telematik.sepia.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
