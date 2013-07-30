@@ -36,6 +36,11 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		super(places, transitions, initialMarking);
 	}	
 	
+	@Override
+	public String defaultTokenColor(){
+		return CONTROL_FLOW_TOKEN_COLOR;
+	}
+	
 	public Collection<P> getInputPlaces(){
 		return getSourcePlaces();
 	}

@@ -28,14 +28,21 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 	}
 	
 	private void initialize(boolean addDefaultConstraint) {
-		constraint = new Multiset<String>();
 		if(addDefaultConstraint){
-			try {
-				addConstraint(AbstractCPN.DEFAULT_TOKEN_COLOR, 1);
-			} catch (ParameterException e) {
-				e.printStackTrace();
-			}
+			constraint = getDefaultConstraint();
+		} else {
+			constraint = new Multiset<String>();
 		}
+	}
+	
+	public Multiset<String> getDefaultConstraint(){
+		Multiset<String> defaultConstraint = new Multiset<String>();
+		try {
+			defaultConstraint.add(AbstractCPN.DEFAULT_TOKEN_COLOR);
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return defaultConstraint;
 	}
 
 	public void addConstraint(String color, Integer number) throws ParameterException{

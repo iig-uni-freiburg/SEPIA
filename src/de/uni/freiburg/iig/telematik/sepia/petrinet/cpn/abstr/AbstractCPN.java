@@ -74,6 +74,9 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 		return colors;
 	}
 	
+	public String defaultTokenColor(){
+		return DEFAULT_TOKEN_COLOR;
+	}
 	
 	//------- Markings
 	
