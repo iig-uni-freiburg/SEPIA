@@ -31,7 +31,7 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 		constraint = new Multiset<String>();
 		if(addDefaultConstraint){
 			try {
-				addConstraint(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR, 1);
+				addConstraint(AbstractCPN.DEFAULT_TOKEN_COLOR, 1);
 			} catch (ParameterException e) {
 				e.printStackTrace();
 			}

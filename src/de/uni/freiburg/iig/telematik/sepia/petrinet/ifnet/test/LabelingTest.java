@@ -1,8 +1,11 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +15,7 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.Labeling;
@@ -243,7 +246,7 @@ public class LabelingTest {
 		
 	
 		try {									
-			assertEquals(SecurityLevel.HIGH, l2.getAttributeClassification(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR));
+			assertEquals(SecurityLevel.HIGH, l2.getAttributeClassification(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR));
 			fail("Security level for controlflow was set!");
 		} catch (ParameterException e) {}
 		

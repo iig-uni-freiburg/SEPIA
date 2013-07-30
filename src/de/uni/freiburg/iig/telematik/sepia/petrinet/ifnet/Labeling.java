@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
+import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 
@@ -206,7 +206,7 @@ public class Labeling {
 		boolean modified = false;
 		for(String attribute: attributes){
 			
-			if(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR.equals(attribute))
+			if(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR.equals(attribute))
 				continue;
 								
 			if(this.attributes.add(attribute)){

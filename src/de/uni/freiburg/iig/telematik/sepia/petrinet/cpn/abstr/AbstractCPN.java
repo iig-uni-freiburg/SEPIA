@@ -33,13 +33,15 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 								  F extends AbstractCPNFlowRelation<P,T>, 
 								  M extends AbstractCPNMarking> 
 									extends AbstractPetriNet<P,T,F,M, Multiset<String>>{
+	
+	public static final String DEFAULT_TOKEN_COLOR = "black";
 	/**
 	 * String format for plain output.
 	 * @see #toString()
 	 */
 	private static final String toStringFormat = "Petri-Net: %n          places: %s %n     transitions: %s %n   flow-relation: %n%s %n initial marking: %s";
 
-	public static final String CONTROL_FLOW_TOKEN_COLOR = "black";
+	
 	/**
 	 * Creates a new Colored Petri net.
 	 */

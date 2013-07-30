@@ -10,11 +10,11 @@ import java.util.Set;
 
 import de.invation.code.toval.constraint.AbstractConstraint;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 
 public class RegularIFNetTransition extends AbstractIFNetTransition {
 	
@@ -103,7 +103,7 @@ public class RegularIFNetTransition extends AbstractIFNetTransition {
 	
 	public void setAccessMode(String tokenColor, Collection<AccessMode> colorAccessModes) throws ParameterException{
 		Validate.notNull(tokenColor);
-		if(tokenColor.equals(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR))
+		if(tokenColor.equals(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot set access mode for control flow token color.");
 		Validate.notNull(colorAccessModes);
 		Validate.noNullElements(colorAccessModes);

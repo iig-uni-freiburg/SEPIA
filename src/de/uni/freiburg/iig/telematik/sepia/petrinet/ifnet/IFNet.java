@@ -211,7 +211,7 @@ public class IFNet extends AbstractCWN<IFNetPlace, AbstractIFNetTransition, IFNe
 			
 			// Check if all produced colors have label LOW
 			Set<String> producedColors = transition.getProducedColors();
-			producedColors.remove(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR);
+			producedColors.remove(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR);
 			for(String outputColor: producedColors){
 				try {
 					if(getAnalysisContext().getLabeling().getAttributeClassification(outputColor) != SecurityLevel.LOW)

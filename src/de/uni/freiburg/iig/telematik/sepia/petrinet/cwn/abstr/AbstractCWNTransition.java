@@ -35,9 +35,9 @@ public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? 
 		super.checkValidity();
 		// Check control flow dependency.
 		// -> At least one control flow token must be consumed and produced.
-		if(!getConsumedColors().contains(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR))
+		if(!getConsumedColors().contains(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR))
 			throw new PNValidationException("Transition must consume at least one control flow token: " + this);
-		if(!getProducedColors().contains(AbstractCPN.CONTROL_FLOW_TOKEN_COLOR))
+		if(!getProducedColors().contains(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR))
 			throw new PNValidationException("Transition must produce at least one control flow token: " + this);
 	}
 

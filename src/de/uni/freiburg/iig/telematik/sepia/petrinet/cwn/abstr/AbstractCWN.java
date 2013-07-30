@@ -24,6 +24,8 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 								  M extends AbstractCWNMarking> 
 
 									extends AbstractCPN<P,T,F,M>{
+	
+	public static final String CONTROL_FLOW_TOKEN_COLOR = "black";
 
 	public AbstractCWN() {
 		super();
