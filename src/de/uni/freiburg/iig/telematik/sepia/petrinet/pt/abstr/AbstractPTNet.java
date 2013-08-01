@@ -29,7 +29,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 	 * String format for PNML output.
 	 * @see PTNet#toPNML()
 	 */
-	private final String pnmlFormat = "<pnml><net id=\"%s\" type=\"http://www.informatik.hu-berlin.de/top/pnml/basicPNML.rng\">%n%s</net>%n</pnml>%n";
+	private final String pnmlFormat = "<pnml><net id=\"%s\" type=\"http://www.pnml.org/version-2009/grammar/ptnet.pntd\">%n%s</net>%n</pnml>%n";
 	/**
 	 * String format for plain output.
 	 * @see #toString()
