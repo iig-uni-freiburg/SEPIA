@@ -15,13 +15,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 
 
-public class PNMLParser {
+public class OldPNMLParser {
 	private static PTNet petriNet;
 	private static NodeType nodeType;
 	private static String lastPlace;
 	private static String lastTransition;
 	private static String nodeID;
 	
+	@SuppressWarnings("incomplete-switch")
 	public static PTNet parsePNML(String path, boolean replaceSpacesInTransitionLabels) throws XMLStreamException, ParameterException {
 		PTMarking marking = new PTMarking();
 		petriNet = new PTNet();
