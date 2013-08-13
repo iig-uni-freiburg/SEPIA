@@ -63,8 +63,6 @@ public class PNMLParser implements ParserInterface {
 	 * 
 	 * @param pntdURI
 	 * @return
-	 * @throws SAXException
-	 *             If the net type can't be determined.
 	 * @throws ParameterException 
 	 * @throws PNMLParserException 
 	 */
@@ -129,27 +127,28 @@ public class PNMLParser implements ParserInterface {
 			GraphicalPN<P, T, F, M, S> 
 	
 			parse(File pnmlFile, boolean verifySchema) throws IOException, ParserException, ParameterException {
-		
+
 		Validate.notNull(pnmlFile);
-		
+
 		Document pnmlDocument = readPNMLFile(pnmlFile);
 		String netTypeStringURI = getPNMLTypeURI(pnmlDocument);
 		NetType netType = getPNMLType(netTypeStringURI);
-		
-		if(verifySchema){
+
+		if (verifySchema) {
 			verifySchema(pnmlFile, NetType.getURL(netType));
 		}
-		
-		switch(netType){
-		case PTNet: return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
-		case CPN: //TODO:
+
+		switch (netType) {
+		case PTNet:
+			return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
+		case CPN: // TODO:
 			break;
-		case CWN: //TODO:
+		case CWN: // TODO:
 			break;
-		case IFNet: //TODO:
+		case IFNet: // TODO:
 			break;
 		}
-		
+
 		return null;
 	}
 
@@ -177,20 +176,21 @@ public class PNMLParser implements ParserInterface {
 			throw new IOException("The given PNML file doesn't exist.");
 		if (!pnmlFile.canRead())
 			throw new IOException("The given PNML file exists but is not readable.");
-		
-		try{
-		// Check if PNML file is well-formed and return the DOM document
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document pnmlDocument = dBuilder.parse(pnmlFile);
-		pnmlDocument.getDocumentElement().normalize();
+
+		Document pnmlDocument = null;
+		try {
+			// Check if PNML file is well-formed and return the DOM document
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			pnmlDocument = dBuilder.parse(pnmlFile);
+			pnmlDocument.getDocumentElement().normalize();
 		} catch (ParserConfigurationException e) {
 			throw new XMLParserException();
 		} catch (SAXException e) {
 			throw new XMLParserException(de.invation.code.toval.parser.XMLParserException.ErrorCode.TAGSTRUCTURE);
 		}
 
-		return null;
+		return pnmlDocument;
 	}
 
 //	/**
