@@ -3,9 +3,10 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -476,21 +477,6 @@ public class DeclassificationTransitionTest {
 		assertTrue(dt.getName().equals("dec"));
 		assertTrue(dt.getName().equals(dt.getLabel()));
 		assertFalse(dt.isSilent());		
-		
-	}
-	
-	
-	@Test
-	public void testToPNML() {
-		
-		DeclassificationTransition dt = null;
-		try {
-			dt = new DeclassificationTransition(dSNet, "dec");
-		} catch (ParameterException e) {
-			fail("Cannot create DeclassificationTransition.");
-		}
-		
-		assertNull(dt.toPNML());
 		
 	}
 

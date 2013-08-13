@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 
 public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? extends AbstractCWNPlace<E>, 
@@ -39,12 +38,6 @@ public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? 
 			throw new PNValidationException("Transition must consume at least one control flow token: " + this);
 		if(!getProducedColors().contains(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR))
 			throw new PNValidationException("Transition must produce at least one control flow token: " + this);
-	}
-
-	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

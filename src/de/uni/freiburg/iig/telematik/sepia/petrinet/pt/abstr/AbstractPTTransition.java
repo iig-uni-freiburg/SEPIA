@@ -5,8 +5,6 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? extends AbstractPTPlace<E>, ? extends AbstractPTTransition<E>>> extends AbstractTransition<E,Integer>{
-
-private final String pnmlFormat = "<transition id=\"%s\">%n <name><text>%s</text></name>%n</transition>%n";
 	
 	protected AbstractPTTransition(){
 		super();
@@ -81,9 +79,6 @@ private final String pnmlFormat = "<transition id=\"%s\">%n <name><text>%s</text
 		return result;
 	}
 
-	@Override
-	public String toPNML() {
-		return String.format(pnmlFormat, getName(), getLabel());
-	}
+
 	
 }

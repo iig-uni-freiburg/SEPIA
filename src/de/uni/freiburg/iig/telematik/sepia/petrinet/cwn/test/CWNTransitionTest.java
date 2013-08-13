@@ -152,11 +152,6 @@ public class CWNTransitionTest {
 			} catch (PNValidationException e) {
 			}
 			
-			
-			//To PNML returns null always
-			String pnml = t0.toPNML(); 
-			assertNull(pnml);
-			
 	}
 	
 	

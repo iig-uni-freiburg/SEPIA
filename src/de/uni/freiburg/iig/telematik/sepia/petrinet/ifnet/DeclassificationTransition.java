@@ -110,12 +110,6 @@ public class DeclassificationTransition extends AbstractIFNetTransition{
 	}
 
 	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected DeclassificationTransition newInstance() {
 		return new DeclassificationTransition();
 	}

@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn;
 
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNPlace;
 
@@ -16,12 +15,6 @@ public class CWNPlace extends AbstractCWNPlace<CWNFlowRelation> {
 
 	public CWNPlace(String name) throws ParameterException {
 		super(name);
-	}
-
-	@Override
-	public String toPNML(Multiset<String> initialMarking) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

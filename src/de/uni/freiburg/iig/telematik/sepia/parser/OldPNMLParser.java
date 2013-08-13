@@ -134,9 +134,5 @@ public class OldPNMLParser {
 	
 	private enum NodeType {PLACE, TRANSITION, ARC};
 	
-	public static void main(String[] args) throws Exception {
-		PTNet net = PNMLParser.parsePNML("/Users/stocker/Desktop/test.pnml", true);
-		System.out.println(net);
-	}
 
 }

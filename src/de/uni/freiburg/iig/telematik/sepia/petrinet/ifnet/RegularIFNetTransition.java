@@ -284,14 +284,6 @@ public class RegularIFNetTransition extends AbstractIFNetTransition {
 	}
 
 	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-
-	@Override
 	public RegularIFNetTransition clone() {
 		RegularIFNetTransition result = (RegularIFNetTransition) super.clone();
 		try {

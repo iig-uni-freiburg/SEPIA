@@ -26,12 +26,6 @@ public class CWNTransition extends AbstractCWNTransition<CWNFlowRelation> {
 	}
 
 	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected CWNTransition newInstance() {
 		return new CWNTransition();
 	}

@@ -177,13 +177,5 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		return newMarking;
 	}
 	
-	//------- toString ----------------------------------------------------------------------
-	
-	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 
 }

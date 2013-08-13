@@ -48,13 +48,7 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 		return new CWNFlowRelation(transition, place);
 	}
 	
-	//------- toString -----------------------------------------------------------------------------
 
-	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 //	
 //	public static void main(String[] args) throws Exception{
 //		CWN cwn = new CWN();

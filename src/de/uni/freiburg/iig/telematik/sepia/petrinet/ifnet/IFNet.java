@@ -10,13 +10,12 @@ import java.util.Set;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
@@ -265,13 +264,6 @@ public class IFNet extends AbstractCWN<IFNetPlace, AbstractIFNetTransition, IFNe
 	}
 	
 
-	//------- toString -----------------------------------------------------------------------------
-	
-	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 //	public static void main(String[] args) throws Exception{
 //		SNet snet = new SNet();

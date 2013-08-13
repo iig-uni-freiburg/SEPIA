@@ -1136,14 +1136,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	public abstract AbstractPetriNet<P,T,F,M,S> newInstance();
 	
-	//------- toString -------------------------------------------------------------------------------
-
-	/**
-	 * Returns a PNML description of the Petri net.
-	 * @return A string describing the net in the PNML format.
-	 */
-	public abstract String toPNML();
-	
 	public enum Boundedness {BOUNDED, UNBOUNDED, UNKNOWN}
 	
 }

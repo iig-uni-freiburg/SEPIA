@@ -9,7 +9,6 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 
 /**
@@ -25,11 +24,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
  */									
 public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends AbstractPTTransition<F>, F extends AbstractPTFlowRelation<P,T>, M extends AbstractPTMarking> extends AbstractPetriNet<P, T, F, M, Integer> {
 
-	/**
-	 * String format for PNML output.
-	 * @see PTNet#toPNML()
-	 */
-	private final String pnmlFormat = "<pnml><net id=\"%s\" type=\"http://www.pnml.org/version-2009/grammar/ptnet.pntd\">%n%s</net>%n</pnml>%n";
 	/**
 	 * String format for plain output.
 	 * @see #toString()
@@ -109,8 +103,6 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 		F newRelation = super.addFlowRelationTP(transitionName, placeName);
 		if(newRelation != null){
 			newRelation.setWeight(weight);
-		} else {
-			System.out.println("super null");
 		}
 		return newRelation;
 	}
@@ -136,27 +128,6 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 			relationBuilder.append('\n');
 		}
 		return String.format(toStringFormat, name, places.values(), transitions.values(), relationBuilder.toString(), initialMarking, marking);
-	}
-	
-	@Override
-	public String toPNML() {
-		StringBuilder builder = new StringBuilder();
-		String newLine = System.getProperty("line.separator");
-		for(P p: getPlaces())
-			try {
-				builder.append(p.toPNML(getInitialMarking().get(p.getName())));
-			} catch (ParameterException e) {
-				e.printStackTrace();
-			}
-		builder.append(newLine);
-		for(T t: getTransitions())
-			builder.append(t.toPNML());
-		builder.append(newLine);
-		int count = 0;
-		for(F r: getFlowRelations())
-			builder.append(r.toPNML(count++));
-		builder.append(newLine);
-		return String.format(pnmlFormat, getName(), builder.toString());
 	}
 	
 }

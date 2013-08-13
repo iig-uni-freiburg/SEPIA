@@ -26,12 +26,6 @@ public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	}
 
 	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected CPNTransition newInstance() {
 		return new CPNTransition();
 	}

@@ -64,14 +64,6 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	}
 	
 	
-	//------- toString ----------------------------------------------------------------------
-	
-	@Override
-	public String toPNML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public static void main(String[] args) throws Exception{
 		CPN net = new CPN();
 		net.addPlace("p1");
