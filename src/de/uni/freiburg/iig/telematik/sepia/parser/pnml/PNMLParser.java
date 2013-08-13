@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
 
+import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,8 +19,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPetriNet;
+import de.invation.code.toval.parser.ParserException;
+import de.invation.code.toval.parser.XMLParserException;
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.export.NetType;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNMLParserException;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.ParserInterface;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
@@ -47,29 +58,6 @@ public class PNMLParser implements ParserInterface {
 	/** Relax NG namespace */
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";
 
-	/** net type/PNTD reference table */
-	private static HashMap<String, String> NettypePNTDsRefs = null;
-	/** URI/net type reference table */
-	private static HashMap<String, String> URINettypeRefs = null;
-
-	/**
-	 * Returns the net type/PNTD reference table.<br>
-	 * Because of the lazy initialization of a static variable, the method must be synchronized.
-	 */
-	public synchronized static HashMap<String, String> getNettypePNTDsRefs() {
-		if (NettypePNTDsRefs == null) {
-			NettypePNTDsRefs = new HashMap<String, String>();
-
-			NettypePNTDsRefs.put("ptnet", "http://www.pnml.org/version-2009/grammar/ptnet.pntd");
-			NettypePNTDsRefs.put("cpnet", "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cpnet.pntd");
-			NettypePNTDsRefs.put("cwnet", "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cwnet.pntd");
-			NettypePNTDsRefs.put("ifnet", "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ifnet.pntd");
-			NettypePNTDsRefs.put("yasperptnet", "http://www.yasper.org/specs/epnml-2.0/epnml20.pntd");
-		}
-
-		return NettypePNTDsRefs;
-	}
-
 	/**
 	 * TODO
 	 * 
@@ -77,14 +65,17 @@ public class PNMLParser implements ParserInterface {
 	 * @return
 	 * @throws SAXException
 	 *             If the net type can't be determined.
+	 * @throws ParameterException 
+	 * @throws PNMLParserException 
 	 */
-	public static String getPNMLType(String pntdURI) throws SAXException {
-		String pnmlType = getURINettypeRefs().get(pntdURI);
-		if (pnmlType == null) {
-			throw new SAXException("Can't determine the net type.");
-		} else {
-			return pnmlType;
+	public static NetType getPNMLType(String pntdURI) throws ParameterException, PNMLParserException {
+		Validate.notNull(pntdURI);
+		
+		NetType netType = NetType.getNetType(pntdURI);
+		if (netType == null) {
+			throw new PNMLParserException(ErrorCode.INVALID_NET_TYPE, pntdURI);
 		}
+		return netType;
 	}
 
 	/**
@@ -94,43 +85,32 @@ public class PNMLParser implements ParserInterface {
 	 * @return
 	 * @throws SAXException
 	 *             If the net element can't be found or the net element has no type-attribute
+	 * @throws PNMLParserException 
 	 */
-	public static String getPNMLTypeURI(Document pnmlDocument) throws SAXException {
+	public static String getPNMLTypeURI(Document pnmlDocument) throws PNMLParserException {
 		// Get all elements named net, which should result in only one element
 		NodeList netElement = pnmlDocument.getElementsByTagName("net");
 		if (netElement.getLength() != 1)
-			throw new SAXException("The net element can't be found.");
+			throw new PNMLParserException(ErrorCode.MISSING_NET_TAG);
 		Node netTypeURINode = netElement.item(0).getAttributes().getNamedItem("type");
 		if (netTypeURINode == null)
-			throw new SAXException("The net element has no type attribute.");
+			throw new PNMLParserException(ErrorCode.MISSING_NET_TYPE_ATTRIBUTE);
 		// Read and return type attribute
 		String netTypeURI = netTypeURINode.getNodeValue();
 
 		return netTypeURI;
 	}
+	
+	public <P extends AbstractPlace<F,S>, 
+			T extends AbstractTransition<F,S>, 
+			F extends AbstractFlowRelation<P,T,S>, 
+			M extends AbstractMarking<S>, 
+			S extends Object> 
 
-	/**
-	 * Returns the URI/net type reference table.<br>
-	 * Because of the lazy initialization of a static variable, the method must be synchronized.
-	 */
-	public synchronized static HashMap<String, String> getURINettypeRefs() {
-		if (URINettypeRefs == null) {
-			URINettypeRefs = new HashMap<String, String>();
+			GraphicalPN<P, T, F, M, S> 
 
-			// P/T nets from the official specification
-			URINettypeRefs.put("http://www.pnml.org/version-2009/grammar/ptnet", "ptnet");
-
-			// IFNML net types
-			URINettypeRefs.put("http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cpnet", "cpnet");
-			URINettypeRefs.put("http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cwnet", "cwnet");
-			URINettypeRefs.put("http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ifnet", "ifnet");
-
-			// Yasper nets, interpreted as P/T nets
-			URINettypeRefs.put("http://www.yasper.org/specs/epnml-1.1", "yasperptnet");
-			URINettypeRefs.put("http://www.yasper.org/specs/epnml-2.0", "yasperptnet");
-		}
-
-		return URINettypeRefs;
+	parse(File pnmlFile) throws IOException, ParserException, ParameterException {
+		return parse(pnmlFile, true);
 	}
 
 	/**
@@ -138,20 +118,39 @@ public class PNMLParser implements ParserInterface {
 	 * 
 	 * @param pnmlFile
 	 * @return
+	 * @throws ParameterException 
 	 */
-	public GraphicalPetriNet<?, ?, ?, ?, ?> parse(File pnmlFile) throws Exception {
-		validatePNML(pnmlFile); // TODO
-
+	public <P extends AbstractPlace<F,S>, 
+			T extends AbstractTransition<F,S>, 
+			F extends AbstractFlowRelation<P,T,S>, 
+			M extends AbstractMarking<S>, 
+			S extends Object> 
+	
+			GraphicalPN<P, T, F, M, S> 
+	
+			parse(File pnmlFile, boolean verifySchema) throws IOException, ParserException, ParameterException {
+		
+		Validate.notNull(pnmlFile);
+		
 		Document pnmlDocument = readPNMLFile(pnmlFile);
-		String pnmlType = getPNMLType(getPNMLTypeURI(pnmlDocument));
-
-		GraphicalPetriNet<?, ?, ?, ?, ?> petriNet = null;
-
-		if (pnmlType.equals("ptnet")) {
-			petriNet = PNMLPTNetParser.parse(pnmlDocument);
+		String netTypeStringURI = getPNMLTypeURI(pnmlDocument);
+		NetType netType = getPNMLType(netTypeStringURI);
+		
+		if(verifySchema){
+			verifySchema(pnmlFile, NetType.getURL(netType));
 		}
-
-		return petriNet;
+		
+		switch(netType){
+		case PTNet: return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
+		case CPN: //TODO:
+			break;
+		case CWN: //TODO:
+			break;
+		case IFNet: //TODO:
+			break;
+		}
+		
+		return null;
 	}
 
 	/**
@@ -160,93 +159,103 @@ public class PNMLParser implements ParserInterface {
 	 * @param pnmlFile
 	 *            PNML file to read
 	 * @return Readable, well-formed and normalized PNML document
+	 * @throws ParameterException 
 	 * @throws IOException
 	 *             If the given PNML file doesn't exist or isn't readable
+	 * @throws XMLParserException 
+	 * @throws XMLParseException 
 	 * @throws ParserConfigurationException
 	 *             If the XML parser is not configured very well
 	 * @throws SAXException
 	 *             If the given XML file is not well-formed
 	 */
-	public static Document readPNMLFile(File pnmlFile) throws IOException, ParserConfigurationException, SAXException {
-		if (pnmlFile == null) {
-			throw new NullPointerException("The given PNML file is null.");
-		} else {
-			// Check if pnmlFile exists and is readable
-			if (!pnmlFile.exists())
-				throw new IOException("The given PNML file doesn't exist.");
-			if (!pnmlFile.canRead())
-				throw new IOException("The given PNML file exists but is not readable.");
+	public static Document readPNMLFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
+		Validate.notNull(pnmlFile);
 
-			// Check if PNML file is well-formed and return the DOM document
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document pnmlDocument = dBuilder.parse(pnmlFile);
-			pnmlDocument.getDocumentElement().normalize();
-
-			return pnmlDocument;
+		// Check if pnmlFile exists and is readable
+		if (!pnmlFile.exists())
+			throw new IOException("The given PNML file doesn't exist.");
+		if (!pnmlFile.canRead())
+			throw new IOException("The given PNML file exists but is not readable.");
+		
+		try{
+		// Check if PNML file is well-formed and return the DOM document
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document pnmlDocument = dBuilder.parse(pnmlFile);
+		pnmlDocument.getDocumentElement().normalize();
+		} catch (ParserConfigurationException e) {
+			throw new XMLParserException();
+		} catch (SAXException e) {
+			throw new XMLParserException(de.invation.code.toval.parser.XMLParserException.ErrorCode.TAGSTRUCTURE);
 		}
+
+		return null;
 	}
 
-	/**
-	 * TODO
-	 * 
-	 * @param pnmlFile
-	 * @return <code>true</code> if the pnml is valid, <code>false</code> otherwise
-	 * @throws IOException
-	 *             The PNML file doesn't exist or is not readable
-	 * @throws ParserConfigurationException
-	 *             The parser isn't configured very well
-	 * @throws SAXException
-	 *             Parsing error (not well-formed or no readable net type)
-	 * @throws VerifierConfigurationException
-	 *             The Relax NG verifier isn't configured very well
-	 */
-	public static boolean validatePNML(File pnmlFile) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
-		if (pnmlFile == null) {
-			throw new NullPointerException("The given PNML file is null.");
-		} else {
-			// Read PNML document and check if it is well-formed
-			Document pnmlDocument = readPNMLFile(pnmlFile);
+//	/**
+//	 * TODO
+//	 * 
+//	 * @param pnmlFile
+//	 * @return <code>true</code> if the pnml is valid, <code>false</code> otherwise
+//	 * @throws IOException
+//	 *             The PNML file doesn't exist or is not readable
+//	 * @throws ParserConfigurationException
+//	 *             The parser isn't configured very well
+//	 * @throws SAXException
+//	 *             Parsing error (not well-formed or no readable net type)
+//	 * @throws VerifierConfigurationException
+//	 *             The Relax NG verifier isn't configured very well
+//	 */
+//	public static boolean validatePNML(File pnmlFile) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
+//		
+//		if (pnmlFile == null) {
+//			throw new NullPointerException("The given PNML file is null.");
+//		} else {
+//			// Read PNML document and check if it is well-formed
+//			Document pnmlDocument = readPNMLFile(pnmlFile);
+//
+//			// Get type
+//			String pnmlTypeURI = getPNMLTypeURI(pnmlDocument);
+//			String pnmlType = getPNMLType(pnmlTypeURI);
+//
+//			// Validate
+//			URL pntdUrl = new URL(getNettypePNTDsRefs().get(pnmlType));
+//
+//			return verifySchema(pnmlFile, pntdUrl);
+//		}
+//	}
+	
 
-			// Get type
-			String pnmlTypeURI = getPNMLTypeURI(pnmlDocument);
-			String pnmlType = getPNMLType(pnmlTypeURI);
 
-			// Validate
-			URL pntdUrl = new URL(getNettypePNTDsRefs().get(pnmlType));
-
-			return verifyPNMLonPNTD(pnmlFile, pntdUrl);
-		}
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @param pnmlFile
-	 * @param pntdUrl
-	 * @return <code>true</code> if the PNML is valid, <code>false</code> otherwise
-	 * @throws IOException
-	 *             The PNML file doesn't exist or is not readable
-	 * @throws ParserConfigurationException
-	 *             The parser isn't configured very well
-	 * @throws SAXException
-	 *             Parsing error (not well-formed or no readable net type)
-	 * @throws VerifierConfigurationException
-	 *             The Relax NG verifier isn't configured very well
-	 */
-	public static boolean validatePNML(File pnmlFile, URL pntdUrl) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
-		if (pnmlFile == null) {
-			throw new NullPointerException("The given PNML file is null.");
-		} else if (pntdUrl == null) {
-			throw new NullPointerException("The given PNTD URL is null.");
-		} else {
-			// Read PNML document and check if it is well-formed. Return value can be ignored.
-			readPNMLFile(pnmlFile);
-
-			// Validate
-			return verifyPNMLonPNTD(pnmlFile, pntdUrl);
-		}
-	}
+//	/**
+//	 * TODO
+//	 * 
+//	 * @param pnmlFile
+//	 * @param pntdUrl
+//	 * @return <code>true</code> if the PNML is valid, <code>false</code> otherwise
+//	 * @throws IOException
+//	 *             The PNML file doesn't exist or is not readable
+//	 * @throws ParserConfigurationException
+//	 *             The parser isn't configured very well
+//	 * @throws SAXException
+//	 *             Parsing error (not well-formed or no readable net type)
+//	 * @throws VerifierConfigurationException
+//	 *             The Relax NG verifier isn't configured very well
+//	 */
+//	public static boolean validatePNML(File pnmlFile, URL pntdUrl) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
+//		if (pnmlFile == null) {
+//			throw new NullPointerException("The given PNML file is null.");
+//		} else if (pntdUrl == null) {
+//			throw new NullPointerException("The given PNTD URL is null.");
+//		} else {
+//			// Read PNML document and check if it is well-formed. Return value can be ignored.
+//			readPNMLFile(pnmlFile);
+//
+//			// Validate
+//			return verifyPNMLonPNTD(pnmlFile, pntdUrl);
+//		}
+//	}
 
 	/**
 	 * TODO
@@ -258,18 +267,33 @@ public class PNMLParser implements ParserInterface {
 	 *             If the Relax NG verifier is not configured very well
 	 * @throws IOException
 	 *             If the PNTD can't be found or is not readable
+	 * @throws PNMLParserException 
 	 * @throws SAXException
 	 *             If the PNML doesn't fit the PNTD
 	 */
-	private static boolean verifyPNMLonPNTD(File pnmlFile, URL pntdUrl) throws VerifierConfigurationException, IOException, SAXException {
+	private static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
-		VerifierFactory factory = VerifierFactory.newInstance(RNG_NAMESPACE);
+		VerifierFactory factory = null;
+		try {
+			factory = VerifierFactory.newInstance(RNG_NAMESPACE);
+		} catch (VerifierConfigurationException e) {
+			throw new PNMLParserException(ErrorCode.VALIDATION_CONFIGURATION_ERROR, e.getMessage());
+		}
 		// Open stream to PNTD
 		URLConnection connection = pntdUrl.openConnection();
 		InputStream in = connection.getInputStream();
 		// Create verifier with PNTD input stream and validate
-		Verifier verifier = factory.newVerifier(in);
-
-		return verifier.verify(pnmlFile);
+		Verifier verifier = null;
+		try {
+			verifier = factory.newVerifier(in);
+		} catch (Exception e) {
+			throw new PNMLParserException(ErrorCode.VALIDATION_CONFIGURATION_ERROR, e.getMessage());
+		}
+		
+		try {
+			verifier.verify(pnmlFile);
+		} catch (SAXException e) {
+			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, e.getMessage());
+		}
 	}
 }

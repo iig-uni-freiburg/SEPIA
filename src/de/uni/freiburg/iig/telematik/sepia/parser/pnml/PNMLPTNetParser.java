@@ -2,12 +2,13 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 
 import org.w3c.dom.Document;
 
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.PTGraphics;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 
 /**
  * TODO
@@ -22,10 +23,21 @@ public class PNMLPTNetParser {
 	 * @param pnmlDocument
 	 * @return
 	 */
-	public static GraphicalPetriNet<?, ?, ?, ?, ?> parse(Document pnmlDocument) {
-		PTNet net = new PTNet();
-		GraphicalPetriNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> graphicalNet = new GraphicalPetriNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>(net);
+	public static <P extends AbstractPlace<F,S>, 
+				   T extends AbstractTransition<F,S>, 
+				   F extends AbstractFlowRelation<P,T,S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object> 
 
-		return graphicalNet;
+				  GraphicalPTNet
+	
+				  parse(Document pnmlDocument) {
+		
+		PTNet net = new PTNet();
+		PTGraphics graphics = new PTGraphics();
+		
+		
+		
+		return new GraphicalPTNet(net, graphics);
 	}
 }
