@@ -1,7 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
-import java.util.HashMap;
-
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -10,8 +8,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
- * The GraphicalPetriNet is a container class for the {@link AbstractPetriNet} and adds some graphical information to the net. The components of the net are
- * mapped in {@link HashMap}s to their graphical information.
+ * The GraphicalPetriNet is a container class for the {@link AbstractPetriNet} and adds some graphical information to the net.
  * </p>
  * 
  * @author Adrian Lange
@@ -37,7 +34,7 @@ public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends Abstr
 	 */
 	public GraphicalPN(AbstractPetriNet<P, T, F, M, S> petriNet, PNGraphics<P, T, F, M, S> petriNetGraphics) {
 		setPetriNet(petriNet);
-		
+		setPetriNetGraphics(petriNetGraphics);
 	}
 
 	/**
@@ -46,20 +43,27 @@ public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends Abstr
 	public AbstractPetriNet<P, T, F, M, S> getPetriNet() {
 		return petriNet;
 	}
-	
+
 	/**
-	 * @param petriNet the abstractPetriNet to set
+	 * @param petriNet
+	 *            the petriNet to set
 	 */
 	public void setPetriNet(AbstractPetriNet<P, T, F, M, S> petriNet) {
 		this.petriNet = petriNet;
 	}
 
+	/**
+	 * @return the {@link PNGraphics}
+	 */
 	public PNGraphics<P, T, F, M, S> getPetriNetGraphics() {
 		return petriNetGraphics;
 	}
 
+	/**
+	 * @param petriNetGraphics
+	 *            the petriNetGraphics to set
+	 */
 	public void setPetriNetGraphics(PNGraphics<P, T, F, M, S> petriNetGraphics) {
 		this.petriNetGraphics = petriNetGraphics;
 	}
-
 }

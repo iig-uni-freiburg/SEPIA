@@ -6,14 +6,12 @@ import java.util.Set;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
- * The GraphicalPetriNet is a container class for the {@link AbstractPetriNet} and adds some graphical information to the net. The components of the net are
- * mapped in {@link HashMap}s to their graphical information.
+ * TODO
  * </p>
  * 
  * @author Adrian Lange

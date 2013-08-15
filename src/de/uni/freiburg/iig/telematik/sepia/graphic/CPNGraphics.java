@@ -6,7 +6,11 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 
-
-public class CPNGraphics extends PNGraphics<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>>{
-	
+/**
+ * TODO
+ * 
+ * @author Thomas Stocker
+ * @author Adrian Lange
+ */
+public class CPNGraphics extends PNGraphics<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
 }

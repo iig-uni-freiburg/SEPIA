@@ -29,15 +29,13 @@ public class PNMLPTNetParser {
 				   M extends AbstractMarking<S>, 
 				   S extends Object> 
 
-				  GraphicalPTNet
+					GraphicalPTNet
 	
 				  parse(Document pnmlDocument) {
-		
+
 		PTNet net = new PTNet();
 		PTGraphics graphics = new PTGraphics();
-		
-		
-		
+
 		return new GraphicalPTNet(net, graphics);
 	}
 }

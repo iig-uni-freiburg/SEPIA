@@ -13,22 +13,15 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
- * TODO
+ * A parser for graphical petri nets must serve a parsing method.
  * </p>
- * <ul>
- * <li>determine file type</li>
- * <li>call respective parser</li>
- * </ul>
  * 
  * @author Adrian Lange
  */
 public interface ParserInterface {
 
 	/**
-	 * TODO
-	 * 
-	 * @param file
-	 * @return
+	 * Parses the given file and returns a {@link GraphicalPN}.
 	 */
 	public <P extends AbstractPlace<F,S>, 
 	    	T extends AbstractTransition<F,S>, 

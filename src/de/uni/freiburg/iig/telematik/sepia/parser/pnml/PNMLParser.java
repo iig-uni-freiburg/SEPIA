@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -81,8 +80,6 @@ public class PNMLParser implements ParserInterface {
 	 * 
 	 * @param pnmlDocument
 	 * @return
-	 * @throws SAXException
-	 *             If the net element can't be found or the net element has no type-attribute
 	 * @throws PNMLParserException 
 	 */
 	public static String getPNMLTypeURI(Document pnmlDocument) throws PNMLParserException {
@@ -118,6 +115,7 @@ public class PNMLParser implements ParserInterface {
 	 * @return
 	 * @throws ParameterException 
 	 */
+	@SuppressWarnings("unchecked")
 	public <P extends AbstractPlace<F,S>, 
 			T extends AbstractTransition<F,S>, 
 			F extends AbstractFlowRelation<P,T,S>, 
@@ -158,15 +156,6 @@ public class PNMLParser implements ParserInterface {
 	 * @param pnmlFile
 	 *            PNML file to read
 	 * @return Readable, well-formed and normalized PNML document
-	 * @throws ParameterException 
-	 * @throws IOException
-	 *             If the given PNML file doesn't exist or isn't readable
-	 * @throws XMLParserException 
-	 * @throws XMLParseException 
-	 * @throws ParserConfigurationException
-	 *             If the XML parser is not configured very well
-	 * @throws SAXException
-	 *             If the given XML file is not well-formed
 	 */
 	public static Document readPNMLFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
@@ -193,83 +182,15 @@ public class PNMLParser implements ParserInterface {
 		return pnmlDocument;
 	}
 
-//	/**
-//	 * TODO
-//	 * 
-//	 * @param pnmlFile
-//	 * @return <code>true</code> if the pnml is valid, <code>false</code> otherwise
-//	 * @throws IOException
-//	 *             The PNML file doesn't exist or is not readable
-//	 * @throws ParserConfigurationException
-//	 *             The parser isn't configured very well
-//	 * @throws SAXException
-//	 *             Parsing error (not well-formed or no readable net type)
-//	 * @throws VerifierConfigurationException
-//	 *             The Relax NG verifier isn't configured very well
-//	 */
-//	public static boolean validatePNML(File pnmlFile) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
-//		
-//		if (pnmlFile == null) {
-//			throw new NullPointerException("The given PNML file is null.");
-//		} else {
-//			// Read PNML document and check if it is well-formed
-//			Document pnmlDocument = readPNMLFile(pnmlFile);
-//
-//			// Get type
-//			String pnmlTypeURI = getPNMLTypeURI(pnmlDocument);
-//			String pnmlType = getPNMLType(pnmlTypeURI);
-//
-//			// Validate
-//			URL pntdUrl = new URL(getNettypePNTDsRefs().get(pnmlType));
-//
-//			return verifySchema(pnmlFile, pntdUrl);
-//		}
-//	}
-	
-
-
-//	/**
-//	 * TODO
-//	 * 
-//	 * @param pnmlFile
-//	 * @param pntdUrl
-//	 * @return <code>true</code> if the PNML is valid, <code>false</code> otherwise
-//	 * @throws IOException
-//	 *             The PNML file doesn't exist or is not readable
-//	 * @throws ParserConfigurationException
-//	 *             The parser isn't configured very well
-//	 * @throws SAXException
-//	 *             Parsing error (not well-formed or no readable net type)
-//	 * @throws VerifierConfigurationException
-//	 *             The Relax NG verifier isn't configured very well
-//	 */
-//	public static boolean validatePNML(File pnmlFile, URL pntdUrl) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
-//		if (pnmlFile == null) {
-//			throw new NullPointerException("The given PNML file is null.");
-//		} else if (pntdUrl == null) {
-//			throw new NullPointerException("The given PNTD URL is null.");
-//		} else {
-//			// Read PNML document and check if it is well-formed. Return value can be ignored.
-//			readPNMLFile(pnmlFile);
-//
-//			// Validate
-//			return verifyPNMLonPNTD(pnmlFile, pntdUrl);
-//		}
-//	}
-
 	/**
 	 * TODO
 	 * 
 	 * @param pnmlFile
 	 * @param pntdUrl
 	 * @return
-	 * @throws VerifierConfigurationException
-	 *             If the Relax NG verifier is not configured very well
 	 * @throws IOException
 	 *             If the PNTD can't be found or is not readable
 	 * @throws PNMLParserException 
-	 * @throws SAXException
-	 *             If the PNML doesn't fit the PNTD
 	 */
 	private static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
