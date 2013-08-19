@@ -78,7 +78,6 @@ public class EdgeGraphics implements ObjectGraphics {
 		str.append("[");
 
 		if (positions.size() > 0) {
-			str.append("AAAAAAAAAAAAAAAAAAAAAA" + positions.size());
 			boolean posEmpty = true;
 			str.append("[");
 			for (int p = 0; p < positions.size(); p++) {

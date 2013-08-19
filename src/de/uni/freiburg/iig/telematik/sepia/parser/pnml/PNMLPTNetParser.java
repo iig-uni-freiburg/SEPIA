@@ -78,7 +78,7 @@ public class PNMLPTNetParser {
 			if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
 				Element arc = (Element) arcNodes.item(a);
 				// ID must be available in a valid net
-				// TODO arc id is ignored
+				// FIXME arc id is ignored
 				String sourceName = arc.getAttribute("source");
 				String targetName = arc.getAttribute("target");
 

@@ -155,33 +155,27 @@ public class PNMLElementReader {
 			}
 		} else if (elementType.equals("arc")) {
 			NodeList graphicsList = element.getElementsByTagName("graphics");
-			if (graphicsList.getLength() == 1) {
-				EdgeGraphics edgeGraphics = new EdgeGraphics();
-				Element graphics = (Element) graphicsList.item(0);
 
-				/*
-				 * FIXME Adrian Lange: Position tags aren't recognized! I have no idea why..
-				 * graphics.getElementsByTagName("position").getLength() always returns 0 in an arc graphics specification like
-				 * <graphics>
-				 *   <position x="20" y="20"/>
-				 *   <position x="20" y="40"/>
-				 * </graphics>
-				 */
+			for (int i = 0; i < graphicsList.getLength(); i++) {
+				if (graphicsList.item(i).getParentNode().equals(element)) {
+					EdgeGraphics edgeGraphics = new EdgeGraphics();
+					Element graphics = (Element) graphicsList.item(i);
 
-				// positions and line
-				if (graphics.getElementsByTagName("position").getLength() > 0) {
-					Vector<Position> positions = new Vector<Position>(graphics.getElementsByTagName("position").getLength());
-					for (int pos = 0; pos < graphics.getElementsByTagName("position").getLength(); pos++) {
-						positions.add(readPosition((Element) graphics.getElementsByTagName("position").item(pos)));
+					// positions and line
+					if (graphics.getElementsByTagName("position").getLength() > 0) {
+						Vector<Position> positions = new Vector<Position>(graphics.getElementsByTagName("position").getLength());
+						for (int pos = 0; pos < graphics.getElementsByTagName("position").getLength(); pos++) {
+							positions.add(readPosition((Element) graphics.getElementsByTagName("position").item(pos)));
+						}
+						edgeGraphics.setPositions(positions);
 					}
-					edgeGraphics.setPositions(positions);
-				}
-				if (graphics.getElementsByTagName("line").getLength() == 1) {
-					Node line = graphics.getElementsByTagName("line").item(0);
-					edgeGraphics.setLine(readLine((Element) line));
-				}
+					if (graphics.getElementsByTagName("line").getLength() == 1) {
+						Node line = graphics.getElementsByTagName("line").item(0);
+						edgeGraphics.setLine(readLine((Element) line));
+					}
 
-				return edgeGraphics;
+					return edgeGraphics;
+				}
 			}
 		} else if (elementType.equals("inscription")) {
 			NodeList graphicsList = element.getElementsByTagName("graphics");
