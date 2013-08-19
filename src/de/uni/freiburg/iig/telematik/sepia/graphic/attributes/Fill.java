@@ -142,9 +142,38 @@ public class Fill {
 	public static enum GradientRotation {
 		VERTICAL, HORIZONTAL, DIAGONAL;
 
+		public static GradientRotation getGradientRotation(String gradientRotationStr) {
+			if (gradientRotationStr.equals("vertical"))
+				return GradientRotation.VERTICAL;
+			else if (gradientRotationStr.equals("horizontal"))
+				return GradientRotation.HORIZONTAL;
+			else if (gradientRotationStr.equals("diagonal"))
+				return GradientRotation.DIAGONAL;
+			else
+				return null;
+		}
+
 		@Override
 		public String toString() {
 			return super.toString().toLowerCase();
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		str.append("Fill( ");
+		if (getColor() != null)
+			str.append("color:" + getColor() + " ");
+		if (getGradientColor() != null)
+			str.append("gradientColor:" + getGradientColor() + " ");
+		if (getGradientRotation() != null)
+			str.append("gradientRotation:" + getGradientRotation() + " ");
+		if (getImage() != null)
+			str.append("image:" + getImage() + " ");
+		str.append(")");
+
+		return str.toString();
 	}
 }

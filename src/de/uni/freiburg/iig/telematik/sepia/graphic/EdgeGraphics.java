@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
  * 
  * @author Adrian Lange
  */
-public class EdgeGraphics {
+public class EdgeGraphics implements ObjectGraphics {
 
 	/** Default position field */
 	public static final Vector<Position> DEFAULT_POSITIONS = new Vector<Position>();
@@ -68,5 +68,36 @@ public class EdgeGraphics {
 	 */
 	public void setLine(Line line) {
 		this.line = line;
+	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		boolean empty = true;
+
+		str.append("[");
+
+		if (positions.size() > 0) {
+			str.append("AAAAAAAAAAAAAAAAAAAAAA" + positions.size());
+			boolean posEmpty = true;
+			str.append("[");
+			for (int p = 0; p < positions.size(); p++) {
+				if (!posEmpty)
+					str.append(",");
+				str.append(positions.get(p));
+				posEmpty = false;
+			}
+			str.append("]");
+			empty = false;
+		}
+		if (line != DEFAULT_LINE) {
+			if (!empty)
+				str.append(",");
+			str.append(line);
+		}
+
+		str.append("]");
+
+		return str.toString();
 	}
 }

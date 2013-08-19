@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Offset;
  * 
  * @author Adrian Lange
  */
-public class AnnotationGraphics {
+public class AnnotationGraphics implements ObjectGraphics {
 
 	/** Default offset attribute */
 	public static final Offset DEFAULT_OFFSET = new Offset();
@@ -106,5 +106,39 @@ public class AnnotationGraphics {
 	 */
 	public void setFont(Font font) {
 		this.font = font;
+	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		boolean empty = true;
+
+		str.append("[");
+
+		if (offset != DEFAULT_OFFSET) {
+			str.append(offset);
+			empty = false;
+		}
+		if (fill != DEFAULT_FILL) {
+			if (!empty)
+				str.append(",");
+			str.append(fill);
+			empty = false;
+		}
+		if (line != DEFAULT_LINE) {
+			if (!empty)
+				str.append(",");
+			str.append(line);
+			empty = false;
+		}
+		if (font != DEFAULT_FONT) {
+			if (!empty)
+				str.append(",");
+			str.append(font);
+		}
+
+		str.append("]");
+
+		return str.toString();
 	}
 }

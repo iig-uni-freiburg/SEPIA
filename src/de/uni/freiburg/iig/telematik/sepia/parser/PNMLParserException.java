@@ -9,6 +9,7 @@ public class PNMLParserException extends ParserException {
 	private final String msg_InvalidNetType = "Unknown net type";
 	private final String msg_MissingNetTag = "Missing net tag";
 	private final String msg_MissingNetTypeAttribute = "Missing net type attribute";
+	private final String msg_NotOnOnePage = "Net must be defined on one page";
 	private final String msg_ValidationFailed = "PNML validation failed";
 	private final String msg_ValidationConfigurationError = "Misconfigured validation";
 
@@ -49,6 +50,9 @@ public class PNMLParserException extends ParserException {
 		case MISSING_NET_TYPE_ATTRIBUTE:
 			msg.append(msg_MissingNetTypeAttribute);
 			break;
+		case NOT_ON_ONE_PAGE:
+			msg.append(msg_NotOnOnePage);
+			break;
 		case VALIDATION_FAILED:
 			msg.append(msg_ValidationFailed);
 			break;
@@ -80,7 +84,7 @@ public class PNMLParserException extends ParserException {
 	}
 
 	public enum ErrorCode {
-		INVALID_NET_TYPE, MISSING_NET_TAG, MISSING_NET_TYPE_ATTRIBUTE, VALIDATION_FAILED, VALIDATION_CONFIGURATION_ERROR;
+		INVALID_NET_TYPE, MISSING_NET_TAG, MISSING_NET_TYPE_ATTRIBUTE, NOT_ON_ONE_PAGE, VALIDATION_FAILED, VALIDATION_CONFIGURATION_ERROR;
 	}
 
 }

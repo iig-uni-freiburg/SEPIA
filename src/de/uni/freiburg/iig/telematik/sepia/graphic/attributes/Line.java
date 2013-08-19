@@ -139,6 +139,15 @@ public class Line {
 	public static enum Shape {
 		LINE, CURVE;
 
+		public static Shape getShape(String shapeStr) {
+			if (shapeStr.equals("line"))
+				return Shape.LINE;
+			else if (shapeStr.equals("curve"))
+				return Shape.CURVE;
+			else
+				return null;
+		}
+
 		@Override
 		public String toString() {
 			return super.toString().toLowerCase();
@@ -153,9 +162,38 @@ public class Line {
 	public static enum Style {
 		SOLID, DASH, DOT;
 
+		public static Style getStyle(String styleStr) {
+			if (styleStr.equals("solid"))
+				return Style.SOLID;
+			else if (styleStr.equals("dash"))
+				return Style.DASH;
+			else if (styleStr.equals("dot"))
+				return Style.DOT;
+			else
+				return null;
+		}
+
 		@Override
 		public String toString() {
 			return super.toString().toLowerCase();
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		str.append("Fill( ");
+		if (getColor() != null)
+			str.append("color:" + getColor() + " ");
+		if (getShape() != null)
+			str.append("shape:" + getShape() + " ");
+		if (getStyle() != null)
+			str.append("style:" + getStyle() + " ");
+		if (getWidth() != DEFAULT_WIDTH)
+			str.append("width:" + getWidth() + " ");
+		str.append(")");
+
+		return str.toString();
 	}
 }

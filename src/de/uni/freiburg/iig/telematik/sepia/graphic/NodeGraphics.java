@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
  * 
  * @author Adrian Lange
  */
-public class NodeGraphics {
+public class NodeGraphics implements ObjectGraphics {
 
 	/** Default position */
 	public static final Position DEFAULT_POSITION = new Position();
@@ -106,5 +106,39 @@ public class NodeGraphics {
 	 */
 	public void setLine(Line line) {
 		this.line = line;
+	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		boolean empty = true;
+
+		str.append("[");
+
+		if (position != DEFAULT_POSITION) {
+			str.append(position);
+			empty = false;
+		}
+		if (dimension != DEFAULT_DIMENSION) {
+			if (!empty)
+				str.append(",");
+			str.append(dimension);
+			empty = false;
+		}
+		if (fill != DEFAULT_FILL) {
+			if (!empty)
+				str.append(",");
+			str.append(fill);
+			empty = false;
+		}
+		if (line != DEFAULT_LINE) {
+			if (!empty)
+				str.append(",");
+			str.append(line);
+		}
+
+		str.append("]");
+
+		return str.toString();
 	}
 }

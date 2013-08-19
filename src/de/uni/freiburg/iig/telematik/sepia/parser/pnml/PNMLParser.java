@@ -34,9 +34,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
- * TODO
- * </p>
- * <p>
  * The process of parsing a PNML file is the following:
  * </p>
  * <ol>
@@ -58,12 +55,7 @@ public class PNMLParser implements ParserInterface {
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";
 
 	/**
-	 * TODO
-	 * 
-	 * @param pntdURI
-	 * @return
-	 * @throws ParameterException 
-	 * @throws PNMLParserException 
+	 * Returns the net type name by its URI.
 	 */
 	public static NetType getPNMLType(String pntdURI) throws ParameterException, PNMLParserException {
 		Validate.notNull(pntdURI);
@@ -76,11 +68,10 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Reads the type URI from a PNML file.
 	 * 
-	 * @param pnmlDocument
-	 * @return
-	 * @throws PNMLParserException 
+	 * @param pnmlDocument File to read the type from
+	 * @return Type URI
 	 */
 	public static String getPNMLTypeURI(Document pnmlDocument) throws PNMLParserException {
 		// Get all elements named net, which should result in only one element
@@ -109,11 +100,7 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
-	 * 
-	 * @param pnmlFile
-	 * @return
-	 * @throws ParameterException 
+	 * Parses a PNML file.
 	 */
 	@SuppressWarnings("unchecked")
 	public <P extends AbstractPlace<F,S>, 
@@ -139,11 +126,11 @@ public class PNMLParser implements ParserInterface {
 		switch (netType) {
 		case PTNet:
 			return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
-		case CPN: // TODO:
+		case CPN: // TODO: return PNMLCPNParser
 			break;
-		case CWN: // TODO:
+		case CWN: // TODO: return PNMLCWNParser
 			break;
-		case IFNet: // TODO:
+		case IFNet: // TODO: return PNMLIFNetParser
 			break;
 		}
 
@@ -151,11 +138,11 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Reads a PNML file, checks if it exists and is well-formed, and return it as {@link Document}.
 	 * 
 	 * @param pnmlFile
 	 *            PNML file to read
-	 * @return Readable, well-formed and normalized PNML document
+	 * @return Readable, well-formed and normalized PNML document, represented as DOM {@link Document}
 	 */
 	public static Document readPNMLFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
@@ -183,14 +170,16 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Verifies a PNML file with a PNTD schema.
 	 * 
 	 * @param pnmlFile
+	 *            File to verify
 	 * @param pntdUrl
-	 * @return
+	 *            URL to the PNTD
 	 * @throws IOException
 	 *             If the PNTD can't be found or is not readable
-	 * @throws PNMLParserException 
+	 * @throws PNMLParserException
+	 *             If the PNML file couldn't be verified
 	 */
 	private static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace

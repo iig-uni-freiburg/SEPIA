@@ -221,6 +221,17 @@ public class Font {
 	public static enum Align {
 		LEFT, CENTER, RIGHT;
 
+		public static Align getAlign(String alignStr) {
+			if (alignStr.equals("left"))
+				return Align.LEFT;
+			else if (alignStr.equals("center"))
+				return Align.CENTER;
+			else if (alignStr.equals("right"))
+				return Align.RIGHT;
+			else
+				return null;
+		}
+
 		@Override
 		public String toString() {
 			return super.toString().toLowerCase();
@@ -235,9 +246,44 @@ public class Font {
 	public static enum Decoration {
 		UNDERLINE, OVERLINE, LINE_THROUGH;
 
+		public static Decoration getDecoration(String decorationStr) {
+			if (decorationStr.equals("underline"))
+				return Decoration.UNDERLINE;
+			else if (decorationStr.equals("overline"))
+				return Decoration.OVERLINE;
+			else if (decorationStr.equals("line-through"))
+				return Decoration.LINE_THROUGH;
+			else
+				return null;
+		}
+
 		@Override
 		public String toString() {
 			return super.toString().toLowerCase().replace("_", "-");
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+
+		str.append("Font( ");
+		if (getAlign() != null)
+			str.append("align:" + getAlign() + " ");
+		if (getDecoration() != null)
+			str.append("decoration:" + getDecoration() + " ");
+		if (getFamily() != null)
+			str.append("family:" + getFamily() + " ");
+		if (getRotation() != DEFAULT_ROTATION)
+			str.append("rotation:" + getRotation() + " ");
+		if (getSize() != null)
+			str.append("size:" + getSize() + " ");
+		if (getStyle() != null)
+			str.append("style:" + getStyle() + " ");
+		if (getWeight() != null)
+			str.append("weight:" + getWeight() + " ");
+		str.append(")");
+
+		return str.toString();
 	}
 }
