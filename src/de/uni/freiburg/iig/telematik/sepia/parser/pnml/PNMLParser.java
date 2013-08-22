@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,7 +23,6 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.export.NetType;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNMLParserException.ErrorCode;
@@ -31,8 +31,12 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 
 /**
+ * <p>
+ * TODO
+ * </p>
  * <p>
  * The process of parsing a PNML file is the following:
  * </p>
@@ -56,27 +60,32 @@ public class PNMLParser implements ParserInterface {
 
 	/**
 	 * Returns the net type name by its URI.
+	 * 
+	 * @param pntdURI
+	 * @return
+	 * @throws SAXException If the net type can't be determined.
+	 * @throws ParameterException 
+	 * @throws PNMLParserException 
 	 */
-	public static NetType getPNMLType(String pntdURI) throws ParameterException, PNMLParserException {
+	private NetType getPNMLType(String pntdURI) throws ParameterException, PNMLParserException {
 		Validate.notNull(pntdURI);
 		
-		NetType netType = NetType.getNetType(pntdURI);
-		if (netType == null) {
-			throw new PNMLParserException(ErrorCode.INVALID_NET_TYPE, pntdURI);
-		}
-		return netType;
+		return NetType.getNetType(pntdURI);
 	}
 
 	/**
-	 * Reads the type URI from a PNML file.
+	 * TODO
 	 * 
-	 * @param pnmlDocument File to read the type from
-	 * @return Type URI
+	 * @param pnmlDocument
+	 * @return
+	 * @throws SAXException
+	 *             If the net element can't be found or the net element has no type-attribute
+	 * @throws PNMLParserException 
 	 */
-	public static String getPNMLTypeURI(Document pnmlDocument) throws PNMLParserException {
+	private String getPNMLTypeURI(Document pnmlDocument) throws PNMLParserException {
 		// Get all elements named net, which should result in only one element
 		NodeList netElement = pnmlDocument.getElementsByTagName("net");
-		if (netElement.getLength() != 1)
+		if (netElement == null || netElement.getLength() != 1)
 			throw new PNMLParserException(ErrorCode.MISSING_NET_TAG);
 		Node netTypeURINode = netElement.item(0).getAttributes().getNamedItem("type");
 		if (netTypeURINode == null)
@@ -95,15 +104,52 @@ public class PNMLParser implements ParserInterface {
 
 			GraphicalPN<P, T, F, M, S> 
 
-	parse(File pnmlFile) throws IOException, ParserException, ParameterException {
-		return parse(pnmlFile, true);
+		parse(String pnmlFile) throws IOException, ParserException, ParameterException {
+
+		return parse(pnmlFile, true, true);
+	}
+	
+	public <P extends AbstractPlace<F,S>, 
+			T extends AbstractTransition<F,S>, 
+			F extends AbstractFlowRelation<P,T,S>, 
+			M extends AbstractMarking<S>, 
+			S extends Object> 
+
+			GraphicalPN<P, T, F, M, S> 
+
+		parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+		
+		File inputFile = new File(pnmlFile);
+		if(inputFile.isDirectory())
+			throw new IOException("I/O Error on opening file: File is a directory!");
+		if(!inputFile.exists())
+			throw new IOException("I/O Error on opening file: File does not exist!");
+		if(!inputFile.canRead())
+			throw new IOException("I/O Error on opening file: Unable to read file!");
+		
+		return parse(inputFile, requireNetType, verifySchema);
+	}
+	
+	public <P extends AbstractPlace<F,S>, 
+			T extends AbstractTransition<F,S>, 
+			F extends AbstractFlowRelation<P,T,S>, 
+			M extends AbstractMarking<S>, 
+			S extends Object> 
+
+			GraphicalPN<P, T, F, M, S> 
+
+		parse(File pnmlFile) throws IOException, ParserException, ParameterException {
+		return parse(pnmlFile, true, true);
 	}
 
 	/**
-	 * Parses a PNML file.
+	 * TODO
+	 * 
+	 * @param pnmlFile
+	 * @return
+	 * @throws ParameterException 
 	 */
-	@SuppressWarnings("unchecked")
-	public <P extends AbstractPlace<F,S>, 
+	private <P extends AbstractPlace<F,S>, 
 			T extends AbstractTransition<F,S>, 
 			F extends AbstractFlowRelation<P,T,S>, 
 			M extends AbstractMarking<S>, 
@@ -111,40 +157,55 @@ public class PNMLParser implements ParserInterface {
 	
 			GraphicalPN<P, T, F, M, S> 
 	
-			parse(File pnmlFile, boolean verifySchema) throws IOException, ParserException, ParameterException {
-
+			parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+		
 		Validate.notNull(pnmlFile);
-
+		
 		Document pnmlDocument = readPNMLFile(pnmlFile);
+		
+		//Try to find out the net type
 		String netTypeStringURI = getPNMLTypeURI(pnmlDocument);
 		NetType netType = getPNMLType(netTypeStringURI);
-
-		if (verifySchema) {
+		if(requireNetType && netType == null)
+			throw new PNMLParserException(ErrorCode.INVALID_NET_TYPE);
+		if(netType == null){
+			netType = NetType.PTNet;
+		}
+		
+		if(verifySchema){
 			verifySchema(pnmlFile, NetType.getURL(netType));
 		}
-
-		switch (netType) {
-		case PTNet:
-			return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
-		case CPN: // TODO: return PNMLCPNParser
+		
+		switch(netType){
+		case PTNet: return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
+		case CPN: //TODO:
 			break;
-		case CWN: // TODO: return PNMLCWNParser
+		case CWN: //TODO:
 			break;
-		case IFNet: // TODO: return PNMLIFNetParser
+		case IFNet: //TODO:
 			break;
 		}
-
+		
 		return null;
 	}
 
 	/**
-	 * Reads a PNML file, checks if it exists and is well-formed, and return it as {@link Document}.
+	 * TODO
 	 * 
 	 * @param pnmlFile
 	 *            PNML file to read
-	 * @return Readable, well-formed and normalized PNML document, represented as DOM {@link Document}
+	 * @return Readable, well-formed and normalized PNML document
+	 * @throws ParameterException 
+	 * @throws IOException
+	 *             If the given PNML file doesn't exist or isn't readable
+	 * @throws XMLParserException 
+	 * @throws XMLParseException 
+	 * @throws ParserConfigurationException
+	 *             If the XML parser is not configured very well
+	 * @throws SAXException
+	 *             If the given XML file is not well-formed
 	 */
-	public static Document readPNMLFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
+	private Document readPNMLFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
 
 		// Check if pnmlFile exists and is readable
@@ -152,9 +213,9 @@ public class PNMLParser implements ParserInterface {
 			throw new IOException("The given PNML file doesn't exist.");
 		if (!pnmlFile.canRead())
 			throw new IOException("The given PNML file exists but is not readable.");
-
+		
 		Document pnmlDocument = null;
-		try {
+		try{
 			// Check if PNML file is well-formed and return the DOM document
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -169,19 +230,85 @@ public class PNMLParser implements ParserInterface {
 		return pnmlDocument;
 	}
 
+//	/**
+//	 * TODO
+//	 * 
+//	 * @param pnmlFile
+//	 * @return <code>true</code> if the pnml is valid, <code>false</code> otherwise
+//	 * @throws IOException
+//	 *             The PNML file doesn't exist or is not readable
+//	 * @throws ParserConfigurationException
+//	 *             The parser isn't configured very well
+//	 * @throws SAXException
+//	 *             Parsing error (not well-formed or no readable net type)
+//	 * @throws VerifierConfigurationException
+//	 *             The Relax NG verifier isn't configured very well
+//	 */
+//	public static boolean validatePNML(File pnmlFile) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
+//		
+//		if (pnmlFile == null) {
+//			throw new NullPointerException("The given PNML file is null.");
+//		} else {
+//			// Read PNML document and check if it is well-formed
+//			Document pnmlDocument = readPNMLFile(pnmlFile);
+//
+//			// Get type
+//			String pnmlTypeURI = getPNMLTypeURI(pnmlDocument);
+//			String pnmlType = getPNMLType(pnmlTypeURI);
+//
+//			// Validate
+//			URL pntdUrl = new URL(getNettypePNTDsRefs().get(pnmlType));
+//
+//			return verifySchema(pnmlFile, pntdUrl);
+//		}
+//	}
+	
+
+
+//	/**
+//	 * TODO
+//	 * 
+//	 * @param pnmlFile
+//	 * @param pntdUrl
+//	 * @return <code>true</code> if the PNML is valid, <code>false</code> otherwise
+//	 * @throws IOException
+//	 *             The PNML file doesn't exist or is not readable
+//	 * @throws ParserConfigurationException
+//	 *             The parser isn't configured very well
+//	 * @throws SAXException
+//	 *             Parsing error (not well-formed or no readable net type)
+//	 * @throws VerifierConfigurationException
+//	 *             The Relax NG verifier isn't configured very well
+//	 */
+//	public static boolean validatePNML(File pnmlFile, URL pntdUrl) throws IOException, ParserConfigurationException, SAXException, VerifierConfigurationException {
+//		if (pnmlFile == null) {
+//			throw new NullPointerException("The given PNML file is null.");
+//		} else if (pntdUrl == null) {
+//			throw new NullPointerException("The given PNTD URL is null.");
+//		} else {
+//			// Read PNML document and check if it is well-formed. Return value can be ignored.
+//			readPNMLFile(pnmlFile);
+//
+//			// Validate
+//			return verifyPNMLonPNTD(pnmlFile, pntdUrl);
+//		}
+//	}
+
 	/**
-	 * Verifies a PNML file with a PNTD schema.
+	 * TODO
 	 * 
 	 * @param pnmlFile
-	 *            File to verify
 	 * @param pntdUrl
-	 *            URL to the PNTD
+	 * @return
+	 * @throws VerifierConfigurationException
+	 *             If the Relax NG verifier is not configured very well
 	 * @throws IOException
 	 *             If the PNTD can't be found or is not readable
-	 * @throws PNMLParserException
-	 *             If the PNML file couldn't be verified
+	 * @throws PNMLParserException 
+	 * @throws SAXException
+	 *             If the PNML doesn't fit the PNTD
 	 */
-	private static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
+	private void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
 		VerifierFactory factory = null;
 		try {
@@ -206,4 +333,5 @@ public class PNMLParser implements ParserInterface {
 			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, e.getMessage());
 		}
 	}
+	
 }
