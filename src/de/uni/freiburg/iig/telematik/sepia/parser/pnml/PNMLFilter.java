@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 
 import java.io.File;
 

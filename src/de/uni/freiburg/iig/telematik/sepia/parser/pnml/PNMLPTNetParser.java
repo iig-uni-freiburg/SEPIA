@@ -17,8 +17,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.PTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNMLParserException;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNMLParserException.ErrorCode;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -29,7 +28,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 /**
  * <p>
- * Parser for PT nets. The process of parsing a PNML file is the following:
+ * Parser for PT nets. The process of parsing a PNMLimport de.uni.freiburg.iig.telematik.sepia.tmp.PNMLElementReader;
+ file is the following:
  * </p>
  * <ol>
  * <li>Check if the document is well-formed XML.</li>
