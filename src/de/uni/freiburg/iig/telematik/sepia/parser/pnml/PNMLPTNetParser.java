@@ -28,8 +28,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 /**
  * <p>
- * Parser for PT nets. The process of parsing a PNMLimport de.uni.freiburg.iig.telematik.sepia.tmp.PNMLElementReader;
- file is the following:
+ * Parser for PT nets. The process of parsing a PNMLimport de.uni.freiburg.iig.telematik.sepia.tmp.PNMLElementReader; file is the following:
  * </p>
  * <ol>
  * <li>Check if the document is well-formed XML.</li>
@@ -44,7 +43,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
  * 
  * @author Adrian Lange
  */
-public class PNMLPTNetParser {
+public class PNMLPTNetParser extends AbstractPNMLParser {
 
 	private static PTNet net = new PTNet();
 	private static PTGraphics graphics = new PTGraphics();
@@ -86,7 +85,7 @@ public class PNMLPTNetParser {
 				int inscription = 1;
 				NodeList arcInscriptions = arc.getElementsByTagName("inscription");
 				if (arcInscriptions.getLength() == 1) {
-					String inscriptionStr = PNMLElementReader.readText(arcInscriptions.item(0));
+					String inscriptionStr = readText(arcInscriptions.item(0));
 					inscription = Integer.parseInt(inscriptionStr);
 				}
 
@@ -101,12 +100,12 @@ public class PNMLPTNetParser {
 				}
 
 				// annotation graphics
-				AnnotationGraphics edgeAnnotationGraphics = (AnnotationGraphics) PNMLElementReader.readGraphics((Element) arcInscriptions.item(0));
+				AnnotationGraphics edgeAnnotationGraphics = (AnnotationGraphics) readGraphics((Element) arcInscriptions.item(0));
 				if (edgeAnnotationGraphics != null)
 					graphics.getEdgeAnnotationGraphics().put(flowRelation, edgeAnnotationGraphics);
 
 				// get graphical information
-				EdgeGraphics arcGraphics = (EdgeGraphics) PNMLElementReader.readGraphics(arc);
+				EdgeGraphics arcGraphics = (EdgeGraphics) readGraphics(arc);
 				if (arcGraphics != null)
 					graphics.getEdgeGraphics().put(flowRelation, arcGraphics);
 			}
@@ -126,19 +125,19 @@ public class PNMLPTNetParser {
 				// Check if there's a label
 				NodeList placeLabels = place.getElementsByTagName("name");
 				if (placeLabels.getLength() == 1) {
-					placeLabel = PNMLElementReader.readText(placeLabels.item(0));
+					placeLabel = readText(placeLabels.item(0));
 				}
 				Validate.notNull(placeLabel);
 				net.addPlace(placeName, placeLabel);
 
 				// Read graphical information
-				NodeGraphics placeGraphics = (NodeGraphics) PNMLElementReader.readGraphics(place);
+				NodeGraphics placeGraphics = (NodeGraphics) readGraphics(place);
 				graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
 
 				// Read marking with graphical information
 				NodeList placeInitialMarkings = place.getElementsByTagName("initialMarking");
 				if (placeInitialMarkings.getLength() == 1) {
-					int initialMarking = PNMLElementReader.readInitialMarking(placeInitialMarkings.item(0));
+					int initialMarking = readInitialMarking(placeInitialMarkings.item(0));
 					if (initialMarking > 0) {
 						marking.set(placeName, initialMarking);
 
@@ -149,7 +148,7 @@ public class PNMLPTNetParser {
 							for (int tp = 0; tp < graphicsList.getLength(); tp++) {
 								Element tokenPos = (Element) graphicsList.item(tp);
 								TokenGraphics tokenGraphic = new TokenGraphics();
-								tokenGraphic.setTokenposition(PNMLElementReader.readTokenPosition(tokenPos));
+								tokenGraphic.setTokenposition(readTokenPosition(tokenPos));
 								tokenGraphics.add(tokenGraphic);
 							}
 							graphics.getTokenGraphics().put(net.getPlace(placeName), tokenGraphics);
@@ -172,7 +171,7 @@ public class PNMLPTNetParser {
 				// Check if there's a label
 				NodeList transitionLabels = transition.getElementsByTagName("name");
 				if (transitionLabels.getLength() == 1) {
-					transitionLabel = PNMLElementReader.readText(transitionLabels.item(0));
+					transitionLabel = readText(transitionLabels.item(0));
 					if (transitionLabel != null && transitionLabel.length() == 0)
 						transitionLabel = null;
 				}
@@ -182,7 +181,7 @@ public class PNMLPTNetParser {
 					net.addTransition(transitionName);
 
 				// read graphical information
-				NodeGraphics transitionGraphics = (NodeGraphics) PNMLElementReader.readGraphics(transition);
+				NodeGraphics transitionGraphics = (NodeGraphics) readGraphics(transition);
 				graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
 
 				// transitions have no inscription/marking

@@ -1,7 +1,10 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 
+import java.awt.Color;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.w3c.dom.Attr;
@@ -32,9 +35,12 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
  * 
  * @author Adrian Lange
  */
-public class PNMLElementReader {
+public class AbstractPNMLParser {
 
-	public static Dimension readDimension(Element dimensionNode) {
+	/**
+	 * Reads a dimension tag and returns it as {@link Dimension}.
+	 */
+	protected static Dimension readDimension(Element dimensionNode) {
 		Dimension dimension = new Dimension();
 
 		// read and set x and y values
@@ -51,7 +57,10 @@ public class PNMLElementReader {
 		return dimension;
 	}
 
-	public static Fill readFill(Element fillNode) {
+	/**
+	 * Reads a fill tag and returns it as {@link Fill}.
+	 */
+	protected static Fill readFill(Element fillNode) {
 		Fill fill = new Fill();
 
 		// read and set color, gradientColor, gradientRotation, and image values
@@ -82,7 +91,10 @@ public class PNMLElementReader {
 		return fill;
 	}
 
-	public static Font readFont(Element fontNode) {
+	/**
+	 * Reads a font tag and returns it as {@link Font}.
+	 */
+	protected static Font readFont(Element fontNode) {
 		Font font = new Font();
 
 		// read and set align, decoration, family, rotation, size, style, and weight values
@@ -124,7 +136,10 @@ public class PNMLElementReader {
 		return font;
 	}
 
-	public static ObjectGraphics readGraphics(Element element) {
+	/**
+	 * Reads the graphics tag of the given element.
+	 */
+	protected static ObjectGraphics readGraphics(Element element) {
 		// get node element type
 		String elementType = element.getNodeName();
 		if (elementType.equals("place") || elementType.equals("transition")) {
@@ -207,12 +222,18 @@ public class PNMLElementReader {
 		return null;
 	}
 
-	public static int readInitialMarking(Node initialMarkingNode) throws XMLParserException {
+	/**
+	 * Reads an initial marking tag and returns its value as {@link Integer}.
+	 */
+	protected static int readInitialMarking(Node initialMarkingNode) throws XMLParserException {
 		int marking = Integer.parseInt(readText(initialMarkingNode));
 		return marking;
 	}
 
-	public static Line readLine(Element lineNode) {
+	/**
+	 * Reads a line tag and returns it as {@link Line}.
+	 */
+	protected static Line readLine(Element lineNode) {
 		Line line = new Line();
 
 		// read and set color, shape, style, and width values
@@ -239,7 +260,10 @@ public class PNMLElementReader {
 		return line;
 	}
 
-	public static Offset readOffset(Element offsetNode) {
+	/**
+	 * Reads an offset tag and returns it as {@link Offset}.
+	 */
+	protected static Offset readOffset(Element offsetNode) {
 		Offset offset = new Offset();
 
 		// read and set x and y values
@@ -256,7 +280,10 @@ public class PNMLElementReader {
 		return offset;
 	}
 
-	public static Position readPosition(Element positionNode) {
+	/**
+	 * Reads a position tag and returns it as {@link Position}.
+	 */
+	protected static Position readPosition(Element positionNode) {
 		Position position = new Position();
 
 		// read and set x and y values
@@ -273,7 +300,10 @@ public class PNMLElementReader {
 		return position;
 	}
 
-	public static String readText(Node textNode) throws XMLParserException {
+	/**
+	 * Reads the content of text tags and returns them as string.
+	 */
+	protected static String readText(Node textNode) throws XMLParserException {
 		if (textNode.getNodeType() != Node.ELEMENT_NODE) {
 			throw new XMLParserException(ErrorCode.TAGSTRUCTURE);
 		}
@@ -288,7 +318,30 @@ public class PNMLElementReader {
 		return null;
 	}
 
-	public static Position readTokenPosition(Element tokenPositionNode) {
+	/**
+	 * Gets the tokencolors element of a CPN, CWN, or IFNet and returns a {@link Map} containing all color values for the specific token color names.
+	 */
+	protected static Map<String, Color> readTokenColors(Element tokenColorsElement) {
+		Map<String, Color> tokenColors = new HashMap<String, Color>();
+
+		NodeList tokenColorList = tokenColorsElement.getElementsByTagName("tokencolor");
+		for (int i = 0; i < tokenColorList.getLength(); i++) {
+			String colorName = ((Element) ((Element) tokenColorList.item(i)).getElementsByTagName("color")).getTextContent();
+			Element rgbColor = ((Element) ((Element) tokenColorList.item(i)).getElementsByTagName("rgbcolor"));
+			int red = Integer.parseInt(((Element) rgbColor.getElementsByTagName("r").item(0)).getTextContent());
+			int green = Integer.parseInt(((Element) rgbColor.getElementsByTagName("g").item(0)).getTextContent());
+			int blue = Integer.parseInt(((Element) rgbColor.getElementsByTagName("b").item(0)).getTextContent());
+			Color color = new Color(red, green, blue);
+			tokenColors.put(colorName, color);
+		}
+
+		return tokenColors;
+	}
+
+	/**
+	 * Gets a tokenposition node and reads its x and y attributes. Returns a {@link Position}.
+	 */
+	protected static Position readTokenPosition(Element tokenPositionNode) {
 		Position tokenPosition = new Position();
 
 		// read and set x and y values
