@@ -51,7 +51,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
  * 
  * @author Adrian Lange
  */
-public class PNMLParser implements ParserInterface {
+public class  PNMLParser implements ParserInterface {
 
 	/** Relax NG namespace */
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";
@@ -170,21 +170,23 @@ public class PNMLParser implements ParserInterface {
 		if(netType == null){
 			netType = NetType.PTNet;
 		}
-		
-		if(verifySchema){
+
+		if (verifySchema) {
 			verifySchema(pnmlFile, NetType.getURL(netType));
 		}
-		
-		switch(netType){
-		case PTNet: return (GraphicalPN<P, T, F, M, S>) PNMLPTNetParser.parse(pnmlDocument);
-		case CPN: //TODO:
+
+		switch (netType) {
+		case PTNet:
+			AbstractPNMLParser<P, T, F, M, S> pnmlParser = (AbstractPNMLParser<P, T, F, M, S>) new PNMLPTNetParser();
+			return (GraphicalPN<P, T, F, M, S>) pnmlParser.parse(pnmlDocument);
+		case CPN: // TODO:
 			break;
-		case CWN: //TODO:
+		case CWN: // TODO:
 			break;
-		case IFNet: //TODO:
+		case IFNet: // TODO:
 			break;
 		}
-		
+
 		throw new ParserException("Couldn't determine a suitable PNML parser.");
 	}
 

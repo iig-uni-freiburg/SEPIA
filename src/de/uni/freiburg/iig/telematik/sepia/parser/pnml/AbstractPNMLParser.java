@@ -8,16 +8,20 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
-import de.invation.code.toval.parser.XMLParserException.ErrorCode;
+import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ObjectGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.PNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill.GradientRotation;
@@ -29,13 +33,24 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * Static reader class containing methods to read elements and attributes occurring in different net types.
  * 
  * @author Adrian Lange
  */
-public class AbstractPNMLParser {
+public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
+
+	protected AbstractPetriNet<P, T, F, M, S> net;
+	protected PNGraphics<P, T, F, M, S> graphics;
+
+	public abstract GraphicalPN<P, T, F, M, S> parse(Document pnmlDocument)
+			throws ParameterException, ParserException;
 
 	/**
 	 * Reads a dimension tag and returns it as {@link Dimension}.
@@ -305,7 +320,7 @@ public class AbstractPNMLParser {
 	 */
 	protected static String readText(Node textNode) throws XMLParserException {
 		if (textNode.getNodeType() != Node.ELEMENT_NODE) {
-			throw new XMLParserException(ErrorCode.TAGSTRUCTURE);
+			throw new XMLParserException(de.invation.code.toval.parser.XMLParserException.ErrorCode.TAGSTRUCTURE);
 		}
 		Element textElement = (Element) textNode;
 		NodeList textNodes = textElement.getElementsByTagName("text");

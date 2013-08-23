@@ -8,23 +8,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.PTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 
 /**
  * <p>
@@ -43,21 +42,19 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
  * 
  * @author Adrian Lange
  */
-public class PNMLPTNetParser extends AbstractPNMLParser {
+public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
 
-	private static PTNet net = new PTNet();
-	private static PTGraphics graphics = new PTGraphics();
+	public GraphicalPN<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>
 
-	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+	parse(Document pnmlDocument) throws ParameterException, ParserException {
 
-	GraphicalPTNet
-
-	parse(Document pnmlDocument) throws PNMLParserException, ParameterException, XMLParserException {
+		net = new PTNet();
+		graphics = new PTGraphics();
 
 		// Check if the net is defined on a single page
 		NodeList netElement = pnmlDocument.getElementsByTagName("page");
 		if (netElement.getLength() != 1)
-			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
+			throw new PNMLParserException(de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode.NOT_ON_ONE_PAGE);
 
 		// Read places and transitions
 		NodeList placeNodes = pnmlDocument.getElementsByTagName("place");
@@ -71,13 +68,12 @@ public class PNMLPTNetParser extends AbstractPNMLParser {
 		return new GraphicalPTNet(net, graphics);
 	}
 
-	private static void readArcs(NodeList arcNodes) throws ParameterException, XMLParserException {
+	protected void readArcs(NodeList arcNodes) throws ParameterException, XMLParserException {
 		// read and add each arc/flow relation
 		for (int a = 0; a < arcNodes.getLength(); a++) {
 			if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
 				Element arc = (Element) arcNodes.item(a);
 				// ID must be available in a valid net
-				// FIXME arc id is ignored
 				String sourceName = arc.getAttribute("source");
 				String targetName = arc.getAttribute("target");
 
@@ -92,11 +88,11 @@ public class PNMLPTNetParser extends AbstractPNMLParser {
 				PTFlowRelation flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null) {
-					flowRelation = net.addFlowRelationPT(sourceName, targetName, inscription);
+					flowRelation = ((PTNet) net).addFlowRelationPT(sourceName, targetName, inscription);
 				}
 				// if TP relation
 				else {
-					flowRelation = net.addFlowRelationTP(sourceName, targetName, inscription);
+					flowRelation = ((PTNet) net).addFlowRelationTP(sourceName, targetName, inscription);
 				}
 
 				// annotation graphics
@@ -112,7 +108,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser {
 		}
 	}
 
-	private static void readPlaces(NodeList placeNodes) throws ParameterException, XMLParserException {
+	protected void readPlaces(NodeList placeNodes) throws ParameterException, XMLParserException {
 		// add each place
 		PTMarking marking = new PTMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
@@ -160,7 +156,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser {
 		net.setInitialMarking(marking);
 	}
 
-	private static void readTransitions(NodeList transitionNodes) throws XMLParserException, ParameterException {
+	protected void readTransitions(NodeList transitionNodes) throws XMLParserException, ParameterException {
 		// read and add each transition
 		for (int t = 0; t < transitionNodes.getLength(); t++) {
 			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
