@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.management.modelmbean.XMLParseException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -148,6 +147,7 @@ public class PNMLParser implements ParserInterface {
 	 * @return
 	 * @throws ParameterException 
 	 */
+	@SuppressWarnings("unchecked")
 	private <P extends AbstractPlace<F,S>, 
 			T extends AbstractTransition<F,S>, 
 			F extends AbstractFlowRelation<P,T,S>, 
@@ -185,7 +185,7 @@ public class PNMLParser implements ParserInterface {
 			break;
 		}
 		
-		return null;
+		throw new ParserException("Couldn't determine a suitable PNML parser.");
 	}
 
 	/**
@@ -198,7 +198,6 @@ public class PNMLParser implements ParserInterface {
 	 * @throws IOException
 	 *             If the given PNML file doesn't exist or isn't readable
 	 * @throws XMLParserException 
-	 * @throws XMLParseException 
 	 * @throws ParserConfigurationException
 	 *             If the XML parser is not configured very well
 	 * @throws SAXException
