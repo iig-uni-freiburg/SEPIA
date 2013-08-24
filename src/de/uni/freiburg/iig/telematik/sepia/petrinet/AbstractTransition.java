@@ -49,7 +49,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	//------- Constructors ----------------------------------------------------------------------------
 	
 	protected AbstractTransition(){
-		super();
+		super(PNNodeType.TRANSITION);
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractTransition(String name) throws ParameterException {
-		super(name);
+		super(PNNodeType.TRANSITION, name);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public AbstractTransition(String name, String label) throws ParameterException {
-		super(name, label);
+		super(PNNodeType.TRANSITION, name, label);
 	}
 	
 	/**

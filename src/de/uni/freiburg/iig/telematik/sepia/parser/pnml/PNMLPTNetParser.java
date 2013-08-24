@@ -51,10 +51,10 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 		net = new PTNet();
 		graphics = new PTGraphics();
 
-		// Check if the net is defined on a single page
-		NodeList netElement = pnmlDocument.getElementsByTagName("page");
-		if (netElement.getLength() != 1)
-			throw new PNMLParserException(de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode.NOT_ON_ONE_PAGE);
+//		// Check if the net is defined on a single page
+//		NodeList netElement = pnmlDocument.getElementsByTagName("page");
+//		if (netElement.getLength() != 1)
+//			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
 
 		// Read places and transitions
 		NodeList placeNodes = pnmlDocument.getElementsByTagName("place");

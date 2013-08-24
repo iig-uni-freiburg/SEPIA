@@ -56,11 +56,14 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	protected String label;
 	
+	private PNNodeType type = null;
+	
 	
 	//------- Constructors ---------------------------------------------------------------------------
 	
-	protected AbstractPNNode(){
+	protected AbstractPNNode(PNNodeType type){
 		super();
+		this.type = type;
 	}
 	
 	/**
@@ -69,8 +72,9 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param name The name for the Petri net node.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public AbstractPNNode(String name) throws ParameterException {
-		this(name, name);
+	public AbstractPNNode(PNNodeType type, String name) throws ParameterException {
+		this(type, name, name);
+		this.type = type;
 	}
 	
 	/**
@@ -79,11 +83,12 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param label The label for the Petri net node.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
-	public AbstractPNNode(String name, String label) throws ParameterException {
+	public AbstractPNNode(PNNodeType type, String name, String label) throws ParameterException {
 		Validate.notNull(name);
 		Validate.notNull(label);
 		setName(name);
 		setLabel(label);
+		this.type = type;
 	}
 	
 	
@@ -312,6 +317,14 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	public <N extends AbstractPNNode<E>> boolean containsRelationFrom(N node) throws ParameterException{
 		return getRelationFrom(node) != null;
+	}
+	
+	public boolean isTransition(){
+		return type.equals(PNNodeType.TRANSITION);
+	}
+	
+	public boolean isPlace(){
+		return type.equals(PNNodeType.PLACE);
 	}
 	
 	

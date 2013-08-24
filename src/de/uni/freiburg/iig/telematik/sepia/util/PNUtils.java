@@ -1,22 +1,32 @@
 package de.uni.freiburg.iig.telematik.sepia.util;
 
-import java.util.Arrays;
+import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.xml.stream.XMLStreamException;
+
 import de.invation.code.toval.math.MathUtils;
+import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.OldPNMLParser;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.RandomPTTraverser;
-import de.uni.freiburg.iig.telematik.sepia.traversal.PNTraverser;
 
 public class PNUtils {
 	
@@ -73,6 +83,56 @@ public class PNUtils {
 		}
 		return cActivities;
 	}
+	
+	public static <P extends AbstractPlace<F,S>, 
+				   T extends AbstractTransition<F,S>, 
+				   F extends AbstractFlowRelation<P,T,S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object>
+
+				   Map<T, Set<T>>
+	
+		getAllPredecessors(AbstractPetriNet<P,T,F,M,S> net){
+		
+		Map<T, Set<T>> predecessors = new HashMap<T, Set<T>>();
+		for(T transition: net.getTransitions()){
+			try {
+				predecessors.put(transition, getPredecessors(net, transition));
+			} catch (VertexNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParameterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return predecessors;
+	}
+	
+	public static <P extends AbstractPlace<F,S>, 
+	   				T extends AbstractTransition<F,S>, 
+	   				F extends AbstractFlowRelation<P,T,S>, 
+	   				M extends AbstractMarking<S>, 
+	   				S extends Object>
+					
+	   				Set<T>
+	
+		getPredecessors(AbstractPetriNet<P,T,F,M,S> net, T transition) throws ParameterException, VertexNotFoundException{
+		Validate.notNull(net);
+		Validate.notNull(transition);
+
+		Set<T> predecessors = new HashSet<T>();
+		for(AbstractPNNode<F> predecessorNode: TraversalUtils.getPredecessorsFor(net, transition)){
+			if(predecessorNode.isTransition()){
+				predecessors.add((T) predecessorNode);
+			}
+		}
+		return predecessors;
+	}
+
+		
+	
 	
 	public static PTNet getORFragment(Set<String> alternatives) throws ParameterException{
 		PTNet ptNet = new PTNet();
@@ -136,21 +196,24 @@ public class PNUtils {
 		return ptNet;
 	}
 	
-	public static void main(String[] args) throws ParameterException, PNException {
-		Set<String> alternatives = new HashSet<String>(Arrays.asList("A","B","C"));
-		PTNet net = getORFragment(alternatives);
-		RandomPTTraverser traverser = new RandomPTTraverser(net);
+	public static void main(String[] args) throws ParameterException, PNException, IOException, ParserException, XMLStreamException {
+//		Set<String> alternatives = new HashSet<String>(Arrays.asList("A","B","C"));
+//		PTNet net = getORFragment(alternatives);
+//		RandomPTTraverser traverser = new RandomPTTraverser(net);
+//		
+//		for(int i=1; i<= 10; i++){
+//			net.reset();
+//			while(net.hasEnabledTransitions()){
+//				PTTransition fireTransition = traverser.chooseNextTransition(net.getEnabledTransitions());
+//				if(!fireTransition.isSilent())
+//					System.out.println(fireTransition);
+//				net.fire(fireTransition.getName());
+//			}
+//			System.out.println("-------");
+//		}
 		
-		for(int i=1; i<= 10; i++){
-			net.reset();
-			while(net.hasEnabledTransitions()){
-				PTTransition fireTransition = traverser.chooseNextTransition(net.getEnabledTransitions());
-				if(!fireTransition.isSilent())
-					System.out.println(fireTransition);
-				net.fire(fireTransition.getName());
-			}
-			System.out.println("-------");
-		}
+		PTNet ptNet = OldPNMLParser.parsePNML("/Users/stocker/Desktop/LoanApplication.pnml", false);
+		System.out.println(getAllPredecessors(ptNet));
 	}
 
 }

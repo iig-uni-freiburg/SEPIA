@@ -56,7 +56,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	//------- Constructors --------------------------------------------------------------------------
 	
 	protected AbstractPlace(){
-		super();
+		super(PNNodeType.PLACE);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractPlace(String name) throws ParameterException{
-		super(name);
+		super(PNNodeType.PLACE, name);
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public AbstractPlace(String name, String label) throws ParameterException {
-		super(name, label);
+		super(PNNodeType.PLACE, name, label);
 	}
 	
 	//------- Basic properties -----------------------------------------------------------------------
