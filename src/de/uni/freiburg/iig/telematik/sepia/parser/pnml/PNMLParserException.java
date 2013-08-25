@@ -6,10 +6,11 @@ public class PNMLParserException extends ParserException {
 
 	private static final long serialVersionUID = -2829511252560246958L;
 
+	private final String msg_InvalidFlowRelation = "Invalid flow relation";
 	private final String msg_InvalidNetType = "Unknown net type";
 	private final String msg_MissingNetTag = "Missing net tag";
 	private final String msg_MissingNetTypeAttribute = "Missing net type attribute";
-	private final String msg_NotOnOnePage = "Net must be defined on one page";
+	private final String msg_NotOnOnePage = "Net must be defined on only one page";
 	private final String msg_ValidationFailed = "PNML validation failed";
 	private final String msg_ValidationConfigurationError = "Misconfigured validation";
 
@@ -41,6 +42,9 @@ public class PNMLParserException extends ParserException {
 		StringBuffer msg = new StringBuffer();
 
 		switch (errorCode) {
+		case INVALID_FLOW_RELATION:
+			msg.append(msg_InvalidFlowRelation);
+			break;
 		case INVALID_NET_TYPE:
 			msg.append(msg_InvalidNetType);
 			break;
@@ -84,7 +88,7 @@ public class PNMLParserException extends ParserException {
 	}
 
 	public enum ErrorCode {
-		INVALID_NET_TYPE, MISSING_NET_TAG, MISSING_NET_TYPE_ATTRIBUTE, NOT_ON_ONE_PAGE, VALIDATION_FAILED, VALIDATION_CONFIGURATION_ERROR;
+		INVALID_FLOW_RELATION, INVALID_NET_TYPE, MISSING_NET_TAG, MISSING_NET_TYPE_ATTRIBUTE, NOT_ON_ONE_PAGE, VALIDATION_FAILED, VALIDATION_CONFIGURATION_ERROR;
 	}
 
 }
