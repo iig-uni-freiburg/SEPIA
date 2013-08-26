@@ -11,7 +11,6 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
@@ -133,13 +132,15 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				NodeList placeLabels = place.getElementsByTagName("name");
 				if (placeLabels.getLength() == 1) {
 					placeLabel = readText(placeLabels.item(0));
+				} else {
+					placeLabel = placeName;
 				}
-				Validate.notNull(placeLabel);
 				net.addPlace(placeName, placeLabel);
 
 				// Read graphical information
 				NodeGraphics placeGraphics = (NodeGraphics) readGraphics(place);
-				graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
+				if (placeGraphics != null)
+					graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
 
 				// Read marking with graphical information
 				NodeList placeInitialMarkings = place.getElementsByTagName("initialMarking");
@@ -192,7 +193,8 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 
 				// read graphical information
 				NodeGraphics transitionGraphics = (NodeGraphics) readGraphics(transition);
-				graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
+				if (transitionGraphics != null)
+					graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
 
 				// transitions have no inscription/marking
 			}
