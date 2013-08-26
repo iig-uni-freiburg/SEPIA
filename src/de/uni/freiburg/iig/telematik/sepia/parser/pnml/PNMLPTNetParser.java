@@ -85,7 +85,8 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				NodeList arcInscriptions = arc.getElementsByTagName("inscription");
 				if (arcInscriptions.getLength() == 1) {
 					String inscriptionStr = readText(arcInscriptions.item(0));
-					inscription = Integer.parseInt(inscriptionStr);
+					if (inscriptionStr != null)
+						inscription = Integer.parseInt(inscriptionStr);
 				}
 
 				PTFlowRelation flowRelation;
@@ -131,7 +132,8 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				// Check if there's a label
 				NodeList placeLabels = place.getElementsByTagName("name");
 				if (placeLabels.getLength() == 1) {
-					placeLabel = readText(placeLabels.item(0));
+					if (readText(placeLabels.item(0)) != null)
+						placeLabel = readText(placeLabels.item(0));
 				} else {
 					placeLabel = placeName;
 				}

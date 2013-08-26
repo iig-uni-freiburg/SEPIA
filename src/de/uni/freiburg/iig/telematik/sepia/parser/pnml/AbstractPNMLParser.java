@@ -85,8 +85,6 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 	/**
 	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its
 	 * value will be set to 0.
-	 * 
-	 * @throws ParameterException
 	 */
 	protected static Dimension readDimension(Element dimensionNode) throws ParameterException {
 		Validate.notNull(dimensionNode);
@@ -95,17 +93,21 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 
 		// read and set x and y values
 		Attr dimXAttr = dimensionNode.getAttributeNode("x");
-		String dimXStr = dimXAttr.getValue();
-		if (dimXStr != null && dimXStr.length() > 0) {
-			double dimX = Double.parseDouble(dimXStr);
-			dimension.setX(dimX);
+		if (dimXAttr != null) {
+			String dimXStr = dimXAttr.getValue();
+			if (dimXStr != null && dimXStr.length() > 0) {
+				double dimX = Double.parseDouble(dimXStr);
+				dimension.setX(dimX);
+			}
 		}
 
 		Attr dimYAttr = dimensionNode.getAttributeNode("y");
-		String dimYStr = dimYAttr.getValue();
-		if (dimYStr != null && dimYStr.length() > 0) {
-			double dimY = Double.parseDouble(dimYStr);
-			dimension.setY(dimY);
+		if (dimYAttr != null) {
+			String dimYStr = dimYAttr.getValue();
+			if (dimYStr != null && dimYStr.length() > 0) {
+				double dimY = Double.parseDouble(dimYStr);
+				dimension.setY(dimY);
+			}
 		}
 
 		return dimension;
@@ -202,56 +204,62 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 	}
 
 	/**
-	 * Reads the graphics tag of the given element. TODO
+	 * Reads the graphics tag of the given element.
 	 */
 	protected static ObjectGraphics readGraphics(Element element) throws ParameterException {
 		Validate.notNull(element);
+
+		/*
+		 * As we can't be sure what tags are written in the toolspecific tags, we always must check the parent node of child elements we call by their name.
+		 */
 
 		// get node element type
 		String elementType = element.getNodeName();
 		if (elementType.equals("place") || elementType.equals("transition")) {
 			NodeList graphicsList = element.getElementsByTagName("graphics");
-			if (graphicsList.getLength() == 1) {
-				NodeGraphics nodeGraphics = new NodeGraphics();
-				Element graphics = (Element) element.getElementsByTagName("graphics").item(0);
+			for (int placeTagIndex = 0; placeTagIndex < graphicsList.getLength(); placeTagIndex++) {
+				if (graphicsList.item(placeTagIndex).getParentNode().equals(element) && graphicsList.item(placeTagIndex).getNodeType() == Node.ELEMENT_NODE) {
+					NodeGraphics nodeGraphics = new NodeGraphics();
+					Element graphics = (Element) graphicsList.item(placeTagIndex);
 
-				// dimension, fill, line, position
-				if (graphics.getElementsByTagName("dimension").getLength() == 1) {
-					Node dimension = graphics.getElementsByTagName("dimension").item(0);
-					nodeGraphics.setDimension(readDimension((Element) dimension));
-				}
-				if (graphics.getElementsByTagName("fill").getLength() == 1) {
-					Node fill = graphics.getElementsByTagName("fill").item(0);
-					nodeGraphics.setFill(readFill((Element) fill));
-				}
-				if (graphics.getElementsByTagName("line").getLength() == 1) {
-					Node line = graphics.getElementsByTagName("line").item(0);
-					nodeGraphics.setLine(readLine((Element) line));
-				}
-				if (graphics.getElementsByTagName("position").getLength() == 1) {
-					Node position = graphics.getElementsByTagName("position").item(0);
-					nodeGraphics.setPosition(readPosition((Element) position));
-				}
+					// dimension, fill, line, position
+					if (graphics.getElementsByTagName("dimension").getLength() > 0) {
+						Node dimension = graphics.getElementsByTagName("dimension").item(0);
+						nodeGraphics.setDimension(readDimension((Element) dimension));
+					}
+					if (graphics.getElementsByTagName("fill").getLength() > 0) {
+						Node fill = graphics.getElementsByTagName("fill").item(0);
+						nodeGraphics.setFill(readFill((Element) fill));
+					}
+					if (graphics.getElementsByTagName("line").getLength() > 0) {
+						Node line = graphics.getElementsByTagName("line").item(0);
+						nodeGraphics.setLine(readLine((Element) line));
+					}
+					if (graphics.getElementsByTagName("position").getLength() > 0) {
+						Node position = graphics.getElementsByTagName("position").item(0);
+						nodeGraphics.setPosition(readPosition((Element) position));
+					}
 
-				return nodeGraphics;
+					return nodeGraphics;
+				}
 			}
 		} else if (elementType.equals("arc")) {
 			NodeList graphicsList = element.getElementsByTagName("graphics");
-
-			for (int i = 0; i < graphicsList.getLength(); i++) {
-				if (graphicsList.item(i).getParentNode().equals(element)) {
+			for (int arcIndex = 0; arcIndex < graphicsList.getLength(); arcIndex++) {
+				if (graphicsList.item(arcIndex).getParentNode().equals(element) && graphicsList.item(arcIndex).getNodeType() == Node.ELEMENT_NODE) {
 					EdgeGraphics edgeGraphics = new EdgeGraphics();
-					Element graphics = (Element) graphicsList.item(i);
+					Element graphics = (Element) graphicsList.item(arcIndex);
 
 					// positions and line
-					if (graphics.getElementsByTagName("position").getLength() > 0) {
-						Vector<Position> positions = new Vector<Position>(graphics.getElementsByTagName("position").getLength());
-						for (int pos = 0; pos < graphics.getElementsByTagName("position").getLength(); pos++) {
-							positions.add(readPosition((Element) graphics.getElementsByTagName("position").item(pos)));
+					NodeList positionGraphics = graphics.getElementsByTagName("position");
+					if (positionGraphics.getLength() > 0) {
+						Vector<Position> positions = new Vector<Position>(positionGraphics.getLength());
+						for (int positionIndex = 0; positionIndex < positionGraphics.getLength(); positionIndex++) {
+							positions.add(readPosition((Element) positionGraphics.item(positionIndex)));
 						}
 						edgeGraphics.setPositions(positions);
 					}
-					if (graphics.getElementsByTagName("line").getLength() == 1) {
+					if (graphics.getElementsByTagName("line").getLength() > 0) {
 						Node line = graphics.getElementsByTagName("line").item(0);
 						edgeGraphics.setLine(readLine((Element) line));
 					}
@@ -261,29 +269,31 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 			}
 		} else if (elementType.equals("inscription")) {
 			NodeList graphicsList = element.getElementsByTagName("graphics");
-			if (graphicsList.getLength() == 1) {
-				AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-				Element graphics = (Element) graphicsList.item(0);
+			for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
+				if (graphicsList.item(inscriptionIndex).getParentNode().equals(element) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
+					AnnotationGraphics annotationGraphics = new AnnotationGraphics();
+					Element graphics = (Element) graphicsList.item(inscriptionIndex);
 
-				// fill, font, line, and offset
-				if (graphics.getElementsByTagName("fill").getLength() == 1) {
-					Node fill = graphics.getElementsByTagName("fill").item(0);
-					annotationGraphics.setFill(readFill((Element) fill));
-				}
-				if (graphics.getElementsByTagName("font").getLength() == 1) {
-					Node font = graphics.getElementsByTagName("font").item(0);
-					annotationGraphics.setFont(readFont((Element) font));
-				}
-				if (graphics.getElementsByTagName("line").getLength() == 1) {
-					Node line = graphics.getElementsByTagName("line").item(0);
-					annotationGraphics.setLine(readLine((Element) line));
-				}
-				if (graphics.getElementsByTagName("offset").getLength() == 1) {
-					Node offset = graphics.getElementsByTagName("offset").item(0);
-					annotationGraphics.setOffset(readOffset((Element) offset));
-				}
+					// fill, font, line, and offset
+					if (graphics.getElementsByTagName("fill").getLength() > 0) {
+						Node fill = graphics.getElementsByTagName("fill").item(0);
+						annotationGraphics.setFill(readFill((Element) fill));
+					}
+					if (graphics.getElementsByTagName("font").getLength() > 0) {
+						Node font = graphics.getElementsByTagName("font").item(0);
+						annotationGraphics.setFont(readFont((Element) font));
+					}
+					if (graphics.getElementsByTagName("line").getLength() > 0) {
+						Node line = graphics.getElementsByTagName("line").item(0);
+						annotationGraphics.setLine(readLine((Element) line));
+					}
+					if (graphics.getElementsByTagName("offset").getLength() > 0) {
+						Node offset = graphics.getElementsByTagName("offset").item(0);
+						annotationGraphics.setOffset(readOffset((Element) offset));
+					}
 
-				return annotationGraphics;
+					return annotationGraphics;
+				}
 			}
 		}
 
@@ -354,17 +364,21 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 
 		// read and set x and y values
 		Attr offsXAttr = offsetNode.getAttributeNode("x");
-		String offsXStr = offsXAttr.getValue();
-		if (offsXStr != null && offsXStr.length() > 0) {
-			double offsetX = Double.parseDouble(offsXStr);
-			offset.setX(offsetX);
+		if (offsXAttr != null) {
+			String offsXStr = offsXAttr.getValue();
+			if (offsXStr != null && offsXStr.length() > 0) {
+				double offsetX = Double.parseDouble(offsXStr);
+				offset.setX(offsetX);
+			}
 		}
 
 		Attr offsYAttr = offsetNode.getAttributeNode("y");
-		String offsYStr = offsYAttr.getValue();
-		if (offsYStr != null && offsYStr.length() > 0) {
-			double offsetY = Double.parseDouble(offsYStr);
-			offset.setY(offsetY);
+		if (offsYAttr != null) {
+			String offsYStr = offsYAttr.getValue();
+			if (offsYStr != null && offsYStr.length() > 0) {
+				double offsetY = Double.parseDouble(offsYStr);
+				offset.setY(offsetY);
+			}
 		}
 
 		return offset;
@@ -381,17 +395,21 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 
 		// read and set x and y values
 		Attr posXAttr = positionNode.getAttributeNode("x");
-		String posXStr = posXAttr.getValue();
-		if (posXStr != null && posXStr.length() > 0) {
-			double posX = Double.parseDouble(posXStr);
-			position.setX(posX);
+		if (posXAttr != null) {
+			String posXStr = posXAttr.getValue();
+			if (posXStr != null && posXStr.length() > 0) {
+				double posX = Double.parseDouble(posXStr);
+				position.setX(posX);
+			}
 		}
 
 		Attr posYAttr = positionNode.getAttributeNode("y");
-		String posYStr = posYAttr.getValue();
-		if (posYStr != null && posYStr.length() > 0) {
-			double posY = Double.parseDouble(posYStr);
-			position.setY(posY);
+		if (posYAttr != null) {
+			String posYStr = posYAttr.getValue();
+			if (posYStr != null && posYStr.length() > 0) {
+				double posY = Double.parseDouble(posYStr);
+				position.setY(posY);
+			}
 		}
 
 		return position;
@@ -432,8 +450,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 		for (int i = 0; i < tokenColorList.getLength(); i++) {
 			Element tokenColorElement = (Element) tokenColorList.item(i);
 			if (tokenColorElement.getNodeType() == Node.ELEMENT_NODE) {
-				String colorName = ((Element) tokenColorElement.getElementsByTagName("color")).getTextContent();
-				Element rgbColor = ((Element) tokenColorElement.getElementsByTagName("rgbcolor"));
+				// FIXME
+				String colorName = ((Element) tokenColorElement.getElementsByTagName("color").item(0)).getTextContent();
+				Element rgbColor = ((Element) tokenColorElement.getElementsByTagName("rgbcolor").item(0));
 				int red = 0;
 				int green = 0;
 				int blue = 0;
@@ -464,17 +483,21 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 
 		// read and set x and y values
 		Attr posXAttr = tokenPositionNode.getAttributeNode("x");
-		String posXStr = posXAttr.getValue();
-		if (posXStr != null && posXStr.length() > 0) {
-			double posX = Double.parseDouble(posXStr);
-			tokenPosition.setX(posX);
+		if (posXAttr != null) {
+			String posXStr = posXAttr.getValue();
+			if (posXStr != null && posXStr.length() > 0) {
+				double posX = Double.parseDouble(posXStr);
+				tokenPosition.setX(posX);
+			}
 		}
 
 		Attr posYAttr = tokenPositionNode.getAttributeNode("y");
-		String posYStr = posYAttr.getValue();
-		if (posYStr != null && posYStr.length() > 0) {
-			double posY = Double.parseDouble(posYStr);
-			tokenPosition.setY(posY);
+		if (posYAttr != null) {
+			String posYStr = posYAttr.getValue();
+			if (posYStr != null && posYStr.length() > 0) {
+				double posY = Double.parseDouble(posYStr);
+				tokenPosition.setY(posY);
+			}
 		}
 
 		return tokenPosition;
