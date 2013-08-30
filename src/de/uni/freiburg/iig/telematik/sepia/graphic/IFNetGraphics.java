@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,22 +18,31 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
  */
 public class IFNetGraphics extends PNGraphics<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
 
-	private Map<IFNetPlace, AnnotationGraphics> subjectGraphics = new HashMap<IFNetPlace, AnnotationGraphics>();
 	private Map<AbstractIFNetTransition, AnnotationGraphics> accessFunctionGraphics = new HashMap<AbstractIFNetTransition, AnnotationGraphics>();
-
-	public Map<IFNetPlace, AnnotationGraphics> getSubjectGraphics() {
-		return subjectGraphics;
-	}
-
-	public void setSubjectGraphics(Map<IFNetPlace, AnnotationGraphics> subjectGraphics) {
-		this.subjectGraphics = subjectGraphics;
-	}
+	private Map<String, Color> colors = new HashMap<String, Color>();
+	private Map<IFNetPlace, AnnotationGraphics> subjectGraphics = new HashMap<IFNetPlace, AnnotationGraphics>();
 
 	public Map<AbstractIFNetTransition, AnnotationGraphics> getAccessFunctionGraphics() {
 		return accessFunctionGraphics;
 	}
 
+	public Map<String, Color> getColors() {
+		return colors;
+	}
+
+	public Map<IFNetPlace, AnnotationGraphics> getSubjectGraphics() {
+		return subjectGraphics;
+	}
+
 	public void setAccessFunctionGraphics(Map<AbstractIFNetTransition, AnnotationGraphics> accessFunctionGraphics) {
 		this.accessFunctionGraphics = accessFunctionGraphics;
+	}
+
+	public void setColors(Map<String, Color> colors) {
+		this.colors = colors;
+	}
+
+	public void setSubjectGraphics(Map<IFNetPlace, AnnotationGraphics> subjectGraphics) {
+		this.subjectGraphics = subjectGraphics;
 	}
 }

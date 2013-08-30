@@ -34,6 +34,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -45,7 +46,11 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * 
  * @author Adrian Lange
  */
-public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
+public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
+										 T extends AbstractTransition<F, S>,
+										 F extends AbstractFlowRelation<P, T, S>,
+										 M extends AbstractMarking<S>,
+										 S extends Object> {
 
 	protected AbstractPetriNet<P, T, F, M, S> net;
 	protected PNGraphics<P, T, F, M, S> graphics;
@@ -81,6 +86,34 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalPN}.
 	 */
 	protected abstract void readTransitions(NodeList transitionNodes) throws XMLParserException, ParameterException;
+
+	/**
+	 * Reads an initial color marking tag and returns its values as {@link Map}.
+	 */
+	protected static Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
+		Validate.notNull(colorInscriptionNode);
+
+		Element initialColorMarkingElement = (Element) colorInscriptionNode;
+		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
+		Map<String, Integer> colorInscription = new HashMap<String, Integer>();
+		
+		if (colorNodes.getLength() > 0) {
+			for (int c = 0; c < colorNodes.getLength(); c++) {
+				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
+					String color = colorNodes.item(c).getTextContent();
+					if (colorInscription.containsKey(color))
+						colorInscription.put(color, colorInscription.get(color) + 1);
+					else
+						colorInscription.put(color, 1);
+				}
+			}
+		}
+		
+		if (colorInscription.isEmpty())
+			return null;
+		else
+			return colorInscription;
+	}
 
 	/**
 	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its
@@ -267,7 +300,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 					return edgeGraphics;
 				}
 			}
-		} else if (elementType.equals("inscription")) {
+		} else if (elementType.equals("inscription") || elementType.equals("colorInscription")) {
 			NodeList graphicsList = element.getElementsByTagName("graphics");
 			for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
 				if (graphicsList.item(inscriptionIndex).getParentNode().equals(element) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
@@ -298,6 +331,34 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 		}
 
 		return null;
+	}
+
+	/**
+	 * Reads an initial color marking tag and returns its values as {@link Map}.
+	 */
+	protected static Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) throws ParameterException {
+		Validate.notNull(initialColorMarkingNode);
+
+		Element initialColorMarkingElement = (Element) initialColorMarkingNode;
+		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
+		Map<String, Integer> initialColorMarking = new HashMap<String, Integer>();
+		
+		if (colorNodes.getLength() > 0) {
+			for (int c = 0; c < colorNodes.getLength(); c++) {
+				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
+					String color = colorNodes.item(c).getTextContent();
+					if (initialColorMarking.containsKey(color))
+						initialColorMarking.put(color, initialColorMarking.get(color) + 1);
+					else
+						initialColorMarking.put(color, 1);
+				}
+			}
+		}
+		
+		if (initialColorMarking.isEmpty())
+			return null;
+		else
+			return initialColorMarking;
 	}
 
 	/**
@@ -441,7 +502,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 	/**
 	 * Gets the tokencolors element of a CPN, CWN, or IFNet and returns a {@link Map} containing all color values for the specific token color names.
 	 */
-	protected static Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException {
+	protected static Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException, PNMLParserException {
 		Validate.notNull(tokenColorsElement);
 
 		Map<String, Color> tokenColors = new HashMap<String, Color>();
@@ -450,9 +511,17 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 		for (int i = 0; i < tokenColorList.getLength(); i++) {
 			Element tokenColorElement = (Element) tokenColorList.item(i);
 			if (tokenColorElement.getNodeType() == Node.ELEMENT_NODE) {
-				// FIXME
-				String colorName = ((Element) tokenColorElement.getElementsByTagName("color").item(0)).getTextContent();
-				Element rgbColor = ((Element) tokenColorElement.getElementsByTagName("rgbcolor").item(0));
+
+				NodeList colorNameList = tokenColorElement.getElementsByTagName("color");
+				if (colorNameList.getLength() != 1)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No color name element specified.");
+				String colorName = ((Element) colorNameList.item(0)).getTextContent();
+
+				NodeList rgbColorList = tokenColorElement.getElementsByTagName("rgbcolor");
+				if (rgbColorList.getLength() != 1)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No RGB color element specified.");
+				Element rgbColor = (Element) rgbColorList.item(0);
+
 				int red = 0;
 				int green = 0;
 				int blue = 0;
@@ -511,5 +580,60 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>, T extend
 
 	public void setNet(AbstractPetriNet<P, T, F, M, S> net) {
 		this.net = net;
+	}
+	
+	/**
+	 * Helper class to temporary save firing rules for a place
+	 * 
+	 * @author Adrian Lange
+	 */
+	protected class PlaceFiringRules {
+
+		private Map<String, Integer> incomingColorTokens = new HashMap<String, Integer>();
+		private Map<String, Integer> outgoingColorTokens = new HashMap<String, Integer>();
+
+		/**
+		 * Adds a specified amount of color tokens to the incoming color tokens.
+		 */
+		public void addIncomingColorTokens(String color, int amount) throws ParameterException {
+			Validate.notNegative(amount);
+
+			if (incomingColorTokens.containsKey(color)) {
+				int oldValue = incomingColorTokens.get(color);
+				incomingColorTokens.put(color, oldValue + amount);
+			} else {
+				incomingColorTokens.put(color, amount);
+			}
+		}
+
+		/**
+		 * Adds a specified amount of color tokens to the outgoing color tokens.
+		 */
+		public void addOutgoingColorTokens(String color, int amount) throws ParameterException {
+			Validate.notNegative(amount);
+
+			if (outgoingColorTokens.containsKey(color)) {
+				int oldValue = outgoingColorTokens.get(color);
+				outgoingColorTokens.put(color, oldValue + amount);
+			} else {
+				outgoingColorTokens.put(color, amount);
+			}
+		}
+
+		public Map<String, Integer> getIncomingColorTokens() {
+			return incomingColorTokens;
+		}
+
+		public Map<String, Integer> getOutgoingColorTokens() {
+			return outgoingColorTokens;
+		}
+
+		public void setIncomingColorTokens(Map<String, Integer> incomingColorTokens) {
+			this.incomingColorTokens = incomingColorTokens;
+		}
+
+		public void setOutgoingColorTokens(Map<String, Integer> outgoingColorTokens) {
+			this.outgoingColorTokens = outgoingColorTokens;
+		}
 	}
 }

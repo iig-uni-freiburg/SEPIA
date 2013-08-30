@@ -100,7 +100,7 @@ public class PNGraphics<P extends AbstractPlace<F, S>, T extends AbstractTransit
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 
-		str.append("Grapics:\n");
+		str.append("Graphics:\n");
 		str.append("         PlaceGraphics# " + placeGraphics.size() + ": [" + map2Str(placeGraphics)+ "]\n");
 		str.append("    TransitionGraphics# " + transitionGraphics.size() + ": [" + map2Str(transitionGraphics)+ "]\n");
 		str.append("          EdgeGraphics# " + edgeGraphics.size() + ": [" + map2Str(edgeGraphics)+ "]\n");

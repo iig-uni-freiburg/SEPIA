@@ -33,7 +33,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 
 /**
  * <p>
- * TODO
+ * This class estimates the PNML type and chooses a fitting parser.
  * </p>
  * <p>
  * The process of parsing a PNML file is the following:
@@ -66,7 +66,7 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Returns the PNML type URI from a given DOM {@link Document}.
 	 */
 	private String getPNMLTypeURI(Document pnmlDocument) throws PNMLParserException {
 		// Get all elements named net, which should result in only one element
@@ -82,7 +82,18 @@ public class PNMLParser implements ParserInterface {
 		return netTypeURI;
 	}
 
-	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+	/**
+	 * Parse a PNML file and require it to be valid.
+	 * 
+	 * @param pnmlFile
+	 *            Path to the file to be parsed
+	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 */
+	public <P extends AbstractPlace<F, S>,
+			T extends AbstractTransition<F, S>,
+			F extends AbstractFlowRelation<P, T, S>,
+			M extends AbstractMarking<S>,
+			S extends Object>
 
 	GraphicalPN<P, T, F, M, S>
 
@@ -91,7 +102,23 @@ public class PNMLParser implements ParserInterface {
 		return parse(pnmlFile, true, true);
 	}
 
-	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+	/**
+	 * Parses a PNML {@link File}.
+	 * 
+	 * @param pnmlFile
+	 *            File to parse
+	 * @param requireNetType
+	 *            Set to <code>true</code> if the net type should be required. If the net type can't be determined an exception will be thrown. If set to
+	 *            <code>false</code>, the parser will try to read the file as P/T-net.
+	 * @param verifySchema
+	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
+	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 */
+	public <P extends AbstractPlace<F, S>,
+			T extends AbstractTransition<F, S>,
+			F extends AbstractFlowRelation<P, T, S>,
+			M extends AbstractMarking<S>,
+			S extends Object>
 
 	GraphicalPN<P, T, F, M, S>
 
@@ -108,7 +135,18 @@ public class PNMLParser implements ParserInterface {
 		return parse(inputFile, requireNetType, verifySchema);
 	}
 
-	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+	/**
+	 * Parse a PNML file and require it to be valid.
+	 * 
+	 * @param pnmlFile
+	 *            File to be parsed
+	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 */
+	public <P extends AbstractPlace<F, S>,
+			T extends AbstractTransition<F, S>,
+			F extends AbstractFlowRelation<P, T, S>,
+			M extends AbstractMarking<S>,
+			S extends Object>
 
 	GraphicalPN<P, T, F, M, S>
 
@@ -117,10 +155,23 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Parses a PNML {@link File}.
+	 * 
+	 * @param pnmlFile
+	 *            File to parse
+	 * @param requireNetType
+	 *            Set to <code>true</code> if the net type should be required. If the net type can't be determined an exception will be thrown. If set to
+	 *            <code>false</code>, the parser will try to read the file as P/T-net.
+	 * @param verifySchema
+	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
+	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	@SuppressWarnings("unchecked")
-	private <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+	public <P extends AbstractPlace<F, S>,
+			T extends AbstractTransition<F, S>,
+			F extends AbstractFlowRelation<P, T, S>,
+			M extends AbstractMarking<S>,
+			S extends Object>
 
 	GraphicalPN<P, T, F, M, S>
 
@@ -145,10 +196,11 @@ public class PNMLParser implements ParserInterface {
 
 		switch (netType) {
 		case PTNet:
-			PNMLPTNetParser pnmlParser = new PNMLPTNetParser();
-			return (GraphicalPN<P, T, F, M, S>) pnmlParser.parse(pnmlDocument);
-		case CPN: // TODO:
-			break;
+			PNMLPTNetParser ptnParser = new PNMLPTNetParser();
+			return (GraphicalPN<P, T, F, M, S>) ptnParser.parse(pnmlDocument);
+		case CPN:
+			PNMLCPNParser cpnParser = new PNMLCPNParser();
+			return (GraphicalPN<P, T, F, M, S>) cpnParser.parse(pnmlDocument);
 		case CWN: // TODO:
 			break;
 		case IFNet: // TODO:
@@ -159,7 +211,7 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Reads a PNML file and converts it to a DOM {@link Document}.
 	 * 
 	 * @param pnmlFile
 	 *            PNML file to read
@@ -191,7 +243,12 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * TODO
+	 * Verifies a PNML file based on a given petri net type definition. An exception will be thrown if the PNML file is not verified.
+	 * 
+	 * @param pnmlFile
+	 *            File to verify
+	 * @param pntdUrl
+	 *            {@link URL} of the petri net type definition
 	 */
 	private void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
@@ -218,5 +275,4 @@ public class PNMLParser implements ParserInterface {
 			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, e.getMessage());
 		}
 	}
-
 }

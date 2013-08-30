@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JAGAL"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/TOVAL"/>
-	<classpathentry kind="lib" path="lib/isorelax/isorelax.jar" sourcepath="lib/isorelax/src"/>
+	<classpathentry kind="lib" path="lib/isorelax/isorelax.jar"/>
 	<classpathentry kind="lib" path="lib/msv/msv-core-2013.6.1.jar" sourcepath="lib/msv/msv-core-2013.6.1-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/SEPIA/lib/msv/msv-core-2013.6.1-javadoc.jar!/"/>
