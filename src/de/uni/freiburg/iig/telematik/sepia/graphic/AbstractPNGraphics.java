@@ -1,8 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
- * TODO
+ * Abstract petri net graphics super class. It contains all net type specific graphical information needed to draw the petri net.
  * </p>
  * 
  * @author Adrian Lange
@@ -28,7 +28,11 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * @param <S>
  *            Type of Petri net place states
  */
-public class PNGraphics<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
+public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
+						T extends AbstractTransition<F, S>,
+						F extends AbstractFlowRelation<P, T, S>,
+						M extends AbstractMarking<S>,
+						S extends Object> {
 
 	private Map<P, NodeGraphics> placeGraphics = new HashMap<P, NodeGraphics>();
 	private Map<P, Set<TokenGraphics>> tokenGraphics = new HashMap<P, Set<TokenGraphics>>();
@@ -99,28 +103,33 @@ public class PNGraphics<P extends AbstractPlace<F, S>, T extends AbstractTransit
 
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-
 		str.append("Graphics:\n");
-		str.append("         PlaceGraphics# " + placeGraphics.size() + ": [" + map2Str(placeGraphics)+ "]\n");
-		str.append("    TransitionGraphics# " + transitionGraphics.size() + ": [" + map2Str(transitionGraphics)+ "]\n");
-		str.append("          EdgeGraphics# " + edgeGraphics.size() + ": [" + map2Str(edgeGraphics)+ "]\n");
-		str.append("         TokenGraphics# " + tokenGraphics.size() + ": [" + map2Str(tokenGraphics)+ "]\n");
-		str.append("EdgeAnnotationGraphics# " + edgeAnnotationGraphics.size() + ": [" + map2Str(edgeAnnotationGraphics)+ "]\n");
+		str.append("          PlaceGraphics# " + placeGraphics.size());
+		if (placeGraphics.size() > 0)
+			str.append(":\n" + map2Str(placeGraphics) + "\n");
+		str.append("     TransitionGraphics# " + transitionGraphics.size());
+		if (transitionGraphics.size() > 0)
+			str.append(":\n" + map2Str(transitionGraphics) + "\n");
+		str.append("           EdgeGraphics# " + edgeGraphics.size());
+		if (edgeGraphics.size() > 0)
+			str.append(":\n" + map2Str(edgeGraphics) + "\n");
+		str.append("          TokenGraphics# " + tokenGraphics.size());
+		if (tokenGraphics.size() > 0)
+			str.append(":\n" + map2Str(tokenGraphics) + "\n");
+		str.append(" EdgeAnnotationGraphics# " + edgeAnnotationGraphics.size());
+		if (edgeAnnotationGraphics.size() > 0)
+			str.append(":\n" + map2Str(edgeAnnotationGraphics) + "\n");
 
 		return str.toString();
 	}
 
-	@SuppressWarnings("rawtypes")
-	private static String map2Str(Map m) {
+	protected static <A extends Object, B extends Object> String map2Str(Map<A, B> m) {
 		boolean empty = true;
 		StringBuilder str = new StringBuilder();
-		Iterator it = m.entrySet().iterator();
-		while (it.hasNext()) {
+		for (Entry<A, B> pairs : m.entrySet()) {
 			if (!empty)
-				str.append(",");
-			Map.Entry pairs = (Map.Entry) it.next();
-			str.append(pairs.getKey() + "=" + pairs.getValue());
-			it.remove();
+				str.append("\n");
+			str.append("                            " + pairs.getKey() + ": " + pairs.getValue());
 			empty = false;
 		}
 		return str.toString();

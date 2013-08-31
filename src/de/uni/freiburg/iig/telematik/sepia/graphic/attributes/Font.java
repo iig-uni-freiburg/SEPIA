@@ -214,7 +214,7 @@ public class Font {
 	}
 
 	/**
-	 * TODO
+	 * Enumeration to set the text alignment
 	 * 
 	 * @author Adrian Lange
 	 */
@@ -239,7 +239,7 @@ public class Font {
 	}
 
 	/**
-	 * TODO
+	 * Enumeration to set the font decoration
 	 * 
 	 * @author Adrian Lange
 	 */

@@ -3,7 +3,9 @@ package de.uni.freiburg.iig.telematik.sepia.graphic;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
 
 /**
- * TODO
+ * <p>
+ * Token graphics attribute class containing the attributes color name and token position.
+ * </p>
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
@@ -43,14 +45,14 @@ public class TokenGraphics implements ObjectGraphics {
 	public void setTokenposition(Position tokenposition) {
 		this.tokenposition = tokenposition;
 	}
-	
+
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 
 		boolean empty = true;
-		
+
 		str.append("[");
-		
+
 		if (tokenposition != DEFAULT_TOKENPOSITION) {
 			str.append(tokenposition);
 			empty = false;
@@ -60,9 +62,9 @@ public class TokenGraphics implements ObjectGraphics {
 				str.append(",");
 			str.append(colorName);
 		}
-		
+
 		str.append("]");
-		
+
 		return str.toString();
 	}
 }

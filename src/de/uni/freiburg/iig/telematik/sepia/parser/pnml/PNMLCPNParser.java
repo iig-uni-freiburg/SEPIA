@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
@@ -21,7 +20,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.CPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
@@ -86,7 +85,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 		addFiringRulesToNet();
 
-		return new GraphicalCPNet(net, graphics);
+		return new GraphicalCPN(net, graphics);
 	}
 
 	/**
@@ -284,15 +283,12 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				if (placeInitialColorMarkings.getLength() == 1) {
 					Map<String, Integer> initialColorMarking = readInitialColorMarking(placeInitialColorMarkings.item(0));
 					if (initialColorMarking != null) {
-						Iterator<Entry<String, Integer>> iterator = initialColorMarking.entrySet().iterator();
 						Vector<String> colorStrings = new Vector<String>(initialColorMarking.size());
-						while (iterator.hasNext()) {
-							Entry<String, Integer> color = iterator.next();
+						for (Entry<String, Integer> color : initialColorMarking.entrySet()) {
 							for (int c = 0; c < color.getValue(); c++) {
 								markingMultiset.add(color.getKey());
 								colorStrings.add(color.getKey());
 							}
-							iterator.remove(); // avoid ConcurrentModificationException
 						}
 
 						// graphics
@@ -356,28 +352,18 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	}
 
 	private void addFiringRulesToNet() throws ParameterException {
-		Iterator<Entry<String, Map<String, PlaceFiringRules>>> transitionFiringRulesIterator = transitionFiringRules.entrySet().iterator();
-		while (transitionFiringRulesIterator.hasNext()) {
-			Entry<String, Map<String, PlaceFiringRules>> placeFiringRules = transitionFiringRulesIterator.next();
-
+		for (Map.Entry<String, Map<String, PlaceFiringRules>> placeFiringRules : transitionFiringRules.entrySet()) {
 			FiringRule firingRule = new FiringRule();
 
-			Iterator<Entry<String, PlaceFiringRules>> placeFiringRulesIterator = placeFiringRules.getValue().entrySet().iterator();
-			while (placeFiringRulesIterator.hasNext()) {
-				Entry<String, PlaceFiringRules> placeRule = placeFiringRulesIterator.next();
-
+			for (Entry<String, PlaceFiringRules> placeRule : placeFiringRules.getValue().entrySet()) {
 				if (placeRule.getValue().getOutgoingColorTokens().size() > 0)
 					firingRule.addRequirement(placeRule.getKey(), placeRule.getValue().getOutgoingColorTokens());
 				if (placeRule.getValue().getIncomingColorTokens().size() > 0)
 					firingRule.addProduction(placeRule.getKey(), placeRule.getValue().getIncomingColorTokens());
-
-				placeFiringRulesIterator.remove(); // avoid ConcurrentModificationException
 			}
 
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
 				((CPN) net).addFiringRule(placeFiringRules.getKey(), firingRule);
-
-			transitionFiringRulesIterator.remove(); // avoid ConcurrentModificationException
 		}
 	}
 }

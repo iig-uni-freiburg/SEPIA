@@ -201,9 +201,9 @@ public class PNMLParser implements ParserInterface {
 		case CPN:
 			PNMLCPNParser cpnParser = new PNMLCPNParser();
 			return (GraphicalPN<P, T, F, M, S>) cpnParser.parse(pnmlDocument);
-		case CWN: // TODO:
+		case CWN: // TODO: CWN parser
 			break;
-		case IFNet: // TODO:
+		case IFNet: // TODO: IFNet parser
 			break;
 		}
 

@@ -27,12 +27,12 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
 
 	private AbstractPetriNet<P, T, F, M, S> petriNet = null;
-	private PNGraphics<P, T, F, M, S> petriNetGraphics = null;
+	private AbstractPNGraphics<P, T, F, M, S> petriNetGraphics = null;
 
 	/**
 	 * Create new GraphicalPetriNet with the specified {@link AbstractPetriNet}.
 	 */
-	public GraphicalPN(AbstractPetriNet<P, T, F, M, S> petriNet, PNGraphics<P, T, F, M, S> petriNetGraphics) {
+	public GraphicalPN(AbstractPetriNet<P, T, F, M, S> petriNet, AbstractPNGraphics<P, T, F, M, S> petriNetGraphics) {
 		setPetriNet(petriNet);
 		setPetriNetGraphics(petriNetGraphics);
 	}
@@ -53,9 +53,9 @@ public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends Abstr
 	}
 
 	/**
-	 * @return the {@link PNGraphics}
+	 * @return the {@link AbstractPNGraphics}
 	 */
-	public PNGraphics<P, T, F, M, S> getPetriNetGraphics() {
+	public AbstractPNGraphics<P, T, F, M, S> getPetriNetGraphics() {
 		return petriNetGraphics;
 	}
 
@@ -63,7 +63,7 @@ public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends Abstr
 	 * @param petriNetGraphics
 	 *            the petriNetGraphics to set
 	 */
-	public void setPetriNetGraphics(PNGraphics<P, T, F, M, S> petriNetGraphics) {
+	public void setPetriNetGraphics(AbstractPNGraphics<P, T, F, M, S> petriNetGraphics) {
 		this.petriNetGraphics = petriNetGraphics;
 	}
 }

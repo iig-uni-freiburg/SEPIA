@@ -11,13 +11,13 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
 
 /**
- * TODO
+ * {@link AbstractPNGraphics} implementation for the CWNs.
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class CWNGraphics extends PNGraphics<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
-	
+public class CWNGraphics extends AbstractPNGraphics<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
+
 	private Map<String, Color> colors = new HashMap<String, Color>();
 
 	public Map<String, Color> getColors() {
@@ -26,5 +26,18 @@ public class CWNGraphics extends PNGraphics<CWNPlace, CWNTransition, CWNFlowRela
 
 	public void setColors(Map<String, Color> colors) {
 		this.colors = colors;
+	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append(super.toString());
+
+		if (colors.size() > 0) {
+			str.append("            tokenColors# " + colors.size());
+			if (colors.size() > 0)
+				str.append(":\n" + map2Str(colors) + "\n");
+		}
+
+		return str.toString();
 	}
 }

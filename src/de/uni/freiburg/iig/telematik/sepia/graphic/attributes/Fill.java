@@ -135,7 +135,7 @@ public class Fill {
 	}
 
 	/**
-	 * TODO
+	 * Enumeration to set the rotation of the gradient
 	 * 
 	 * @author Adrian Lange
 	 */

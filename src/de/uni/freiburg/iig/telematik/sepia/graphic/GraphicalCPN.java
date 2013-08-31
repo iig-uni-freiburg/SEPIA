@@ -9,14 +9,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 
 /**
- * TODO
+ * Container class with a {@link CPN} and its graphical information as {@link CPNGraphics}.
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalCPNet extends GraphicalPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
+public class GraphicalCPN extends GraphicalPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
 
-	public GraphicalCPNet(AbstractPetriNet<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> petriNet, PNGraphics<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> petriNetGraphics) {
+	public GraphicalCPN(AbstractPetriNet<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> petriNet, AbstractPNGraphics<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
 

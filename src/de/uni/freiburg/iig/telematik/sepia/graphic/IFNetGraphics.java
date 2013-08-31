@@ -11,12 +11,12 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
 
 /**
- * TODO
+ * {@link AbstractPNGraphics} implementation for the IFNets.
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class IFNetGraphics extends PNGraphics<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
+public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
 
 	private Map<AbstractIFNetTransition, AnnotationGraphics> accessFunctionGraphics = new HashMap<AbstractIFNetTransition, AnnotationGraphics>();
 	private Map<String, Color> colors = new HashMap<String, Color>();
@@ -44,5 +44,22 @@ public class IFNetGraphics extends PNGraphics<IFNetPlace, AbstractIFNetTransitio
 
 	public void setSubjectGraphics(Map<IFNetPlace, AnnotationGraphics> subjectGraphics) {
 		this.subjectGraphics = subjectGraphics;
+	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append(super.toString());
+
+		str.append("            tokenColors# " + colors.size());
+		if (colors.size() > 0)
+			str.append(":\n" + map2Str(colors) + "\n");
+		str.append(" accessFunctionGraphics# " + accessFunctionGraphics.size());
+		if (accessFunctionGraphics.size() > 0)
+			str.append(":\n" + map2Str(accessFunctionGraphics) + "\n");
+		str.append("        subjectGraphics# " + subjectGraphics.size());
+		if (subjectGraphics.size() > 0)
+			str.append(":\n" + map2Str(subjectGraphics) + "\n");
+
+		return str.toString();
 	}
 }

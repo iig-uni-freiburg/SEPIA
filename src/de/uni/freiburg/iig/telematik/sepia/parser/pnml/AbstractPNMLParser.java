@@ -22,7 +22,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ObjectGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.PNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill.GradientRotation;
@@ -53,9 +53,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 										 S extends Object> {
 
 	protected AbstractPetriNet<P, T, F, M, S> net;
-	protected PNGraphics<P, T, F, M, S> graphics;
+	protected AbstractPNGraphics<P, T, F, M, S> graphics;
 
-	public PNGraphics<P, T, F, M, S> getGraphics() {
+	public AbstractPNGraphics<P, T, F, M, S> getGraphics() {
 		return graphics;
 	}
 
@@ -572,7 +572,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		return tokenPosition;
 	}
 
-	public void setGraphics(PNGraphics<P, T, F, M, S> graphics) throws ParameterException {
+	public void setGraphics(AbstractPNGraphics<P, T, F, M, S> graphics) throws ParameterException {
 		Validate.notNull(graphics);
 
 		this.graphics = graphics;

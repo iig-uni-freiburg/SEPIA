@@ -6,10 +6,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 
 /**
- * TODO
+ * {@link AbstractPNGraphics} implementation for the P/T nets.
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class PTGraphics extends PNGraphics<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
+public class PTGraphics extends AbstractPNGraphics<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
 }

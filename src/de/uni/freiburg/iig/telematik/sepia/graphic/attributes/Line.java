@@ -132,7 +132,7 @@ public class Line {
 	}
 
 	/**
-	 * TODO
+	 * Enumeration to set the shape of the line
 	 * 
 	 * @author Adrian Lange
 	 */
@@ -155,7 +155,7 @@ public class Line {
 	}
 
 	/**
-	 * TODO
+	 * Enumeration to set the line style
 	 * 
 	 * @author Adrian Lange
 	 */
