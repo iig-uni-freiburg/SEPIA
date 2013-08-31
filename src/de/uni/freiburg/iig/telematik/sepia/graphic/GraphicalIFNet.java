@@ -14,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalIFNet extends GraphicalPN<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
+public class GraphicalIFNet extends AbstractGraphicalPN<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
 
 	public GraphicalIFNet(AbstractPetriNet<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> petriNet, AbstractPNGraphics<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> petriNetGraphics) {
 		super(petriNet, petriNetGraphics);

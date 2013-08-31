@@ -14,14 +14,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.CPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
@@ -56,9 +54,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, AbstractPNMLParser<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>>.PlaceFiringRules>>();
 
-	public GraphicalPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>>
-
-	parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalCPN parse(Document pnmlDocument) throws ParameterException, ParserException {
 
 		net = new CPN();
 		graphics = new CPNGraphics();
@@ -91,7 +87,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
 	 */
-	protected void readArcs(NodeList arcNodes) throws ParameterException, XMLParserException, PNMLParserException {
+	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
 
 		// read and add each arc/flow relation
 		for (int a = 0; a < arcNodes.getLength(); a++) {
@@ -126,16 +122,16 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
-							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens("black", inscription);
+							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addOutgoingColorTokens("black", inscription);
+							tempPlaceFiringRule.addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(targetName).put(sourceName, tempPlaceFiringRule);
 						}
 					}
 
 					// Add color tokens
-					if (colorInscription.size() > 0) {
+					if (colorInscription != null && colorInscription.size() > 0) {
 						if (transitionFiringRules.containsKey(targetName) == false) {
 							transitionFiringRules.put(targetName, new HashMap<String, AbstractPNMLParser<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>>.PlaceFiringRules>());
 						}
@@ -168,10 +164,10 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
-							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens("black", inscription);
+							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addIncomingColorTokens("black", inscription);
+							tempPlaceFiringRule.addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(sourceName).put(targetName, tempPlaceFiringRule);
 						}
 					}
@@ -204,23 +200,23 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 				// annotation graphics for inscription
 				if (arcInscriptions.getLength() == 1) {
-					AnnotationGraphics edgeAnnotationGraphics = (AnnotationGraphics) readGraphics((Element) arcInscriptions.item(0));
-					if (edgeAnnotationGraphics != null)
-						graphics.getEdgeAnnotationGraphics().put(flowRelation, edgeAnnotationGraphics);
+					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcInscriptions.item(0));
+					if (arcAnnotationGraphics != null)
+						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}
 
 				// annotation graphics for color inscription
 				// FIXME is ignored if there's already an edge annotation graphics object for the flow relation from the inscription part
-				if (arcColorInscriptions.getLength() == 1 && !graphics.getEdgeAnnotationGraphics().containsKey(flowRelation)) {
-					AnnotationGraphics edgeAnnotationGraphics = (AnnotationGraphics) readGraphics((Element) arcColorInscriptions.item(0));
-					if (edgeAnnotationGraphics != null)
-						graphics.getEdgeAnnotationGraphics().put(flowRelation, edgeAnnotationGraphics);
+				if (arcColorInscriptions.getLength() == 1 && !graphics.getArcAnnotationGraphics().containsKey(flowRelation)) {
+					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcColorInscriptions.item(0));
+					if (arcAnnotationGraphics != null)
+						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}
 
 				// get graphical information
-				EdgeGraphics arcGraphics = (EdgeGraphics) readGraphics(arc);
+				ArcGraphics arcGraphics = readArcGraphicsElement(arc);
 				if (arcGraphics != null)
-					graphics.getEdgeGraphics().put(flowRelation, arcGraphics);
+					graphics.getArcGraphics().put(flowRelation, arcGraphics);
 			}
 		}
 	}
@@ -228,7 +224,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	/**
 	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
 	 */
-	protected void readPlaces(NodeList placeNodes) throws ParameterException, XMLParserException {
+	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
 		CPNMarking marking = new CPNMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
@@ -250,7 +246,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				net.addPlace(placeName, placeLabel);
 
 				// Read graphical information
-				NodeGraphics placeGraphics = (NodeGraphics) readGraphics(place);
+				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
 				if (placeGraphics != null)
 					graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
 
@@ -310,7 +306,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				// If there is a marking, add the multiset
 				if (markingMultiset.size() > 0)
 					marking.set(placeName, markingMultiset);
-				//
+
 				if (!tokenGraphics.isEmpty())
 					graphics.getTokenGraphics().put(net.getPlace(placeName), tokenGraphics);
 			}
@@ -321,7 +317,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	/**
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
 	 */
-	protected void readTransitions(NodeList transitionNodes) throws XMLParserException, ParameterException {
+	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
 		// read and add each transition
 		for (int t = 0; t < transitionNodes.getLength(); t++) {
 			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
@@ -342,7 +338,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 					net.addTransition(transitionName);
 
 				// read graphical information
-				NodeGraphics transitionGraphics = (NodeGraphics) readGraphics(transition);
+				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
 					graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
 

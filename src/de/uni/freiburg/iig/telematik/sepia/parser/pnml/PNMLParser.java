@@ -22,7 +22,7 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.ParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -87,7 +87,7 @@ public class PNMLParser implements ParserInterface {
 	 * 
 	 * @param pnmlFile
 	 *            Path to the file to be parsed
-	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	public <P extends AbstractPlace<F, S>,
 			T extends AbstractTransition<F, S>,
@@ -95,7 +95,7 @@ public class PNMLParser implements ParserInterface {
 			M extends AbstractMarking<S>,
 			S extends Object>
 
-	GraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S>
 
 	parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
@@ -112,7 +112,7 @@ public class PNMLParser implements ParserInterface {
 	 *            <code>false</code>, the parser will try to read the file as P/T-net.
 	 * @param verifySchema
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
-	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	public <P extends AbstractPlace<F, S>,
 			T extends AbstractTransition<F, S>,
@@ -120,7 +120,7 @@ public class PNMLParser implements ParserInterface {
 			M extends AbstractMarking<S>,
 			S extends Object>
 
-	GraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S>
 
 	parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 
@@ -140,7 +140,7 @@ public class PNMLParser implements ParserInterface {
 	 * 
 	 * @param pnmlFile
 	 *            File to be parsed
-	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	public <P extends AbstractPlace<F, S>,
 			T extends AbstractTransition<F, S>,
@@ -148,7 +148,7 @@ public class PNMLParser implements ParserInterface {
 			M extends AbstractMarking<S>,
 			S extends Object>
 
-	GraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S>
 
 	parse(File pnmlFile) throws IOException, ParserException, ParameterException {
 		return parse(pnmlFile, true, true);
@@ -164,7 +164,7 @@ public class PNMLParser implements ParserInterface {
 	 *            <code>false</code>, the parser will try to read the file as P/T-net.
 	 * @param verifySchema
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
-	 * @return A {@link GraphicalPN}, acting as container for a petri net and its graphical information.
+	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	@SuppressWarnings("unchecked")
 	public <P extends AbstractPlace<F, S>,
@@ -173,7 +173,7 @@ public class PNMLParser implements ParserInterface {
 			M extends AbstractMarking<S>,
 			S extends Object>
 
-	GraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S>
 
 	parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 
@@ -197,10 +197,10 @@ public class PNMLParser implements ParserInterface {
 		switch (netType) {
 		case PTNet:
 			PNMLPTNetParser ptnParser = new PNMLPTNetParser();
-			return (GraphicalPN<P, T, F, M, S>) ptnParser.parse(pnmlDocument);
+			return (AbstractGraphicalPN<P, T, F, M, S>) ptnParser.parse(pnmlDocument);
 		case CPN:
 			PNMLCPNParser cpnParser = new PNMLCPNParser();
-			return (GraphicalPN<P, T, F, M, S>) cpnParser.parse(pnmlDocument);
+			return (AbstractGraphicalPN<P, T, F, M, S>) cpnParser.parse(pnmlDocument);
 		case CWN: // TODO: CWN parser
 			break;
 		case IFNet: // TODO: IFNet parser

@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -21,7 +21,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 public interface ParserInterface {
 
 	/**
-	 * Parses the given file and returns a {@link GraphicalPN}.
+	 * Parses the given file and returns a {@link AbstractGraphicalPN}.
 	 */
 	public <P extends AbstractPlace<F,S>, 
 	    	T extends AbstractTransition<F,S>, 
@@ -29,5 +29,5 @@ public interface ParserInterface {
 	    	M extends AbstractMarking<S>, 
 	    	S extends Object> 
 	
-			GraphicalPN<P, T, F, M, S> parse(File file) throws IOException, ParserException, ParameterException;
+			AbstractGraphicalPN<P, T, F, M, S> parse(File file) throws IOException, ParserException, ParameterException;
 }

@@ -37,18 +37,18 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	private Map<P, NodeGraphics> placeGraphics = new HashMap<P, NodeGraphics>();
 	private Map<P, Set<TokenGraphics>> tokenGraphics = new HashMap<P, Set<TokenGraphics>>();
 	private Map<T, NodeGraphics> transitionGraphics = new HashMap<T, NodeGraphics>();
-	private Map<F, EdgeGraphics> edgeGraphics = new HashMap<F, EdgeGraphics>();
-	private Map<F, AnnotationGraphics> edgeAnnotationGraphics = new HashMap<F, AnnotationGraphics>();
+	private Map<F, ArcGraphics> arcGraphics = new HashMap<F, ArcGraphics>();
+	private Map<F, AnnotationGraphics> arcAnnotationGraphics = new HashMap<F, AnnotationGraphics>();
 
-	public Map<F, AnnotationGraphics> getEdgeAnnotationGraphics() {
-		return edgeAnnotationGraphics;
+	public Map<F, AnnotationGraphics> getArcAnnotationGraphics() {
+		return arcAnnotationGraphics;
 	}
 
 	/**
-	 * @return the edgeGraphics
+	 * @return the arcGraphics
 	 */
-	public Map<F, EdgeGraphics> getEdgeGraphics() {
-		return edgeGraphics;
+	public Map<F, ArcGraphics> getArcGraphics() {
+		return arcGraphics;
 	}
 
 	/**
@@ -69,16 +69,16 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 		return transitionGraphics;
 	}
 
-	public void setEdgeAnnotationGraphics(Map<F, AnnotationGraphics> edgeAnnotationGraphics) {
-		this.edgeAnnotationGraphics = edgeAnnotationGraphics;
+	public void setArcAnnotationGraphics(Map<F, AnnotationGraphics> arcAnnotationGraphics) {
+		this.arcAnnotationGraphics = arcAnnotationGraphics;
 	}
 
 	/**
-	 * @param edgeGraphics
-	 *            the edgeGraphics to set
+	 * @param arcGraphics
+	 *            the arcGraphics to set
 	 */
-	public void setEdgeGraphics(Map<F, EdgeGraphics> edgeGraphics) {
-		this.edgeGraphics = edgeGraphics;
+	public void setArcGraphics(Map<F, ArcGraphics> arcGraphics) {
+		this.arcGraphics = arcGraphics;
 	}
 
 	/**
@@ -110,15 +110,15 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 		str.append("     TransitionGraphics# " + transitionGraphics.size());
 		if (transitionGraphics.size() > 0)
 			str.append(":\n" + map2Str(transitionGraphics) + "\n");
-		str.append("           EdgeGraphics# " + edgeGraphics.size());
-		if (edgeGraphics.size() > 0)
-			str.append(":\n" + map2Str(edgeGraphics) + "\n");
+		str.append("           ArcGraphics# " + arcGraphics.size());
+		if (arcGraphics.size() > 0)
+			str.append(":\n" + map2Str(arcGraphics) + "\n");
 		str.append("          TokenGraphics# " + tokenGraphics.size());
 		if (tokenGraphics.size() > 0)
 			str.append(":\n" + map2Str(tokenGraphics) + "\n");
-		str.append(" EdgeAnnotationGraphics# " + edgeAnnotationGraphics.size());
-		if (edgeAnnotationGraphics.size() > 0)
-			str.append(":\n" + map2Str(edgeAnnotationGraphics) + "\n");
+		str.append(" EdgeAnnotationGraphics# " + arcAnnotationGraphics.size());
+		if (arcAnnotationGraphics.size() > 0)
+			str.append(":\n" + map2Str(arcAnnotationGraphics) + "\n");
 
 		return str.toString();
 	}

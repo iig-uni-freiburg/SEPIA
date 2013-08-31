@@ -14,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalCWN extends GraphicalPN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
+public class GraphicalCWN extends AbstractGraphicalPN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
 
 	public GraphicalCWN(AbstractPetriNet<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> petriNet, AbstractPNGraphics<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> petriNetGraphics) {
 		super(petriNet, petriNetGraphics);

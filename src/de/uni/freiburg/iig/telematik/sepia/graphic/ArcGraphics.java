@@ -7,12 +7,12 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
 
 /**
  * <p>
- * Edge graphics attribute class containing the attributes position and line for arcs.
+ * Arc graphics attribute class containing the attributes position and line for arcs.
  * </p>
  * 
  * @author Adrian Lange
  */
-public class EdgeGraphics implements ObjectGraphics {
+public class ArcGraphics implements ObjectGraphics {
 
 	/** Default position field */
 	public static final Vector<Position> DEFAULT_POSITIONS = new Vector<Position>();
@@ -27,7 +27,7 @@ public class EdgeGraphics implements ObjectGraphics {
 	/**
 	 * Create edge graphics object with default values.
 	 */
-	public EdgeGraphics() {
+	public ArcGraphics() {
 		setPositions(DEFAULT_POSITIONS);
 		setLine(DEFAULT_LINE);
 	}
@@ -35,7 +35,7 @@ public class EdgeGraphics implements ObjectGraphics {
 	/**
 	 * Create edge graphics object with the specified values.
 	 */
-	public EdgeGraphics(Vector<Position> positions, Line line) {
+	public ArcGraphics(Vector<Position> positions, Line line) {
 		setPositions(positions);
 		setLine(line);
 	}

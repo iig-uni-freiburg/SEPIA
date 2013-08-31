@@ -18,8 +18,8 @@ import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ObjectGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractPNGraphics;
@@ -70,22 +70,60 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 *            DOM document to parse
 	 * @return Petri net with graphical information
 	 */
-	public abstract GraphicalPN<P, T, F, M, S> parse(Document pnmlDocument) throws ParameterException, ParserException;
+	public abstract AbstractGraphicalPN<P, T, F, M, S> parse(Document pnmlDocument) throws ParameterException, ParserException;
 
 	/**
-	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalPN}.
+	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	protected abstract void readArcs(NodeList arcNodes) throws ParameterException, ParserException;
 
 	/**
-	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalPN}.
+	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
-	protected abstract void readPlaces(NodeList placeNodes) throws ParameterException, XMLParserException;
+	protected abstract void readPlaces(NodeList placeNodes) throws ParameterException, ParserException;
 
 	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalPN}.
+	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
-	protected abstract void readTransitions(NodeList transitionNodes) throws XMLParserException, ParameterException;
+	protected abstract void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException;
+
+	/**
+	 * Reads the graphical information of an arc element and returns a {@link ArcGraphics} object.
+	 */
+	protected static ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
+		Validate.notNull(arcGraphicsElement);
+
+		String elementType = arcGraphicsElement.getNodeName();
+
+		if (!elementType.equals("arc"))
+			throw new ParserException("The element must be of the type \"arc\".");
+
+		NodeList graphicsList = arcGraphicsElement.getElementsByTagName("graphics");
+		for (int arcIndex = 0; arcIndex < graphicsList.getLength(); arcIndex++) {
+			if (graphicsList.item(arcIndex).getParentNode().equals(arcGraphicsElement) && graphicsList.item(arcIndex).getNodeType() == Node.ELEMENT_NODE) {
+				ArcGraphics arcGraphics = new ArcGraphics();
+				Element graphics = (Element) graphicsList.item(arcIndex);
+
+				// positions and line
+				NodeList positionGraphics = graphics.getElementsByTagName("position");
+				if (positionGraphics.getLength() > 0) {
+					Vector<Position> positions = new Vector<Position>(positionGraphics.getLength());
+					for (int positionIndex = 0; positionIndex < positionGraphics.getLength(); positionIndex++) {
+						positions.add(readPosition((Element) positionGraphics.item(positionIndex)));
+					}
+					arcGraphics.setPositions(positions);
+				}
+				if (graphics.getElementsByTagName("line").getLength() > 0) {
+					Node line = graphics.getElementsByTagName("line").item(0);
+					arcGraphics.setLine(readLine((Element) line));
+				}
+
+				return arcGraphics;
+			}
+		}
+		// No graphics found
+		return null;
+	}
 
 	/**
 	 * Reads an initial color marking tag and returns its values as {@link Map}.
@@ -239,98 +277,20 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphics tag of the given element.
 	 */
-	protected static ObjectGraphics readGraphics(Element element) throws ParameterException {
+	protected static ObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
 		Validate.notNull(element);
-
-		/*
-		 * As we can't be sure what tags are written in the toolspecific tags, we always must check the parent node of child elements we call by their name.
-		 */
 
 		// get node element type
 		String elementType = element.getNodeName();
-		if (elementType.equals("place") || elementType.equals("transition")) {
-			NodeList graphicsList = element.getElementsByTagName("graphics");
-			for (int placeTagIndex = 0; placeTagIndex < graphicsList.getLength(); placeTagIndex++) {
-				if (graphicsList.item(placeTagIndex).getParentNode().equals(element) && graphicsList.item(placeTagIndex).getNodeType() == Node.ELEMENT_NODE) {
-					NodeGraphics nodeGraphics = new NodeGraphics();
-					Element graphics = (Element) graphicsList.item(placeTagIndex);
 
-					// dimension, fill, line, position
-					if (graphics.getElementsByTagName("dimension").getLength() > 0) {
-						Node dimension = graphics.getElementsByTagName("dimension").item(0);
-						nodeGraphics.setDimension(readDimension((Element) dimension));
-					}
-					if (graphics.getElementsByTagName("fill").getLength() > 0) {
-						Node fill = graphics.getElementsByTagName("fill").item(0);
-						nodeGraphics.setFill(readFill((Element) fill));
-					}
-					if (graphics.getElementsByTagName("line").getLength() > 0) {
-						Node line = graphics.getElementsByTagName("line").item(0);
-						nodeGraphics.setLine(readLine((Element) line));
-					}
-					if (graphics.getElementsByTagName("position").getLength() > 0) {
-						Node position = graphics.getElementsByTagName("position").item(0);
-						nodeGraphics.setPosition(readPosition((Element) position));
-					}
-
-					return nodeGraphics;
-				}
-			}
-		} else if (elementType.equals("arc")) {
-			NodeList graphicsList = element.getElementsByTagName("graphics");
-			for (int arcIndex = 0; arcIndex < graphicsList.getLength(); arcIndex++) {
-				if (graphicsList.item(arcIndex).getParentNode().equals(element) && graphicsList.item(arcIndex).getNodeType() == Node.ELEMENT_NODE) {
-					EdgeGraphics edgeGraphics = new EdgeGraphics();
-					Element graphics = (Element) graphicsList.item(arcIndex);
-
-					// positions and line
-					NodeList positionGraphics = graphics.getElementsByTagName("position");
-					if (positionGraphics.getLength() > 0) {
-						Vector<Position> positions = new Vector<Position>(positionGraphics.getLength());
-						for (int positionIndex = 0; positionIndex < positionGraphics.getLength(); positionIndex++) {
-							positions.add(readPosition((Element) positionGraphics.item(positionIndex)));
-						}
-						edgeGraphics.setPositions(positions);
-					}
-					if (graphics.getElementsByTagName("line").getLength() > 0) {
-						Node line = graphics.getElementsByTagName("line").item(0);
-						edgeGraphics.setLine(readLine((Element) line));
-					}
-
-					return edgeGraphics;
-				}
-			}
-		} else if (elementType.equals("inscription") || elementType.equals("colorInscription")) {
-			NodeList graphicsList = element.getElementsByTagName("graphics");
-			for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
-				if (graphicsList.item(inscriptionIndex).getParentNode().equals(element) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
-					AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-					Element graphics = (Element) graphicsList.item(inscriptionIndex);
-
-					// fill, font, line, and offset
-					if (graphics.getElementsByTagName("fill").getLength() > 0) {
-						Node fill = graphics.getElementsByTagName("fill").item(0);
-						annotationGraphics.setFill(readFill((Element) fill));
-					}
-					if (graphics.getElementsByTagName("font").getLength() > 0) {
-						Node font = graphics.getElementsByTagName("font").item(0);
-						annotationGraphics.setFont(readFont((Element) font));
-					}
-					if (graphics.getElementsByTagName("line").getLength() > 0) {
-						Node line = graphics.getElementsByTagName("line").item(0);
-						annotationGraphics.setLine(readLine((Element) line));
-					}
-					if (graphics.getElementsByTagName("offset").getLength() > 0) {
-						Node offset = graphics.getElementsByTagName("offset").item(0);
-						annotationGraphics.setOffset(readOffset((Element) offset));
-					}
-
-					return annotationGraphics;
-				}
-			}
-		}
-
-		return null;
+		if (elementType.equals("place") || elementType.equals("transition"))
+			return readNodeGraphicsElement(element);
+		else if (elementType.equals("arc"))
+			return readArcGraphicsElement(element);
+		else if (elementType.equals("inscription") || elementType.equals("colorInscription"))
+			return readInscriptionGraphicsElement(element);
+		else
+			return null;
 	}
 
 	/**
@@ -377,6 +337,48 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
+	 * Reads the graphical information of an inscription element and returns a {@link AnnotationGraphics} object.
+	 */
+	protected static AnnotationGraphics readInscriptionGraphicsElement(Element inscriptionGraphicsElement) throws ParameterException, ParserException {
+		Validate.notNull(inscriptionGraphicsElement);
+
+		String elementType = inscriptionGraphicsElement.getNodeName();
+
+		if (!elementType.equals("inscription") && !elementType.equals("colorInscription"))
+			throw new ParserException("The element must be of the type \"inscription\".");
+
+		NodeList graphicsList = inscriptionGraphicsElement.getElementsByTagName("graphics");
+		for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
+			if (graphicsList.item(inscriptionIndex).getParentNode().equals(inscriptionGraphicsElement) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
+				AnnotationGraphics annotationGraphics = new AnnotationGraphics();
+				Element graphics = (Element) graphicsList.item(inscriptionIndex);
+
+				// fill, font, line, and offset
+				if (graphics.getElementsByTagName("fill").getLength() > 0) {
+					Node fill = graphics.getElementsByTagName("fill").item(0);
+					annotationGraphics.setFill(readFill((Element) fill));
+				}
+				if (graphics.getElementsByTagName("font").getLength() > 0) {
+					Node font = graphics.getElementsByTagName("font").item(0);
+					annotationGraphics.setFont(readFont((Element) font));
+				}
+				if (graphics.getElementsByTagName("line").getLength() > 0) {
+					Node line = graphics.getElementsByTagName("line").item(0);
+					annotationGraphics.setLine(readLine((Element) line));
+				}
+				if (graphics.getElementsByTagName("offset").getLength() > 0) {
+					Node offset = graphics.getElementsByTagName("offset").item(0);
+					annotationGraphics.setOffset(readOffset((Element) offset));
+				}
+
+				return annotationGraphics;
+			}
+		}
+		// No graphics found
+		return null;
+	}
+
+	/**
 	 * Reads a line tag and returns it as {@link Line}.
 	 */
 	protected static Line readLine(Element lineNode) throws ParameterException {
@@ -412,6 +414,48 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		}
 
 		return line;
+	}
+
+	/**
+	 * Reads the graphical information of a node element line a place or a transition and returns a {@link NodeGraphics} object.
+	 */
+	protected static NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParameterException, ParserException {
+		Validate.notNull(nodeGraphicsElement);
+
+		String elementType = nodeGraphicsElement.getNodeName();
+
+		if (!elementType.equals("place") && !elementType.equals("transition"))
+			throw new ParserException("The node must be of the type \"place\" or \"transition\".");
+
+		NodeList graphicsList = nodeGraphicsElement.getElementsByTagName("graphics");
+		for (int placeTagIndex = 0; placeTagIndex < graphicsList.getLength(); placeTagIndex++) {
+			if (graphicsList.item(placeTagIndex).getParentNode().equals(nodeGraphicsElement) && graphicsList.item(placeTagIndex).getNodeType() == Node.ELEMENT_NODE) {
+				NodeGraphics nodeGraphics = new NodeGraphics();
+				Element graphics = (Element) graphicsList.item(placeTagIndex);
+
+				// dimension, fill, line, position
+				if (graphics.getElementsByTagName("dimension").getLength() > 0) {
+					Node dimension = graphics.getElementsByTagName("dimension").item(0);
+					nodeGraphics.setDimension(readDimension((Element) dimension));
+				}
+				if (graphics.getElementsByTagName("fill").getLength() > 0) {
+					Node fill = graphics.getElementsByTagName("fill").item(0);
+					nodeGraphics.setFill(readFill((Element) fill));
+				}
+				if (graphics.getElementsByTagName("line").getLength() > 0) {
+					Node line = graphics.getElementsByTagName("line").item(0);
+					nodeGraphics.setLine(readLine((Element) line));
+				}
+				if (graphics.getElementsByTagName("position").getLength() > 0) {
+					Node position = graphics.getElementsByTagName("position").item(0);
+					nodeGraphics.setPosition(readPosition((Element) position));
+				}
+
+				return nodeGraphics;
+			}
+		}
+		// No graphics found
+		return null;
 	}
 
 	/**
@@ -581,7 +625,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	public void setNet(AbstractPetriNet<P, T, F, M, S> net) {
 		this.net = net;
 	}
-	
+
 	/**
 	 * Helper class to temporary save firing rules for a place
 	 * 

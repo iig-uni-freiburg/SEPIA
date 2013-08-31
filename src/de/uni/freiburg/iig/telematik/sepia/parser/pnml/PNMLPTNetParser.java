@@ -9,11 +9,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.EdgeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.PTGraphics;
@@ -44,9 +42,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
  */
 public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
 
-	public GraphicalPN<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>
-
-	parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalPTNet parse(Document pnmlDocument) throws ParameterException, ParserException {
 
 		net = new PTNet();
 		graphics = new PTGraphics();
@@ -71,7 +67,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
 	 */
-	protected void readArcs(NodeList arcNodes) throws ParameterException, XMLParserException, PNMLParserException {
+	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
 		// read and add each arc/flow relation
 		for (int a = 0; a < arcNodes.getLength(); a++) {
 			if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
@@ -103,15 +99,15 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 
 				// annotation graphics
 				if (arcInscriptions.getLength() == 1) {
-					AnnotationGraphics edgeAnnotationGraphics = (AnnotationGraphics) readGraphics((Element) arcInscriptions.item(0));
-					if (edgeAnnotationGraphics != null)
-						graphics.getEdgeAnnotationGraphics().put(flowRelation, edgeAnnotationGraphics);
+					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcInscriptions.item(0));
+					if (arcAnnotationGraphics != null)
+						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}
 
 				// get graphical information
-				EdgeGraphics arcGraphics = (EdgeGraphics) readGraphics(arc);
+				ArcGraphics arcGraphics = readArcGraphicsElement(arc);
 				if (arcGraphics != null)
-					graphics.getEdgeGraphics().put(flowRelation, arcGraphics);
+					graphics.getArcGraphics().put(flowRelation, arcGraphics);
 			}
 		}
 	}
@@ -119,7 +115,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 	/**
 	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
 	 */
-	protected void readPlaces(NodeList placeNodes) throws ParameterException, XMLParserException {
+	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
 		PTMarking marking = new PTMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
@@ -140,7 +136,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				net.addPlace(placeName, placeLabel);
 
 				// Read graphical information
-				NodeGraphics placeGraphics = (NodeGraphics) readGraphics(place);
+				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
 				if (placeGraphics != null)
 					graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
 
@@ -173,7 +169,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 	/**
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
 	 */
-	protected void readTransitions(NodeList transitionNodes) throws XMLParserException, ParameterException {
+	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
 		// read and add each transition
 		for (int t = 0; t < transitionNodes.getLength(); t++) {
 			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
@@ -194,7 +190,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 					net.addTransition(transitionName);
 
 				// read graphical information
-				NodeGraphics transitionGraphics = (NodeGraphics) readGraphics(transition);
+				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
 					graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
 

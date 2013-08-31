@@ -24,7 +24,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * @param <S>
  *            Type of Petri net place states
  */
-public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
+public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
 
 	private AbstractPetriNet<P, T, F, M, S> petriNet = null;
 	private AbstractPNGraphics<P, T, F, M, S> petriNetGraphics = null;
@@ -32,7 +32,7 @@ public abstract class GraphicalPN<P extends AbstractPlace<F, S>, T extends Abstr
 	/**
 	 * Create new GraphicalPetriNet with the specified {@link AbstractPetriNet}.
 	 */
-	public GraphicalPN(AbstractPetriNet<P, T, F, M, S> petriNet, AbstractPNGraphics<P, T, F, M, S> petriNetGraphics) {
+	public AbstractGraphicalPN(AbstractPetriNet<P, T, F, M, S> petriNet, AbstractPNGraphics<P, T, F, M, S> petriNetGraphics) {
 		setPetriNet(petriNet);
 		setPetriNetGraphics(petriNetGraphics);
 	}

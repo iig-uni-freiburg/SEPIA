@@ -6,7 +6,7 @@ import java.io.IOException;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -32,7 +32,7 @@ public class Parser {
 	 * 
 	 * @param file
 	 *            File to parse
-	 * @return A {@link GraphicalPN}
+	 * @return A {@link AbstractGraphicalPN}
 	 * @throws IOException
 	 *             If the file can't be found or read
 	 * @throws ParserException
@@ -46,7 +46,7 @@ public class Parser {
 	   							M extends AbstractMarking<S>, 
 	   							S extends Object>
 	
-							GraphicalPN<P, T, F, M, S>
+							AbstractGraphicalPN<P, T, F, M, S>
 	
 	parse(File file) throws IOException, ParserException, ParameterException {
 		ParserInterface parser = getParser(file);

@@ -13,7 +13,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalPTNet extends GraphicalPN<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
+public class GraphicalPTNet extends AbstractGraphicalPN<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
 
 	public GraphicalPTNet(AbstractPetriNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> petriNet, AbstractPNGraphics<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
