@@ -65,9 +65,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
 
 		NodeList tokencolorsNodes = pnmlDocument.getElementsByTagName("tokencolors");
-		if (tokencolorsNodes.getLength() > 0) {
-			tokencolors = readTokenColors((Element) tokencolorsNodes.item(0));
-			((CPNGraphics) graphics).setColors(tokencolors);
+		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
+			if (tokencolorsNodes.item(i).getNodeType() == Node.ELEMENT_NODE && tokencolorsNodes.item(i).getParentNode().getNodeName().equals("net")) {
+				tokencolors = readTokenColors((Element) tokencolorsNodes.item(i));
+				((CPNGraphics) graphics).setColors(tokencolors);
+			}
 		}
 
 		// Read places and transitions
@@ -309,6 +311,23 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 				if (!tokenGraphics.isEmpty())
 					graphics.getTokenGraphics().put(net.getPlace(placeName), tokenGraphics);
+
+				// Read and add place capacities
+				NodeList placeCapacitiesList = place.getElementsByTagName("capacities");
+				for (int i = 0; i < placeCapacitiesList.getLength(); i++) {
+					// If node is element node and is direct child of the place node
+					if (placeCapacitiesList.item(i).getNodeType() == Node.ELEMENT_NODE && placeCapacitiesList.item(i).getParentNode().equals(place)) {
+						Element placeCapacitiesElement = (Element) placeCapacitiesList.item(i);
+						Map<String, Integer> placeCapacities = readPlaceCapacities(placeCapacitiesElement);
+						// add place capacities
+						if (placeCapacities != null) {
+							CPNPlace currentPlace = net.getPlace(placeName);
+							for (Entry<String, Integer> c : placeCapacities.entrySet()) {
+								currentPlace.setColorCapacity(c.getKey(), c.getValue());
+							}
+						}
+					}
+				}
 			}
 		}
 		net.setInitialMarking(marking);

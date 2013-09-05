@@ -490,6 +490,50 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
+	 * TODO Gets the place capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
+	 */
+	protected static Map<String, Integer> readPlaceCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
+		Validate.notNull(placeCapacitiesElement);
+
+		Map<String, Integer> placeCapacities = new HashMap<String, Integer>();
+
+		NodeList placeCapacitiesList = placeCapacitiesElement.getElementsByTagName("colorcapacity");
+		for (int i = 0; i < placeCapacitiesList.getLength(); i++) {
+			Element placeCapacityElement = (Element) placeCapacitiesList.item(i);
+			if (placeCapacityElement.getNodeType() == Node.ELEMENT_NODE && placeCapacityElement.getParentNode().equals(placeCapacitiesElement)) {
+
+				NodeList colorNameList = placeCapacityElement.getElementsByTagName("color");
+				if (colorNameList.getLength() == 0) // take first occurrence
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No color name element specified.");
+				String colorName = ((Element) colorNameList.item(0)).getTextContent();
+
+				if (colorName.length() == 0)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Color token name must at least have a length of one.");
+
+				NodeList capacityList = placeCapacityElement.getElementsByTagName("capacity");
+				if (capacityList.getLength() == 0) // take first occurrence
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No capacity element specified.");
+				int capacity = Integer.parseInt(((Element) capacityList.item(0)).getTextContent());
+
+				if (capacity < 1)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or bigger.");
+
+				if (placeCapacities.containsKey(colorName) == false)
+					placeCapacities.put(colorName, capacity);
+				else if (placeCapacities.get(colorName) == capacity) {
+					// do nothing
+				} else
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "There are different capacity assignments defined for the same place and token color name \"" + colorName + "\": " + capacity + " and " + placeCapacities.get(colorName) + ".");
+			}
+		}
+
+		if (placeCapacities.size() > 0)
+			return placeCapacities;
+		else
+			return null;
+	}
+
+	/**
 	 * Reads a position tag and returns it as {@link Position}. If validated, a position tag must contain a x and a y value. If one of them is missed, its value
 	 * will be set to 0.
 	 */

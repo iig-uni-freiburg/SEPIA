@@ -104,19 +104,19 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append("Graphics:\n");
-		str.append("          PlaceGraphics# " + placeGraphics.size());
+		str.append("          placeGraphics# " + placeGraphics.size());
 		if (placeGraphics.size() > 0)
 			str.append(":\n" + map2Str(placeGraphics) + "\n");
-		str.append("     TransitionGraphics# " + transitionGraphics.size());
+		str.append("     transitionGraphics# " + transitionGraphics.size());
 		if (transitionGraphics.size() > 0)
 			str.append(":\n" + map2Str(transitionGraphics) + "\n");
-		str.append("           ArcGraphics# " + arcGraphics.size());
+		str.append("            arcGraphics# " + arcGraphics.size());
 		if (arcGraphics.size() > 0)
 			str.append(":\n" + map2Str(arcGraphics) + "\n");
-		str.append("          TokenGraphics# " + tokenGraphics.size());
+		str.append("          tokenGraphics# " + tokenGraphics.size());
 		if (tokenGraphics.size() > 0)
 			str.append(":\n" + map2Str(tokenGraphics) + "\n");
-		str.append(" EdgeAnnotationGraphics# " + arcAnnotationGraphics.size());
+		str.append("  arcAnnotationGraphics# " + arcAnnotationGraphics.size());
 		if (arcAnnotationGraphics.size() > 0)
 			str.append(":\n" + map2Str(arcAnnotationGraphics) + "\n");
 
