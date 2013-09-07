@@ -161,6 +161,21 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 						}
 					}
 				}
+
+				// Read and add place capacities
+				NodeList placeCapacitiesList = place.getElementsByTagName("capacity");
+				for (int i = 0; i < placeCapacitiesList.getLength(); i++) {
+					// If node is element node and is direct child of the place node
+					if (placeCapacitiesList.item(i).getNodeType() == Node.ELEMENT_NODE && placeCapacitiesList.item(i).getParentNode().equals(place)) {
+						Element placeCapacitiesElement = (Element) placeCapacitiesList.item(i);
+						Integer placeCapacity = readPlaceCapacity(placeCapacitiesElement);
+						// add place capacity
+						if (placeCapacity != null) {
+							PTPlace currentPlace = net.getPlace(placeName);
+							currentPlace.setCapacity(placeCapacity);
+						}
+					}
+				}
 			}
 		}
 		net.setInitialMarking(marking);

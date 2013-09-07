@@ -318,10 +318,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 					// If node is element node and is direct child of the place node
 					if (placeCapacitiesList.item(i).getNodeType() == Node.ELEMENT_NODE && placeCapacitiesList.item(i).getParentNode().equals(place)) {
 						Element placeCapacitiesElement = (Element) placeCapacitiesList.item(i);
-						Map<String, Integer> placeCapacities = readPlaceCapacities(placeCapacitiesElement);
-						// add place capacities
+						CPNPlace currentPlace = net.getPlace(placeName);
+
+						Map<String, Integer> placeCapacities = readPlaceColorCapacities(placeCapacitiesElement);
+						// add place color capacities
 						if (placeCapacities != null) {
-							CPNPlace currentPlace = net.getPlace(placeName);
 							for (Entry<String, Integer> c : placeCapacities.entrySet()) {
 								currentPlace.setColorCapacity(c.getKey(), c.getValue());
 							}

@@ -490,9 +490,23 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * TODO Gets the place capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
+	 * Gets the place capacity element of a PN and returns an {@link Integer} value.
 	 */
-	protected static Map<String, Integer> readPlaceCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
+	protected static Integer readPlaceCapacity(Element placeCapacityElement) throws ParameterException, PNMLParserException {
+		Validate.notNull(placeCapacityElement);
+
+		int capacity = Integer.parseInt(placeCapacityElement.getTextContent());
+
+		if (capacity < 1)
+			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or bigger.");
+
+		return capacity;
+	}
+
+	/**
+	 * Gets the place color capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
+	 */
+	protected static Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
 		Validate.notNull(placeCapacitiesElement);
 
 		Map<String, Integer> placeCapacities = new HashMap<String, Integer>();
@@ -570,9 +584,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	protected static String readText(Node textNode) throws XMLParserException, ParameterException {
 		Validate.notNull(textNode);
 
-		if (textNode.getNodeType() != Node.ELEMENT_NODE) {
+		if (textNode.getNodeType() != Node.ELEMENT_NODE)
 			throw new XMLParserException(de.invation.code.toval.parser.XMLParserException.ErrorCode.TAGSTRUCTURE);
-		}
+
 		Element textElement = (Element) textNode;
 		NodeList textNodes = textElement.getElementsByTagName("text");
 		if (textNodes.getLength() > 0) {
