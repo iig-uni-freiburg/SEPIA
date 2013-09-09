@@ -97,6 +97,11 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 					throw new PNMLParserException(ErrorCode.INVALID_FLOW_RELATION, "Couldn't determine flow relation between \"" + sourceName + "\" and \"" + targetName + "\".");
 				}
 
+				// Check if there's a label
+				String arcName = arc.getAttribute("id");
+					if (arcName != null && arcName.length() > 0)
+						flowRelation.setName(arcName);
+
 				// annotation graphics
 				if (arcInscriptions.getLength() == 1) {
 					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcInscriptions.item(0));

@@ -498,7 +498,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		int capacity = Integer.parseInt(placeCapacityElement.getTextContent());
 
 		if (capacity < 1)
-			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or bigger.");
+			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or higher.");
 
 		return capacity;
 	}

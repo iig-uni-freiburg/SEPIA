@@ -63,7 +63,7 @@ public class TestResourceFile extends ExternalResource {
 	/**
 	 * Returns the resource as {@link File} object.
 	 */
-	public File getFile() throws IOException, URISyntaxException {
+	public File getFile() {
 		if (file == null) {
 			createFile();
 		}
@@ -139,11 +139,20 @@ public class TestResourceFile extends ExternalResource {
 	/**
 	 * Creates a {@link File} object from the resource.
 	 */
-	private void createFile() throws IOException, URISyntaxException {
+	private void createFile() {
 		URL url = getClass().getClassLoader().getResource(resourcePath);
 		if (url != null) {
-			URI uri = url.toURI();
+			URI uri = null;
+			try {
+				uri = url.toURI();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
 			file = new File(uri);
+		}
+		if (url == null || file == null) {
+			// having an initialized File object leads to an assertion error instead of a NullPointerException
+			file = new File(resourcePath);
 		}
 	}
 }
