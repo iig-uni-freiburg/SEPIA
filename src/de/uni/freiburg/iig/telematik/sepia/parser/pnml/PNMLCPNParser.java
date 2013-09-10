@@ -263,7 +263,9 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				NodeList placeInitialMarkings = place.getElementsByTagName("initialMarking");
 				if (placeInitialMarkings.getLength() == 1) {
 					int initialMarking = readInitialMarking(placeInitialMarkings.item(0));
-					if (initialMarking > 0) {
+					if (initialMarking < 0) {
+						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
+					} else if (initialMarking > 0) {
 						for (int i = 0; i < initialMarking; i++) {
 							markingMultiset.add(CPN.DEFAULT_TOKEN_COLOR);
 						}

@@ -149,7 +149,9 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				NodeList placeInitialMarkings = place.getElementsByTagName("initialMarking");
 				if (placeInitialMarkings.getLength() == 1) {
 					int initialMarking = readInitialMarking(placeInitialMarkings.item(0));
-					if (initialMarking > 0) {
+					if (initialMarking < 0) {
+						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
+					} else if (initialMarking > 0) {
 						marking.set(placeName, initialMarking);
 
 						// graphics
