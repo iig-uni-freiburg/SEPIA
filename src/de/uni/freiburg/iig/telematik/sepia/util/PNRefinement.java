@@ -30,7 +30,16 @@ public class PNRefinement {
 	 * @param net Petri net to refine.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <P extends AbstractPlace<F,S>, T extends AbstractTransition<F,S>, F extends AbstractFlowRelation<P,T,S>, M extends AbstractMarking<S>, S extends Object> void refine(AbstractPetriNet<P,T,F,M,S> net){
+	public static <P extends AbstractPlace<F,S>, 
+				   T extends AbstractTransition<F,S>, 
+				   F extends AbstractFlowRelation<P,T,S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object> 
+	
+	void 
+	
+	refine(AbstractPetriNet<P,T,F,M,S> net){
+	
 		List<P> placeList = new ArrayList<P>(net.getPlaces());
 		//Build equivalence classes of places having the same relations.
 		List<List<P>> eqClasses = new ArrayList<List<P>>();

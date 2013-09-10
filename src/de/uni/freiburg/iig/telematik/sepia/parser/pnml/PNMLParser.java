@@ -142,6 +142,7 @@ public class PNMLParser implements ParserInterface {
 	 *            File to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
+	@Override
 	public <P extends AbstractPlace<F, S>,
 			T extends AbstractTransition<F, S>,
 			F extends AbstractFlowRelation<P, T, S>,

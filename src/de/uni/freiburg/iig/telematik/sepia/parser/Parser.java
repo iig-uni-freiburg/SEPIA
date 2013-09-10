@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import de.invation.code.toval.parser.ParserException;
+import de.invation.code.toval.parser.ParserException.ErrorCode;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -49,9 +49,107 @@ public class Parser {
 							AbstractGraphicalPN<P, T, F, M, S>
 	
 	parse(File file) throws IOException, ParserException, ParameterException {
-		ParserInterface parser = getParser(file);
-		Validate.notNull(parser, "No suitable parser for the given file could have been found.");
+		validateFile(file);
+		ParsingFormat format = guessFormat(file);
+		if(format == null)
+			throw new ParserException(ErrorCode.UNKNOWN_FILE_EXTENSION);
+		ParserInterface parser = getParser(file, format);
 		return parser.parse(file);
+	}
+	
+	/**
+	 * Parses the given file with the parser respective to the file extension.
+	 * 
+	 * @param file
+	 *            File to parse
+	 * @return A {@link AbstractGraphicalPN}
+	 * @throws IOException
+	 *             If the file can't be found or read
+	 * @throws ParserException
+	 *             For exceptions caused by the parsing
+	 * @throws ParameterException
+	 *             For exceptions caused by the given parameters
+	 */
+	public static synchronized <P extends AbstractPlace<F,S>, 
+	   							T extends AbstractTransition<F,S>, 
+	   							F extends AbstractFlowRelation<P,T,S>, 
+	   							M extends AbstractMarking<S>, 
+	   							S extends Object>
+	
+							AbstractGraphicalPN<P, T, F, M, S>
+	
+	parse(String fileName) throws IOException, ParserException, ParameterException {
+		Validate.notNull(fileName);
+		return parse(prepareFile(fileName));
+	}
+	
+	/**
+	 * Parses the given file with the parser respective to the file extension.
+	 * 
+	 * @param file
+	 *            File to parse
+	 * @return A {@link AbstractGraphicalPN}
+	 * @throws IOException
+	 *             If the file can't be found or read
+	 * @throws ParserException
+	 *             For exceptions caused by the parsing
+	 * @throws ParameterException
+	 *             For exceptions caused by the given parameters
+	 */
+	public static synchronized <P extends AbstractPlace<F,S>, 
+	   							T extends AbstractTransition<F,S>, 
+	   							F extends AbstractFlowRelation<P,T,S>, 
+	   							M extends AbstractMarking<S>, 
+	   							S extends Object>
+	
+							AbstractGraphicalPN<P, T, F, M, S>
+	
+	parse(File file, ParsingFormat format) throws IOException, ParserException, ParameterException {
+		validateFile(file);
+		Validate.notNull(format);
+		ParserInterface parser = getParser(file, format);
+		return parser.parse(file);
+	}
+	
+	/**
+	 * Parses the given file with the parser respective to the file extension.
+	 * 
+	 * @param file
+	 *            File to parse
+	 * @return A {@link AbstractGraphicalPN}
+	 * @throws IOException
+	 *             If the file can't be found or read
+	 * @throws ParserException
+	 *             For exceptions caused by the parsing
+	 * @throws ParameterException
+	 *             For exceptions caused by the given parameters
+	 */
+	public static synchronized <P extends AbstractPlace<F,S>, 
+	   							T extends AbstractTransition<F,S>, 
+	   							F extends AbstractFlowRelation<P,T,S>, 
+	   							M extends AbstractMarking<S>, 
+	   							S extends Object>
+	
+							AbstractGraphicalPN<P, T, F, M, S>
+	
+	parse(String fileName, ParsingFormat format) throws IOException, ParserException, ParameterException {
+		Validate.notNull(fileName);
+		return parse(prepareFile(fileName), format);
+	}
+	
+	private static File prepareFile(String fileName) throws IOException{
+		File file = new File(fileName);
+		validateFile(file);
+		return file;
+	}
+	
+	private static void validateFile(File file) throws IOException{
+		if(!file.exists())
+			throw new IOException("I/O Error on opening file: File does not exist!");
+		if(file.isDirectory())
+			throw new IOException("I/O Error on opening file: File is a directory!");
+		if(!file.canRead())
+			throw new IOException("I/O Error on opening file: Unable to read file!");
 	}
 
 	/**
@@ -61,12 +159,22 @@ public class Parser {
 	 * @throws IOException
 	 *             If the file can't be found
 	 */
-	private static synchronized ParserInterface getParser(File file) throws IOException {
-		if (file.isDirectory())
-			throw new IOException("Given file is a directory and therefore not parsable.");
-
-		if (file.getName().endsWith(".pnml"))
-			return new PNMLParser();
+	private static synchronized ParserInterface getParser(File file, ParsingFormat format) throws ParserException {
+		switch(format){
+		case PNML:
+			break;
+		case SOLE_CARMONA:
+			break;
+		}
+		throw new ParserException(ErrorCode.UNSUPPORTED_FORMAT);
+	}
+	
+	public static ParsingFormat guessFormat(File file){
+		for(ParsingFormat format: ParsingFormat.values()){
+			if(file.getName().endsWith(format.getFileFormat().getFileExtension())){
+				return format;
+			}
+		}
 		return null;
 	}
 }

@@ -19,6 +19,8 @@ import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundExcepti
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.OldPNMLParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLPTNetParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
@@ -212,8 +214,9 @@ public class PNUtils {
 //			System.out.println("-------");
 //		}
 		
-		PTNet ptNet = OldPNMLParser.parsePNML("/Users/stocker/Desktop/LoanApplication.pnml", false);
-		System.out.println(getAllPredecessors(ptNet));
+		AbstractPetriNet net = new PNMLParser().parse("/Users/stocker/Desktop/LoanApplication.pnml", false, false).getPetriNet();
+//		PTNet ptNet = OldPNMLParser.parsePNML("/Users/stocker/Desktop/LoanApplication.pnml", false);
+//		System.out.println(getAllPredecessors((PTNet) net));
 	}
 
 }

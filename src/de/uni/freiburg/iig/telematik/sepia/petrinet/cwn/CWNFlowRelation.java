@@ -12,12 +12,6 @@ public class CWNFlowRelation extends AbstractCWNFlowRelation<CWNPlace, CWNTransi
 	public CWNFlowRelation(CWNTransition transition, CWNPlace place) throws ParameterException {
 		super(transition, place);
 	}
-
-	@Override
-	public String toPNML(int count) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public CWNFlowRelation clone(CWNPlace place, CWNTransition transition, boolean directionPT) {

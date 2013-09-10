@@ -5,6 +5,9 @@ import java.net.URL;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 public enum NetType {
 
@@ -47,5 +50,16 @@ public enum NetType {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static Class<?> getClassType(NetType type) throws ParameterException{
+		Validate.notNull(type);
+		switch (type){
+			case PTNet: return AbstractPTNet.class;
+			case CPN: 	return AbstractCPN.class;
+			case CWN:	return AbstractCWN.class;
+			case IFNet:	return de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet.class;
+			default:	return null;
+		}
 	}
 }

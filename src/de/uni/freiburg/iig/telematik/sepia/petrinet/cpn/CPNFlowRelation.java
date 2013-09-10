@@ -22,12 +22,6 @@ public class CPNFlowRelation extends AbstractCPNFlowRelation<CPNPlace, CPNTransi
 	}
 
 	@Override
-	public String toPNML(int count) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public CPNFlowRelation clone(CPNPlace place, CPNTransition transition, boolean directionPT) {
 		CPNFlowRelation result = null;
 		try {

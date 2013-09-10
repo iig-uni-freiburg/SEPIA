@@ -15,7 +15,6 @@ public class PNMLParserException extends ParserException {
 	private final String msg_ValidationConfigurationError = "Misconfigured validation";
 
 	private ErrorCode errorCode = null;
-	private Object object = null;
 
 	public PNMLParserException(ErrorCode errorCode) {
 		super();
@@ -36,56 +35,37 @@ public class PNMLParserException extends ParserException {
 	public Object getObject() {
 		return object;
 	}
-
+	
 	@Override
-	public String getMessage() {
-		StringBuffer msg = new StringBuffer();
-
+	protected StringBuffer checkErrorCode() {
+		StringBuffer buffer = new StringBuffer();
 		switch (errorCode) {
 		case INVALID_FLOW_RELATION:
-			msg.append(msg_InvalidFlowRelation);
+			buffer.append(msg_InvalidFlowRelation);
 			break;
 		case INVALID_NET_TYPE:
-			msg.append(msg_InvalidNetType);
+			buffer.append(msg_InvalidNetType);
 			break;
 		case MISSING_NET_TAG:
-			msg.append(msg_MissingNetTag);
+			buffer.append(msg_MissingNetTag);
 			break;
 		case MISSING_NET_TYPE_ATTRIBUTE:
-			msg.append(msg_MissingNetTypeAttribute);
+			buffer.append(msg_MissingNetTypeAttribute);
 			break;
 		case NOT_ON_ONE_PAGE:
-			msg.append(msg_NotOnOnePage);
+			buffer.append(msg_NotOnOnePage);
 			break;
 		case VALIDATION_FAILED:
-			msg.append(msg_ValidationFailed);
+			buffer.append(msg_ValidationFailed);
 			break;
 		case VALIDATION_CONFIGURATION_ERROR:
-			msg.append(msg_ValidationConfigurationError);
+			buffer.append(msg_ValidationConfigurationError);
 			break;
 		}
-		if (msg != null) {
-			if (object == null) {
-				msg.append(".");
-			} else {
-				msg.append(": ").append(object.toString());
-			}
-		}
-
-		String msgSuper = super.getMessage();
-
-		if (msg.length() == 0)
-			return msgSuper;
-
-		if (msgSuper != null)
-			return msg.append("\n").append(msgSuper).toString();
-
-		return msg.toString();
+		return buffer;
 	}
 
-	public PNMLParserException.ErrorCode getErrorCode() {
-		return errorCode;
-	}
+
 
 	public enum ErrorCode {
 		INVALID_FLOW_RELATION, INVALID_NET_TYPE, MISSING_NET_TAG, MISSING_NET_TYPE_ATTRIBUTE, NOT_ON_ONE_PAGE, VALIDATION_FAILED, VALIDATION_CONFIGURATION_ERROR;

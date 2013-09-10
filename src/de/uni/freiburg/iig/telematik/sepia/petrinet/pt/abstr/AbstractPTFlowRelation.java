@@ -6,9 +6,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 
 public abstract class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends AbstractPTFlowRelation<P,T>>, T extends AbstractPTTransition<? extends AbstractPTFlowRelation<P,T>>> extends AbstractFlowRelation<P, T, Integer> {
 
-	private final String pnmlPrefix = "arc_";
-	private final String pnmlFormat = "<arc id=\"%s\" source=\"%s\" target=\"%s\"></arc>%n";
-	private String toStringFormat = "%s: %s -%s-> %s";
+	private String toStringFormat = "%s -%s-> %s";
 	
 	public static final int DEFAULT_WEIGHT = 1;
 	
@@ -47,22 +45,9 @@ public abstract class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends
 	@Override
 	public String toString() {
 		if(directionPT)
-			return String.format(toStringFormat, name, place.getName(), getWeight(), transition.getName());
-		return String.format(toStringFormat, name, transition.getName(), getWeight(), place.getName());
+			return String.format(toStringFormat, place.getName(), getWeight(), transition.getName());
+		return String.format(toStringFormat, transition.getName(), getWeight(), place.getName());
 	}
-
-	@Override
-	public String toPNML(int count) {
-		if(directionPT)
-			return String.format(pnmlFormat, getPNMLID(), getPlace().getName(), getTransition().getName());
-		return String.format(pnmlFormat, getPNMLID(), getTransition().getName(), getPlace().getName());
-	}
-	
-	private String getPNMLID() {
-		return pnmlPrefix+name.toLowerCase();
-	}
-	
-	
 
 	@Override
 	public Integer getConstraint() {

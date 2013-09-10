@@ -34,7 +34,7 @@ public class PNTraversalUtils {
 				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs) 
 			                         throws ParameterException{
 		
-		return testTraces(net, runs, false);
+		return testTraces(net, runs, false, false);
 	}
 	
 	/**
@@ -52,7 +52,7 @@ public class PNTraversalUtils {
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object> 
 	
-				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, boolean printOut) 
+				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, boolean printOut, boolean useLabelNames) 
 			                         throws ParameterException{
 		
 		Validate.notNull(net);
@@ -63,12 +63,13 @@ public class PNTraversalUtils {
 			newTrace = new ArrayList<String>();
 			net.reset();
 			while(net.hasEnabledTransitions()){
-				String nextTransition = traverser.chooseNextTransition(net.getEnabledTransitions()).getName();
-				if(!net.getTransition(nextTransition).isSilent()){
-					newTrace.add(nextTransition);
+				T nextTransition = traverser.chooseNextTransition(net.getEnabledTransitions());
+				String descriptor = useLabelNames ? nextTransition.getLabel() : nextTransition.getName();
+				if(!nextTransition.isSilent()){
+					newTrace.add(descriptor);
 				}
 				try {
-					net.fire(nextTransition);
+					net.fire(nextTransition.getName());
 				} catch (PNException e) {
 					e.printStackTrace();
 				}

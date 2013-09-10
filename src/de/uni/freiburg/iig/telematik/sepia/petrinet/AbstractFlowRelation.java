@@ -278,14 +278,6 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 			return String.format(toStringFormat, name, place.getName(), getConstraint(), transition.getName());
 		return String.format(toStringFormat, name, transition.getName(), getConstraint(), place.getName());
 	}
-
-
-	/**
-	 * Retrieves the PNML-representation of the flow relation.<br>
-	 * This method is abstract and requires subclasses to implement specific representations.
-	 * @return The PNML-representation of the relation in String format.
-	 */
-	public abstract String toPNML(int count);
 	
 	//------- clone ----------------------------------------------------------------------------------
 	

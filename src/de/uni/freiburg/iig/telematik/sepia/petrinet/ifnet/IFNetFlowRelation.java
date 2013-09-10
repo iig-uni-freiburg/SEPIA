@@ -14,12 +14,6 @@ public class IFNetFlowRelation extends AbstractCWNFlowRelation<IFNetPlace, Abstr
 	}
 
 	@Override
-	public String toPNML(int count) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public IFNetFlowRelation clone(IFNetPlace place, AbstractIFNetTransition transition, boolean directionPT) {
 		IFNetFlowRelation result = null;
 		try{
