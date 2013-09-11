@@ -17,22 +17,23 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.CPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.CWNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
 
 /**
  * <p>
- * Parser for CPNs. The process of parsing a PNML file is the following:
+ * Parser for CWNs. The process of parsing a PNML file is the following:
  * </p>
  * <ol>
  * <li>Check if the document is well-formed XML.</li>
@@ -47,16 +48,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
  * 
  * @author Adrian Lange
  */
-public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
+public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
 
 	private Map<String, Color> tokencolors = null;
 
-	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PNMLCPNParser.PlaceFiringRules>>();
+	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PNMLCWNParser.PlaceFiringRules>>();
 
-	public GraphicalCPN parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalCWN parse(Document pnmlDocument) throws ParameterException, ParserException {
 
-		net = new CPN();
-		graphics = new CPNGraphics();
+		net = new CWN();
+		graphics = new CWNGraphics();
 
 		// Check if the net is defined on a single page
 		NodeList netElement = pnmlDocument.getElementsByTagName("page");
@@ -67,7 +68,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
 			if (tokencolorsNodes.item(i).getNodeType() == Node.ELEMENT_NODE && tokencolorsNodes.item(i).getParentNode().getNodeName().equals("net")) {
 				tokencolors = readTokenColors((Element) tokencolorsNodes.item(i));
-				((CPNGraphics) graphics).setColors(tokencolors);
+				((CWNGraphics) graphics).setColors(tokencolors);
 			}
 		}
 
@@ -82,11 +83,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 		addFiringRulesToNet();
 
-		return new GraphicalCPN(net, graphics);
+		return new GraphicalCWN(net, graphics);
 	}
 
 	/**
-	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalCPN}.
+	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalCWN}.
 	 */
 	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
 
@@ -99,11 +100,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				String targetName = arc.getAttribute("target");
 
 				// get inscriptions
-				int inscription = 0;
+				int inscription = 1;
 				NodeList arcInscriptions = arc.getElementsByTagName("inscription");
 				if (arcInscriptions.getLength() == 1) {
 					String inscriptionStr = readText(arcInscriptions.item(0));
-					if (inscriptionStr != null)
+					if (inscriptionStr != null && Integer.parseInt(inscriptionStr) > 0)
 						inscription = Integer.parseInt(inscriptionStr);
 				}
 				Map<String, Integer> colorInscription = null;
@@ -111,15 +112,15 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				if (arcColorInscriptions.getLength() == 1)
 					colorInscription = readColorInscription(arcColorInscriptions.item(0));
 
-				CPNFlowRelation flowRelation;
+				CWNFlowRelation flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
-					flowRelation = ((CPN) net).addFlowRelationPT(sourceName, targetName);
+					flowRelation = ((CWN) net).addFlowRelationPT(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
 						if (transitionFiringRules.containsKey(targetName) == false) {
-							transitionFiringRules.put(targetName, new HashMap<String, PNMLCPNParser.PlaceFiringRules>());
+							transitionFiringRules.put(targetName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
@@ -134,7 +135,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 					// Add color tokens
 					if (colorInscription != null && colorInscription.size() > 0) {
 						if (transitionFiringRules.containsKey(targetName) == false) {
-							transitionFiringRules.put(targetName, new HashMap<String, PNMLCPNParser.PlaceFiringRules>());
+							transitionFiringRules.put(targetName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
@@ -156,12 +157,12 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				}
 				// if TP relation
 				else if (net.getPlace(targetName) != null && net.getTransition(sourceName) != null) {
-					flowRelation = ((CPN) net).addFlowRelationTP(sourceName, targetName);
+					flowRelation = ((CWN) net).addFlowRelationTP(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
 						if (transitionFiringRules.containsKey(sourceName) == false) {
-							transitionFiringRules.put(sourceName, new HashMap<String, PNMLCPNParser.PlaceFiringRules>());
+							transitionFiringRules.put(sourceName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
@@ -176,7 +177,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 					// Add color tokens
 					if (colorInscription != null && colorInscription.size() > 0) {
 						if (transitionFiringRules.containsKey(sourceName) == false) {
-							transitionFiringRules.put(sourceName, new HashMap<String, PNMLCPNParser.PlaceFiringRules>());
+							transitionFiringRules.put(sourceName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
@@ -228,11 +229,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	}
 
 	/**
-	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalCPN}.
+	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalCWN}.
 	 */
 	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
-		CPNMarking marking = new CPNMarking();
+		CWNMarking marking = new CWNMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
 			Node placeNode = placeNodes.item(p);
 			if (placeNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -324,7 +325,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 					// If node is element node and is direct child of the place node
 					if (placeCapacitiesList.item(i).getNodeType() == Node.ELEMENT_NODE && placeCapacitiesList.item(i).getParentNode().equals(place)) {
 						Element placeCapacitiesElement = (Element) placeCapacitiesList.item(i);
-						CPNPlace currentPlace = net.getPlace(placeName);
+						CWNPlace currentPlace = net.getPlace(placeName);
 
 						Map<String, Integer> placeCapacities = readPlaceColorCapacities(placeCapacitiesElement);
 						// add place color capacities
@@ -341,7 +342,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	}
 
 	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalCPN}.
+	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalCWN}.
 	 */
 	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
 		// read and add each transition
@@ -385,7 +386,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 			}
 
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
-				((CPN) net).addFiringRule(placeFiringRules.getKey(), firingRule);
+				((CWN) net).addFiringRule(placeFiringRules.getKey(), firingRule);
 		}
 	}
 }

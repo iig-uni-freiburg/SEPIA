@@ -99,8 +99,8 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 
 				// Check if there's a label
 				String arcName = arc.getAttribute("id");
-					if (arcName != null && arcName.length() > 0)
-						flowRelation.setName(arcName);
+				if (arcName != null && arcName.length() > 0)
+					flowRelation.setName(arcName);
 
 				// annotation graphics
 				if (arcInscriptions.getLength() == 1) {
