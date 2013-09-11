@@ -15,6 +15,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.test.TestResourceFile;
 
 /**
@@ -33,7 +34,7 @@ public class PNMLPTNetParserComponentTest {
 	 * Aborts tests after the specified time in milliseconds for the case of connection issues. Especially needed for the validating tests which create a socket
 	 * connection to a remote server to get the needed RelaxNG schemes.
 	 */
-	public static final int VALIDATION_TIMEOUT = 5000;
+	public static final int VALIDATION_TIMEOUT = 20000;
 
 	/** Project intern path to the test resources without leading slash */
 	public static final String PTNET_TEST_RESOURCES_PATH = "test-resources/pnml/pt/";
@@ -68,6 +69,36 @@ public class PNMLPTNetParserComponentTest {
 	/** P/T-net with a place with invalid graphical information */
 	@Rule
 	public TestResourceFile PTnetInvalidPlaceCapacityResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-invalidPlaceCapacity.pnml");
+	/** P/T-net without a transition ID */
+	@Rule
+	public TestResourceFile PTnetNoTransitionIDResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-noTransitionID.pnml");
+	/** P/T-net missing a transition name */
+	@Rule
+	public TestResourceFile PTnetNoTransitionNameResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-noTransitionName.pnml");
+	/** P/T-net with a transition with invalid graphical information */
+	@Rule
+	public TestResourceFile PTnetInvalidTransitionGraphicsResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-invalidTransitionGraphics.pnml");
+	/** P/T-net without an arc ID */
+	@Rule
+	public TestResourceFile PTnetNoArcIDResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-noArcID.pnml");
+	/** P/T-net without an arc source ID */
+	@Rule
+	public TestResourceFile PTnetNoSourceIDResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-noSourceID.pnml");
+	/** P/T-net without an arc target ID */
+	@Rule
+	public TestResourceFile PTnetNoTargetIDResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-noTargetID.pnml");
+	/** P/T-net without an arc inscription */
+	@Rule
+	public TestResourceFile PTnetNoArcInscriptionResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-noArcInscription.pnml");
+	/** P/T-net with a negative arc inscription */
+	@Rule
+	public TestResourceFile PTnetNegativeArcInscriptionResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-negativeArcInscription.pnml");
+	/** P/T-net with an arc with invalid graphical information */
+	@Rule
+	public TestResourceFile PTnetInvalidArcGraphicsResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-invalidArcGraphics.pnml");
+	/** Valid bounded P/T-net */
+	@Rule
+	public TestResourceFile PTnetBoundedResource = new TestResourceFile(PTNET_TEST_RESOURCES_PATH + "PTnet-bounded.pnml");
 
 	/**
 	 * Test if all sample files of the P/T-net exist.
@@ -84,6 +115,16 @@ public class PNMLPTNetParserComponentTest {
 		assertTrue(PTnetInvalidInitialMarkingResource.getFile().exists());
 		assertTrue(PTnetInvalidPlaceGraphicsResource.getFile().exists());
 		assertTrue(PTnetInvalidPlaceCapacityResource.getFile().exists());
+		assertTrue(PTnetNoTransitionIDResource.getFile().exists());
+		assertTrue(PTnetNoTransitionNameResource.getFile().exists());
+		assertTrue(PTnetInvalidTransitionGraphicsResource.getFile().exists());
+		assertTrue(PTnetNoArcIDResource.getFile().exists());
+		assertTrue(PTnetNoSourceIDResource.getFile().exists());
+		assertTrue(PTnetNoTargetIDResource.getFile().exists());
+		assertTrue(PTnetNoArcInscriptionResource.getFile().exists());
+		assertTrue(PTnetNegativeArcInscriptionResource.getFile().exists());
+		assertTrue(PTnetInvalidArcGraphicsResource.getFile().exists());
+		assertTrue(PTnetBoundedResource.getFile().exists());
 	}
 
 	/**
@@ -92,9 +133,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> net = null;
+		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
 		try {
-			net = new PNMLParser().parse(PTnetResource.getFile(), true, true);
+			abstrNet = new PNMLParser().parse(PTnetResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -102,7 +143,10 @@ public class PNMLPTNetParserComponentTest {
 		} catch (IOException e) {
 			fail("Couldn't read PNML file: " + e.getMessage());
 		}
-		assertTrue(net instanceof GraphicalPTNet);
+
+		assertTrue(abstrNet instanceof GraphicalPTNet);
+
+		GraphicalPTNet net = (GraphicalPTNet) abstrNet;
 
 		assertEquals(2, net.getPetriNet().getPlaces().size());
 		assertEquals(1, net.getPetriNet().getTransitions().size());
@@ -112,6 +156,8 @@ public class PNMLPTNetParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getArcGraphics().size());
 		assertEquals(2, net.getPetriNetGraphics().getArcAnnotationGraphics().size());
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
+
+		assertTrue(net.getPetriNet().isBounded().equals(Boundedness.UNKNOWN));
 	}
 
 	/**
@@ -120,9 +166,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithoutValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> net = null;
+		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
 		try {
-			net = new PNMLParser().parse(PTnetResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(PTnetResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -130,7 +176,10 @@ public class PNMLPTNetParserComponentTest {
 		} catch (IOException e) {
 			fail("Couldn't read PNML file: " + e.getMessage());
 		}
-		assertTrue(net instanceof GraphicalPTNet);
+
+		assertTrue(abstrNet instanceof GraphicalPTNet);
+
+		GraphicalPTNet net = (GraphicalPTNet) abstrNet;
 
 		assertEquals(2, net.getPetriNet().getPlaces().size());
 		assertEquals(1, net.getPetriNet().getTransitions().size());
@@ -140,6 +189,8 @@ public class PNMLPTNetParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getArcGraphics().size());
 		assertEquals(2, net.getPetriNetGraphics().getArcAnnotationGraphics().size());
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
+
+		assertTrue(net.getPetriNet().isBounded().equals(Boundedness.UNKNOWN));
 	}
 
 	/*
@@ -285,9 +336,11 @@ public class PNMLPTNetParserComponentTest {
 	 * P/T-net without page tags and no validation. As the page tags are ignored by the parser, no exception should be thrown.
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void noPageTagsPTnetWithoutValidation() throws ParserException {
+	public void noPageTagsPTnetWithoutValidation() {
 		try {
 			new PNMLParser().parse(PTnetWithoutPageTagsResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -359,7 +412,7 @@ public class PNMLPTNetParserComponentTest {
 	 * P/T-net with a missing place name. As a place name is not necessary, no exception should be thrown.
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void noPlacenamePTnetWithValidation() {
+	public void noPlaceNamePTnetWithValidation() {
 		try {
 			new PNMLParser().parse(PTnetNoPlaceNameResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -375,7 +428,7 @@ public class PNMLPTNetParserComponentTest {
 	 * P/T-net with a missing place name. As a place name is not necessary, no exception should be thrown.
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void noPlacenamePTnetWithoutValidation() {
+	public void noPlaceNamePTnetWithoutValidation() {
 		try {
 			new PNMLParser().parse(PTnetNoPlaceNameResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -433,9 +486,11 @@ public class PNMLPTNetParserComponentTest {
 	 * P/T-net with a invalid place graphics. The invalid offset tag should be ignored.
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void invalidPlaceGraphicsPTnetWithoutValidation() throws ParserException {
+	public void invalidPlaceGraphicsPTnetWithoutValidation() {
 		try {
 			new PNMLParser().parse(PTnetInvalidPlaceGraphicsResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -476,27 +531,323 @@ public class PNMLPTNetParserComponentTest {
 	 * TRANSITION TESTS
 	 */
 
-	// TODO no transition id
-	// TODO no transition name
-	// TODO no transition graphics
-	// TODO invalid transition graphics
+	/**
+	 * P/T-net with a missing transition ID. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noTransitionIDPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoTransitionIDResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing transition ID. The parser should throw an exception while adding the flow relations.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noTransitionIDPTnetWithoutValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoTransitionIDResource.getFile(), true, false);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing transition name. The parser should not throw an exception.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void noTransitionNamePTnetWithValidation() {
+		try {
+			new PNMLParser().parse(PTnetNoTransitionNameResource.getFile(), true, true);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing transition name. The parser should not throw an exception.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void noTransitionNamePTnetWithoutValidation() {
+		try {
+			new PNMLParser().parse(PTnetNoTransitionNameResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with invalid graphical information. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void invalidTransitionGraphicsPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetInvalidTransitionGraphicsResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with invalid graphical information. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void invalidTransitionGraphicsPTnetWithoutValidation() {
+		try {
+			new PNMLParser().parse(PTnetInvalidTransitionGraphicsResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+		// A NodeGraphics object can't contain offsets. They are just ignored.
+	}
 
 	/*
 	 * ARC TESTS
 	 */
 
-	// TODO no arc id
-	// TODO no source id
-	// TODO no target id
-	// TODO no arc inscription
-	// TODO negative arc inscription
-	// TODO no arc graphics
-	// TODO invalid arc graphics
+	/**
+	 * P/T-net with a missing arc ID. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noArcIDPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoArcIDResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc ID. As a transition name is not necessary, no exception should be thrown.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void noArcIDPTnetWithoutValidation() {
+		try {
+			new PNMLParser().parse(PTnetNoArcIDResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc source ID. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noArcSourceIDPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoSourceIDResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc source ID. The parser should throw an exception while reading the flow relations.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noArcSourceIDPTnetWithoutValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoSourceIDResource.getFile(), true, false);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc target ID. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noArcTargetIDPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoTargetIDResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc target ID. The parser should throw an exception while reading the flow relations.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void noArcTargetIDPTnetWithoutValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNoTargetIDResource.getFile(), true, false);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc inscription. As there is no control flow dependency in P/T-nets, no exception should be thrown and the flow relation should be
+	 * created with the default constraint.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void noArcInscriptionPTnetWithValidation() {
+		try {
+			new PNMLParser().parse(PTnetNoArcInscriptionResource.getFile(), true, true);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a missing arc inscription. As there is no control flow dependency in P/T-nets, no exception should be thrown and the flow relation should be
+	 * created with the default constraint.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void noArcInscriptionPTnetWithoutValidation() {
+		try {
+			new PNMLParser().parse(PTnetNoArcInscriptionResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a negative arc inscription. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void negativeArcInscriptionPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetNegativeArcInscriptionResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a negative arc inscription. The parser should throw an exception while checking the parameters of the flow relation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
+	public void negativeArcInscriptionPTnetWithoutValidation() throws ParameterException {
+		try {
+			new PNMLParser().parse(PTnetNegativeArcInscriptionResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a invalid arc graphics. The parser should throw an exception while validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
+	public void invalidArcGraphicsPTnetWithValidation() throws ParserException {
+		try {
+			new PNMLParser().parse(PTnetInvalidArcGraphicsResource.getFile(), true, true);
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * P/T-net with a invalid arc graphics. The invalid offset tag should be ignored.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void invalidArcGraphicsPTnetWithoutValidation() {
+		try {
+			new PNMLParser().parse(PTnetInvalidArcGraphicsResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+		// A ArcGraphics object can't contain offsets. They are just ignored.
+	}
 
 	/*
 	 * CAPACITY TESTS
 	 */
 
-	// TODO Bounded P/T net isBounded
-	// TODO Unbounded P/T net isBounded
+	/**
+	 * Valid bounded P/T-net with validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void boundedPTnetWithValidation() {
+		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		try {
+			abstrNet = new PNMLParser().parse(PTnetBoundedResource.getFile(), true, true);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+
+		assertTrue(abstrNet instanceof GraphicalPTNet);
+
+		assertTrue(abstrNet.getPetriNet().isBounded().equals(Boundedness.BOUNDED));
+	}
+
+	/**
+	 * Valid bounded P/T-net with validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT)
+	public void boundedPTnetWithoutValidation() {
+		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		try {
+			abstrNet = new PNMLParser().parse(PTnetBoundedResource.getFile(), true, false);
+		} catch (ParserException e) {
+			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read PNML file: " + e.getMessage());
+		}
+
+		assertTrue(abstrNet instanceof GraphicalPTNet);
+
+		assertTrue(abstrNet.getPetriNet().isBounded().equals(Boundedness.BOUNDED));
+	}
 }
