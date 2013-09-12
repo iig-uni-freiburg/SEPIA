@@ -18,7 +18,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_PNML;
-import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_SoleCarmona;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_Petrify;
 
 public class PNSerialization {
 	
@@ -45,9 +45,9 @@ public class PNSerialization {
 				return new PTSerializer_PNML(net);
 			}
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
-		case SOLE_CARMONA:
+		case PETRIFY:
 			if(net instanceof AbstractPTNet)
-				return new PTSerializer_SoleCarmona(net);
+				return new PTSerializer_Petrify(net);
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		default:
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);
@@ -158,7 +158,7 @@ public class PNSerialization {
 		net.addPlace("p1");
 		net.addFlowRelationPT("p1", "t1");
 		
-		System.out.println(PNSerialization.getSerializer(net, PNSerializationFormat.SOLE_CARMONA).serialize());
+		System.out.println(PNSerialization.getSerializer(net, PNSerializationFormat.PETRIFY).serialize());
 	}
 
 }

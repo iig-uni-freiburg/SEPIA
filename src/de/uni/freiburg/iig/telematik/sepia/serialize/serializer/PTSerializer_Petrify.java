@@ -10,7 +10,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransitio
 import de.uni.freiburg.iig.telematik.sepia.serialize.PTSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
 
-public class PTSerializer_SoleCarmona<P extends AbstractPTPlace<F>, 
+public class PTSerializer_Petrify<P extends AbstractPTPlace<F>, 
 									  T extends AbstractPTTransition<F>, 
 									  F extends AbstractPTFlowRelation<P,T>, 
 									  M extends AbstractPTMarking> extends PTSerializer<P,T,F,M>{
@@ -20,7 +20,7 @@ public class PTSerializer_SoleCarmona<P extends AbstractPTPlace<F>,
 	private final String BOUNDED_PLACE_FORMAT = " %s=%s";
 	private final String MARKING_FORMAT = " %s=%s";
 	
-	public PTSerializer_SoleCarmona(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PTSerializer_Petrify(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 

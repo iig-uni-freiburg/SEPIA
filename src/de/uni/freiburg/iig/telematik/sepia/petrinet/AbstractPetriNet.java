@@ -67,7 +67,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	/**
 	 * Name of the Petri net.
 	 */
-	protected String name = "";
+	protected String name = "PetriNet";
 	/**
 	 * Map that contains Petri net places indexed with their names.
 	 */

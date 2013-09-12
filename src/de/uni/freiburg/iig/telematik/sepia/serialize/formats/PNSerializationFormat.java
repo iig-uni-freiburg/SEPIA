@@ -7,7 +7,7 @@ public enum PNSerializationFormat {
 	
 	PNML(new PNFF_PNML()),
 	
-	SOLE_CARMONA(new PNFF_SoleCarmona());
+	PETRIFY(new PNFF_Petrify());
 	
 	private FileFormat fileFormat = null;
 	

@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 import de.invation.code.toval.file.FileFormat;
 
 
-public class PNFF_SoleCarmona  extends FileFormat{
+public class PNFF_Petrify  extends FileFormat{
 
 	@Override
 	public String getFileExtension() {
