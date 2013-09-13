@@ -23,7 +23,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
@@ -52,7 +51,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 
 	private Map<String, Color> tokencolors = null;
 
-	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PNMLCWNParser.PlaceFiringRules>>();
+	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
 
 	public GraphicalCWN parse(Document pnmlDocument) throws ParameterException, ParserException {
 
@@ -120,14 +119,14 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					// Add black tokens
 					if (inscription > 0) {
 						if (transitionFiringRules.containsKey(targetName) == false) {
-							transitionFiringRules.put(targetName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
+							transitionFiringRules.put(targetName, new HashMap<String, PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
-							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addOutgoingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(targetName).put(sourceName, tempPlaceFiringRule);
 						}
 					}
@@ -135,7 +134,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					// Add color tokens
 					if (colorInscription != null && colorInscription.size() > 0) {
 						if (transitionFiringRules.containsKey(targetName) == false) {
-							transitionFiringRules.put(targetName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
+							transitionFiringRules.put(targetName, new HashMap<String, PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
@@ -162,14 +161,14 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					// Add black tokens
 					if (inscription > 0) {
 						if (transitionFiringRules.containsKey(sourceName) == false) {
-							transitionFiringRules.put(sourceName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
+							transitionFiringRules.put(sourceName, new HashMap<String, PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
-							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addIncomingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(sourceName).put(targetName, tempPlaceFiringRule);
 						}
 					}
@@ -177,7 +176,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					// Add color tokens
 					if (colorInscription != null && colorInscription.size() > 0) {
 						if (transitionFiringRules.containsKey(sourceName) == false) {
-							transitionFiringRules.put(sourceName, new HashMap<String, PNMLCWNParser.PlaceFiringRules>());
+							transitionFiringRules.put(sourceName, new HashMap<String, PlaceFiringRules>());
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
@@ -267,7 +266,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
 					} else if (initialMarking > 0) {
 						for (int i = 0; i < initialMarking; i++) {
-							markingMultiset.add(CPN.DEFAULT_TOKEN_COLOR);
+							markingMultiset.add(CWN.CONTROL_FLOW_TOKEN_COLOR);
 						}
 
 						// graphics

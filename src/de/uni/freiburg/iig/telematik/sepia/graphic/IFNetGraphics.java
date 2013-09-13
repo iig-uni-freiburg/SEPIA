@@ -53,12 +53,18 @@ public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetT
 		str.append("            tokenColors# " + colors.size());
 		if (colors.size() > 0)
 			str.append(":\n" + map2Str(colors) + "\n");
+		else
+			str.append("\n");
 		str.append(" accessFunctionGraphics# " + accessFunctionGraphics.size());
 		if (accessFunctionGraphics.size() > 0)
 			str.append(":\n" + map2Str(accessFunctionGraphics) + "\n");
+		else
+			str.append("\n");
 		str.append("        subjectGraphics# " + subjectGraphics.size());
 		if (subjectGraphics.size() > 0)
 			str.append(":\n" + map2Str(subjectGraphics) + "\n");
+		else
+			str.append("\n");
 
 		return str.toString();
 	}

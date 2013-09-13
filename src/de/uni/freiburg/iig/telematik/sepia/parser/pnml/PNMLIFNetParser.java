@@ -17,22 +17,22 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.CPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
 
 /**
  * <p>
- * Parser for CPNs. The process of parsing a PNML file is the following:
+ * Parser for IF-nets. The process of parsing a PNML file is the following:
  * </p>
  * <ol>
  * <li>Check if the document is well-formed XML.</li>
@@ -47,16 +47,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
  * 
  * @author Adrian Lange
  */
-public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
+public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
 
 	private Map<String, Color> tokencolors = null;
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
 
-	public GraphicalCPN parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalIFNet parse(Document pnmlDocument) throws ParameterException, ParserException {
 
-		net = new CPN();
-		graphics = new CPNGraphics();
+		net = new IFNet();
+		graphics = new IFNetGraphics();
 
 		// Check if the net is defined on a single page
 		NodeList netElement = pnmlDocument.getElementsByTagName("page");
@@ -67,7 +67,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
 			if (tokencolorsNodes.item(i).getNodeType() == Node.ELEMENT_NODE && tokencolorsNodes.item(i).getParentNode().getNodeName().equals("net")) {
 				tokencolors = readTokenColors((Element) tokencolorsNodes.item(i));
-				((CPNGraphics) graphics).setColors(tokencolors);
+				((IFNetGraphics) graphics).setColors(tokencolors);
 			}
 		}
 
@@ -82,11 +82,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 		addFiringRulesToNet();
 
-		return new GraphicalCPN(net, graphics);
+		return new GraphicalIFNet(net, graphics);
 	}
 
 	/**
-	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalCPN}.
+	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalIFNet}.
 	 */
 	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
 
@@ -99,11 +99,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				String targetName = arc.getAttribute("target");
 
 				// get inscriptions
-				int inscription = 0;
+				int inscription = 1;
 				NodeList arcInscriptions = arc.getElementsByTagName("inscription");
 				if (arcInscriptions.getLength() == 1) {
 					String inscriptionStr = readText(arcInscriptions.item(0));
-					if (inscriptionStr != null)
+					if (inscriptionStr != null && Integer.parseInt(inscriptionStr) > 0)
 						inscription = Integer.parseInt(inscriptionStr);
 				}
 				Map<String, Integer> colorInscription = null;
@@ -111,10 +111,10 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				if (arcColorInscriptions.getLength() == 1)
 					colorInscription = readColorInscription(arcColorInscriptions.item(0));
 
-				CPNFlowRelation flowRelation;
+				IFNetFlowRelation flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
-					flowRelation = ((CPN) net).addFlowRelationPT(sourceName, targetName);
+					flowRelation = ((IFNet) net).addFlowRelationPT(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
@@ -123,10 +123,10 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
-							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(IFNet.CONTROL_FLOW_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addOutgoingColorTokens(IFNet.CONTROL_FLOW_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(targetName).put(sourceName, tempPlaceFiringRule);
 						}
 					}
@@ -156,7 +156,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				}
 				// if TP relation
 				else if (net.getPlace(targetName) != null && net.getTransition(sourceName) != null) {
-					flowRelation = ((CPN) net).addFlowRelationTP(sourceName, targetName);
+					flowRelation = ((IFNet) net).addFlowRelationTP(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
@@ -165,10 +165,10 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
-							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(IFNet.CONTROL_FLOW_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addIncomingColorTokens(IFNet.CONTROL_FLOW_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(sourceName).put(targetName, tempPlaceFiringRule);
 						}
 					}
@@ -228,11 +228,11 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	}
 
 	/**
-	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalCPN}.
+	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalIFNet}.
 	 */
 	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
-		CPNMarking marking = new CPNMarking();
+		IFNetMarking marking = new IFNetMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
 			Node placeNode = placeNodes.item(p);
 			if (placeNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -266,7 +266,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
 					} else if (initialMarking > 0) {
 						for (int i = 0; i < initialMarking; i++) {
-							markingMultiset.add(CPN.DEFAULT_TOKEN_COLOR);
+							markingMultiset.add(IFNet.CONTROL_FLOW_TOKEN_COLOR);
 						}
 
 						// graphics
@@ -324,7 +324,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 					// If node is element node and is direct child of the place node
 					if (placeCapacitiesList.item(i).getNodeType() == Node.ELEMENT_NODE && placeCapacitiesList.item(i).getParentNode().equals(place)) {
 						Element placeCapacitiesElement = (Element) placeCapacitiesList.item(i);
-						CPNPlace currentPlace = net.getPlace(placeName);
+						IFNetPlace currentPlace = net.getPlace(placeName);
 
 						Map<String, Integer> placeCapacities = readPlaceColorCapacities(placeCapacitiesElement);
 						// add place color capacities
@@ -341,7 +341,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 	}
 
 	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalCPN}.
+	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalIFNet}.
 	 */
 	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
 		// read and add each transition
@@ -385,7 +385,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 			}
 
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
-				((CPN) net).addFiringRule(placeFiringRules.getKey(), firingRule);
+				((IFNet) net).addFiringRule(placeFiringRules.getKey(), firingRule);
 		}
 	}
 }

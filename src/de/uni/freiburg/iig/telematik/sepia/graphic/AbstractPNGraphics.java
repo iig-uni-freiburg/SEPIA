@@ -107,18 +107,28 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 		str.append("          placeGraphics# " + placeGraphics.size());
 		if (placeGraphics.size() > 0)
 			str.append(":\n" + map2Str(placeGraphics) + "\n");
+		else
+			str.append("\n");
 		str.append("     transitionGraphics# " + transitionGraphics.size());
 		if (transitionGraphics.size() > 0)
 			str.append(":\n" + map2Str(transitionGraphics) + "\n");
+		else
+			str.append("\n");
 		str.append("            arcGraphics# " + arcGraphics.size());
 		if (arcGraphics.size() > 0)
 			str.append(":\n" + map2Str(arcGraphics) + "\n");
+		else
+			str.append("\n");
 		str.append("          tokenGraphics# " + tokenGraphics.size());
 		if (tokenGraphics.size() > 0)
 			str.append(":\n" + map2Str(tokenGraphics) + "\n");
+		else
+			str.append("\n");
 		str.append("  arcAnnotationGraphics# " + arcAnnotationGraphics.size());
 		if (arcAnnotationGraphics.size() > 0)
 			str.append(":\n" + map2Str(arcAnnotationGraphics) + "\n");
+		else
+			str.append("\n");
 
 		return str.toString();
 	}

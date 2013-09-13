@@ -197,16 +197,17 @@ public class PNMLParser implements ParserInterface {
 
 		switch (netType) {
 		case PTNet:
-			PNMLPTNetParser ptnParser = new PNMLPTNetParser();
-			return (AbstractGraphicalPN<P, T, F, M, S>) ptnParser.parse(pnmlDocument);
+			PNMLPTNetParser ptnetParser = new PNMLPTNetParser();
+			return (AbstractGraphicalPN<P, T, F, M, S>) ptnetParser.parse(pnmlDocument);
 		case CPN:
 			PNMLCPNParser cpnParser = new PNMLCPNParser();
 			return (AbstractGraphicalPN<P, T, F, M, S>) cpnParser.parse(pnmlDocument);
 		case CWN:
 			PNMLCWNParser cwnParser = new PNMLCWNParser();
 			return (AbstractGraphicalPN<P, T, F, M, S>) cwnParser.parse(pnmlDocument);
-		case IFNet: // TODO: IFNet parser
-			break;
+		case IFNet:
+			PNMLIFNetParser ifnetParser = new PNMLIFNetParser();
+			return (AbstractGraphicalPN<P, T, F, M, S>) ifnetParser.parse(pnmlDocument);
 		}
 
 		throw new ParserException("Couldn't determine a proper PNML parser.");

@@ -36,6 +36,8 @@ public class CWNGraphics extends AbstractPNGraphics<CWNPlace, CWNTransition, CWN
 			str.append("            tokenColors# " + colors.size());
 			if (colors.size() > 0)
 				str.append(":\n" + map2Str(colors) + "\n");
+			else
+				str.append("\n");
 		}
 
 		return str.toString();
