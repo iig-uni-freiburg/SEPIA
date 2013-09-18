@@ -12,8 +12,8 @@ public class Dimension {
 	private double x;
 	private double y;
 
-	public static final double DEFAULT_DIMENSION_X = 0.0;
-	public static final double DEFAULT_DIMENSION_Y = 0.0;
+	public static final double DEFAULT_DIMENSION_X = 30.0;
+	public static final double DEFAULT_DIMENSION_Y = 30.0;
 
 	/**
 	 * Creates a new dimension attribute with default values.

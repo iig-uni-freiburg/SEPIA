@@ -3,7 +3,9 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 import java.awt.Color;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Vector;
 
@@ -40,6 +42,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AccessMode;
 
 /**
  * Static reader class containing methods to read elements and attributes occurring in different net types.
@@ -86,6 +89,68 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	protected abstract void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException;
+
+	/**
+	 * Reads the access functions of a transition in an IF-net and returns a Map<tokenColorName, Map<accessmode, boolean>>.
+	 */
+	protected static Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) throws ParameterException {
+		Validate.notNull(accessFunctionsElement);
+
+		Map<String, Collection<AccessMode>> accessFunctions = new HashMap<String, Collection<AccessMode>>();
+
+		// iterate through all access functions
+		NodeList accessFunctionNodes = accessFunctionsElement.getElementsByTagName("accessfunction");
+		for (int af = 0; af < accessFunctionNodes.getLength(); af++) {
+			if (accessFunctionNodes.item(af).getNodeType() == Node.ELEMENT_NODE && accessFunctionNodes.item(af).getParentNode().equals(accessFunctionsElement)) {
+				Element accessFunctionElement = (Element) accessFunctionNodes.item(af);
+
+				// read the color element and create the access function or ignore the access function if the color can't be read
+				NodeList colorNodes = accessFunctionElement.getElementsByTagName("color");
+				if (colorNodes.getLength() > 0) {
+					Element colorElement = (Element) colorNodes.item(0);
+					if (colorElement.getTextContent().length() > 0) {
+						String color = colorElement.getTextContent();
+						Collection<AccessMode> accessModes = new HashSet<AccessMode>();
+
+						// read access modes and write set not listed modes to false
+						NodeList accessModesNodes = accessFunctionElement.getElementsByTagName("accessmodes");
+						if (accessModesNodes.getLength() > 0) {
+							Element accessModesElement = (Element) accessModesNodes.item(0);
+							if (readAccessMode(accessModesElement.getElementsByTagName("read")))
+								accessModes.add(AccessMode.READ);
+							if (readAccessMode(accessModesElement.getElementsByTagName("create")))
+								accessModes.add(AccessMode.CREATE);
+							if (readAccessMode(accessModesElement.getElementsByTagName("write")))
+								accessModes.add(AccessMode.WRITE);
+							if (readAccessMode(accessModesElement.getElementsByTagName("delete")))
+								accessModes.add(AccessMode.DELETE);
+						}
+
+						// add access function
+						accessFunctions.put(color, accessModes);
+					}
+				}
+			}
+		}
+
+		// return null if there are no access functions
+		if (accessFunctions.isEmpty())
+			return null;
+		else
+			return accessFunctions;
+	}
+
+	/**
+	 * Returns a boolean value for the given access mode nodes.
+	 */
+	private static boolean readAccessMode(NodeList accessModeNodes) {
+		if (accessModeNodes.getLength() > 0) {
+			Element accessModeElement = (Element) accessModeNodes.item(0);
+			if (accessModeElement.getTextContent().equals("true"))
+				return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Reads the graphical information of an arc element and returns a {@link ArcGraphics} object.
@@ -672,6 +737,25 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		}
 
 		return tokenPosition;
+	}
+
+	/**
+	 * Reads the type of a transition of an IF-net. If there's no transition type, it returns the type "regular".
+	 */
+	protected String readTransitionType(Element transitionElement) throws ParameterException {
+		Validate.notNull(transitionElement);
+
+		NodeList transitionTypeNodes = transitionElement.getElementsByTagName("transitiontype");
+		if (transitionTypeNodes.getLength() > 0) {
+			// Iterate through all text nodes and take only that with the given node as parent
+			for (int i = 0; i < transitionTypeNodes.getLength(); i++) {
+				if (transitionTypeNodes.item(i).getNodeType() == Node.ELEMENT_NODE && transitionTypeNodes.item(i).getParentNode().equals(transitionElement)) {
+					Element transitionType = (Element) transitionTypeNodes.item(i);
+					return transitionType.getTextContent();
+				}
+			}
+		}
+		return "regular";
 	}
 
 	public void setGraphics(AbstractPNGraphics<P, T, F, M, S> graphics) throws ParameterException {

@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
@@ -25,10 +27,12 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 
 /**
  * <p>
@@ -358,15 +362,53 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 					if (transitionLabel != null && transitionLabel.length() == 0)
 						transitionLabel = null;
 				}
-				if (transitionLabel != null)
-					net.addTransition(transitionName, transitionLabel);
-				else
-					net.addTransition(transitionName);
+
+				IFNet ifnet = (IFNet) net;
+
+				// get transition type
+				String transitionType = readTransitionType(transition);
+				if (transitionLabel != null) {
+					if (transitionType.equals("regular"))
+						ifnet.addTransition(transitionName, transitionLabel);
+					else if (transitionType.equals("declassification"))
+						ifnet.addDeclassificationTransition(transitionName, transitionLabel);
+					else
+						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
+				} else {
+					if (transitionType.equals("regular"))
+						ifnet.addTransition(transitionName);
+					else if (transitionType.equals("declassification"))
+						ifnet.addDeclassificationTransition(transitionName);
+					else
+						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
+				}
+
+				// read access modes
+				NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
+				if (accessFunctionsNodes.getLength() > 0) {
+					if (accessFunctionsNodes.item(0).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(0).getParentNode().equals(transition)) {
+						Element accessFunctionsElement = (Element) accessFunctionsNodes.item(0);
+						Map<String, Collection<AccessMode>> accessFunctions = readAccessFunctions(accessFunctionsElement);
+						if (accessFunctions != null) {
+							// get transition and add access functions
+							if (ifnet.getTransition(transitionName) instanceof RegularIFNetTransition) {
+								RegularIFNetTransition currentTransition = (RegularIFNetTransition) ifnet.getTransition(transitionName);
+								Validate.notNull(currentTransition);
+
+								for (Entry<String, Collection<AccessMode>> accessFunction : accessFunctions.entrySet()) {
+									String color = accessFunction.getKey();
+									Collection<AccessMode> accessModes = accessFunction.getValue();
+									currentTransition.addAccessMode(color, accessModes);
+								}
+							}
+						}
+					}
+				}
 
 				// read graphical information
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
-					graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
+					graphics.getTransitionGraphics().put(ifnet.getTransition(transitionName), transitionGraphics);
 
 				// transitions have no inscription/marking
 			}
