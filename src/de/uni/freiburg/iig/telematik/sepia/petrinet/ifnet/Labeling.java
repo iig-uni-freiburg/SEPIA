@@ -60,14 +60,14 @@ public class Labeling {
 	
 	public Labeling(){};
 	
-	public Labeling(IFNet sNet, Collection<String> subjects) throws ParameterException{
-		this(PNUtils.getLabelSetFromTransitions(sNet.getTransitions()), sNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
+	public Labeling(IFNet ifNet, Collection<String> subjects) throws ParameterException{
+		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions()), ifNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
 	}
 	
-	public Labeling(IFNet sNet, 
+	public Labeling(IFNet ifNet, 
 					Collection<String> subjects, 
 				    SecurityLevel defaultSecurityLevel) throws ParameterException{
-		this(PNUtils.getLabelSetFromTransitions(sNet.getTransitions()), sNet.getTokenColors(), subjects, defaultSecurityLevel);
+		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions()), ifNet.getTokenColors(), subjects, defaultSecurityLevel);
 	}
 	
 	public Labeling(Collection<String> activities,
@@ -94,7 +94,6 @@ public class Labeling {
 		addActivities(activities);
 		addAttributes(attributes);
 		addSubjects(subjects);
-	
 	}
 	
 	public Set<String> getActivities(){
@@ -244,8 +243,9 @@ public class Labeling {
 		activiyClassification.put(activity, securityLevel);
 	}
 	
-	public SecurityLevel getActivityClassification(String activity) throws ParameterException{
-		validateActivity(activity);
+	public SecurityLevel getActivityClassification(String activity) {
+		if(!activiyClassification.containsKey(activity))
+			return getDefaultSecurityLevel();
 		return activiyClassification.get(activity);
 	}
 	
@@ -256,20 +256,22 @@ public class Labeling {
 		attributeClassification.put(attribute, securityLevel);
 	}
 	
-	public SecurityLevel getAttributeClassification(String attribute) throws ParameterException{
-		validateAttribute(attribute);
+	public SecurityLevel getAttributeClassification(String attribute) {
+		if(!attributeClassification.containsKey(attribute))
+			return getDefaultSecurityLevel();
 		return attributeClassification.get(attribute);
 	}
 
 	public void setSubjectClearance(String subject, SecurityLevel securityLevel) throws ParameterException{
 		validateSubject(subject);
 		Validate.notNull(securityLevel);
-		
+
 		subjectClearance.put(subject, securityLevel);
 	}
 	
-	public SecurityLevel getSubjectClearance(String subjectDescriptor) throws ParameterException{
-		validateSubject(subjectDescriptor);
+	public SecurityLevel getSubjectClearance(String subjectDescriptor) {
+		if(!subjectClearance.containsKey(subjectDescriptor))
+			return getDefaultSecurityLevel();
 		return subjectClearance.get(subjectDescriptor);
 	}
 	
@@ -308,37 +310,33 @@ public class Labeling {
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		try{ 
-			builder.append("Activities: ");
-			for(String activity: activities){
-				builder.append(activity);
-				builder.append('[');
-				builder.append(getActivityClassification(activity));
-				builder.append(']');
-				builder.append(' ');
-			}
-			builder.append('\n');
-			
-			builder.append("Attributes: ");
-			for(String attribute: attributes){
-				builder.append(attribute);
-				builder.append('[');
-				builder.append(getAttributeClassification(attribute));
-				builder.append(']');
-				builder.append(' ');
-			}
-			builder.append('\n');
-			
-			builder.append("Subjects: ");
-			for(String subject: subjects){
-				builder.append(subject);
-				builder.append('[');
-				builder.append(getSubjectClearance(subject));
-				builder.append(']');
-				builder.append(' ');
-			}
-		} catch(ParameterException e){
-			// Cannot happen.
+		builder.append("Activities: ");
+		for (String activity : activities) {
+			builder.append(activity);
+			builder.append('[');
+			builder.append(getActivityClassification(activity));
+			builder.append(']');
+			builder.append(' ');
+		}
+		builder.append('\n');
+
+		builder.append("Attributes: ");
+		for (String attribute : attributes) {
+			builder.append(attribute);
+			builder.append('[');
+			builder.append(getAttributeClassification(attribute));
+			builder.append(']');
+			builder.append(' ');
+		}
+		builder.append('\n');
+
+		builder.append("Subjects: ");
+		for (String subject : subjects) {
+			builder.append(subject);
+			builder.append('[');
+			builder.append(getSubjectClearance(subject));
+			builder.append(']');
+			builder.append(' ');
 		}
 		return builder.toString();
 	}

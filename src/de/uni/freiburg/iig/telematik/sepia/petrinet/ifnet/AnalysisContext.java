@@ -2,14 +2,12 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import de.invation.code.toval.misc.SetUtils;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 
 
 public class AnalysisContext {
@@ -24,12 +22,12 @@ public class AnalysisContext {
 		this.labeling = labeling;
 	} 
 	
-	public AnalysisContext(IFNet sNet, Collection<String> subjects) throws ParameterException{
-		this(new Labeling(sNet, subjects));
+	public AnalysisContext(IFNet ifNet, Collection<String> subjects) throws ParameterException{
+		this(new Labeling(ifNet, subjects));
 	}
 	
-	public AnalysisContext(IFNet sNet, Collection<String> subjects, SecurityLevel defaultSecurityLevel) throws ParameterException{
-		this(new Labeling(sNet, subjects, defaultSecurityLevel));
+	public AnalysisContext(IFNet ifNet, Collection<String> subjects, SecurityLevel defaultSecurityLevel) throws ParameterException{
+		this(new Labeling(ifNet, subjects, defaultSecurityLevel));
 	}
 	
 	public AnalysisContext(Collection<String> activities,
@@ -61,7 +59,6 @@ public class AnalysisContext {
 		return labeling;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setLabeling(Labeling labeling) throws ParameterException{
 		Validate.notNull(labeling);
 		if(!labeling.getSubjects().containsAll(subjectDescriptors.values()))

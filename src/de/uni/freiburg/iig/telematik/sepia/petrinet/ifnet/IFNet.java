@@ -212,21 +212,13 @@ public class IFNet extends AbstractCWN<IFNetPlace, AbstractIFNetTransition, IFNe
 			Set<String> producedColors = transition.getProducedColors();
 			producedColors.remove(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR);
 			for(String outputColor: producedColors){
-				try {
-					if(getAnalysisContext().getLabeling().getAttributeClassification(outputColor) != SecurityLevel.LOW)
-						throw new PNValidationException("Generated attributes of declassification transitions must be LOW");
-				} catch (ParameterException e) {
-					throw new PNValidationException("Inconsistency exception in assigned analysis context:\n" + e.getMessage());
- 				} 
+				if(getAnalysisContext().getLabeling().getAttributeClassification(outputColor) != SecurityLevel.LOW)
+					throw new PNValidationException("Generated attributes of declassification transitions must be LOW");
 			}
 			
 			// Check if transition is classified HIGH
-			try {
-				if(getAnalysisContext().getLabeling().getActivityClassification(transition.getName()) != SecurityLevel.HIGH)
-					throw new PNValidationException("All declassification transitions must have classification HIGH.");
-			} catch (ParameterException e) {
-				throw new PNValidationException("Internal inconsistency exception:\n" + e.getMessage());
-			}
+			if(getAnalysisContext().getLabeling().getActivityClassification(transition.getName()) != SecurityLevel.HIGH)
+				throw new PNValidationException("All declassification transitions must have classification HIGH.");
 		}
 		
 	}
