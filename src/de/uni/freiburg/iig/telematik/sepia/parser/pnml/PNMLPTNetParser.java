@@ -48,8 +48,8 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 		graphics = new PTGraphics();
 
 		// Check if the net is defined on a single page
-		NodeList netElement = pnmlDocument.getElementsByTagName("page");
-		if (netElement.getLength() > 1)
+		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
+		if (pageNodes.getLength() > 1)
 			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
 
 		// Read places and transitions
@@ -104,7 +104,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 
 				// annotation graphics
 				if (arcInscriptions.getLength() == 1) {
-					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcInscriptions.item(0));
+					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
 						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}

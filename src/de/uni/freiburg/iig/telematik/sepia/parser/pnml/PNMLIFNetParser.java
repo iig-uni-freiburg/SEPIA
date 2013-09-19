@@ -24,10 +24,12 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AccessMode;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
@@ -56,6 +58,8 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 	private Map<String, Color> tokencolors = null;
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
+	
+	private Map<String, String> activitySubjectReferences = new HashMap<String, String>();
 
 	public GraphicalIFNet parse(Document pnmlDocument) throws ParameterException, ParserException {
 
@@ -63,8 +67,8 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 		graphics = new IFNetGraphics();
 
 		// Check if the net is defined on a single page
-		NodeList netElement = pnmlDocument.getElementsByTagName("page");
-		if (netElement.getLength() > 1)
+		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
+		if (pageNodes.getLength() > 1)
 			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
 
 		NodeList tokencolorsNodes = pnmlDocument.getElementsByTagName("tokencolors");
@@ -72,6 +76,34 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 			if (tokencolorsNodes.item(i).getNodeType() == Node.ELEMENT_NODE && tokencolorsNodes.item(i).getParentNode().getNodeName().equals("net")) {
 				tokencolors = readTokenColors((Element) tokencolorsNodes.item(i));
 				((IFNetGraphics) graphics).setColors(tokencolors);
+			}
+		}
+
+		// read positions of the classification annotations for token labels and clearances
+		NodeList classificationPositionsNodes = pnmlDocument.getElementsByTagName("classificationpositions");
+		if (classificationPositionsNodes.getLength() > 0) {
+			Element classificationPositionsElement = (Element) classificationPositionsNodes.item(0);
+			// read clearances annotation position
+			NodeList clearancesList = classificationPositionsElement.getElementsByTagName("clearances");
+			if (clearancesList.getLength() > 0) {
+				Element clearancesElement = (Element) clearancesList.item(0);
+				NodeList clearancesPositionList = clearancesElement.getElementsByTagName("position");
+				if (clearancesPositionList.getLength() > 0) {
+					Position clearancesPosition = readPosition((Element) clearancesPositionList.item(0));
+					if (clearancesPosition != null)
+						((IFNetGraphics) graphics).setClearancesPosition(clearancesPosition);
+				}
+			}
+			// read token labels annotation position
+			NodeList tokenLabelsList = classificationPositionsElement.getElementsByTagName("tokenlabels");
+			if (tokenLabelsList.getLength() > 0) {
+				Element tokenLabelsElement = (Element) tokenLabelsList.item(0);
+				NodeList tokenLabelsPositionList = tokenLabelsElement.getElementsByTagName("position");
+				if (tokenLabelsPositionList.getLength() > 0) {
+					Position tokenLabelsPosition = readPosition((Element) tokenLabelsPositionList.item(0));
+					if (tokenLabelsPosition != null)
+						((IFNetGraphics) graphics).setTokenLabelsPosition(tokenLabelsPosition);
+				}
 			}
 		}
 
@@ -85,6 +117,15 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 		readArcs(arcNodes);
 
 		addFiringRulesToNet();
+
+		// create initial analysis context and give it to the net
+		if (activitySubjectReferences.size() > 0) {
+			AnalysisContext analysisContext = new AnalysisContext((IFNet) net, activitySubjectReferences.values());
+			for (Entry<String, String> ref : activitySubjectReferences.entrySet()) {
+				analysisContext.setSubjectDescriptor(ref.getKey(), ref.getValue());
+			}
+			((IFNet) net).setAnalysisContext(analysisContext);
+		}
 
 		return new GraphicalIFNet(net, graphics);
 	}
@@ -210,7 +251,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 
 				// annotation graphics for inscription
 				if (arcInscriptions.getLength() == 1) {
-					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcInscriptions.item(0));
+					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
 						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}
@@ -218,7 +259,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				// annotation graphics for color inscription
 				// FIXME is ignored if there's already an edge annotation graphics object for the flow relation from the inscription part
 				if (arcColorInscriptions.getLength() == 1 && !graphics.getArcAnnotationGraphics().containsKey(flowRelation)) {
-					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcColorInscriptions.item(0));
+					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcColorInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
 						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}
@@ -367,31 +408,29 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 
 				// get transition type
 				String transitionType = readTransitionType(transition);
+				if (!transitionType.equals("regular") && !transitionType.equals("declassification"))
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
 				if (transitionLabel != null) {
 					if (transitionType.equals("regular"))
 						ifnet.addTransition(transitionName, transitionLabel);
 					else if (transitionType.equals("declassification"))
 						ifnet.addDeclassificationTransition(transitionName, transitionLabel);
-					else
-						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
 				} else {
 					if (transitionType.equals("regular"))
 						ifnet.addTransition(transitionName);
 					else if (transitionType.equals("declassification"))
 						ifnet.addDeclassificationTransition(transitionName);
-					else
-						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
 				}
 
 				// read access modes
-				NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
-				if (accessFunctionsNodes.getLength() > 0) {
-					if (accessFunctionsNodes.item(0).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(0).getParentNode().equals(transition)) {
-						Element accessFunctionsElement = (Element) accessFunctionsNodes.item(0);
-						Map<String, Collection<AccessMode>> accessFunctions = readAccessFunctions(accessFunctionsElement);
-						if (accessFunctions != null) {
-							// get transition and add access functions
-							if (ifnet.getTransition(transitionName) instanceof RegularIFNetTransition) {
+				if (ifnet.getTransition(transitionName) instanceof RegularIFNetTransition) {
+					NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
+					if (accessFunctionsNodes.getLength() > 0) {
+						if (accessFunctionsNodes.item(0).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(0).getParentNode().equals(transition)) {
+							Element accessFunctionsElement = (Element) accessFunctionsNodes.item(0);
+							Map<String, Collection<AccessMode>> accessFunctions = readAccessFunctions(accessFunctionsElement);
+							if (accessFunctions != null) {
+								// get transition and add access functions
 								RegularIFNetTransition currentTransition = (RegularIFNetTransition) ifnet.getTransition(transitionName);
 								Validate.notNull(currentTransition);
 
@@ -400,8 +439,27 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 									Collection<AccessMode> accessModes = accessFunction.getValue();
 									currentTransition.addAccessMode(color, accessModes);
 								}
+
+								// read access function graphics
+								AnnotationGraphics accessFunctionsGraphics = readAnnotationGraphicsElement(accessFunctionsElement);
+								if (accessFunctionsGraphics != null)
+									((IFNetGraphics) graphics).getAccessFunctionGraphics().put(currentTransition, accessFunctionsGraphics);
 							}
 						}
+					}
+				}
+
+				// read subject and subject graphics
+				NodeList subjectList = transition.getElementsByTagName("subject");
+				if (subjectList.getLength() > 0) {
+					String subject = readText(subjectList.item(0));
+					if (subject.length() > 0) {
+						// add subject to the reference map
+						activitySubjectReferences.put(transitionLabel, subject);
+						// read graphics
+						AnnotationGraphics subjectGraphics = readAnnotationGraphicsElement((Element) subjectList.item(0));
+						if (subjectGraphics != null)
+							((IFNetGraphics) graphics).getSubjectGraphics().put(ifnet.getTransition(transitionName), subjectGraphics);
 					}
 				}
 

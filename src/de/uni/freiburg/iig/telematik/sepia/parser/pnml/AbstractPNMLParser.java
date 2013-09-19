@@ -153,6 +153,48 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
+	 * Reads the graphical information of an annotation element and returns a {@link AnnotationGraphics} object.
+	 */
+	protected static AnnotationGraphics readAnnotationGraphicsElement(Element inscriptionGraphicsElement) throws ParameterException, ParserException {
+		Validate.notNull(inscriptionGraphicsElement);
+	
+		String elementType = inscriptionGraphicsElement.getNodeName();
+	
+		if (!elementType.equals("inscription") && !elementType.equals("colorInscription") && !elementType.equals("accessfunctions") && !elementType.equals("subject"))
+			throw new ParserException("The element must be of the type \"inscription\".");
+	
+		NodeList graphicsList = inscriptionGraphicsElement.getElementsByTagName("graphics");
+		for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
+			if (graphicsList.item(inscriptionIndex).getParentNode().equals(inscriptionGraphicsElement) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
+				AnnotationGraphics annotationGraphics = new AnnotationGraphics();
+				Element graphics = (Element) graphicsList.item(inscriptionIndex);
+	
+				// fill, font, line, and offset
+				if (graphics.getElementsByTagName("fill").getLength() > 0) {
+					Node fill = graphics.getElementsByTagName("fill").item(0);
+					annotationGraphics.setFill(readFill((Element) fill));
+				}
+				if (graphics.getElementsByTagName("font").getLength() > 0) {
+					Node font = graphics.getElementsByTagName("font").item(0);
+					annotationGraphics.setFont(readFont((Element) font));
+				}
+				if (graphics.getElementsByTagName("line").getLength() > 0) {
+					Node line = graphics.getElementsByTagName("line").item(0);
+					annotationGraphics.setLine(readLine((Element) line));
+				}
+				if (graphics.getElementsByTagName("offset").getLength() > 0) {
+					Node offset = graphics.getElementsByTagName("offset").item(0);
+					annotationGraphics.setOffset(readOffset((Element) offset));
+				}
+	
+				return annotationGraphics;
+			}
+		}
+		// No graphics found
+		return null;
+	}
+
+	/**
 	 * Reads the graphical information of an arc element and returns a {@link ArcGraphics} object.
 	 */
 	protected static ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
@@ -352,8 +394,8 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 			return readNodeGraphicsElement(element);
 		else if (elementType.equals("arc"))
 			return readArcGraphicsElement(element);
-		else if (elementType.equals("inscription") || elementType.equals("colorInscription"))
-			return readInscriptionGraphicsElement(element);
+		else if (elementType.equals("inscription") || elementType.equals("colorInscription") || elementType.equals("accessfunctions") || elementType.equals("subject"))
+			return readAnnotationGraphicsElement(element);
 		else
 			return null;
 	}
@@ -399,48 +441,6 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		} else {
 			return 0;
 		}
-	}
-
-	/**
-	 * Reads the graphical information of an inscription element and returns a {@link AnnotationGraphics} object.
-	 */
-	protected static AnnotationGraphics readInscriptionGraphicsElement(Element inscriptionGraphicsElement) throws ParameterException, ParserException {
-		Validate.notNull(inscriptionGraphicsElement);
-
-		String elementType = inscriptionGraphicsElement.getNodeName();
-
-		if (!elementType.equals("inscription") && !elementType.equals("colorInscription"))
-			throw new ParserException("The element must be of the type \"inscription\".");
-
-		NodeList graphicsList = inscriptionGraphicsElement.getElementsByTagName("graphics");
-		for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
-			if (graphicsList.item(inscriptionIndex).getParentNode().equals(inscriptionGraphicsElement) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
-				AnnotationGraphics annotationGraphics = new AnnotationGraphics();
-				Element graphics = (Element) graphicsList.item(inscriptionIndex);
-
-				// fill, font, line, and offset
-				if (graphics.getElementsByTagName("fill").getLength() > 0) {
-					Node fill = graphics.getElementsByTagName("fill").item(0);
-					annotationGraphics.setFill(readFill((Element) fill));
-				}
-				if (graphics.getElementsByTagName("font").getLength() > 0) {
-					Node font = graphics.getElementsByTagName("font").item(0);
-					annotationGraphics.setFont(readFont((Element) font));
-				}
-				if (graphics.getElementsByTagName("line").getLength() > 0) {
-					Node line = graphics.getElementsByTagName("line").item(0);
-					annotationGraphics.setLine(readLine((Element) line));
-				}
-				if (graphics.getElementsByTagName("offset").getLength() > 0) {
-					Node offset = graphics.getElementsByTagName("offset").item(0);
-					annotationGraphics.setOffset(readOffset((Element) offset));
-				}
-
-				return annotationGraphics;
-			}
-		}
-		// No graphics found
-		return null;
 	}
 
 	/**

@@ -59,8 +59,8 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 		graphics = new CPNGraphics();
 
 		// Check if the net is defined on a single page
-		NodeList netElement = pnmlDocument.getElementsByTagName("page");
-		if (netElement.getLength() > 1)
+		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
+		if (pageNodes.getLength() > 1)
 			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
 
 		NodeList tokencolorsNodes = pnmlDocument.getElementsByTagName("tokencolors");
@@ -206,7 +206,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 				// annotation graphics for inscription
 				if (arcInscriptions.getLength() == 1) {
-					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcInscriptions.item(0));
+					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
 						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}
@@ -214,7 +214,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				// annotation graphics for color inscription
 				// FIXME is ignored if there's already an edge annotation graphics object for the flow relation from the inscription part
 				if (arcColorInscriptions.getLength() == 1 && !graphics.getArcAnnotationGraphics().containsKey(flowRelation)) {
-					AnnotationGraphics arcAnnotationGraphics = readInscriptionGraphicsElement((Element) arcColorInscriptions.item(0));
+					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcColorInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
 						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
 				}

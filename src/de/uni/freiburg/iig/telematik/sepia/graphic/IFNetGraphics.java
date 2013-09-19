@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.invation.code.toval.types.Multiset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 
 /**
  * {@link AbstractPNGraphics} implementation for the IFNets.
@@ -18,32 +20,51 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
  */
 public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
 
-	private Map<AbstractIFNetTransition, AnnotationGraphics> accessFunctionGraphics = new HashMap<AbstractIFNetTransition, AnnotationGraphics>();
+	private Map<RegularIFNetTransition, AnnotationGraphics> accessFunctionGraphics = new HashMap<RegularIFNetTransition, AnnotationGraphics>();
 	private Map<String, Color> colors = new HashMap<String, Color>();
-	private Map<IFNetPlace, AnnotationGraphics> subjectGraphics = new HashMap<IFNetPlace, AnnotationGraphics>();
+	private Map<AbstractIFNetTransition, AnnotationGraphics> subjectGraphics = new HashMap<AbstractIFNetTransition, AnnotationGraphics>();
 
-	public Map<AbstractIFNetTransition, AnnotationGraphics> getAccessFunctionGraphics() {
+	private Position clearancesPosition = new Position();
+	private Position tokenLabelsPosition = new Position();
+
+	public Map<RegularIFNetTransition, AnnotationGraphics> getAccessFunctionGraphics() {
 		return accessFunctionGraphics;
+	}
+
+	public Position getClearancesPosition() {
+		return clearancesPosition;
 	}
 
 	public Map<String, Color> getColors() {
 		return colors;
 	}
 
-	public Map<IFNetPlace, AnnotationGraphics> getSubjectGraphics() {
+	public Map<AbstractIFNetTransition, AnnotationGraphics> getSubjectGraphics() {
 		return subjectGraphics;
 	}
 
-	public void setAccessFunctionGraphics(Map<AbstractIFNetTransition, AnnotationGraphics> accessFunctionGraphics) {
+	public Position getTokenLabelsPosition() {
+		return tokenLabelsPosition;
+	}
+
+	public void setAccessFunctionGraphics(Map<RegularIFNetTransition, AnnotationGraphics> accessFunctionGraphics) {
 		this.accessFunctionGraphics = accessFunctionGraphics;
+	}
+
+	public void setClearancesPosition(Position clearancesPosition) {
+		this.clearancesPosition = clearancesPosition;
 	}
 
 	public void setColors(Map<String, Color> colors) {
 		this.colors = colors;
 	}
 
-	public void setSubjectGraphics(Map<IFNetPlace, AnnotationGraphics> subjectGraphics) {
+	public void setSubjectGraphics(Map<AbstractIFNetTransition, AnnotationGraphics> subjectGraphics) {
 		this.subjectGraphics = subjectGraphics;
+	}
+
+	public void setTokenLabelsPosition(Position tokenLabelsPosition) {
+		this.tokenLabelsPosition = tokenLabelsPosition;
 	}
 
 	public String toString() {
@@ -65,6 +86,10 @@ public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetT
 			str.append(":\n" + map2Str(subjectGraphics) + "\n");
 		else
 			str.append("\n");
+		if (clearancesPosition != null)
+			str.append("     clearancesPosition#:   " + clearancesPosition + "\n");
+		if (tokenLabelsPosition != null)
+			str.append("    tokenLabelsPosition#:   " + tokenLabelsPosition + "\n");
 
 		return str.toString();
 	}
