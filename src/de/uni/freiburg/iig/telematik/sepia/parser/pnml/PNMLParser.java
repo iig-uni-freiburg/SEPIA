@@ -180,7 +180,7 @@ public class PNMLParser implements ParserInterface {
 
 		Validate.notNull(pnmlFile);
 
-		Document pnmlDocument = readPNMLFile(pnmlFile);
+		Document pnmlDocument = readRNGFile(pnmlFile);
 
 		// Try to find out the net type
 		String netTypeStringURI = getPNMLTypeURI(pnmlDocument);
@@ -214,13 +214,13 @@ public class PNMLParser implements ParserInterface {
 	}
 
 	/**
-	 * Reads a PNML file and converts it to a DOM {@link Document}.
+	 * Reads a RelaxNG file and converts it to a DOM {@link Document}.
 	 * 
 	 * @param pnmlFile
 	 *            PNML file to read
 	 * @return Readable, well-formed and normalized PNML document
 	 */
-	private Document readPNMLFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
+	protected static Document readRNGFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
 
 		// Check if pnmlFile exists and is readable
@@ -253,7 +253,7 @@ public class PNMLParser implements ParserInterface {
 	 * @param pntdUrl
 	 *            {@link URL} of the petri net type definition
 	 */
-	private void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
+	protected static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
 		VerifierFactory factory = null;
 		try {
