@@ -10,10 +10,6 @@ import static org.junit.Assert.*;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
@@ -21,7 +17,6 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 
 
@@ -221,4 +216,34 @@ public class CPNTransitionTest {
 			
 		}
 
+	/**
+	 * Test the clone() method
+	 */
+	@Test
+	public void testCPNTransitionClone() throws ParameterException {
+		// CPNTransition with non-default values
+		CPNTransition t1 = setUpStandadEnabledTransition();
+		t1.setSilent(true);
+		assertTrue(t1.isSilent());
+		assertTrue(t1.processesColor("red"));
+		assertFalse(t1.processesColor("pink"));
+
+		CPNTransition t1clone = (CPNTransition) t1.clone();
+		assertEquals(t1, t1clone);
+		assertNotSame(t1, t1clone);
+		assertTrue(t1clone.isSilent());
+		assertTrue(t1clone.processesColor("red"));
+		assertFalse(t1clone.processesColor("pink"));
+
+		// CPNTransition with default values
+		CPNTransition t2 = new CPNTransition("name_trans1");
+		assertFalse(t2.isSilent());
+		assertFalse(t2.processesColor("black"));
+
+		CPNTransition t2clone = (CPNTransition) t2.clone();
+		assertEquals(t2, t2clone);
+		assertNotSame(t2, t2clone);
+		assertFalse(t2clone.isSilent());
+		assertFalse(t2clone.processesColor("black"));
+	}
 }

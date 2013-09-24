@@ -1,20 +1,12 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.fail;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 
 
 public class CPNPlaceTest {
@@ -270,35 +262,73 @@ public class CPNPlaceTest {
 					
 								
 	}
-	
-	
-	
-	    //test method canConsume
-		@Test
-		public void testcanConsume() throws ParameterException {
-			
-			//Create place
-			CPNPlace p1 = new CPNPlace("name_p1");
-			Multiset<String> placeMarking = new Multiset<String>();
-			
-			//Set the capacity of green to 2 and add two green tokens
-			p1.setColorCapacity("green", 2);
-			placeMarking.addAll("green", "green");			
-			p1.setState(placeMarking);
-		
-			//The place cannot consume one more tokens
-			assertFalse(p1.canConsume(new Multiset<String>("green")));
-			assertFalse(p1.canConsume(new Multiset<String>("black")));
-			
-			//Set the color capacity to three
-			p1.setColorCapacity("green", 3);
-			//The place can now consume one more green tokens
-			assertTrue(p1.canConsume(new Multiset<String>("green")));
-			assertFalse(p1.canConsume(new Multiset<String>("black")));
-		}
-	
-	
-			
-	
 
+	// test method canConsume
+	@Test
+	public void testcanConsume() throws ParameterException {
+		// Create place
+		CPNPlace p1 = new CPNPlace("name_p1");
+		Multiset<String> placeMarking = new Multiset<String>();
+
+		// Set the capacity of green to 2 and add two green tokens
+		p1.setColorCapacity("green", 2);
+		placeMarking.addAll("green", "green");
+		p1.setState(placeMarking);
+
+		// The place cannot consume one more tokens
+		assertFalse(p1.canConsume(new Multiset<String>("green")));
+		assertFalse(p1.canConsume(new Multiset<String>("black")));
+
+		// Set the color capacity to three
+		p1.setColorCapacity("green", 3);
+		// The place can now consume one more green tokens
+		assertTrue(p1.canConsume(new Multiset<String>("green")));
+		assertFalse(p1.canConsume(new Multiset<String>("black")));
+	}
+
+
+	/**
+	 * Test the clone() method
+	 */
+	@Test
+	public void testCPNPlaceClone() throws ParameterException {
+		// Create place with color capacities
+		CPNPlace placeWithColorCapacities1 = new CPNPlace("name_p1_with_capacities");
+
+		Multiset<String> placeMarking1 = new Multiset<String>();
+		placeWithColorCapacities1.setColorCapacity("black", 2);
+		placeWithColorCapacities1.setColorCapacity("green", 5);
+		placeMarking1.addAll("black", "green", "green");
+		placeWithColorCapacities1.setState(placeMarking1);
+
+		CPNPlace placeWithColorCapacities2 = (CPNPlace) placeWithColorCapacities1.clone();
+		assertEquals(placeWithColorCapacities1, placeWithColorCapacities2);
+		assertNotSame(placeWithColorCapacities1, placeWithColorCapacities2);
+
+		// Check color capacities
+		for (String color : placeWithColorCapacities2.getState().support()) {
+			assertTrue(placeWithColorCapacities1.getColorCapacity(color) == placeWithColorCapacities2.getColorCapacity(color));
+		}
+		placeWithColorCapacities2.setColorCapacity("green", 10);
+		assertFalse(placeWithColorCapacities1.getColorCapacity("green") == placeWithColorCapacities2.getColorCapacity("green"));
+
+		// Check state and if it's a deep copy
+		assertEquals(placeWithColorCapacities1.getState(), placeWithColorCapacities1.getState());
+		assertNotSame(placeWithColorCapacities1.getState(), placeWithColorCapacities1.getState());
+		// change state, the places shouldn't be equal anymore
+		placeWithColorCapacities2.getState().add("blue");
+		assertFalse(placeWithColorCapacities2.equals(placeWithColorCapacities1));
+
+
+		// Create place without any color capacities
+		CPNPlace placeWithoutColorCapacities1 = new CPNPlace("name_p1_without_capacities");
+
+		Multiset<String> placeMarking2 = new Multiset<String>();
+		placeMarking2.addAll("black", "green", "green");
+		placeWithoutColorCapacities1.setState(placeMarking2);
+
+		CPNPlace placeWithoutColorCapacities2 = (CPNPlace) placeWithoutColorCapacities1.clone();
+		assertEquals(placeWithoutColorCapacities1, placeWithoutColorCapacities2);
+		assertNotSame(placeWithoutColorCapacities1, placeWithoutColorCapacities2);
+	}
 }

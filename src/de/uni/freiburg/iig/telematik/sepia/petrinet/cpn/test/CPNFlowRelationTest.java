@@ -96,6 +96,35 @@ public class CPNFlowRelationTest {
 		assertTrue(f.hasConstraints());
 						
 	}
-	
+
+	/**
+	 * Test the clone() method
+	 */
+	@Test
+	public void testCPNFlowRelationClone() throws ParameterException {
+		// Test PT transition
+		CPNFlowRelation f1 = new CPNFlowRelation(cpnP, cpnT);
+		assertEquals(f1.getSource().getName(), "p0");
+		assertEquals(f1.getTarget().getName(), "t0");
+		assertTrue(f1.getConstraint().equals(new Multiset<String>("black")));
+		CPNFlowRelation f1clone = f1.clone((CPNPlace) f1.getSource(), (CPNTransition) f1.getTarget(), f1.getDirectionPT());
+		assertEquals(f1, f1clone);
+		assertNotSame(f1, f1clone);
+		assertEquals(f1clone.getSource().getName(), "p0");
+		assertEquals(f1clone.getTarget().getName(), "t0");
+		assertTrue(f1clone.getConstraint().equals(new Multiset<String>("black")));
+
+		// Test TP transition
+		CPNFlowRelation f2 = new CPNFlowRelation(cpnT, cpnP);
+		assertEquals(f2.getSource().getName(), "t0");
+		assertEquals(f2.getTarget().getName(), "p0");
+		assertTrue(f2.getConstraint().equals(new Multiset<String>("black")));
+		CPNFlowRelation f2clone = f2.clone((CPNPlace) f2.getTarget(), (CPNTransition) f2.getSource(), f2.getDirectionPT());
+		assertEquals(f2, f2clone);
+		assertNotSame(f2, f2clone);
+		assertEquals(f2clone.getSource().getName(), "t0");
+		assertEquals(f2clone.getTarget().getName(), "p0");
+		assertTrue(f2clone.getConstraint().equals(new Multiset<String>("black")));
+	}
 
 }

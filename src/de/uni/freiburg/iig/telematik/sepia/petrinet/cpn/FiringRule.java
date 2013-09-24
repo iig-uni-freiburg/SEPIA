@@ -1,9 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
