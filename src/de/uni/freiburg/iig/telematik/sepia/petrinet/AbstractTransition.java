@@ -265,14 +265,41 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 		listenerSupport.removeTransitionListener(l);
 	}
 	
-	//------- clone ----------------------------------------------------------------------------------
-	
 	@Override
 	protected abstract AbstractTransition<E,S> newInstance();
+	
+	
+	//------- hashCode and equals --------------------------------------------------------------------
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (isSilent ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractTransition other = (AbstractTransition) obj;
+		if (isSilent != other.isSilent)
+			return false;
+		return true;
+	}
+	
+	
+	//------- clone ----------------------------------------------------------------------------------
+	
 
 	@Override
 	public AbstractTransition<E,S> clone() {
-		AbstractTransition<E,S> result = (AbstractTransition<E,S>) newInstance();
+		AbstractTransition<E,S> result = (AbstractTransition<E,S>) super.clone();
 		result.setSilent(isSilent());
 		return result;
 	}

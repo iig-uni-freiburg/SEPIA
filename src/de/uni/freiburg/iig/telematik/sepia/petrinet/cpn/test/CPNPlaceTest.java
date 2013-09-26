@@ -301,7 +301,7 @@ public class CPNPlaceTest {
 		placeMarking1.addAll("black", "green", "green");
 		placeWithColorCapacities1.setState(placeMarking1);
 
-		CPNPlace placeWithColorCapacities2 = (CPNPlace) placeWithColorCapacities1.clone();
+		CPNPlace placeWithColorCapacities2 = placeWithColorCapacities1.clone();
 		assertEquals(placeWithColorCapacities1, placeWithColorCapacities2);
 		assertNotSame(placeWithColorCapacities1, placeWithColorCapacities2);
 
@@ -327,7 +327,7 @@ public class CPNPlaceTest {
 		placeMarking2.addAll("black", "green", "green");
 		placeWithoutColorCapacities1.setState(placeMarking2);
 
-		CPNPlace placeWithoutColorCapacities2 = (CPNPlace) placeWithoutColorCapacities1.clone();
+		CPNPlace placeWithoutColorCapacities2 = placeWithoutColorCapacities1.clone();
 		assertEquals(placeWithoutColorCapacities1, placeWithoutColorCapacities2);
 		assertNotSame(placeWithoutColorCapacities1, placeWithoutColorCapacities2);
 	}

@@ -318,21 +318,58 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 		capacityListenerSupport.removeCapacityListener(l);
 	}
 	
-	//------- clone ----------------------------------------------------------------------------------
-	
 	@Override
 	protected abstract AbstractPlace<E,S> newInstance();
 	
+	//------- hashCode and equals --------------------------------------------------------------------
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + capacity;
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractPlace other = (AbstractPlace) obj;
+		if (capacity != other.capacity)
+			return false;
+		if (state == null) {
+			if (other.state != null)
+				return false;
+		} else if (!state.equals(other.state))
+			return false;
+		return true;
+	}
+	
+	
+	//------- clone ----------------------------------------------------------------------------------
+	
+
 	@Override
 	public AbstractPlace<E,S> clone() {
-		AbstractPlace<E,S> result = (AbstractPlace<E,S>) newInstance();
+		AbstractPlace<E,S> result = (AbstractPlace<E,S>) super.clone();
 		try {
-			result.setCapacity(getCapacity());
+			cloneCapacity(result);
 			result.setState(getState());
 		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	protected void cloneCapacity(AbstractPlace<E,S> clone) throws ParameterException{
+		clone.setCapacity(getCapacity());
 	}
 
 }

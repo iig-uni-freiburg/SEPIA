@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 
 public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	
@@ -20,6 +21,11 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	@Override
 	protected CPNPlace newInstance() {
 		return new CPNPlace();
+	}
+	
+	@Override
+	public CPNPlace clone(){
+		return (CPNPlace) super.clone();
 	}
 	
 }

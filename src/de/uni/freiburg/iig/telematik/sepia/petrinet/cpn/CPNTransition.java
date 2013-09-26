@@ -29,5 +29,12 @@ public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	protected CPNTransition newInstance() {
 		return new CPNTransition();
 	}
+
+	@Override
+	public CPNTransition clone() {
+		return (CPNTransition) super.clone();
+	}
+	
+	
 	
 }

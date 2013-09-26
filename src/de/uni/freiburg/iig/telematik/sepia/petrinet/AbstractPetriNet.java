@@ -550,7 +550,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @throws ParameterException If the given place is <code>null</code>.
 	 */
 	protected boolean containsPlace(P place) throws ParameterException{
-		return containsTransition(place.getName());
+		return containsPlace(place.getName());
 	}
 	
 	/**

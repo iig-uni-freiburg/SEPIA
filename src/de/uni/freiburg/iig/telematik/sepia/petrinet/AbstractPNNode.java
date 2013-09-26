@@ -334,7 +334,9 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
@@ -346,16 +348,21 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		@SuppressWarnings("rawtypes")
 		AbstractPNNode other = (AbstractPNNode) obj;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		} else if (!label.equals(other.label))
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
+		if (type != other.type)
+			return false;
 		return true;
 	}
-	
 	
 	//------- toString -------------------------------------------------------------------------------
 	
@@ -363,7 +370,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public String toString() {
 		return String.format(toStringFormat, name, label);
 	}
-	
+
 	protected abstract AbstractPNNode<E> newInstance();
 	
 	@Override

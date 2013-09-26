@@ -23,16 +23,18 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	
 	protected AbstractCPNPlace(){
 		super();
+		state = new Multiset<String>();
+	}
+	
+	public AbstractCPNPlace(String name) throws ParameterException {
+		this(name, name);
 	}
 	
 	public AbstractCPNPlace(String name, String label) throws ParameterException {
 		super(name, label);
 		state = new Multiset<String>();
 	}
-	public AbstractCPNPlace(String name) throws ParameterException {
-		super(name);
-		state = new Multiset<String>();
-	}
+
 	
 	@Override
 	public Multiset<String> getState() {
@@ -245,19 +247,47 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		}
 	}
 	
-	
+	//------- hashCode and equals --------------------------------------------------------------------
 	
 	@Override
-	public AbstractCPNPlace<E> clone() {
-		AbstractCPNPlace<E> result = (AbstractCPNPlace<E>) super.clone();
-		for(String color: colorCapacity.keySet()){
-			try {
-				result.setColorCapacity(color, colorCapacity.get(color));
-			} catch (ParameterException e) {
-				e.printStackTrace();
-			}
-		}
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result
+				+ ((colorCapacity == null) ? 0 : colorCapacity.hashCode());
 		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractCPNPlace other = (AbstractCPNPlace) obj;
+		if (colorCapacity == null) {
+			if (other.colorCapacity != null)
+				return false;
+		} else if (!colorCapacity.equals(other.colorCapacity))
+			return false;
+		return true;
+	}
+	
+	
+	//------- clone ----------------------------------------------------------------------------------
+	
+	@Override
+	protected void cloneCapacity(AbstractPlace<E, Multiset<String>> clone) throws ParameterException {
+		for(String color: colorCapacity.keySet()){
+			((AbstractCPNPlace<E>) clone).setColorCapacity(color, colorCapacity.get(color));
+		}
+	}
+
+	
+	
+	
+	
 
 }
