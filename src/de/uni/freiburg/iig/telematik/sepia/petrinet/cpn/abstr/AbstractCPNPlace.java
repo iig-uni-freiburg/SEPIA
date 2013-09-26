@@ -266,7 +266,8 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractCPNPlace other = (AbstractCPNPlace) obj;
+		@SuppressWarnings("unchecked")
+		AbstractCPNPlace<E> other = (AbstractCPNPlace<E>) obj;
 		if (colorCapacity == null) {
 			if (other.colorCapacity != null)
 				return false;

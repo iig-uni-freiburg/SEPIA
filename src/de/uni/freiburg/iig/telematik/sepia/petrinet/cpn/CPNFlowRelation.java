@@ -25,8 +25,12 @@ public class CPNFlowRelation extends AbstractCPNFlowRelation<CPNPlace, CPNTransi
 	public CPNFlowRelation clone(CPNPlace place, CPNTransition transition, boolean directionPT) {
 		CPNFlowRelation result = null;
 		try {
-			result = new CPNFlowRelation(place, transition);
-			result.setDirectionPT(directionPT);
+			// Can't set direction afterwards. The default name could be wrong then when testing for equality.
+			if (directionPT)
+				result = new CPNFlowRelation(place, transition);
+			else
+				result = new CPNFlowRelation(transition, place);
+			result.setConstraint(getConstraint().clone());
 		} catch (ParameterException e) {
 			e.printStackTrace();
 		}

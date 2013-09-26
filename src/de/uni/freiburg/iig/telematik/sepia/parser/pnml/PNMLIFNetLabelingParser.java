@@ -13,8 +13,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.parser.XMLParserException;
-import de.invation.code.toval.parser.XMLParserException.ErrorCode;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
@@ -70,8 +68,6 @@ public class PNMLIFNetLabelingParser {
 		Document labelingDocument = null;
 		try {
 			labelingDocument = PNMLParser.readRNGFile(labelingFile);
-		} catch (XMLParserException e) {
-			throw new XMLParserException(ErrorCode.TAGSTRUCTURE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -287,7 +287,8 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractTransition other = (AbstractTransition) obj;
+		@SuppressWarnings("unchecked")
+		AbstractTransition<E, S> other = (AbstractTransition<E, S>) obj;
 		if (isSilent != other.isSilent)
 			return false;
 		return true;
@@ -299,6 +300,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 
 	@Override
 	public AbstractTransition<E,S> clone() {
+		@SuppressWarnings("unchecked")
 		AbstractTransition<E,S> result = (AbstractTransition<E,S>) super.clone();
 		result.setSilent(isSilent());
 		return result;

@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +15,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 
@@ -324,6 +324,7 @@ public class CPNTest {
 			//Create the standard cpn
 			CPN cpn = createCPN();	
 			
+			@SuppressWarnings("unused")
 			CPNFlowRelation f = cpn.addFlowRelationPT("p0", "t1");			
 			
 			try {
@@ -347,10 +348,10 @@ public class CPNTest {
 	//p0: red, black
 	//p2: green
 	private CPN createCPN(){
-		
+
 		CPN cpn = null;
-		
-		
+
+
 		try {
 		//Create places	
 		Set<String>  places = new HashSet<String>();
@@ -358,8 +359,8 @@ public class CPNTest {
 		places.add("p1");
 		places.add("p2");
 		places.add("p3");
-		
-		
+
+
 		//create transitions
 		Set<String>  transitions = new HashSet<String>();
 		transitions.add("t0");
@@ -375,22 +376,22 @@ public class CPNTest {
 		Multiset<String> mset2 = new Multiset<String>();		
 		mset2.add("green");		
 		marking.set("p2", mset2);
-		
-		
-		
-		
+
+
+
 		//create the cpn with all tokens in P0
 		cpn = new CPN(places, transitions, marking);
-		
+
 		//Add the flow relation		
 		CPNFlowRelation f1 = cpn.addFlowRelationPT("p0", "t0", true);
 		CPNFlowRelation f2 = cpn.addFlowRelationTP("t0", "p1", true);
 		CPNFlowRelation f3 = cpn.addFlowRelationPT("p1", "t1", true);
+		@SuppressWarnings("unused")
 		CPNFlowRelation f4 = cpn.addFlowRelationTP("t1", "p3", true);
 		CPNFlowRelation f5 = cpn.addFlowRelationTP("t1", "p2", true);
 		CPNFlowRelation f6 = cpn.addFlowRelationPT("p2", "t0", true);
-			
-		//configure flow reltion
+
+		//configure flow relation
 		f1.addConstraint("red", 1);
 		f2.addConstraint("red", 1);
 		f3.addConstraint("red", 1);
@@ -400,18 +401,56 @@ public class CPNTest {
 		Multiset<String> s2 = new Multiset<String>();
 		s2.add("green");
 		f6.setConstraint(s2);
-		
-			
-			
+
 		} catch (ParameterException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-					
+
 		return cpn;
 	}
 
-	
-	
-		
+	/**
+	 * Test the clone() method
+	 */
+	@Test
+	public void testCPNClone() {
+		/*
+		 * Test equal CPNs
+		 */
+		CPN cpn1 = createCPN();
+		CPN cpn1clone = (CPN) cpn1.clone();
+		assertNotSame(cpn1, cpn1clone);
+		// Can't just test equality because of the different order of same lists.
+		//assertEquals(cpn1, cpn1clone);
+		// Check equality for places
+		assertEquals(cpn1.getPlaces().size(), cpn1clone.getPlaces().size());
+		for (CPNPlace p : cpn1.getPlaces()) {
+			assertTrue(cpn1clone.getPlace(p.getName()) != null);
+			assertEquals(p, cpn1clone.getPlace(p.getName()));
+			assertNotSame(p, cpn1clone.getPlace(p.getName()));
+		}
+		// Check equality for transitions
+		assertEquals(cpn1.getTransitions().size(), cpn1clone.getTransitions().size());
+		for (CPNTransition t : cpn1.getTransitions()) {
+			assertTrue(cpn1clone.getTransition(t.getName()) != null);
+			assertEquals(t, cpn1clone.getTransition(t.getName()));
+			assertNotSame(t, cpn1clone.getTransition(t.getName()));
+		}
+		// Check equality for flow relations
+		assertEquals(cpn1.getFlowRelations().size(), cpn1clone.getFlowRelations().size());
+		for (CPNFlowRelation f : cpn1.getFlowRelations()) {
+			CPNFlowRelation flowRelationClone = null;
+			for (CPNFlowRelation fc : cpn1clone.getFlowRelations()) {
+				if (fc.getSource().equals(f.getSource()) && fc.getTarget().equals(f.getTarget()) && fc.getDirectionPT() == f.getDirectionPT() && fc.getConstraint().equals(f.getConstraint())) {
+					flowRelationClone = fc;
+				}
+			}
+			assertFalse(flowRelationClone == null);
+			assertEquals(f, flowRelationClone);
+			assertNotSame(f, flowRelationClone);
+		}
+		// Check equality for the initial marking
+		assertEquals(cpn1.getInitialMarking(), cpn1clone.getInitialMarking());
+		assertNotSame(cpn1.getInitialMarking(), cpn1clone.getInitialMarking());
+	}
 }

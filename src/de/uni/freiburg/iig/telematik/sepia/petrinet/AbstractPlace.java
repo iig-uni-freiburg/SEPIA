@@ -341,7 +341,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractPlace other = (AbstractPlace) obj;
+		@SuppressWarnings("unchecked")
+		AbstractPlace<E, S> other = (AbstractPlace<E, S>) obj;
 		if (capacity != other.capacity)
 			return false;
 		if (state == null) {
@@ -358,6 +359,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 
 	@Override
 	public AbstractPlace<E,S> clone() {
+		@SuppressWarnings("unchecked")
 		AbstractPlace<E,S> result = (AbstractPlace<E,S>) super.clone();
 		try {
 			cloneCapacity(result);
