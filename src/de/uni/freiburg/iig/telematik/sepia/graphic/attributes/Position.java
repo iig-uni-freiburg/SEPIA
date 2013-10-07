@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
 
 /**
  * <p>
- * The fill attribute class can define a X and a Y coordinate value. It is used by places, transitions, pages, and edges.
+ * The position attribute class can define a X and a Y coordinate value. It is used by places, transitions, pages, and edges.
  * </p>
  * 
  * @author Adrian Lange

@@ -93,7 +93,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the access functions of a transition in an IF-net and returns a Map<tokenColorName, Map<accessmode, boolean>>.
 	 */
-	protected static Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) throws ParameterException {
+	public static Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) throws ParameterException {
 		Validate.notNull(accessFunctionsElement);
 
 		Map<String, Collection<AccessMode>> accessFunctions = new HashMap<String, Collection<AccessMode>>();
@@ -155,7 +155,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of an annotation element and returns a {@link AnnotationGraphics} object.
 	 */
-	protected static AnnotationGraphics readAnnotationGraphicsElement(Element inscriptionGraphicsElement) throws ParameterException, ParserException {
+	public static AnnotationGraphics readAnnotationGraphicsElement(Element inscriptionGraphicsElement) throws ParameterException, ParserException {
 		Validate.notNull(inscriptionGraphicsElement);
 	
 		String elementType = inscriptionGraphicsElement.getNodeName();
@@ -197,7 +197,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of an arc element and returns a {@link ArcGraphics} object.
 	 */
-	protected static ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
+	public static ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
 		Validate.notNull(arcGraphicsElement);
 
 		String elementType = arcGraphicsElement.getNodeName();
@@ -235,7 +235,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads an initial color marking tag and returns its values as {@link Map}.
 	 */
-	protected static Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
+	public static Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
 		Validate.notNull(colorInscriptionNode);
 
 		Element initialColorMarkingElement = (Element) colorInscriptionNode;
@@ -264,7 +264,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its
 	 * value will be set to 0.
 	 */
-	protected static Dimension readDimension(Element dimensionNode) throws ParameterException {
+	public static Dimension readDimension(Element dimensionNode) throws ParameterException {
 		Validate.notNull(dimensionNode);
 
 		Dimension dimension = new Dimension();
@@ -294,7 +294,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a fill tag and returns it as {@link Fill}.
 	 */
-	protected static Fill readFill(Element fillNode) throws ParameterException {
+	public static Fill readFill(Element fillNode) throws ParameterException {
 		Validate.notNull(fillNode);
 
 		Fill fill = new Fill();
@@ -334,7 +334,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a font tag and returns it as {@link Font}.
 	 */
-	protected static Font readFont(Element fontNode) throws ParameterException {
+	public static Font readFont(Element fontNode) throws ParameterException {
 		Validate.notNull(fontNode);
 
 		Font font = new Font();
@@ -384,7 +384,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphics tag of the given element.
 	 */
-	protected static ObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
+	public static ObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
 		Validate.notNull(element);
 
 		// get node element type
@@ -403,7 +403,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads an initial color marking tag and returns its values as {@link Map}.
 	 */
-	protected static Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) throws ParameterException {
+	public static Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) throws ParameterException {
 		Validate.notNull(initialColorMarkingNode);
 
 		Element initialColorMarkingElement = (Element) initialColorMarkingNode;
@@ -431,7 +431,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads an initial marking tag and returns its value as {@link Integer}.
 	 */
-	protected static int readInitialMarking(Node initialMarkingNode) throws XMLParserException, ParameterException {
+	public static int readInitialMarking(Node initialMarkingNode) throws XMLParserException, ParameterException {
 		Validate.notNull(initialMarkingNode);
 
 		String markingStr = readText(initialMarkingNode);
@@ -446,7 +446,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a line tag and returns it as {@link Line}.
 	 */
-	protected static Line readLine(Element lineNode) throws ParameterException {
+	public static Line readLine(Element lineNode) throws ParameterException {
 		Validate.notNull(lineNode);
 
 		Line line = new Line();
@@ -484,7 +484,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of a node element line a place or a transition and returns a {@link NodeGraphics} object.
 	 */
-	protected static NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParameterException, ParserException {
+	public static NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParameterException, ParserException {
 		Validate.notNull(nodeGraphicsElement);
 
 		String elementType = nodeGraphicsElement.getNodeName();
@@ -527,7 +527,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 * Reads an offset tag and returns it as {@link Offset}. If validated, an offset tag must contain a x and a y value. If one of them is missed, its value
 	 * will be set to 0.
 	 */
-	protected static Offset readOffset(Element offsetNode) throws ParameterException {
+	public static Offset readOffset(Element offsetNode) throws ParameterException {
 		Validate.notNull(offsetNode);
 
 		Offset offset = new Offset();
@@ -557,7 +557,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Gets the place capacity element of a PN and returns an {@link Integer} value.
 	 */
-	protected static Integer readPlaceCapacity(Element placeCapacityElement) throws ParameterException, PNMLParserException {
+	public static Integer readPlaceCapacity(Element placeCapacityElement) throws ParameterException, PNMLParserException {
 		Validate.notNull(placeCapacityElement);
 
 		int capacity = Integer.parseInt(placeCapacityElement.getTextContent());
@@ -571,7 +571,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Gets the place color capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
 	 */
-	protected static Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
+	public static Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
 		Validate.notNull(placeCapacitiesElement);
 
 		Map<String, Integer> placeCapacities = new HashMap<String, Integer>();
@@ -616,7 +616,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 * Reads a position tag and returns it as {@link Position}. If validated, a position tag must contain a x and a y value. If one of them is missed, its value
 	 * will be set to 0.
 	 */
-	protected static Position readPosition(Element positionNode) throws ParameterException {
+	public static Position readPosition(Element positionNode) throws ParameterException {
 		Validate.notNull(positionNode);
 
 		Position position = new Position();
@@ -646,7 +646,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the content of text tags and returns them as string.
 	 */
-	protected static String readText(Node textNode) throws XMLParserException, ParameterException {
+	public static String readText(Node textNode) throws XMLParserException, ParameterException {
 		Validate.notNull(textNode);
 
 		if (textNode.getNodeType() != Node.ELEMENT_NODE)
@@ -669,7 +669,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Gets the tokencolors element of a CPN, CWN, or IFNet and returns a {@link Map} containing all color values for the specific token color names.
 	 */
-	protected static Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException, PNMLParserException {
+	public static Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException, PNMLParserException {
 		Validate.notNull(tokenColorsElement);
 
 		Map<String, Color> tokenColors = new HashMap<String, Color>();
@@ -712,7 +712,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Gets a tokenposition node and reads its x and y attributes. Returns a {@link Position}.
 	 */
-	protected static Position readTokenPosition(Element tokenPositionNode) throws ParameterException {
+	public static Position readTokenPosition(Element tokenPositionNode) throws ParameterException {
 		Validate.notNull(tokenPositionNode);
 
 		Position tokenPosition = new Position();
@@ -742,7 +742,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the type of a transition of an IF-net. If there's no transition type, it returns the type "regular".
 	 */
-	protected String readTransitionType(Element transitionElement) throws ParameterException {
+	public String readTransitionType(Element transitionElement) throws ParameterException {
 		Validate.notNull(transitionElement);
 
 		NodeList transitionTypeNodes = transitionElement.getElementsByTagName("transitiontype");

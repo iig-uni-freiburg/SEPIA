@@ -348,7 +348,8 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractPNNode other = (AbstractPNNode) obj;
+		@SuppressWarnings("unchecked")
+		AbstractPNNode<E> other = (AbstractPNNode<E>) obj;
 		if (label == null) {
 			if (other.label != null)
 				return false;
