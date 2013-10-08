@@ -58,7 +58,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 	private Map<String, Color> tokencolors = null;
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
-	
+
 	private Map<String, String> activitySubjectReferences = new HashMap<String, String>();
 
 	public GraphicalIFNet parse(Document pnmlDocument) throws ParameterException, ParserException {
@@ -244,7 +244,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 					throw new PNMLParserException(ErrorCode.INVALID_FLOW_RELATION, "Couldn't determine flow relation between \"" + sourceName + "\" and \"" + targetName + "\".");
 				}
 
-				// Check if there's a label
+				// Check if there's a name
 				String arcName = arc.getAttribute("id");
 				if (arcName != null && arcName.length() > 0)
 					flowRelation.setName(arcName);
@@ -253,7 +253,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				if (arcInscriptions.getLength() == 1) {
 					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
-						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
+						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
 				}
 
 				// annotation graphics for color inscription
@@ -261,13 +261,13 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				if (arcColorInscriptions.getLength() == 1 && !graphics.getArcAnnotationGraphics().containsKey(flowRelation)) {
 					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcColorInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
-						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
+						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
 				}
 
 				// get graphical information
 				ArcGraphics arcGraphics = readArcGraphicsElement(arc);
 				if (arcGraphics != null)
-					graphics.getArcGraphics().put(flowRelation, arcGraphics);
+					graphics.getArcGraphics().put(flowRelation.getName(), arcGraphics);
 			}
 		}
 	}
@@ -295,11 +295,6 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 					placeLabel = placeName;
 				}
 				net.addPlace(placeName, placeLabel);
-
-				// Read graphical information
-				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
-				if (placeGraphics != null)
-					graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
 
 				Set<TokenGraphics> tokenGraphics = new HashSet<TokenGraphics>();
 
@@ -361,7 +356,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 					marking.set(placeName, markingMultiset);
 
 				if (!tokenGraphics.isEmpty())
-					graphics.getTokenGraphics().put(net.getPlace(placeName), tokenGraphics);
+					graphics.getTokenGraphics().put(placeName, tokenGraphics);
 
 				// Read and add place capacities
 				NodeList placeCapacitiesList = place.getElementsByTagName("capacities");
@@ -380,6 +375,11 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 						}
 					}
 				}
+
+				// Read graphical information
+				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
+				if (placeGraphics != null)
+					graphics.getPlaceGraphics().put(placeName, placeGraphics);
 			}
 		}
 		net.setInitialMarking(marking);
@@ -443,7 +443,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 								// read access function graphics
 								AnnotationGraphics accessFunctionsGraphics = readAnnotationGraphicsElement(accessFunctionsElement);
 								if (accessFunctionsGraphics != null)
-									((IFNetGraphics) graphics).getAccessFunctionGraphics().put(currentTransition, accessFunctionsGraphics);
+									((IFNetGraphics) graphics).getAccessFunctionGraphics().put(currentTransition.getName(), accessFunctionsGraphics);
 							}
 						}
 					}
@@ -459,14 +459,14 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 						// read graphics
 						AnnotationGraphics subjectGraphics = readAnnotationGraphicsElement((Element) subjectList.item(0));
 						if (subjectGraphics != null)
-							((IFNetGraphics) graphics).getSubjectGraphics().put(ifnet.getTransition(transitionName), subjectGraphics);
+							((IFNetGraphics) graphics).getSubjectGraphics().put(transitionName, subjectGraphics);
 					}
 				}
 
 				// read graphical information
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
-					graphics.getTransitionGraphics().put(ifnet.getTransition(transitionName), transitionGraphics);
+					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
 
 				// transitions have no inscription/marking
 			}

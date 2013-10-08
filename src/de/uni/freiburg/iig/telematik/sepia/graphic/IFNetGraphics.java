@@ -10,7 +10,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransitio
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 
 /**
  * {@link AbstractPNGraphics} implementation for the IFNets.
@@ -20,14 +19,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition
  */
 public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetTransition, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
 
-	private Map<RegularIFNetTransition, AnnotationGraphics> accessFunctionGraphics = new HashMap<RegularIFNetTransition, AnnotationGraphics>();
+	private Map<String, AnnotationGraphics> accessFunctionGraphics = new HashMap<String, AnnotationGraphics>();
 	private Map<String, Color> colors = new HashMap<String, Color>();
-	private Map<AbstractIFNetTransition, AnnotationGraphics> subjectGraphics = new HashMap<AbstractIFNetTransition, AnnotationGraphics>();
+	private Map<String, AnnotationGraphics> subjectGraphics = new HashMap<String, AnnotationGraphics>();
 
 	private Position clearancesPosition = new Position();
 	private Position tokenLabelsPosition = new Position();
 
-	public Map<RegularIFNetTransition, AnnotationGraphics> getAccessFunctionGraphics() {
+	public Map<String, AnnotationGraphics> getAccessFunctionGraphics() {
 		return accessFunctionGraphics;
 	}
 
@@ -39,7 +38,7 @@ public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetT
 		return colors;
 	}
 
-	public Map<AbstractIFNetTransition, AnnotationGraphics> getSubjectGraphics() {
+	public Map<String, AnnotationGraphics> getSubjectGraphics() {
 		return subjectGraphics;
 	}
 
@@ -47,7 +46,7 @@ public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetT
 		return tokenLabelsPosition;
 	}
 
-	public void setAccessFunctionGraphics(Map<RegularIFNetTransition, AnnotationGraphics> accessFunctionGraphics) {
+	public void setAccessFunctionGraphics(Map<String, AnnotationGraphics> accessFunctionGraphics) {
 		this.accessFunctionGraphics = accessFunctionGraphics;
 	}
 
@@ -59,7 +58,7 @@ public class IFNetGraphics extends AbstractPNGraphics<IFNetPlace, AbstractIFNetT
 		this.colors = colors;
 	}
 
-	public void setSubjectGraphics(Map<AbstractIFNetTransition, AnnotationGraphics> subjectGraphics) {
+	public void setSubjectGraphics(Map<String, AnnotationGraphics> subjectGraphics) {
 		this.subjectGraphics = subjectGraphics;
 	}
 

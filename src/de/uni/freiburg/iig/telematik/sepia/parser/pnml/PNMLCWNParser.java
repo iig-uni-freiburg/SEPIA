@@ -208,7 +208,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				if (arcInscriptions.getLength() == 1) {
 					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
-						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
+						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
 				}
 
 				// annotation graphics for color inscription
@@ -216,13 +216,13 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				if (arcColorInscriptions.getLength() == 1 && !graphics.getArcAnnotationGraphics().containsKey(flowRelation)) {
 					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcColorInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
-						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
+						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
 				}
 
 				// get graphical information
 				ArcGraphics arcGraphics = readArcGraphicsElement(arc);
 				if (arcGraphics != null)
-					graphics.getArcGraphics().put(flowRelation, arcGraphics);
+					graphics.getArcGraphics().put(flowRelation.getName(), arcGraphics);
 			}
 		}
 	}
@@ -250,11 +250,6 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					placeLabel = placeName;
 				}
 				net.addPlace(placeName, placeLabel);
-
-				// Read graphical information
-				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
-				if (placeGraphics != null)
-					graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
 
 				Set<TokenGraphics> tokenGraphics = new HashSet<TokenGraphics>();
 
@@ -316,7 +311,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					marking.set(placeName, markingMultiset);
 
 				if (!tokenGraphics.isEmpty())
-					graphics.getTokenGraphics().put(net.getPlace(placeName), tokenGraphics);
+					graphics.getTokenGraphics().put(placeName, tokenGraphics);
 
 				// Read and add place capacities
 				NodeList placeCapacitiesList = place.getElementsByTagName("capacities");
@@ -335,6 +330,11 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 						}
 					}
 				}
+
+				// Read graphical information
+				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
+				if (placeGraphics != null)
+					graphics.getPlaceGraphics().put(placeName, placeGraphics);
 			}
 		}
 		net.setInitialMarking(marking);
@@ -366,7 +366,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				// read graphical information
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
-					graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
+					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
 
 				// transitions have no inscription/marking
 			}

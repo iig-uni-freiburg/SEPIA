@@ -34,42 +34,42 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 						M extends AbstractMarking<S>,
 						S extends Object> {
 
-	private Map<P, NodeGraphics> placeGraphics = new HashMap<P, NodeGraphics>();
-	private Map<P, Set<TokenGraphics>> tokenGraphics = new HashMap<P, Set<TokenGraphics>>();
-	private Map<T, NodeGraphics> transitionGraphics = new HashMap<T, NodeGraphics>();
-	private Map<F, ArcGraphics> arcGraphics = new HashMap<F, ArcGraphics>();
-	private Map<F, AnnotationGraphics> arcAnnotationGraphics = new HashMap<F, AnnotationGraphics>();
+	private Map<String, NodeGraphics> placeGraphics = new HashMap<String, NodeGraphics>();
+	private Map<String, Set<TokenGraphics>> tokenGraphics = new HashMap<String, Set<TokenGraphics>>();
+	private Map<String, NodeGraphics> transitionGraphics = new HashMap<String, NodeGraphics>();
+	private Map<String, ArcGraphics> arcGraphics = new HashMap<String, ArcGraphics>();
+	private Map<String, AnnotationGraphics> arcAnnotationGraphics = new HashMap<String, AnnotationGraphics>();
 
-	public Map<F, AnnotationGraphics> getArcAnnotationGraphics() {
+	public Map<String, AnnotationGraphics> getArcAnnotationGraphics() {
 		return arcAnnotationGraphics;
 	}
 
 	/**
 	 * @return the arcGraphics
 	 */
-	public Map<F, ArcGraphics> getArcGraphics() {
+	public Map<String, ArcGraphics> getArcGraphics() {
 		return arcGraphics;
 	}
 
 	/**
 	 * @return the placeGraphics
 	 */
-	public Map<P, NodeGraphics> getPlaceGraphics() {
+	public Map<String, NodeGraphics> getPlaceGraphics() {
 		return placeGraphics;
 	}
 
-	public Map<P, Set<TokenGraphics>> getTokenGraphics() {
+	public Map<String, Set<TokenGraphics>> getTokenGraphics() {
 		return tokenGraphics;
 	}
 
 	/**
 	 * @return the transitionGraphics
 	 */
-	public Map<T, NodeGraphics> getTransitionGraphics() {
+	public Map<String, NodeGraphics> getTransitionGraphics() {
 		return transitionGraphics;
 	}
 
-	public void setArcAnnotationGraphics(Map<F, AnnotationGraphics> arcAnnotationGraphics) {
+	public void setArcAnnotationGraphics(Map<String, AnnotationGraphics> arcAnnotationGraphics) {
 		this.arcAnnotationGraphics = arcAnnotationGraphics;
 	}
 
@@ -77,7 +77,7 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	 * @param arcGraphics
 	 *            the arcGraphics to set
 	 */
-	public void setArcGraphics(Map<F, ArcGraphics> arcGraphics) {
+	public void setArcGraphics(Map<String, ArcGraphics> arcGraphics) {
 		this.arcGraphics = arcGraphics;
 	}
 
@@ -85,11 +85,11 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	 * @param placeGraphics
 	 *            the placeGraphics to set
 	 */
-	public void setPlaceGraphics(Map<P, NodeGraphics> placeGraphics) {
+	public void setPlaceGraphics(Map<String, NodeGraphics> placeGraphics) {
 		this.placeGraphics = placeGraphics;
 	}
 
-	public void setTokenGraphics(Map<P, Set<TokenGraphics>> tokenGraphics) {
+	public void setTokenGraphics(Map<String, Set<TokenGraphics>> tokenGraphics) {
 		this.tokenGraphics = tokenGraphics;
 	}
 
@@ -97,7 +97,7 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	 * @param transitionGraphics
 	 *            the transitionGraphics to set
 	 */
-	public void setTransitionGraphics(Map<T, NodeGraphics> transitionGraphics) {
+	public void setTransitionGraphics(Map<String, NodeGraphics> transitionGraphics) {
 		this.transitionGraphics = transitionGraphics;
 	}
 

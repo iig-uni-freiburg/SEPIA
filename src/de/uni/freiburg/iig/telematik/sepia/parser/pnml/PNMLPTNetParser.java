@@ -106,13 +106,13 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				if (arcInscriptions.getLength() == 1) {
 					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcInscriptions.item(0));
 					if (arcAnnotationGraphics != null)
-						graphics.getArcAnnotationGraphics().put(flowRelation, arcAnnotationGraphics);
+						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
 				}
 
 				// get graphical information
 				ArcGraphics arcGraphics = readArcGraphicsElement(arc);
 				if (arcGraphics != null)
-					graphics.getArcGraphics().put(flowRelation, arcGraphics);
+					graphics.getArcGraphics().put(flowRelation.getName(), arcGraphics);
 			}
 		}
 	}
@@ -140,11 +140,6 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				}
 				net.addPlace(placeName, placeLabel);
 
-				// Read graphical information
-				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
-				if (placeGraphics != null)
-					graphics.getPlaceGraphics().put(net.getPlace(placeName), placeGraphics);
-
 				// Read marking with graphical information
 				NodeList placeInitialMarkings = place.getElementsByTagName("initialMarking");
 				if (placeInitialMarkings.getLength() == 1) {
@@ -164,7 +159,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 								tokenGraphic.setTokenposition(readTokenPosition(tokenPos));
 								tokenGraphics.add(tokenGraphic);
 							}
-							graphics.getTokenGraphics().put(net.getPlace(placeName), tokenGraphics);
+							graphics.getTokenGraphics().put(placeName, tokenGraphics);
 						}
 					}
 				}
@@ -183,6 +178,11 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 						}
 					}
 				}
+
+				// Read graphical information
+				NodeGraphics placeGraphics = readNodeGraphicsElement(place);
+				if (placeGraphics != null)
+					graphics.getPlaceGraphics().put(placeName, placeGraphics);
 			}
 		}
 		net.setInitialMarking(marking);
@@ -214,7 +214,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				// read graphical information
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
-					graphics.getTransitionGraphics().put(net.getTransition(transitionName), transitionGraphics);
+					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
 
 				// transitions have no inscription/marking
 			}
