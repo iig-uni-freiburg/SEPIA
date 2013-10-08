@@ -39,7 +39,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 			arcName.appendChild(placeNameGraphics);
 			if (showNameGraphics) {
 				// Add an offset element to the arc name graphics
-				placeNameGraphics.appendChild(createOffsetAttributeGraphics(a, true, showCompleteNameOffsetGraphics, "0.0", "-5.0"));
+				placeNameGraphics.appendChild(createOffsetAttributeGraphics(a, true, showCompleteNameOffsetGraphics, "1.0", "-5.0"));
 				if (showCompleteNameGraphics) {
 					// Add a fill element to the arc name graphics
 					placeNameGraphics.appendChild(createFillAttributeGraphics(a, true, true, true, true));
@@ -60,7 +60,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 				Element arcInscriptionGraphics = a.createElement("graphics");
 				arcInscription.appendChild(arcInscriptionGraphics);
 				// Add an offset element to the arc inscription graphics
-				arcInscriptionGraphics.appendChild(createOffsetAttributeGraphics(a, true, showCompleteInscriptionOffsetGraphics, "0.0", "-5.0"));
+				arcInscriptionGraphics.appendChild(createOffsetAttributeGraphics(a, true, showCompleteInscriptionOffsetGraphics, "1.0", "-5.0"));
 				if (showCompleteInscriptionGraphics) {
 					// Add a fill element to the arc inscription graphics
 					arcInscriptionGraphics.appendChild(createFillAttributeGraphics(a, true, true, true, true));
@@ -93,7 +93,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	 */
 	public static Node createPTNetPlace(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInitialMarking,
 			boolean showValidInitialMarking, boolean showInitialMarkingGraphics, boolean showCompleteInitialMarkingTokenpositionGraphics, boolean showCapacity, boolean showGraphics, boolean showCompleteGraphics,
-			boolean showCompletePositionGraphics) {
+			boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics) {
 		Document p = createDocumentInstance();
 
 		// Root element "place"
@@ -111,7 +111,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 				Element placeNameGraphics = p.createElement("graphics");
 				placeName.appendChild(placeNameGraphics);
 				// Add an offset element to the place name graphics
-				placeNameGraphics.appendChild(createOffsetAttributeGraphics(p, true, showCompleteNameOffsetGraphics, "0.0", "-5.0"));
+				placeNameGraphics.appendChild(createOffsetAttributeGraphics(p, true, showCompleteNameOffsetGraphics, "1.0", "-5.0"));
 				if (showCompleteNameGraphics) {
 					// Add a fill element to the place name graphics
 					placeNameGraphics.appendChild(createFillAttributeGraphics(p, true, true, true, true));
@@ -162,7 +162,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 			placeGraphics.appendChild(createPositionAttributeGraphics(p, true, showCompletePositionGraphics, "20.0", "25.0"));
 			if (showCompleteGraphics) {
 				// Add a dimension element to the place graphics
-				placeGraphics.appendChild(createDimensionAttributeGraphics(p, true, true, "30.0", "30.0"));
+				placeGraphics.appendChild(createDimensionAttributeGraphics(p, true, showCompleteDimensionGraphics, "37.0", "33.0"));
 				// Add a fill element to the place graphics
 				placeGraphics.appendChild(createFillAttributeGraphics(p, true, true, true, true));
 				// Add a line element to the place graphics
@@ -177,7 +177,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	 * Creates a complete PT-net transition
 	 */
 	public static Node createPTNetTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics,
-			boolean showCompletePositionGraphics) {
+			boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics) {
 		Document t = createDocumentInstance();
 
 		// Root element "transition"
@@ -195,7 +195,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 				Element transitionNameGraphics = t.createElement("graphics");
 				transitionName.appendChild(transitionNameGraphics);
 				// Add an offset element to the transition name graphics
-				transitionNameGraphics.appendChild(createOffsetAttributeGraphics(t, true, showCompleteNameOffsetGraphics, "0.0", "-5.0"));
+				transitionNameGraphics.appendChild(createOffsetAttributeGraphics(t, true, showCompleteNameOffsetGraphics, "1.0", "-5.0"));
 				if (showCompleteNameGraphics) {
 					// Add a fill element to the transition name graphics
 					transitionNameGraphics.appendChild(createFillAttributeGraphics(t, true, true, true, true));
@@ -215,7 +215,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 			transitionGraphics.appendChild(createPositionAttributeGraphics(t, true, showCompletePositionGraphics, "20.0", "25.0"));
 			if (showCompleteGraphics) {
 				// Add a dimension element to the transition graphics
-				transitionGraphics.appendChild(createDimensionAttributeGraphics(t, true, true, "30.0", "30.0"));
+				transitionGraphics.appendChild(createDimensionAttributeGraphics(t, true, showCompleteDimensionGraphics, "37.0", "33.0"));
 				// Add a fill element to the transition graphics
 				transitionGraphics.appendChild(createFillAttributeGraphics(t, true, true, true, true));
 				// Add a line element to the transition graphics
@@ -228,7 +228,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 
 	public static void main(String[] args) throws TransformerFactoryConfigurationError, TransformerException {
 		System.out.println(toXML(createPTNetArc(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
-		System.out.println(toXML(createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true)));
-		System.out.println(toXML(createPTNetTransition(true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createPTNetPlace(true, true, true, true, false, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createPTNetTransition(true, true, true, true, true, true, true, true, true)));
 	}
 }
