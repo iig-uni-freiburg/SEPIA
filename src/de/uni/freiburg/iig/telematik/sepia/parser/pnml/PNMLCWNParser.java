@@ -246,6 +246,10 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				if (placeLabels.getLength() == 1) {
 					if (readText(placeLabels.item(0)) != null)
 						placeLabel = readText(placeLabels.item(0));
+					// annotation graphics
+					AnnotationGraphics placeAnnotationGraphics = readAnnotationGraphicsElement((Element) placeLabels.item(0));
+					if (placeAnnotationGraphics != null)
+						graphics.getPlaceLabelAnnotationGraphics().put(placeName, placeAnnotationGraphics);
 				} else {
 					placeLabel = placeName;
 				}
@@ -357,6 +361,10 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					transitionLabel = readText(transitionLabels.item(0));
 					if (transitionLabel != null && transitionLabel.length() == 0)
 						transitionLabel = null;
+					// annotation graphics
+					AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
+					if (transitionLabelAnnotationGraphics != null)
+						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
 				}
 				if (transitionLabel != null)
 					net.addTransition(transitionName, transitionLabel);

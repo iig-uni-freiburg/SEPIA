@@ -39,10 +39,8 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	private Map<String, NodeGraphics> transitionGraphics = new HashMap<String, NodeGraphics>();
 	private Map<String, ArcGraphics> arcGraphics = new HashMap<String, ArcGraphics>();
 	private Map<String, AnnotationGraphics> arcAnnotationGraphics = new HashMap<String, AnnotationGraphics>();
-
-	public Map<String, AnnotationGraphics> getArcAnnotationGraphics() {
-		return arcAnnotationGraphics;
-	}
+	private Map<String, AnnotationGraphics> placeLabelAnnotationGraphics = new HashMap<String, AnnotationGraphics>();
+	private Map<String, AnnotationGraphics> transitionLabelAnnotationGraphics = new HashMap<String, AnnotationGraphics>();
 
 	/**
 	 * @return the arcGraphics
@@ -51,11 +49,22 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 		return arcGraphics;
 	}
 
+	public Map<String, AnnotationGraphics> getArcAnnotationGraphics() {
+		return arcAnnotationGraphics;
+	}
+
 	/**
 	 * @return the placeGraphics
 	 */
 	public Map<String, NodeGraphics> getPlaceGraphics() {
 		return placeGraphics;
+	}
+
+	/**
+	 * @return the placeLabelAnnotationGraphics
+	 */
+	public Map<String, AnnotationGraphics> getPlaceLabelAnnotationGraphics() {
+		return placeLabelAnnotationGraphics;
 	}
 
 	public Map<String, Set<TokenGraphics>> getTokenGraphics() {
@@ -67,6 +76,13 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	 */
 	public Map<String, NodeGraphics> getTransitionGraphics() {
 		return transitionGraphics;
+	}
+
+	/**
+	 * @return the transitionLabelAnnotationGraphics
+	 */
+	public Map<String, AnnotationGraphics> getTransitionLabelAnnotationGraphics() {
+		return transitionLabelAnnotationGraphics;
 	}
 
 	public void setArcAnnotationGraphics(Map<String, AnnotationGraphics> arcAnnotationGraphics) {
@@ -82,6 +98,14 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	}
 
 	/**
+	 * @param placeLabelAnnotationGraphics
+	 *            the placeLabelAnnotationGraphics to set
+	 */
+	public void setPlaceLabelAnnotationGraphics(Map<String, AnnotationGraphics> placeLabelAnnotationGraphics) {
+		this.placeLabelAnnotationGraphics = placeLabelAnnotationGraphics;
+	}
+
+	/**
 	 * @param placeGraphics
 	 *            the placeGraphics to set
 	 */
@@ -91,6 +115,14 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 
 	public void setTokenGraphics(Map<String, Set<TokenGraphics>> tokenGraphics) {
 		this.tokenGraphics = tokenGraphics;
+	}
+
+	/**
+	 * @param transitionLabelAnnotationGraphics
+	 *            the transitionLabelAnnotationGraphics to set
+	 */
+	public void setTransitionLabelAnnotationGraphics(Map<String, AnnotationGraphics> transitionLabelAnnotationGraphics) {
+		this.transitionLabelAnnotationGraphics = transitionLabelAnnotationGraphics;
 	}
 
 	/**
@@ -104,29 +136,39 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append("Graphics:\n");
-		str.append("          placeGraphics# " + placeGraphics.size());
+		str.append("                    placeGraphics# " + placeGraphics.size());
 		if (placeGraphics.size() > 0)
 			str.append(":\n" + map2Str(placeGraphics) + "\n");
 		else
 			str.append("\n");
-		str.append("     transitionGraphics# " + transitionGraphics.size());
+		str.append("               transitionGraphics# " + transitionGraphics.size());
 		if (transitionGraphics.size() > 0)
 			str.append(":\n" + map2Str(transitionGraphics) + "\n");
 		else
 			str.append("\n");
-		str.append("            arcGraphics# " + arcGraphics.size());
+		str.append("                      arcGraphics# " + arcGraphics.size());
 		if (arcGraphics.size() > 0)
 			str.append(":\n" + map2Str(arcGraphics) + "\n");
 		else
 			str.append("\n");
-		str.append("          tokenGraphics# " + tokenGraphics.size());
+		str.append("                    tokenGraphics# " + tokenGraphics.size());
 		if (tokenGraphics.size() > 0)
 			str.append(":\n" + map2Str(tokenGraphics) + "\n");
 		else
 			str.append("\n");
-		str.append("  arcAnnotationGraphics# " + arcAnnotationGraphics.size());
+		str.append("            arcAnnotationGraphics# " + arcAnnotationGraphics.size());
 		if (arcAnnotationGraphics.size() > 0)
 			str.append(":\n" + map2Str(arcAnnotationGraphics) + "\n");
+		else
+			str.append("\n");
+		str.append("     placeLabelAnnotationGraphics# " + placeLabelAnnotationGraphics.size());
+		if (placeLabelAnnotationGraphics.size() > 0)
+			str.append(":\n" + map2Str(placeLabelAnnotationGraphics) + "\n");
+		else
+			str.append("\n");
+		str.append("transitionLabelAnnotationGraphics# " + transitionLabelAnnotationGraphics.size());
+		if (transitionLabelAnnotationGraphics.size() > 0)
+			str.append(":\n" + map2Str(transitionLabelAnnotationGraphics) + "\n");
 		else
 			str.append("\n");
 
@@ -139,7 +181,7 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 		for (Entry<A, B> pairs : m.entrySet()) {
 			if (!empty)
 				str.append("\n");
-			str.append("                            " + pairs.getKey() + ": " + pairs.getValue());
+			str.append("                                      " + pairs.getKey() + ": " + pairs.getValue());
 			empty = false;
 		}
 		return str.toString();

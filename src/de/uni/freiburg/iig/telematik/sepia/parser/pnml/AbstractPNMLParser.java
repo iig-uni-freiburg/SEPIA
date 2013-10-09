@@ -155,20 +155,20 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of an annotation element and returns a {@link AnnotationGraphics} object.
 	 */
-	public static AnnotationGraphics readAnnotationGraphicsElement(Element inscriptionGraphicsElement) throws ParameterException, ParserException {
-		Validate.notNull(inscriptionGraphicsElement);
-	
-		String elementType = inscriptionGraphicsElement.getNodeName();
-	
-		if (!elementType.equals("inscription") && !elementType.equals("colorInscription") && !elementType.equals("accessfunctions") && !elementType.equals("subject"))
-			throw new ParserException("The element must be of the type \"inscription\".");
-	
-		NodeList graphicsList = inscriptionGraphicsElement.getElementsByTagName("graphics");
+	public static AnnotationGraphics readAnnotationGraphicsElement(Element annotationGraphicsElement) throws ParameterException, ParserException {
+		Validate.notNull(annotationGraphicsElement);
+
+		String elementType = annotationGraphicsElement.getNodeName();
+
+		if (!elementType.equals("name") && !elementType.equals("inscription") && !elementType.equals("colorInscription") && !elementType.equals("accessfunctions") && !elementType.equals("subject"))
+			throw new ParserException("The given element mustn't have an annotation.");
+
+		NodeList graphicsList = annotationGraphicsElement.getElementsByTagName("graphics");
 		for (int inscriptionIndex = 0; inscriptionIndex < graphicsList.getLength(); inscriptionIndex++) {
-			if (graphicsList.item(inscriptionIndex).getParentNode().equals(inscriptionGraphicsElement) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
+			if (graphicsList.item(inscriptionIndex).getParentNode().equals(annotationGraphicsElement) && graphicsList.item(inscriptionIndex).getNodeType() == Node.ELEMENT_NODE) {
 				AnnotationGraphics annotationGraphics = new AnnotationGraphics();
 				Element graphics = (Element) graphicsList.item(inscriptionIndex);
-	
+
 				// fill, font, line, and offset
 				if (graphics.getElementsByTagName("fill").getLength() > 0) {
 					Node fill = graphics.getElementsByTagName("fill").item(0);
@@ -186,7 +186,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 					Node offset = graphics.getElementsByTagName("offset").item(0);
 					annotationGraphics.setOffset(readOffset((Element) offset));
 				}
-	
+
 				return annotationGraphics;
 			}
 		}
