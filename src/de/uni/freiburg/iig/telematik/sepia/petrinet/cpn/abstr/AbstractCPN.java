@@ -14,6 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 
 
@@ -61,6 +62,13 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 		super(places, transitions);
 		setInitialMarking(initialMarking);
 	}
+	
+	
+	@Override
+	public NetType getNetType() {
+		return NetType.CPN;
+	}
+	
 	
 	public Set<String> getTokenColors(){
 		Set<String> colors = new HashSet<String>();

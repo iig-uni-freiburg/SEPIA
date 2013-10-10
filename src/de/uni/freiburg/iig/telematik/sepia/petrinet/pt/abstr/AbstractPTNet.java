@@ -9,6 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 
 
 /**
@@ -52,8 +53,14 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 		setInitialMarking(initialMarking);
 	}
 	
-	//------- Markings
+	@Override
+	public NetType getNetType() {
+		return NetType.PTNet;
+	}
 	
+	
+	//------- Markings
+
 	@Override
 	protected void updateMarking(P p) throws ParameterException {
 		Validate.notNull(p);

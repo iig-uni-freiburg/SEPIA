@@ -9,7 +9,7 @@ public enum ParsingFormat {
 	
 	PNML(new PNFF_PNML()),
 	
-	SOLE_CARMONA(new PNFF_Petrify());
+	PETRIFY(new PNFF_Petrify());
 	
 	private FileFormat fileFormat = null;
 	

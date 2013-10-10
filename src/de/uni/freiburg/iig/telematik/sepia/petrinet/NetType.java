@@ -11,7 +11,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 public enum NetType {
 
-	PTNet, CPN, CWN, IFNet;
+	PTNet, CPN, CWN, IFNet, Unknown;
 
 	public static final String OfficialPTNetURI = "http://www.pnml.org/version-2009/grammar/ptnet";
 	public static final String PTNetURI = "http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ptnet";
@@ -33,7 +33,7 @@ public enum NetType {
 		if (uri.equals(IFNetURI))
 			return IFNet;
 
-		return null;
+		return Unknown;
 	}
 
 	public static URL getURL(NetType type) throws ParameterException{
@@ -62,4 +62,5 @@ public enum NetType {
 			default:	return null;
 		}
 	}
+	
 }

@@ -162,8 +162,10 @@ public class Parser {
 	private static synchronized ParserInterface getParser(File file, ParsingFormat format) throws ParserException {
 		switch(format){
 		case PNML:
+			//TODO
 			break;
-		case SOLE_CARMONA:
+		case PETRIFY:
+			//TODO:
 			break;
 		}
 		throw new ParserException(ErrorCode.UNSUPPORTED_FORMAT);

@@ -7,6 +7,7 @@ import java.io.IOException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -31,6 +32,39 @@ public class PNSerialization {
 
 	PNSerializer<P,T,F,M,S> 
 
+	getSerializer(AbstractGraphicalPN<P,T,F,M,S> net, PNSerializationFormat format) throws ParameterException, SerializationException{
+		
+		switch(format){
+		case PNML:
+			if(net.getPetriNet() instanceof AbstractCWN){
+				
+			}
+			if(net.getPetriNet() instanceof AbstractCPN){
+				
+			}
+			if(net.getPetriNet() instanceof AbstractPTNet){
+				return new PTSerializer_PNML(net);
+			}
+			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
+		case PETRIFY:
+			if(net.getPetriNet() instanceof AbstractPTNet)
+				return new PTSerializer_Petrify(net);
+			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
+		default:
+			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);
+			
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <P extends AbstractPlace<F,S>, 
+	   			   T extends AbstractTransition<F,S>, 
+	   			   F extends AbstractFlowRelation<P,T,S>, 
+	   			   M extends AbstractMarking<S>, 
+	   			   S extends Object> 
+
+	PNSerializer<P,T,F,M,S> 
+
 	getSerializer(AbstractPetriNet<P,T,F,M,S> net, PNSerializationFormat format) throws ParameterException, SerializationException{
 		
 		switch(format){
@@ -43,6 +77,7 @@ public class PNSerialization {
 			}
 			if(net instanceof AbstractPTNet){
 				return new PTSerializer_PNML(net);
+				
 			}
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		case PETRIFY:
@@ -93,6 +128,28 @@ public class PNSerialization {
 //		}
 //		return null;
 //	}
+	
+	public static <P extends AbstractPlace<F,S>, 
+	   T extends AbstractTransition<F,S>, 
+	   F extends AbstractFlowRelation<P,T,S>, 
+	   M extends AbstractMarking<S>, 
+	   S extends Object> 
+
+	String 
+
+	serialize(AbstractGraphicalPN<P,T,F,M,S> net, PNSerializationFormat format) 
+			throws SerializationException, ParameterException{
+
+		Validate.notNull(net);
+		Validate.notNull(format);
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(format.getFileFormat().getFileHeader());
+		builder.append(getSerializer(net, format).serialize());
+		builder.append(format.getFileFormat().getFileFooter());
+
+		return builder.toString();
+	}
 	
 	public static <P extends AbstractPlace<F,S>, 
 	   T extends AbstractTransition<F,S>, 

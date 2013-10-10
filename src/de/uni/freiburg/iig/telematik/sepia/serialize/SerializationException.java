@@ -28,6 +28,10 @@ public class SerializationException extends ParserException {
 		this.object = object;
 	}
 
+	public SerializationException(String message) {
+		super(message);
+	}
+
 	public Object getObject() {
 		return object;
 	}

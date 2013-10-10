@@ -1,19 +1,21 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
-import de.uni.freiburg.iig.telematik.sepia.serialize.PTSerializer;
+import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
 
 public class PTSerializer_Petrify<P extends AbstractPTPlace<F>, 
 									  T extends AbstractPTTransition<F>, 
 									  F extends AbstractPTFlowRelation<P,T>, 
-									  M extends AbstractPTMarking> extends PTSerializer<P,T,F,M>{
+									  M extends AbstractPTMarking> extends PNSerializer<P,T,F,M,Integer>{
 	
 	private final String RELATION_FORMAT = "%s %s";
 	private final String RELATION_WEIGHTED_FORMAT = RELATION_FORMAT + "(%s)";
@@ -21,6 +23,10 @@ public class PTSerializer_Petrify<P extends AbstractPTPlace<F>,
 	private final String MARKING_FORMAT = " %s=%s";
 	
 	public PTSerializer_Petrify(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
+		super(petriNet);
+	}
+	
+	public PTSerializer_Petrify(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
@@ -82,5 +88,15 @@ public class PTSerializer_Petrify<P extends AbstractPTPlace<F>,
 		builder.append(newLine);
 		
 		return builder.toString();
+	}
+	
+	@Override
+	public NetType acceptedNetType() {
+		return NetType.PTNet;
+	}
+
+	@Override
+	public AbstractPTNet<P, T, F, M> getPetriNet() {
+		return (AbstractPTNet<P,T,F,M>) super.getPetriNet();
 	}
 }

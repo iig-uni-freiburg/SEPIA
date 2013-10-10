@@ -14,6 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
@@ -35,6 +36,11 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 			throws ParameterException {
 		super(places, transitions, initialMarking);
 	}	
+	
+	@Override
+	public NetType getNetType() {
+		return NetType.CWN;
+	}
 	
 	@Override
 	public String defaultTokenColor(){

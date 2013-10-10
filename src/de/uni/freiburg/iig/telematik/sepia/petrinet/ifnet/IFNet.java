@@ -16,6 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
@@ -47,6 +48,11 @@ public class IFNet extends AbstractCWN<IFNetPlace, AbstractIFNetTransition, IFNe
 			    Set<String> transitions, 
 			    IFNetMarking initialMarking) throws ParameterException {
 		super(places, transitions, initialMarking);
+	}
+	
+	@Override
+	public NetType getNetType() {
+		return NetType.IFNet;
 	}
 	
 	@Override

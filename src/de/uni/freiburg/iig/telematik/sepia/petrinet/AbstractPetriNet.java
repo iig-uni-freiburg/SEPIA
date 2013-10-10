@@ -221,6 +221,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		return lastFiredTransition;
 	}
 	
+	public abstract NetType getNetType();
+	
 	//------- Transitions ------------------------------------------------------------------------
 	
 	/**
