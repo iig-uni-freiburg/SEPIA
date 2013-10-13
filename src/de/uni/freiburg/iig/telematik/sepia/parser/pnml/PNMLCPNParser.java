@@ -100,16 +100,17 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 
 				// get inscriptions
 				int inscription = 0;
+				Map<String, Integer> colorInscription = null;
 				NodeList arcInscriptions = arc.getElementsByTagName("inscription");
 				if (arcInscriptions.getLength() == 1) {
-					String inscriptionStr = readText(arcInscriptions.item(0));
+					Element inscriptionElement = (Element) arcInscriptions.item(0);
+					String inscriptionStr = readText(inscriptionElement);
 					if (inscriptionStr != null)
 						inscription = Integer.parseInt(inscriptionStr);
+					NodeList arcColorInscriptions = inscriptionElement.getElementsByTagName("colors");
+					if (arcColorInscriptions.getLength() == 1)
+						colorInscription = readColorInscription(arcColorInscriptions.item(0));
 				}
-				Map<String, Integer> colorInscription = null;
-				NodeList arcColorInscriptions = arc.getElementsByTagName("colorInscription");
-				if (arcColorInscriptions.getLength() == 1)
-					colorInscription = readColorInscription(arcColorInscriptions.item(0));
 
 				CPNFlowRelation flowRelation;
 				// if PT relation
@@ -211,14 +212,6 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
 				}
 
-				// annotation graphics for color inscription
-				// FIXME is ignored if there's already an edge annotation graphics object for the flow relation from the inscription part
-				if (arcColorInscriptions.getLength() == 1 && !graphics.getArcAnnotationGraphics().containsKey(flowRelation)) {
-					AnnotationGraphics arcAnnotationGraphics = readAnnotationGraphicsElement((Element) arcColorInscriptions.item(0));
-					if (arcAnnotationGraphics != null)
-						graphics.getArcAnnotationGraphics().put(flowRelation.getName(), arcAnnotationGraphics);
-				}
-
 				// get graphical information
 				ArcGraphics arcGraphics = readArcGraphicsElement(arc);
 				if (arcGraphics != null)
@@ -260,7 +253,8 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 				// Read initial marking of control flow tokens with graphical information
 				NodeList placeInitialMarkings = place.getElementsByTagName("initialMarking");
 				if (placeInitialMarkings.getLength() == 1) {
-					int initialMarking = readInitialMarking(placeInitialMarkings.item(0));
+					Element initialMarkingElement = (Element) placeInitialMarkings.item(0);
+					int initialMarking = readInitialMarking(initialMarkingElement);
 					if (initialMarking < 0) {
 						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
 					} else if (initialMarking > 0) {
@@ -269,7 +263,7 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 						}
 
 						// graphics
-						NodeList graphicsList = ((Element) placeInitialMarkings.item(0)).getElementsByTagName("tokenposition");
+						NodeList graphicsList = initialMarkingElement.getElementsByTagName("tokenposition");
 						if (graphicsList.getLength() > 0) {
 							for (int tp = 0; tp < graphicsList.getLength(); tp++) {
 								Element tokenPos = (Element) graphicsList.item(tp);
@@ -279,32 +273,18 @@ public class PNMLCPNParser extends AbstractPNMLParser<CPNPlace, CPNTransition, C
 							}
 						}
 					}
-				}
 
-				// Read initial marking of color tokens with graphical information
-				NodeList placeInitialColorMarkings = place.getElementsByTagName("initialColorMarking");
-				if (placeInitialColorMarkings.getLength() == 1) {
-					Map<String, Integer> initialColorMarking = readInitialColorMarking(placeInitialColorMarkings.item(0));
-					if (initialColorMarking != null) {
-						Vector<String> colorStrings = new Vector<String>(initialColorMarking.size());
-						for (Entry<String, Integer> color : initialColorMarking.entrySet()) {
-							for (int c = 0; c < color.getValue(); c++) {
-								markingMultiset.add(color.getKey());
-								colorStrings.add(color.getKey());
-							}
-						}
-
-						// graphics
-						NodeList graphicsList = ((Element) placeInitialColorMarkings.item(0)).getElementsByTagName("tokenposition");
-						if (graphicsList.getLength() > 0) {
-							for (int tp = 0; tp < graphicsList.getLength(); tp++) {
-								Element tokenPos = (Element) graphicsList.item(tp);
-								TokenGraphics tokenGraphic = new TokenGraphics();
-								tokenGraphic.setTokenposition(readTokenPosition(tokenPos));
-								if (tp < colorStrings.size() && tokencolors.containsKey(colorStrings.get(tp))) {
-									tokenGraphic.setColorName(colorStrings.get(tp));
+					// Read initial marking of color tokens with graphical information
+					NodeList placeInitialColorMarkings = initialMarkingElement.getElementsByTagName("colors");
+					if (placeInitialColorMarkings.getLength() == 1) {
+						Map<String, Integer> initialColorMarking = readInitialColorMarking(placeInitialColorMarkings.item(0));
+						if (initialColorMarking != null) {
+							Vector<String> colorStrings = new Vector<String>(initialColorMarking.size());
+							for (Entry<String, Integer> color : initialColorMarking.entrySet()) {
+								for (int c = 0; c < color.getValue(); c++) {
+									markingMultiset.add(color.getKey());
+									colorStrings.add(color.getKey());
 								}
-								tokenGraphics.add(tokenGraphic);
 							}
 						}
 					}
