@@ -7,6 +7,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 public enum NetType {
@@ -58,7 +59,7 @@ public enum NetType {
 			case PTNet: return AbstractPTNet.class;
 			case CPN: 	return AbstractCPN.class;
 			case CWN:	return AbstractCWN.class;
-			case IFNet:	return de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet.class;
+			case IFNet:	return IFNet.class;
 			default:	return null;
 		}
 	}

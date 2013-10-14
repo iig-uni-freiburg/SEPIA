@@ -228,7 +228,7 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 
 	public static void main(String[] args) throws TransformerFactoryConfigurationError, TransformerException {
 		System.out.println(toXML(createPTNetArc(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
-		System.out.println(toXML(createPTNetPlace(true, true, true, true, false, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createPTNetTransition(true, true, true, true, true, true, true, true, true)));
 	}
 }

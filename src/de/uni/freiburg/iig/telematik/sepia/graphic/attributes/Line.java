@@ -7,7 +7,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
  * 
  * @author Adrian Lange
  */
-public class Line {
+public class Line extends AbstractAttribute {
 
 	/** Default color as CSS2 color string */
 	public static final String DEFAULT_COLOR = null;
@@ -195,5 +195,11 @@ public class Line {
 		str.append(")");
 
 		return str.toString();
+	}
+
+	@Override
+	public boolean hasContent() {
+		// Because of the default value of width, this attribute always has content
+		return true;
 	}
 }

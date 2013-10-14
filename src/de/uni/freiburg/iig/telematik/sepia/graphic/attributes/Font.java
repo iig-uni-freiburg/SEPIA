@@ -8,7 +8,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
  * 
  * @author Adrian Lange
  */
-public class Font {
+public class Font extends AbstractAttribute {
 
 	/** Default align */
 	public static final Align DEFAULT_ALIGN = null;
@@ -285,5 +285,10 @@ public class Font {
 		str.append(")");
 
 		return str.toString();
+	}
+
+	@Override
+	public boolean hasContent() {
+		return align != null || decoration != null || family != null || rotation != 0.0 || size != null || style != null || weight != null;
 	}
 }

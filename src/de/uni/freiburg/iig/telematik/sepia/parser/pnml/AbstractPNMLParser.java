@@ -23,7 +23,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.ObjectGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractObjectGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
@@ -384,7 +384,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphics tag of the given element.
 	 */
-	public static ObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
+	public static AbstractObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
 		Validate.notNull(element);
 
 		// get node element type

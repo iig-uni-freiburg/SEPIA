@@ -7,7 +7,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
  * 
  * @author Adrian Lange
  */
-public class Dimension {
+public class Dimension extends AbstractAttribute {
 
 	private double x;
 	private double y;
@@ -77,5 +77,11 @@ public class Dimension {
 	@Override
 	public String toString() {
 		return "Dimension( " + getX() + " / " + getY() + " )";
+	}
+
+	@Override
+	public boolean hasContent() {
+		// Because of the default values, this attribute always has content
+		return true;
 	}
 }

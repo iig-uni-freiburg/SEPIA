@@ -1,5 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line;
@@ -12,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
  * 
  * @author Adrian Lange
  */
-public class NodeGraphics implements ObjectGraphics {
+public class NodeGraphics extends AbstractObjectGraphics {
 
 	/** Default position */
 	public static final Position DEFAULT_POSITION = new Position();
@@ -31,7 +33,7 @@ public class NodeGraphics implements ObjectGraphics {
 	/**
 	 * Create new node graphic object with default values.
 	 */
-	public NodeGraphics() {
+	public NodeGraphics() throws ParameterException {
 		setPosition(DEFAULT_POSITION);
 		setDimension(DEFAULT_DIMENSION);
 		setFill(DEFAULT_FILL);
@@ -41,7 +43,7 @@ public class NodeGraphics implements ObjectGraphics {
 	/**
 	 * Create new node graphic object with the specified values.
 	 */
-	public NodeGraphics(Position position, Dimension dimension, Fill fill, Line line) {
+	public NodeGraphics(Position position, Dimension dimension, Fill fill, Line line) throws ParameterException {
 		setPosition(position);
 		setDimension(dimension);
 		setFill(fill);
@@ -80,7 +82,8 @@ public class NodeGraphics implements ObjectGraphics {
 	 * @param position
 	 *            the position to set
 	 */
-	public void setPosition(Position position) {
+	public void setPosition(Position position) throws ParameterException {
+		Validate.notNull(position);
 		this.position = position;
 	}
 
@@ -88,7 +91,8 @@ public class NodeGraphics implements ObjectGraphics {
 	 * @param dimension
 	 *            the dimension to set
 	 */
-	public void setDimension(Dimension dimension) {
+	public void setDimension(Dimension dimension) throws ParameterException {
+		Validate.notNull(dimension);
 		this.dimension = dimension;
 	}
 
@@ -96,7 +100,8 @@ public class NodeGraphics implements ObjectGraphics {
 	 * @param fill
 	 *            the fill to set
 	 */
-	public void setFill(Fill fill) {
+	public void setFill(Fill fill) throws ParameterException {
+		Validate.notNull(fill);
 		this.fill = fill;
 	}
 
@@ -104,8 +109,14 @@ public class NodeGraphics implements ObjectGraphics {
 	 * @param line
 	 *            the line to set
 	 */
-	public void setLine(Line line) {
+	public void setLine(Line line) throws ParameterException {
+		Validate.notNull(line);
 		this.line = line;
+	}
+
+	@Override
+	public boolean hasContent() {
+		return position.hasContent() || dimension.hasContent() || line.hasContent() || fill.hasContent();
 	}
 
 	public String toString() {

@@ -2,6 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import java.util.Vector;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
 
@@ -12,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
  * 
  * @author Adrian Lange
  */
-public class ArcGraphics implements ObjectGraphics {
+public class ArcGraphics extends AbstractObjectGraphics {
 
 	/** Default position field */
 	public static final Vector<Position> DEFAULT_POSITIONS = new Vector<Position>();
@@ -27,7 +29,7 @@ public class ArcGraphics implements ObjectGraphics {
 	/**
 	 * Create edge graphics object with default values.
 	 */
-	public ArcGraphics() {
+	public ArcGraphics() throws ParameterException {
 		setPositions(DEFAULT_POSITIONS);
 		setLine(DEFAULT_LINE);
 	}
@@ -35,7 +37,7 @@ public class ArcGraphics implements ObjectGraphics {
 	/**
 	 * Create edge graphics object with the specified values.
 	 */
-	public ArcGraphics(Vector<Position> positions, Line line) {
+	public ArcGraphics(Vector<Position> positions, Line line) throws ParameterException {
 		setPositions(positions);
 		setLine(line);
 	}
@@ -58,7 +60,8 @@ public class ArcGraphics implements ObjectGraphics {
 	 * @param positions
 	 *            the positions to set
 	 */
-	public void setPositions(Vector<Position> positions) {
+	public void setPositions(Vector<Position> positions) throws ParameterException {
+		Validate.notNull(positions);
 		this.positions = positions;
 	}
 
@@ -66,8 +69,14 @@ public class ArcGraphics implements ObjectGraphics {
 	 * @param line
 	 *            the line to set
 	 */
-	public void setLine(Line line) {
+	public void setLine(Line line) throws ParameterException {
+		Validate.notNull(line);
 		this.line = line;
+	}
+
+	@Override
+	public boolean hasContent() {
+		return positions.size() > 0 || line.hasContent();
 	}
 
 	public String toString() {

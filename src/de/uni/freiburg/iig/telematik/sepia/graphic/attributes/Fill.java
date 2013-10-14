@@ -10,7 +10,7 @@ import java.net.URI;
  * 
  * @author Adrian Lange
  */
-public class Fill {
+public class Fill extends AbstractAttribute {
 
 	/** Default color as CSS2 color string */
 	public static final String DEFAULT_COLOR = null;
@@ -175,5 +175,10 @@ public class Fill {
 		str.append(")");
 
 		return str.toString();
+	}
+
+	@Override
+	public boolean hasContent() {
+		return color != null || gradientColor != null || gradientRotation != null || image != null;
 	}
 }

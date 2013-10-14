@@ -1,16 +1,18 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
 
 /**
  * <p>
- * Token graphics attribute class containing the attributes color name and token position.
+ * Token graphics attribute class containing the attribute token position.
  * </p>
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class TokenGraphics implements ObjectGraphics {
+public class TokenGraphics extends AbstractObjectGraphics {
 
 	/** Default position */
 	public static final Position DEFAULT_TOKENPOSITION = new Position();
@@ -21,16 +23,22 @@ public class TokenGraphics implements ObjectGraphics {
 		tokenposition = DEFAULT_TOKENPOSITION;
 	}
 
-	public TokenGraphics(Position tokenposition) {
-		this.tokenposition = tokenposition;
+	public TokenGraphics(Position tokenposition) throws ParameterException {
+		setTokenposition(tokenposition);
 	}
 
 	public Position getTokenposition() {
 		return tokenposition;
 	}
 
-	public void setTokenposition(Position tokenposition) {
+	public void setTokenposition(Position tokenposition) throws ParameterException {
+		Validate.notNull(tokenposition);
 		this.tokenposition = tokenposition;
+	}
+
+	@Override
+	public boolean hasContent() {
+		return tokenposition.hasContent();
 	}
 
 	public String toString() {

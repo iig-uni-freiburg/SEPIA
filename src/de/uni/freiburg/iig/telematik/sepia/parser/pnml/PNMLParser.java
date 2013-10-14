@@ -197,6 +197,7 @@ public class PNMLParser implements ParserInterface {
 
 		switch (netType) {
 		case PTNet:
+		case Unknown:
 			PNMLPTNetParser ptnetParser = new PNMLPTNetParser();
 			return (AbstractGraphicalPN<P, T, F, M, S>) ptnetParser.parse(pnmlDocument);
 		case CPN:

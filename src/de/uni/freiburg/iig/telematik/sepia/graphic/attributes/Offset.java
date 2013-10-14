@@ -7,7 +7,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
  * 
  * @author Adrian Lange
  */
-public class Offset {
+public class Offset extends AbstractAttribute {
 
 	public static final double DEFAULT_OFFSET_X = 0.0;
 	public static final double DEFAULT_OFFSET_Y = 0.0;
@@ -76,5 +76,11 @@ public class Offset {
 	@Override
 	public String toString() {
 		return "Offset( " + getX() + " / " + getY() + " )";
+	}
+
+	@Override
+	public boolean hasContent() {
+		// Because of the default values, this attribute always has content
+		return true;
 	}
 }

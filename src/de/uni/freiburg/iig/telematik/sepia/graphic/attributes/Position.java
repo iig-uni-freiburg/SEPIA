@@ -7,7 +7,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
  * 
  * @author Adrian Lange
  */
-public class Position {
+public class Position extends AbstractAttribute {
 
 	public static final double DEFAULT_POSITION_X = 0.0;
 	public static final double DEFAULT_POSITION_Y = 0.0;
@@ -76,5 +76,11 @@ public class Position {
 	@Override
 	public String toString() {
 		return "Position( " + getX() + " / " + getY() + " )";
+	}
+
+	@Override
+	public boolean hasContent() {
+		// Because of the default values, this attribute always has content
+		return true;
 	}
 }

@@ -1,5 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line;
@@ -12,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Offset;
  * 
  * @author Adrian Lange
  */
-public class AnnotationGraphics implements ObjectGraphics {
+public class AnnotationGraphics extends AbstractObjectGraphics {
 
 	/** Default offset attribute */
 	public static final Offset DEFAULT_OFFSET = new Offset();
@@ -31,7 +33,7 @@ public class AnnotationGraphics implements ObjectGraphics {
 	/**
 	 * Creates a new annotation graphics object with default values.
 	 */
-	public AnnotationGraphics() {
+	public AnnotationGraphics() throws ParameterException {
 		setOffset(DEFAULT_OFFSET);
 		setFill(DEFAULT_FILL);
 		setLine(DEFAULT_LINE);
@@ -41,7 +43,7 @@ public class AnnotationGraphics implements ObjectGraphics {
 	/**
 	 * Creates a new annotation graphics object with the specified values.
 	 */
-	public AnnotationGraphics(Offset offset, Fill fill, Line line, Font font) {
+	public AnnotationGraphics(Offset offset, Fill fill, Line line, Font font) throws ParameterException {
 		setOffset(offset);
 		setFill(fill);
 		setLine(line);
@@ -80,7 +82,8 @@ public class AnnotationGraphics implements ObjectGraphics {
 	 * @param offset
 	 *            the offset to set
 	 */
-	public void setOffset(Offset offset) {
+	public void setOffset(Offset offset) throws ParameterException {
+		Validate.notNull(offset);
 		this.offset = offset;
 	}
 
@@ -88,7 +91,8 @@ public class AnnotationGraphics implements ObjectGraphics {
 	 * @param fill
 	 *            the fill to set
 	 */
-	public void setFill(Fill fill) {
+	public void setFill(Fill fill) throws ParameterException {
+		Validate.notNull(fill);
 		this.fill = fill;
 	}
 
@@ -96,7 +100,8 @@ public class AnnotationGraphics implements ObjectGraphics {
 	 * @param line
 	 *            the line to set
 	 */
-	public void setLine(Line line) {
+	public void setLine(Line line) throws ParameterException {
+		Validate.notNull(line);
 		this.line = line;
 	}
 
@@ -104,8 +109,14 @@ public class AnnotationGraphics implements ObjectGraphics {
 	 * @param font
 	 *            the font to set
 	 */
-	public void setFont(Font font) {
+	public void setFont(Font font) throws ParameterException {
+		Validate.notNull(font);
 		this.font = font;
+	}
+
+	@Override
+	public boolean hasContent() {
+		return offset.hasContent() || fill.hasContent() || line.hasContent() || font.hasContent();
 	}
 
 	public String toString() {
