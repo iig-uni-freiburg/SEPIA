@@ -15,13 +15,15 @@ public enum NetType {
 	PTNet, CPN, CWN, IFNet, Unknown;
 
 	public static final String OfficialPTNetURI = "http://www.pnml.org/version-2009/grammar/ptnet";
-	public static final String PTNetURI = "http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ptnet";
-	public static final String CPNURI = "http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cpnet";
-	public static final String CWNURI = "http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cwnet";
-	public static final String IFNetURI = "http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ifnet";
+	public static final String PTNetURI = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ptnet";
+	public static final String CPNURI = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cpnet";
+	public static final String CWNURI = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cwnet";
+	public static final String IFNetURI = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ifnet";
 
 	public static NetType getNetType(String uri) throws ParameterException {
 		Validate.notNull(uri);
+		
+		System.out.println(uri);
 
 		if (uri.equals(OfficialPTNetURI))
 			return PTNet;
