@@ -22,8 +22,6 @@ public enum NetType {
 
 	public static NetType getNetType(String uri) throws ParameterException {
 		Validate.notNull(uri);
-		
-		System.out.println(uri);
 
 		if (uri.equals(OfficialPTNetURI))
 			return PTNet;
