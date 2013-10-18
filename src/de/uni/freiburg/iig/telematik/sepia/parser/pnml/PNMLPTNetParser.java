@@ -10,12 +10,12 @@ import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
-import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.PTGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
@@ -88,11 +88,11 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				PTFlowRelation flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
-					flowRelation = ((PTNet) net).addFlowRelationPT(sourceName, targetName, inscription);
+					flowRelation = getNet().addFlowRelationPT(sourceName, targetName, inscription);
 				}
 				// if TP relation
 				else if (net.getPlace(targetName) != null && net.getTransition(sourceName) != null) {
-					flowRelation = ((PTNet) net).addFlowRelationTP(sourceName, targetName, inscription);
+					flowRelation = getNet().addFlowRelationTP(sourceName, targetName, inscription);
 				} else {
 					throw new PNMLParserException(ErrorCode.INVALID_FLOW_RELATION, "Couldn't determine flow relation between \"" + sourceName + "\" and \"" + targetName + "\".");
 				}
@@ -228,5 +228,15 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 				// transitions have no inscription/marking
 			}
 		}
+	}
+	
+	@Override
+	public PTGraphics getGraphics() {
+		return (PTGraphics) graphics;
+	}
+
+	@Override
+	public PTNet getNet() {
+		return (PTNet) net;
 	}
 }

@@ -8,6 +8,7 @@ import de.invation.code.toval.parser.ParserException.ErrorCode;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -159,11 +160,9 @@ public class Parser {
 	 * @throws IOException
 	 *             If the file can't be found
 	 */
-	private static synchronized ParserInterface getParser(File file, ParsingFormat format) throws ParserException {
+	public static synchronized ParserInterface getParser(File file, ParsingFormat format) throws ParserException {
 		switch(format){
-		case PNML:
-			//TODO
-			break;
+		case PNML: return new PNMLParser();
 		case PETRIFY:
 			//TODO:
 			break;

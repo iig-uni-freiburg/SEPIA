@@ -61,7 +61,6 @@ public class PNMLParser implements ParserInterface {
 	 */
 	private NetType getPNMLType(String pntdURI) throws ParameterException, PNMLParserException {
 		Validate.notNull(pntdURI);
-
 		return NetType.getNetType(pntdURI);
 	}
 
@@ -185,11 +184,13 @@ public class PNMLParser implements ParserInterface {
 		// Try to find out the net type
 		String netTypeStringURI = getPNMLTypeURI(pnmlDocument);
 		NetType netType = getPNMLType(netTypeStringURI);
-		if (requireNetType && netType == null)
+		if (requireNetType && netType == NetType.Unknown)
 			throw new PNMLParserException(ErrorCode.INVALID_NET_TYPE);
-		if (netType == null) {
+		if (netType == NetType.Unknown) {
 			netType = NetType.PTNet;
 		}
+		
+		System.out.println(netType);
 
 		if (verifySchema) {
 			verifySchema(pnmlFile, NetType.getURL(netType));

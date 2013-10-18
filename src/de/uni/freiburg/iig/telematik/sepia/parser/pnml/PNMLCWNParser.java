@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -16,12 +16,12 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.CWNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CWNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
@@ -67,7 +67,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
 			if (tokencolorsNodes.item(i).getNodeType() == Node.ELEMENT_NODE && tokencolorsNodes.item(i).getParentNode().getNodeName().equals("net")) {
 				tokencolors = readTokenColors((Element) tokencolorsNodes.item(i));
-				((CWNGraphics) graphics).setColors(tokencolors);
+				getGraphics().setColors(tokencolors);
 			}
 		}
 
@@ -115,7 +115,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				CWNFlowRelation flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
-					flowRelation = ((CWN) net).addFlowRelationPT(sourceName, targetName);
+					flowRelation = getNet().addFlowRelationPT(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
@@ -157,7 +157,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				}
 				// if TP relation
 				else if (net.getPlace(targetName) != null && net.getTransition(sourceName) != null) {
-					flowRelation = ((CWN) net).addFlowRelationTP(sourceName, targetName);
+					flowRelation = getNet().addFlowRelationTP(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
@@ -373,7 +373,17 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 			}
 
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
-				((CWN) net).addFiringRule(placeFiringRules.getKey(), firingRule);
+				getNet().addFiringRule(placeFiringRules.getKey(), firingRule);
 		}
+	}
+	
+	@Override
+	public CWNGraphics getGraphics() {
+		return (CWNGraphics) graphics;
+	}
+
+	@Override
+	public CWN getNet() {
+		return (CWN) net;
 	}
 }

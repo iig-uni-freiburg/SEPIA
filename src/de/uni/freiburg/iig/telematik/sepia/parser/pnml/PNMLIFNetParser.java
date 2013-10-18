@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,13 +18,13 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
-import de.uni.freiburg.iig.telematik.sepia.graphic.IFNetGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
@@ -75,7 +75,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
 			if (tokencolorsNodes.item(i).getNodeType() == Node.ELEMENT_NODE && tokencolorsNodes.item(i).getParentNode().getNodeName().equals("net")) {
 				tokencolors = readTokenColors((Element) tokencolorsNodes.item(i));
-				((IFNetGraphics) graphics).setColors(tokencolors);
+				getGraphics().setColors(tokencolors);
 			}
 		}
 
@@ -91,7 +91,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				if (clearancesPositionList.getLength() > 0) {
 					Position clearancesPosition = readPosition((Element) clearancesPositionList.item(0));
 					if (clearancesPosition != null)
-						((IFNetGraphics) graphics).setClearancesPosition(clearancesPosition);
+						getGraphics().setClearancesPosition(clearancesPosition);
 				}
 			}
 			// read token labels annotation position
@@ -102,7 +102,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				if (tokenLabelsPositionList.getLength() > 0) {
 					Position tokenLabelsPosition = readPosition((Element) tokenLabelsPositionList.item(0));
 					if (tokenLabelsPosition != null)
-						((IFNetGraphics) graphics).setTokenLabelsPosition(tokenLabelsPosition);
+						getGraphics().setTokenLabelsPosition(tokenLabelsPosition);
 				}
 			}
 		}
@@ -124,7 +124,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 			for (Entry<String, String> ref : activitySubjectReferences.entrySet()) {
 				analysisContext.setSubjectDescriptor(ref.getKey(), ref.getValue());
 			}
-			((IFNet) net).setAnalysisContext(analysisContext);
+			getNet().setAnalysisContext(analysisContext);
 		}
 
 		return new GraphicalIFNet(net, graphics);
@@ -160,7 +160,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				IFNetFlowRelation flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
-					flowRelation = ((IFNet) net).addFlowRelationPT(sourceName, targetName);
+					flowRelation = getNet().addFlowRelationPT(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
@@ -202,7 +202,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				}
 				// if TP relation
 				else if (net.getPlace(targetName) != null && net.getTransition(sourceName) != null) {
-					flowRelation = ((IFNet) net).addFlowRelationTP(sourceName, targetName);
+					flowRelation = getNet().addFlowRelationTP(sourceName, targetName);
 
 					// Add black tokens
 					if (inscription > 0) {
@@ -431,7 +431,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 								// read access function graphics
 								AnnotationGraphics accessFunctionsGraphics = readAnnotationGraphicsElement(accessFunctionsElement);
 								if (accessFunctionsGraphics != null)
-									((IFNetGraphics) graphics).getAccessFunctionGraphics().put(currentTransition.getName(), accessFunctionsGraphics);
+									getGraphics().getAccessFunctionGraphics().put(currentTransition.getName(), accessFunctionsGraphics);
 							}
 						}
 					}
@@ -447,7 +447,7 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 						// read graphics
 						AnnotationGraphics subjectGraphics = readAnnotationGraphicsElement((Element) subjectList.item(0));
 						if (subjectGraphics != null)
-							((IFNetGraphics) graphics).getSubjectGraphics().put(transitionName, subjectGraphics);
+							getGraphics().getSubjectGraphics().put(transitionName, subjectGraphics);
 					}
 				}
 
@@ -473,7 +473,17 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 			}
 
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
-				((IFNet) net).addFiringRule(placeFiringRules.getKey(), firingRule);
+				getNet().addFiringRule(placeFiringRules.getKey(), firingRule);
 		}
+	}
+	
+	@Override
+	public IFNetGraphics getGraphics() {
+		return (IFNetGraphics) graphics;
+	}
+
+	@Override
+	public IFNet getNet() {
+		return (IFNet) net;
 	}
 }
