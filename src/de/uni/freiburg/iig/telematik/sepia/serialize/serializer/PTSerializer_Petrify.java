@@ -100,7 +100,6 @@ public class PTSerializer_Petrify<P extends AbstractPTPlace<F>,
 	
 	@Override
 	public void serialize(String path, String fileName) throws SerializationException, ParameterException, IOException {
-		validatePathAndFileName(path, fileName);
 		
 		FileFormat format = new PNFF_Petrify();
 		File file = new File(String.format("%s%s.%s", path, fileName, format.getFileExtension()));

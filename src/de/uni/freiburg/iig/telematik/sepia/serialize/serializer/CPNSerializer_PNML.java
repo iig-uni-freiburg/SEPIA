@@ -47,13 +47,16 @@ public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>,
 		Element tokenColorElement = createElement("tokencolor");
 		Element colorElement = createTextElement("color", colorName);
 		tokenColorElement.appendChild(colorElement);
-		Element rgbElement = createElement("rgbcolor");
-		tokenColorElement.appendChild(rgbElement);
-		Color color = getGraphics().getColors().get(colorName);
-		if(color != null){
-			rgbElement.appendChild(createTextElement("r", (new Integer(color.getRed())).toString()));
-			rgbElement.appendChild(createTextElement("g", (new Integer(color.getGreen())).toString()));
-			rgbElement.appendChild(createTextElement("b", (new Integer(color.getBlue())).toString()));
+		
+		if(hasGraphics()){
+			Element rgbElement = createElement("rgbcolor");
+			tokenColorElement.appendChild(rgbElement);
+			Color color = getGraphics().getColors().get(colorName);
+			if (color != null) {
+				rgbElement.appendChild(createTextElement("r", (new Integer(color.getRed())).toString()));
+				rgbElement.appendChild(createTextElement("g", (new Integer(color.getGreen())).toString()));
+				rgbElement.appendChild(createTextElement("b", (new Integer(color.getBlue())).toString()));
+			}
 		}
 		
 		return tokenColorElement;

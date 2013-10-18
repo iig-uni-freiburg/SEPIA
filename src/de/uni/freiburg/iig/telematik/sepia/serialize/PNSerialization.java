@@ -1,11 +1,10 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
+import de.invation.code.toval.file.FileUtils;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -15,7 +14,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.CPNSerializer_PNML;
@@ -74,7 +72,7 @@ public class PNSerialization {
 				
 			}
 			if(net instanceof AbstractCPN){
-				
+				return new CPNSerializer_PNML(net);
 			}
 			if(net instanceof AbstractPTNet){
 				return new PTSerializer_PNML(net);
@@ -174,6 +172,23 @@ public class PNSerialization {
 	}
 	
 	public static <P extends AbstractPlace<F,S>, 
+				   T extends AbstractTransition<F,S>, 
+				   F extends AbstractFlowRelation<P,T,S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object> 
+
+	void 
+
+	serialize(AbstractGraphicalPN<P,T,F,M,S> net, PNSerializationFormat format, String fileName) 
+			throws SerializationException, ParameterException, IOException{
+
+		Validate.noDirectory(fileName);
+		
+		File file = new File(fileName);
+		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
+	}
+	
+	public static <P extends AbstractPlace<F,S>, 
 	   T extends AbstractTransition<F,S>, 
 	   F extends AbstractFlowRelation<P,T,S>, 
 	   M extends AbstractMarking<S>, 
@@ -208,18 +223,31 @@ public class PNSerialization {
 		
 		Validate.notNull(net);
 		Validate.notNull(format);
+		Validate.directory(path);
+		Validate.fileName(fileName);
 		
 		PNSerializer<P, T, F, M, S> serializer = getSerializer(net, format);
+
 		serializer.serialize(path, fileName);
 	}
 	
-	public static void main(String[] args) throws Exception {
-		PTNet net = new PTNet();
-		net.addTransition("t1");
-		net.addPlace("p1");
-		net.addFlowRelationPT("p1", "t1");
+	public static <P extends AbstractPlace<F, S>, 
+				   T extends AbstractTransition<F, S>, 
+				   F extends AbstractFlowRelation<P, T, S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object>
+
+	void
+
+	serialize(AbstractPetriNet<P, T, F, M, S> net, PNSerializationFormat format, String fileName) 
+			throws SerializationException, ParameterException, IOException {
+
+		Validate.noDirectory(fileName);
 		
-		System.out.println(PNSerialization.getSerializer(net, PNSerializationFormat.PETRIFY).serialize());
+		File file = new File(fileName);
+		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
 	}
+	
+
 
 }

@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize;
 
-import java.io.File;
 import java.io.IOException;
 
 import de.invation.code.toval.validate.ParameterException;
@@ -52,18 +51,8 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 		return graphics;
 	}
 	
-	protected void validatePathAndFileName(String path, String fileName) throws ParameterException, IOException{
-		Validate.notNull(path);
-		Validate.notNull(fileName);
-		
-		System.out.println(path);
-		
-		//Check if path and file name are valid
-		File cPath = new File(path);
-		if(!cPath.isDirectory())
-			throw new IOException(path + " is not a valid path!");
-		if(fileName.isEmpty())
-			throw new ParameterException(ErrorCode.EMPTY);
+	protected boolean hasGraphics(){
+		return graphics != null;
 	}
 	
 	public abstract NetType acceptedNetType();

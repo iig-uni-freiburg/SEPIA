@@ -83,8 +83,7 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 	
 	@Override
 	public void serialize(String path, String fileName) throws ParameterException, SerializationException, IOException {
-		validatePathAndFileName(path, fileName);
-		
+
 		try {
 			File fileOutput = new File(path+fileName+"."+getFileExtension());
 			StreamResult streamResult = new StreamResult(fileOutput);

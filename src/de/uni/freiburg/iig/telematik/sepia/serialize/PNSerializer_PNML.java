@@ -89,18 +89,29 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		for(P place: getPetriNet().getPlaces()){
 			placeElement = createElement("place");
 			placeElement.setAttribute("id", place.getName());
-			placeElement.appendChild(createNameElement(place.getLabel(), graphics.getPlaceLabelAnnotationGraphics().get(place.getName())));
-			NodeGraphics placeGraphics = graphics.getPlaceGraphics().get(place.getName());
-			if(placeGraphics != null && placeGraphics.hasContent()){
-				Element graphicsElement = getNodeGraphics(placeGraphics);
-				if(graphicsElement != null)
-					placeElement.appendChild(graphicsElement);
+			
+			AnnotationGraphics annotationGraphics = null;
+			if(hasGraphics()){
+				annotationGraphics = graphics.getPlaceLabelAnnotationGraphics().get(place.getName());
 			}
+			placeElement.appendChild(createNameElement(place.getLabel(), annotationGraphics));
+			
+			if(hasGraphics()){
+				NodeGraphics placeGraphics = graphics.getPlaceGraphics().get(place.getName());
+				if(placeGraphics != null && placeGraphics.hasContent()){
+					Element graphicsElement = getNodeGraphics(placeGraphics);
+					if(graphicsElement != null)
+						placeElement.appendChild(graphicsElement);
+				}
+			}
+	
 			if(getPetriNet().getInitialMarking().contains(place.getName())){
 				try {
 					Element markingElement = addInitialMarking(placeElement, getPetriNet().getInitialMarking().get(place.getName()));
-					Set<TokenGraphics> tokenGraphics = graphics.getTokenGraphics().get(place.getName());
-					addTokenGraphics(markingElement, tokenGraphics);
+					if(hasGraphics()){
+						Set<TokenGraphics> tokenGraphics = graphics.getTokenGraphics().get(place.getName());
+						addTokenGraphics(markingElement, tokenGraphics);
+					}
 				} catch (ParameterException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -140,13 +151,22 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		for(T transition: getPetriNet().getTransitions()){
 			transitionElement = createElement("transition");
 			transitionElement.setAttribute("id", transition.getName());
-			transitionElement.appendChild(createNameElement(transition.getLabel(), graphics.getTransitionLabelAnnotationGraphics().get(transition.getName())));
-			NodeGraphics transitionGraphics = graphics.getTransitionGraphics().get(transition.getName());
-			if(transitionGraphics != null && transitionGraphics.hasContent()){
-				Element graphicsElement = getNodeGraphics(transitionGraphics);
-				if(graphicsElement != null)
-					transitionElement.appendChild(graphicsElement);
+			
+			AnnotationGraphics annotationGraphics = null;
+			if(hasGraphics()){
+				annotationGraphics = graphics.getTransitionLabelAnnotationGraphics().get(transition.getName());
 			}
+			transitionElement.appendChild(createNameElement(transition.getLabel(), annotationGraphics));
+			
+			if(hasGraphics()){
+				NodeGraphics transitionGraphics = graphics.getTransitionGraphics().get(transition.getName());
+				if(transitionGraphics != null && transitionGraphics.hasContent()){
+					Element graphicsElement = getNodeGraphics(transitionGraphics);
+					if(graphicsElement != null)
+						transitionElement.appendChild(graphicsElement);
+				}
+			}
+			
 			pageElement.appendChild(transitionElement);
 		}
 	}
@@ -159,13 +179,20 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 			arcElement.setAttribute("source", relation.getSource().getName());
 			arcElement.setAttribute("target", relation.getTarget().getName());
 			
-			ArcGraphics arcGraphics = graphics.getArcGraphics().get(relation.getName());
-			if(arcGraphics != null && arcGraphics.hasContent()){
-				Element graphicsElement = getArcGraphics(arcGraphics);
-				if(graphicsElement != null)
-					arcElement.appendChild(graphicsElement);
+			if(hasGraphics()){
+				ArcGraphics arcGraphics = graphics.getArcGraphics().get(relation.getName());
+				if(arcGraphics != null && arcGraphics.hasContent()){
+					Element graphicsElement = getArcGraphics(arcGraphics);
+					if(graphicsElement != null)
+						arcElement.appendChild(graphicsElement);
+				}
 			}
-			addConstraint(arcElement, relation.getConstraint(), graphics.getArcAnnotationGraphics().get(relation.getName()));
+			
+			AnnotationGraphics annotationGraphics = null;
+			if(hasGraphics()){
+				annotationGraphics = graphics.getArcAnnotationGraphics().get(relation.getName());
+			}
+			addConstraint(arcElement, relation.getConstraint(), annotationGraphics);
 			pageElement.appendChild(arcElement);
 		}
 	}
