@@ -17,7 +17,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
-import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
 
 public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>, 
 								T extends AbstractCPNTransition<F>, 
@@ -30,13 +29,6 @@ public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>,
 
 	public CPNSerializer_PNML(AbstractPetriNet<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
 		super(petriNet);
-	}
-	
-	@Override
-	public String serialize() throws SerializationException {
-		String result = super.serialize();
-		toFile("/Users/stocker/Desktop/outcpn.pnml");
-		return result;
 	}
 
 	@Override

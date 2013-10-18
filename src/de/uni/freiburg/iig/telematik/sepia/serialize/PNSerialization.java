@@ -158,6 +158,27 @@ public class PNSerialization {
 	   M extends AbstractMarking<S>, 
 	   S extends Object> 
 
+	void 
+
+	serialize(AbstractGraphicalPN<P,T,F,M,S> net, PNSerializationFormat format, String path, String fileName) 
+			throws SerializationException, ParameterException, IOException{
+
+		Validate.notNull(net);
+		Validate.notNull(format);
+		
+		Validate.notNull(net);
+		Validate.notNull(format);
+		
+		PNSerializer<P, T, F, M, S> serializer = getSerializer(net, format);
+		serializer.serialize(path, fileName);
+	}
+	
+	public static <P extends AbstractPlace<F,S>, 
+	   T extends AbstractTransition<F,S>, 
+	   F extends AbstractFlowRelation<P,T,S>, 
+	   M extends AbstractMarking<S>, 
+	   S extends Object> 
+
 	String 
 
 	serialize(AbstractPetriNet<P,T,F,M,S> net, PNSerializationFormat format) 
@@ -182,32 +203,14 @@ public class PNSerialization {
 	
 	void 
 	
-	serialize(AbstractPetriNet<P,T,F,M,S> net, PNSerializationFormat format, String fileName, String path) 
+	serialize(AbstractPetriNet<P,T,F,M,S> net, PNSerializationFormat format, String path, String fileName)
 			throws SerializationException, ParameterException, IOException{
 		
 		Validate.notNull(net);
 		Validate.notNull(format);
-		Validate.notNull(path);
-		Validate.notNull(fileName);
-		
-		//Check if path and file name are valid
-		File cPath = new File(path);
-		if(!cPath.isDirectory())
-			throw new IOException(path + " is not a valid path!");
-		if(fileName.isEmpty())
-			throw new ParameterException(ErrorCode.EMPTY);
 		
 		PNSerializer<P, T, F, M, S> serializer = getSerializer(net, format);
-		File file = new File(String.format("%s%s.%s", path, fileName, format.getFileFormat().getFileExtension()));
-		FileWriter output;
-		if(file.exists()) 
-			file.delete();
-		file.createNewFile();
-		output = new FileWriter(file, true);
-		output.write(format.getFileFormat().getFileHeader());
-		output.write(serializer.serialize());
-		output.write(format.getFileFormat().getFileFooter());
-		output.close();
+		serializer.serialize(path, fileName);
 	}
 	
 	public static void main(String[] args) throws Exception {

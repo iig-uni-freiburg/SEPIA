@@ -14,21 +14,22 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Align;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
+import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_PNML;
 
 public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>, 
    							   T extends AbstractTransition<F,S>, 
@@ -171,8 +172,14 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	
 	protected abstract void addConstraint(Element arcElement, S constraint, AnnotationGraphics annotationGraphics);
 	
+	@Override
+	protected String getFileExtension(){
+		return new PNFF_PNML().getFileExtension();
+	}
+	
 	//------- Helper methods for PNML-tag generation ---------------------------------------------------
 	
+
 	protected Element getToolSpecificElement(){
 		Element toolElement = createElement("toolspecific");
 		toolElement.setAttribute("tool", "org.pnml.tool");

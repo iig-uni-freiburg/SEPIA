@@ -189,8 +189,6 @@ public class PNMLParser implements ParserInterface {
 		if (netType == NetType.Unknown) {
 			netType = NetType.PTNet;
 		}
-		
-		System.out.println(netType);
 
 		if (verifySchema) {
 			verifySchema(pnmlFile, NetType.getURL(netType));

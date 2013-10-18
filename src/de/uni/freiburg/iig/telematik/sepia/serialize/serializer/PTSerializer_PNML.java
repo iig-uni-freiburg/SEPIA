@@ -14,7 +14,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
-import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
 
 public class PTSerializer_PNML<P extends AbstractPTPlace<F>, 
 								T extends AbstractPTTransition<F>, 
@@ -49,13 +48,6 @@ public class PTSerializer_PNML<P extends AbstractPTPlace<F>,
 				inscriptionElement.appendChild(graphicsElement);
 		}
 		arcElement.appendChild(inscriptionElement);
-	}
-
-	@Override
-	public String serialize() throws SerializationException {
-		String result = super.serialize();
-		toFile("/Users/stocker/Desktop/out.pnml");
-		return result;
 	}
 
 	@Override

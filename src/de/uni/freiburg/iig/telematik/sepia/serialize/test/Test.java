@@ -31,7 +31,7 @@ public class Test {
 		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/cpn.pnml");
 		System.out.println(net.getPetriNet().getNetType());
 		System.out.println(net.getPetriNet());
-		System.out.println(PNSerialization.serialize(net, PNSerializationFormat.PNML));
+		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/", "cpnout");
 	}
 
 }

@@ -1,5 +1,10 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import de.invation.code.toval.file.FileFormat;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -11,6 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
+import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_Petrify;
 
 public class PTSerializer_Petrify<P extends AbstractPTPlace<F>, 
 									  T extends AbstractPTTransition<F>, 
@@ -90,6 +96,25 @@ public class PTSerializer_Petrify<P extends AbstractPTPlace<F>,
 		return builder.toString();
 	}
 	
+	
+	
+	@Override
+	public void serialize(String path, String fileName) throws SerializationException, ParameterException, IOException {
+		validatePathAndFileName(path, fileName);
+		
+		FileFormat format = new PNFF_Petrify();
+		File file = new File(String.format("%s%s.%s", path, fileName, format.getFileExtension()));
+		FileWriter output;
+		if(file.exists()) 
+			file.delete();
+		file.createNewFile();
+		output = new FileWriter(file, true);
+		output.write(format.getFileHeader());
+		output.write(serialize());
+		output.write(format.getFileFooter());
+		output.close();
+	}
+
 	@Override
 	public NetType acceptedNetType() {
 		return NetType.PTNet;
