@@ -191,7 +191,7 @@ public class PNMLParser implements ParserInterface {
 		}
 
 		if (verifySchema) {
-			verifySchema(pnmlFile, NetType.getURL(netType));
+			verifySchema(pnmlFile, NetType.getVerificationURL(netType));
 		}
 
 		switch (netType) {

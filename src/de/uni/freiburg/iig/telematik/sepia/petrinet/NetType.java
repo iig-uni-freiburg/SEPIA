@@ -36,8 +36,19 @@ public enum NetType {
 
 		return Unknown;
 	}
+	
+	public static String getURL(NetType type) throws ParameterException{
+		Validate.notNull(type);
+		switch (type){
+			case PTNet: return PTNetURI;
+			case CPN: 	return CPNURI;
+			case CWN:	return CWNURI;
+			case IFNet:	return IFNetURI;
+			default:	return null;
+		}
+	}
 
-	public static URL getURL(NetType type) throws ParameterException{
+	public static URL getVerificationURL(NetType type) throws ParameterException{
 		Validate.notNull(type);
 		try {
 			switch (type){
