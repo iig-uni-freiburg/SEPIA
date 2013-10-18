@@ -79,7 +79,7 @@ public class CWNTest {
 		CWNTestUtils.addSecondOutputPlaceP5(invalidCwn);
 
 		//Check input place
-				inPlaces = new HashSet<CWNPlace>(invalidCwn.getInputPlaces());
+		inPlaces = new HashSet<CWNPlace>(invalidCwn.getInputPlaces());
 		assertEquals("Wrong number of input places detected", 2, inPlaces.size());
 		HashSet<CWNPlace> correctInPlaces = new HashSet<CWNPlace>();
 		correctInPlaces.add(new CWNPlace("p0"));
@@ -101,9 +101,6 @@ public class CWNTest {
 		assertTrue("A non empty collection for inputplaces got returned for an empty CWN", emptyCWN.getInputPlaces().isEmpty());
 		assertNull("A non null value for outputplaces got returned for an empty CWN", emptyCWN.getOutputPlace());
 		assertTrue("A non empty collection for outputplaces got returned for an empty CWN", emptyCWN.getOutputPlaces().isEmpty());
-		
-		
-		
 	}
  
 	/**
@@ -168,10 +165,6 @@ public class CWNTest {
 			fail("An ivalid CWN (without any outputplaces) is detected as valid!");
 		} catch (PNValidationException e) {
 		}
-		
-		
-
-		
 	}
 	
 	
