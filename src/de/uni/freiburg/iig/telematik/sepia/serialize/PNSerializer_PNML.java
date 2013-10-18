@@ -2,25 +2,27 @@ package de.uni.freiburg.iig.telematik.sepia.serialize;
 
 import java.net.URI;
 import java.util.Set;
+import java.util.Vector;
 
 import org.w3c.dom.Element;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Dimension;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill.GradientRotation;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Font;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Font.Align;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Font.Decoration;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line.Shape;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line.Style;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Offset;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Align;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -34,6 +36,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
    							   M extends AbstractMarking<S>, 
    							   S extends Object>  extends PNSerializer_XML<P, T, F, M, S> {
 	
+	protected Element netElement = null;
 	protected Element pageElement = null;
 
 	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S> petriNet) throws ParameterException {
@@ -51,39 +54,46 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		return rootElement;
 	}
 
+
 	@Override
-	public void fillContent() throws SerializationException {
-		Element netNode = createElement("net");
-		netNode.setAttribute("name", getPetriNet().getName());
+	public void addContent() throws SerializationException {
+		netElement = createElement("net");
+		netElement.setAttribute("id", getPetriNet().getName());
 		try {
-			netNode.setAttribute("type", NetType.getURL(getPetriNet().getNetType()).toString());
+			netElement.setAttribute("type", NetType.getURL(getPetriNet().getNetType()).toString());
 		} catch (ParameterException e) {
 			throw new SerializationException("Cannot set net type.\n Reason: " + e.getMessage());
 		}
-		rootElement.appendChild(netNode);
+		rootElement.appendChild(netElement);
+		
+		addHeader();
 		
 		pageElement = createElement("page");
-		netNode.appendChild(pageElement);
+		pageElement.setAttribute("id", "top-level");
+		netElement.appendChild(pageElement);
 		
 		addPlaceInformation();
 		addTransitionInformation();
 		addArcInformation();
+		
+		addFooter();
 	}
+	
+	protected void addHeader(){}
+	
+	protected void addFooter(){}
 	
 	protected void addPlaceInformation(){
 		Element placeElement = null;
 		for(P place: getPetriNet().getPlaces()){
-			System.out.println(place.getName());
 			placeElement = createElement("place");
 			placeElement.setAttribute("id", place.getName());
 			placeElement.appendChild(createNameElement(place.getLabel(), graphics.getPlaceLabelAnnotationGraphics().get(place.getName())));
 			NodeGraphics placeGraphics = graphics.getPlaceGraphics().get(place.getName());
-			if(placeGraphics != null){
-				System.out.println(placeGraphics);
-				Element placeGraphicsElement = getNodeGraphics(placeGraphics);
-				if(placeGraphicsElement != null){
-					placeElement.appendChild(placeGraphicsElement);
-				}
+			if(placeGraphics != null && placeGraphics.hasContent()){
+				Element graphicsElement = getNodeGraphics(placeGraphics);
+				if(graphicsElement != null)
+					placeElement.appendChild(graphicsElement);
 			}
 			if(getPetriNet().getInitialMarking().contains(place.getName())){
 				try {
@@ -110,6 +120,8 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	
 		Element tokenGraphicsElement = createElement("tokengraphics");
 		for(TokenGraphics graphics: tokenGraphics){
+			if(!graphics.hasContent())
+				continue;
 			Element tokenPositionElement = createElement("tokenposition");
 			tokenPositionElement.setAttribute("x", ((Double) graphics.getTokenposition().getX()).toString());
 			tokenPositionElement.setAttribute("y", ((Double) graphics.getTokenposition().getY()).toString());
@@ -122,9 +134,42 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	
 	protected abstract Element addInitialMarking(Element placeElement, S state);
 	
-	protected abstract void addTransitionInformation();
+	protected void addTransitionInformation(){
+		Element transitionElement = null;
+		for(T transition: getPetriNet().getTransitions()){
+			transitionElement = createElement("transition");
+			transitionElement.setAttribute("id", transition.getName());
+			transitionElement.appendChild(createNameElement(transition.getLabel(), graphics.getTransitionLabelAnnotationGraphics().get(transition.getName())));
+			NodeGraphics transitionGraphics = graphics.getTransitionGraphics().get(transition.getName());
+			if(transitionGraphics != null && transitionGraphics.hasContent()){
+				Element graphicsElement = getNodeGraphics(transitionGraphics);
+				if(graphicsElement != null)
+					transitionElement.appendChild(graphicsElement);
+			}
+			pageElement.appendChild(transitionElement);
+		}
+	}
 	
-	protected abstract void addArcInformation();
+	protected void addArcInformation(){
+		Element arcElement = null;
+		for(F relation: getPetriNet().getFlowRelations()){
+			arcElement = createElement("arc");
+			arcElement.setAttribute("id", relation.getName());
+			arcElement.setAttribute("source", relation.getSource().getName());
+			arcElement.setAttribute("target", relation.getTarget().getName());
+			
+			ArcGraphics arcGraphics = graphics.getArcGraphics().get(relation.getName());
+			if(arcGraphics != null && arcGraphics.hasContent()){
+				Element graphicsElement = getArcGraphics(arcGraphics);
+				if(graphicsElement != null)
+					arcElement.appendChild(graphicsElement);
+			}
+			addConstraint(arcElement, relation.getConstraint(), graphics.getArcAnnotationGraphics().get(relation.getName()));
+			pageElement.appendChild(arcElement);
+		}
+	}
+	
+	protected abstract void addConstraint(Element arcElement, S constraint, AnnotationGraphics annotationGraphics);
 	
 	//------- Helper methods for PNML-tag generation ---------------------------------------------------
 	
@@ -138,11 +183,10 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	protected Element createNameElement(String label, AnnotationGraphics graphics) {
 		Element nameElement = createElement("name");
 		nameElement.appendChild(createTextElement("text", label));
-		if(graphics != null){
+		if(graphics != null && graphics.hasContent()){
 			Element graphicsElement = getTextGraphics(graphics);
-			if(graphicsElement != null){
+			if(graphicsElement != null)
 				nameElement.appendChild(graphicsElement);
-			}
 		}
 		return nameElement;
 	}
@@ -151,20 +195,41 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		Element graphicsElement = createElement("graphics");
 		
 		Offset offset = annotationGraphics.getOffset();
-		if(offset != null){
+		if(offset != null && offset.hasContent()){
 			graphicsElement.appendChild(getOffsetElement(offset));
 		}
 		Fill fill = annotationGraphics.getFill();
-		if(fill != null){
+		if(fill != null && fill.hasContent()){
 			graphicsElement.appendChild(getFillElement(fill));
 		}
 		Line line = annotationGraphics.getLine();
-		if(line != null){
+		if(line != null && line.hasContent()){
 			graphicsElement.appendChild(getLineElement(line));
 		}
 		Font font = annotationGraphics.getFont();
-		if(font != null){
+		if(font != null && font.hasContent()){
 			graphicsElement.appendChild(getFontElement(font));
+		}
+		
+		if(graphicsElement.getChildNodes().getLength() == 0)
+			return null;
+		return graphicsElement;
+	}
+	
+	protected Element getArcGraphics(ArcGraphics arcGraphics){
+		Element graphicsElement = createElement("graphics");
+		
+		Line line = arcGraphics.getLine();
+		if(line != null && line.hasContent()){
+			graphicsElement.appendChild(getLineElement(line));
+		}
+		Vector<Position> positions = arcGraphics.getPositions();
+		if(positions != null && !positions.isEmpty()){
+			for(Position position: positions){
+				if(position != null && position.hasContent()){
+					graphicsElement.appendChild(getPositionElement(position));
+				}
+			}
 		}
 		
 		if(graphicsElement.getChildNodes().getLength() == 0)
@@ -176,19 +241,19 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		Element graphicsElement = createElement("graphics");
 		
 		Dimension dimension = nodeGraphics.getDimension();
-		if(dimension != null){
+		if(dimension != null && dimension.hasContent()){
 			graphicsElement.appendChild(getDimensionElement(dimension));
 		}
 		Position position = nodeGraphics.getPosition();
-		if(position != null){
+		if(position != null && position.hasContent()){
 			graphicsElement.appendChild(getPositionElement(position));
 		}
 		Fill fill = nodeGraphics.getFill();
-		if(fill != null){
+		if(fill != null && fill.hasContent()){
 			graphicsElement.appendChild(getFillElement(fill));
 		}
 		Line line = nodeGraphics.getLine();
-		if(line != null){
+		if(line != null && line.hasContent()){
 			graphicsElement.appendChild(getLineElement(line));
 		}
 		

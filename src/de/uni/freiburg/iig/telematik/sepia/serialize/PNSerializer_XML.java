@@ -65,7 +65,7 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 
 	@Override
 	public String serialize() throws SerializationException {
-		fillContent();
+		addContent();
 		return document.getTextContent();
 	}
 	
@@ -97,6 +97,6 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 		}
 	}
 	
-	protected abstract void fillContent() throws SerializationException;
+	protected abstract void addContent() throws SerializationException;
 	
 }

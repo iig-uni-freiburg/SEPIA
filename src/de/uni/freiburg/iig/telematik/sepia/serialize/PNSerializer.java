@@ -4,7 +4,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -43,6 +43,10 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 	
 	public AbstractPetriNet<P,T,F,M,S> getPetriNet(){
 		return petriNet;
+	}
+	
+	public AbstractPNGraphics<P,T,F,M,S> getGraphics(){
+		return graphics;
 	}
 	
 	public abstract NetType acceptedNetType();

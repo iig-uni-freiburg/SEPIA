@@ -18,6 +18,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.CPNSerializer_PNML;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_PNML;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_Petrify;
 
@@ -40,7 +41,7 @@ public class PNSerialization {
 				
 			}
 			if(net.getPetriNet() instanceof AbstractCPN){
-				
+				return new CPNSerializer_PNML(net);
 			}
 			if(net.getPetriNet() instanceof AbstractPTNet){
 				return new PTSerializer_PNML(net);

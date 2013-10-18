@@ -1,24 +1,11 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Set;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Element;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
@@ -42,24 +29,6 @@ public class PTSerializer_PNML<P extends AbstractPTPlace<F>,
 		super(petriNet);
 	}
 	
-
-
-	@Override
-	protected void addTransitionInformation() {
-		// TODO Auto-generated method stub
-		for(T transition: getPetriNet().getTransitions()){
-			
-		}
-	}
-
-	@Override
-	protected void addArcInformation() {
-		// TODO Auto-generated method stub
-		for(F relation: getPetriNet().getFlowRelations()){
-			
-		}
-	}
-	
 	@Override
 	protected Element addInitialMarking(Element placeElement, Integer state){
 		Element markingElement = createElement("initialMarking");
@@ -69,13 +38,25 @@ public class PTSerializer_PNML<P extends AbstractPTPlace<F>,
 	}
 	
 	@Override
-	public String serialize() throws SerializationException {
-		String result = super.serialize();
-		toFile("/Users/stocker/Desktop/out.xml");
-		return result;
+	protected void addConstraint(Element arcElement, Integer constraint, AnnotationGraphics annotationGraphics) {
+		Element inscriptionElement = createElement("inscription");
+		Element textElement = createTextElement("text", constraint.toString());
+		inscriptionElement.appendChild(textElement);
+		
+		if(annotationGraphics != null && annotationGraphics.hasContent()){
+			Element graphicsElement = getTextGraphics(annotationGraphics);
+			if(graphicsElement != null)
+				inscriptionElement.appendChild(graphicsElement);
+		}
+		arcElement.appendChild(inscriptionElement);
 	}
 
-	
+	@Override
+	public String serialize() throws SerializationException {
+		String result = super.serialize();
+		toFile("/Users/stocker/Desktop/out.pnml");
+		return result;
+	}
 
 	@Override
 	public NetType acceptedNetType() {
@@ -85,6 +66,11 @@ public class PTSerializer_PNML<P extends AbstractPTPlace<F>,
 	@Override
 	public AbstractPTNet<P, T, F, M> getPetriNet() {
 		return (AbstractPTNet<P,T,F,M>) super.getPetriNet();
+	}
+
+	@Override
+	public AbstractPTGraphics<P, T, F, M> getGraphics() {
+		return (AbstractPTGraphics<P, T, F, M>) super.getGraphics();
 	}
 
 }

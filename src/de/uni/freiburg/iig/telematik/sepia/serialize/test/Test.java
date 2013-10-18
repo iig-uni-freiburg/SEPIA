@@ -23,7 +23,12 @@ public class Test {
 	 */
 	public static void main(String[] args) throws IOException, ParserException, ParameterException {
 		PNMLParser parser = new PNMLParser();
-		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ptnet.pnml");
+//		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ptnet.pnml");
+//		System.out.println(net.getPetriNet().getNetType());
+//		System.out.println(net.getPetriNet());
+//		System.out.println(PNSerialization.serialize(net, PNSerializationFormat.PNML));
+		
+		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/cpn.pnml");
 		System.out.println(net.getPetriNet().getNetType());
 		System.out.println(net.getPetriNet());
 		System.out.println(PNSerialization.serialize(net, PNSerializationFormat.PNML));
