@@ -241,7 +241,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		Element initialColorMarkingElement = (Element) colorInscriptionNode;
 		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
 		Map<String, Integer> colorInscription = new HashMap<String, Integer>();
-		
+
 		if (colorNodes.getLength() > 0) {
 			for (int c = 0; c < colorNodes.getLength(); c++) {
 				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
@@ -253,7 +253,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 				}
 			}
 		}
-		
+
 		if (colorInscription.isEmpty())
 			return null;
 		else
@@ -261,8 +261,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its
-	 * value will be set to 0.
+	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
 	public static Dimension readDimension(Element dimensionNode) throws ParameterException {
 		Validate.notNull(dimensionNode);
@@ -301,30 +300,38 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 
 		// read and set color, gradientColor, gradientRotation, and image values
 		Attr fillColorAttr = fillNode.getAttributeNode("color");
-		String fillColorStr = fillColorAttr.getValue();
-		if (fillColorStr != null && fillColorStr.length() > 0)
-			fill.setColor(fillColorStr);
+		if (fillColorAttr != null) {
+			String fillColorStr = fillColorAttr.getValue();
+			if (fillColorStr != null && fillColorStr.length() > 0)
+				fill.setColor(fillColorStr);
+		}
 
 		Attr fillGradientColorAttr = fillNode.getAttributeNode("gradient-color");
-		String fillGradientColorStr = fillGradientColorAttr.getValue();
-		if (fillGradientColorStr != null && fillGradientColorStr.length() > 0)
-			fill.setGradientColor(fillGradientColorStr);
+		if (fillGradientColorAttr != null) {
+			String fillGradientColorStr = fillGradientColorAttr.getValue();
+			if (fillGradientColorStr != null && fillGradientColorStr.length() > 0)
+				fill.setGradientColor(fillGradientColorStr);
+		}
 
 		Attr fillGradientRotationAttr = fillNode.getAttributeNode("gradient-rotation");
-		String fillGradientRotationStr = fillGradientRotationAttr.getValue();
-		if (fillGradientRotationStr != null && fillGradientRotationStr.length() > 0) {
-			GradientRotation gradientRotation = GradientRotation.getGradientRotation(fillGradientRotationStr);
-			fill.setGradientRotation(gradientRotation);
+		if (fillGradientRotationAttr != null) {
+			String fillGradientRotationStr = fillGradientRotationAttr.getValue();
+			if (fillGradientRotationStr != null && fillGradientRotationStr.length() > 0) {
+				GradientRotation gradientRotation = GradientRotation.getGradientRotation(fillGradientRotationStr);
+				fill.setGradientRotation(gradientRotation);
+			}
 		}
 
 		Attr fillImageAttr = fillNode.getAttributeNode("image");
-		String fillImageStr = fillImageAttr.getValue();
-		if (fillImageStr != null && fillImageStr.length() > 0) {
-			try {
-				URI fillImage = new URI(fillImageStr);
-				fill.setImage(fillImage);
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
+		if (fillImageAttr != null) {
+			String fillImageStr = fillImageAttr.getValue();
+			if (fillImageStr != null && fillImageStr.length() > 0) {
+				try {
+					URI fillImage = new URI(fillImageStr);
+					fill.setImage(fillImage);
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -341,42 +348,56 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 
 		// read and set align, decoration, family, rotation, size, style, and weight values
 		Attr fontAlignAttr = fontNode.getAttributeNode("align");
-		String fontAlignStr = fontAlignAttr.getValue();
-		if (fontAlignStr != null && fontAlignStr.length() > 0)
-			font.setAlign(Align.getAlign(fontAlignStr));
+		if (fontAlignAttr != null) {
+			String fontAlignStr = fontAlignAttr.getValue();
+			if (fontAlignStr != null && fontAlignStr.length() > 0)
+				font.setAlign(Align.getAlign(fontAlignStr));
+		}
 
 		Attr fontDecorationAttr = fontNode.getAttributeNode("decoration");
-		String fontDecorationStr = fontDecorationAttr.getValue();
-		if (fontDecorationStr != null && fontDecorationStr.length() > 0) {
-			Decoration decoration = Decoration.getDecoration(fontDecorationStr);
-			font.setDecoration(decoration);
+		if (fontDecorationAttr != null) {
+			String fontDecorationStr = fontDecorationAttr.getValue();
+			if (fontDecorationStr != null && fontDecorationStr.length() > 0) {
+				Decoration decoration = Decoration.getDecoration(fontDecorationStr);
+				font.setDecoration(decoration);
+			}
 		}
 
 		Attr fontFamilyAttr = fontNode.getAttributeNode("family");
-		String fontFamilyStr = fontFamilyAttr.getValue();
-		if (fontFamilyStr != null && fontFamilyStr.length() > 0)
-			font.setFamily(fontFamilyStr);
+		if (fontFamilyAttr != null) {
+			String fontFamilyStr = fontFamilyAttr.getValue();
+			if (fontFamilyStr != null && fontFamilyStr.length() > 0)
+				font.setFamily(fontFamilyStr);
+		}
 
 		Attr fontRotationAttr = fontNode.getAttributeNode("rotation");
-		String fontRotationStr = fontRotationAttr.getValue();
-		double fontRotation = Double.parseDouble(fontRotationStr);
-		if (fontRotationStr != null && fontRotation != 0)
-			font.setRotation(fontRotation);
+		if (fontRotationAttr != null) {
+			String fontRotationStr = fontRotationAttr.getValue();
+			double fontRotation = Double.parseDouble(fontRotationStr);
+			if (fontRotationStr != null && fontRotation != 0)
+				font.setRotation(fontRotation);
+		}
 
 		Attr fontSizeAttr = fontNode.getAttributeNode("size");
-		String fontSizeStr = fontSizeAttr.getValue();
-		if (fontSizeStr != null && fontSizeStr.length() > 0)
-			font.setSize(fontSizeStr);
+		if (fontSizeAttr != null) {
+			String fontSizeStr = fontSizeAttr.getValue();
+			if (fontSizeStr != null && fontSizeStr.length() > 0)
+				font.setSize(fontSizeStr);
+		}
 
 		Attr fontStyleAttr = fontNode.getAttributeNode("style");
-		String fontStyleStr = fontStyleAttr.getValue();
-		if (fontStyleStr != null && fontStyleStr.length() > 0)
-			font.setStyle(fontStyleStr);
+		if (fontStyleAttr != null) {
+			String fontStyleStr = fontStyleAttr.getValue();
+			if (fontStyleStr != null && fontStyleStr.length() > 0)
+				font.setStyle(fontStyleStr);
+		}
 
 		Attr fontWeightAttr = fontNode.getAttributeNode("weight");
-		String fontWeightStr = fontWeightAttr.getValue();
-		if (fontWeightStr != null && fontWeightStr.length() > 0)
-			font.setWeight(fontWeightStr);
+		if (fontWeightAttr != null) {
+			String fontWeightStr = fontWeightAttr.getValue();
+			if (fontWeightStr != null && fontWeightStr.length() > 0)
+				font.setWeight(fontWeightStr);
+		}
 
 		return font;
 	}
@@ -409,7 +430,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		Element initialColorMarkingElement = (Element) initialColorMarkingNode;
 		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
 		Map<String, Integer> initialColorMarking = new HashMap<String, Integer>();
-		
+
 		if (colorNodes.getLength() > 0) {
 			for (int c = 0; c < colorNodes.getLength(); c++) {
 				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
@@ -421,7 +442,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 				}
 			}
 		}
-		
+
 		if (initialColorMarking.isEmpty())
 			return null;
 		else
@@ -453,29 +474,37 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 
 		// read and set color, shape, style, and width values
 		Attr lineColorAttr = lineNode.getAttributeNode("color");
-		String lineColorStr = lineColorAttr.getValue();
-		if (lineColorStr != null && lineColorStr.length() > 0)
-			line.setColor(lineColorStr);
+		if (lineColorAttr != null) {
+			String lineColorStr = lineColorAttr.getValue();
+			if (lineColorStr != null && lineColorStr.length() > 0)
+				line.setColor(lineColorStr);
+		}
 
 		Attr lineShapeAttr = lineNode.getAttributeNode("shape");
-		String lineShapeStr = lineShapeAttr.getValue();
-		if (lineShapeStr != null && lineShapeStr.length() > 0) {
-			Shape shape = Shape.getShape(lineShapeStr);
-			line.setShape(shape);
+		if (lineShapeAttr != null) {
+			String lineShapeStr = lineShapeAttr.getValue();
+			if (lineShapeStr != null && lineShapeStr.length() > 0) {
+				Shape shape = Shape.getShape(lineShapeStr);
+				line.setShape(shape);
+			}
 		}
 
 		Attr lineStyleAttr = lineNode.getAttributeNode("style");
-		String lineStyleStr = lineStyleAttr.getValue();
-		if (lineStyleStr != null && lineStyleStr.length() > 0) {
-			Style style = Style.getStyle(lineStyleStr);
-			line.setStyle(style);
+		if (lineStyleAttr != null) {
+			String lineStyleStr = lineStyleAttr.getValue();
+			if (lineStyleStr != null && lineStyleStr.length() > 0) {
+				Style style = Style.getStyle(lineStyleStr);
+				line.setStyle(style);
+			}
 		}
 
 		Attr lineWidthAttr = lineNode.getAttributeNode("width");
-		String lineWidthStr = lineWidthAttr.getValue();
-		if (lineWidthStr != null && lineWidthStr.length() > 0) {
-			double lineWidth = Double.parseDouble(lineWidthStr);
-			line.setWidth(lineWidth);
+		if (lineWidthAttr != null) {
+			String lineWidthStr = lineWidthAttr.getValue();
+			if (lineWidthStr != null && lineWidthStr.length() > 0) {
+				double lineWidth = Double.parseDouble(lineWidthStr);
+				line.setWidth(lineWidth);
+			}
 		}
 
 		return line;
@@ -524,8 +553,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Reads an offset tag and returns it as {@link Offset}. If validated, an offset tag must contain a x and a y value. If one of them is missed, its value
-	 * will be set to 0.
+	 * Reads an offset tag and returns it as {@link Offset}. If validated, an offset tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
 	public static Offset readOffset(Element offsetNode) throws ParameterException {
 		Validate.notNull(offsetNode);
@@ -613,8 +641,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Reads a position tag and returns it as {@link Position}. If validated, a position tag must contain a x and a y value. If one of them is missed, its value
-	 * will be set to 0.
+	 * Reads a position tag and returns it as {@link Position}. If validated, a position tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
 	public static Position readPosition(Element positionNode) throws ParameterException {
 		Validate.notNull(positionNode);
@@ -796,7 +823,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		 * Adds a specified amount of color tokens to the outgoing color tokens.
 		 */
 		public void addOutgoingColorTokens(String color, int amount) throws ParameterException {
-			Validate.notNegative(amount);
+	Validate.notNegative(amount);
 
 			if (outgoingColorTokens.containsKey(color)) {
 				int oldValue = outgoingColorTokens.get(color);
