@@ -769,7 +769,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		checkSD(relation.getTransition());
 	}
 	
-	protected boolean removeFlowRelation(String relationName) throws ParameterException {
+	public boolean removeFlowRelation(String relationName) throws ParameterException {
 		if(!containsFlowRelation(relationName))
 			return false;
 		removeFlowRelation(relations.get(relationName));
