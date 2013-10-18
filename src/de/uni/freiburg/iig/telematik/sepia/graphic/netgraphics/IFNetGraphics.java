@@ -1,11 +1,11 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;

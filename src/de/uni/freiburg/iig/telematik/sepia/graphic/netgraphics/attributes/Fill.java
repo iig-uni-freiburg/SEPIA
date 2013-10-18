@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes;
 
 import java.net.URI;
 

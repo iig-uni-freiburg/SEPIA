@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;

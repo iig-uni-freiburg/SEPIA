@@ -1,11 +1,11 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Font;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Offset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 
 /**
  * <p>

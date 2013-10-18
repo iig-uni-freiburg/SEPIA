@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic.attributes;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes;
 
 /**
  * Abstract superclass of all graphic attributes.

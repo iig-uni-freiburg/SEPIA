@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 /**
  * Abstract superclass of all object graphic classes.

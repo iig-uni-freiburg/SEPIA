@@ -1,14 +1,14 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 
 /**
  * {@link AbstractPNGraphics} implementation for the CPNs.
@@ -16,7 +16,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class CPNGraphics extends AbstractPNGraphics<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
+public abstract class AbstractCPNGraphics<P extends AbstractCPNPlace<F>,
+						 		  T extends AbstractCPNTransition<F>, 
+						 		  F extends AbstractCPNFlowRelation<P,T>, 
+						 		  M extends AbstractCPNMarking> extends  AbstractPNGraphics<P, T, F, M, Multiset<String>> {
+
+	public AbstractCPNGraphics() {
+		super();
+	}
 
 	private Map<String, Color> colors = new HashMap<String, Color>();
 

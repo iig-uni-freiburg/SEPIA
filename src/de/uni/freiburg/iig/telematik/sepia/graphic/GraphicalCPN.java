@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.invation.code.toval.types.Multiset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
@@ -9,7 +11,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 
 /**
- * Container class with a {@link CPN} and its graphical information as {@link CPNGraphics}.
+ * Container class with a {@link CPN} and its graphical information as {@link AbstractCPNGraphics}.
  * 
  * @author Thomas Stocker
  * @author Adrian Lange
@@ -26,7 +28,7 @@ public class GraphicalCPN extends AbstractGraphicalPN<CPNPlace, CPNTransition, C
 	}
 
 	@Override
-	public CPNGraphics getPetriNetGraphics() {
-		return (CPNGraphics) super.getPetriNetGraphics();
+	public AbstractCPNGraphics getPetriNetGraphics() {
+		return (AbstractCPNGraphics) super.getPetriNetGraphics();
 	}
 }

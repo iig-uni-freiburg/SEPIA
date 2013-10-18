@@ -1,8 +1,8 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 
 /**
  * <p>

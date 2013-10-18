@@ -1,14 +1,14 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNTransition;
 
 /**
  * {@link AbstractPNGraphics} implementation for the CWNs.
@@ -16,7 +16,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class CWNGraphics extends AbstractPNGraphics<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
+public abstract class AbstractCWNGraphics<P extends AbstractCWNPlace<F>,
+						 		  T extends AbstractCWNTransition<F>, 
+						 		  F extends AbstractCWNFlowRelation<P,T>, 
+						 		  M extends AbstractCWNMarking> extends AbstractPNGraphics<P, T, F, M, Multiset<String>> {
 
 	private Map<String, Color> colors = new HashMap<String, Color>();
 

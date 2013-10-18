@@ -1,11 +1,11 @@
-package de.uni.freiburg.iig.telematik.sepia.graphic;
+package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Dimension;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Fill;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Line;
-import de.uni.freiburg.iig.telematik.sepia.graphic.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 
 /**
  * <p>
@@ -25,10 +25,10 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	/** Default line */
 	public static final Line DEFAULT_LINE = new Line();
 
-	private Position position;
-	private Dimension dimension;
-	private Fill fill;
-	private Line line;
+	private Position position = null;
+	private Dimension dimension = null;
+	private Fill fill = null;
+	private Line line = null;
 
 	/**
 	 * Create new node graphic object with default values.

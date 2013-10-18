@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.invation.code.toval.types.Multiset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
