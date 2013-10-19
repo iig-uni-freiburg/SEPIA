@@ -11,7 +11,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 public class DeclassificationTransition extends AbstractIFNetTransition{
 	
-	protected IFNet sNet = null;
+	protected IFNet ifNet = null;
 	
 	protected DeclassificationTransition(){
 		super();
@@ -19,7 +19,7 @@ public class DeclassificationTransition extends AbstractIFNetTransition{
 	
 	public DeclassificationTransition(IFNet sNet, String name, String label, boolean isEmpty) throws ParameterException {
 		super(name, label, isEmpty);
-		this.sNet = sNet;
+		this.ifNet = sNet;
 	}
 
 	public DeclassificationTransition(IFNet sNet, String name, boolean isEmpty) throws ParameterException {
@@ -63,7 +63,7 @@ public class DeclassificationTransition extends AbstractIFNetTransition{
 		// Property 4: No other net transition creates a token with the same color than any of the produced colors of this transition.
 		//      (Either as regular transition with CREATE mode or as declassification transition)
 		Set<AbstractIFNetTransition> otherNetTransitions = new HashSet<AbstractIFNetTransition>();
-		otherNetTransitions.addAll(sNet.getTransitions());
+		otherNetTransitions.addAll(ifNet.getTransitions());
 		otherNetTransitions.remove(this);
 		for(AbstractIFNetTransition otherTransition: otherNetTransitions){
 			if(otherTransition.isDeclassificator()){
@@ -104,9 +104,13 @@ public class DeclassificationTransition extends AbstractIFNetTransition{
 		
 	}  
 	
-	protected void setSNet(IFNet sNet) throws ParameterException{
-		Validate.notNull(sNet);
-		this.sNet = sNet;
+	protected void setIFNet(IFNet ifNet) throws ParameterException{
+		Validate.notNull(ifNet);
+		this.ifNet = ifNet;
+	}
+
+	public IFNet getIFNet() {
+		return ifNet;
 	}
 
 	@Override
@@ -118,13 +122,10 @@ public class DeclassificationTransition extends AbstractIFNetTransition{
 	public DeclassificationTransition clone() {
 		DeclassificationTransition result = (DeclassificationTransition) super.clone();
 		try {
-			result.setSNet(sNet);
+			result.setIFNet(ifNet);
 		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
-	
-
 }

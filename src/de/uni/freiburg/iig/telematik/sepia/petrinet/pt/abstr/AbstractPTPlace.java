@@ -22,6 +22,7 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	
 	protected AbstractPTPlace(){
 		super();
+		state = 0;
 	}
 	
 	/**
@@ -86,7 +87,7 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	@Override
 	public boolean canConsume(Integer state) throws ParameterException {
 		validateState(state);
-		return state + this.state <= capacity;
+		return state + this.state <= capacity || capacity < 0;
 	}
 
 	@Override

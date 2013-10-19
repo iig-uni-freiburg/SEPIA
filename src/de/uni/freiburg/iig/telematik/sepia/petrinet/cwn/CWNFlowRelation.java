@@ -17,12 +17,15 @@ public class CWNFlowRelation extends AbstractCWNFlowRelation<CWNPlace, CWNTransi
 	public CWNFlowRelation clone(CWNPlace place, CWNTransition transition, boolean directionPT) {
 		CWNFlowRelation result = null;
 		try {
-			result = new CWNFlowRelation(place, transition);
-			result.setDirectionPT(directionPT);
+			// Can't set direction afterwards. The default name could be wrong then when testing for equality.
+			if (directionPT)
+				result = new CWNFlowRelation(place, transition);
+			else
+				result = new CWNFlowRelation(transition, place);
+			result.setConstraint(getConstraint().clone());
 		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
 }

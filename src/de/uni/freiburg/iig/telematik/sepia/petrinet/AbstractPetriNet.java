@@ -1081,6 +1081,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * When a transition changes its state to disabled,<br>
 	 * the net removes it from the set of enabled transitions.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void transitionDisabled(TransitionEvent<? extends AbstractTransition<F, S>> e) {
 		enabledTransitions.remove((T) e.getSource());
@@ -1122,6 +1123,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	//------- clone ----------------------------------------------------------------------------------
 	
+	@SuppressWarnings("unchecked")
+	@Override
 	public AbstractPetriNet<P,T,F,M,S> clone(){
 		AbstractPetriNet<P,T,F,M,S> result = newInstance();
 		Map<T,T> clonedTransitions = new HashMap<T,T>();

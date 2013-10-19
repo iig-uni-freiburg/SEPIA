@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ CWNTest.class, CWNTransitionTest.class, AbstractCWNUtilsTest.class })
+@SuiteClasses({ CWNTest.class, CWNPlaceTest.class, CWNTransitionTest.class, CWNFlowRelationTest.class, AbstractCWNUtilsTest.class })
 public class AllCWNTests {
-
 }

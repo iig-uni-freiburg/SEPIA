@@ -107,7 +107,15 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	public void setCapacity(int capacity) throws ParameterException {
 		throw new UnsupportedOperationException("Use setColorCapacity() instead.");
 	}
-	
+
+	/**
+	 * A CPN-Place does not allow to remove the capacity explicitly.
+	 */
+	@Override
+	public void removeCapacity() {
+		throw new UnsupportedOperationException("Use removeColorCapacity() instead.");
+	}
+
 	@Override
 	protected void addTokens(Multiset<String> tokens) throws ParameterException {
 		Validate.notNull(tokens);

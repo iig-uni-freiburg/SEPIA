@@ -36,5 +36,4 @@ public class CPNFlowRelation extends AbstractCPNFlowRelation<CPNPlace, CPNTransi
 		}
 		return result;
 	}
-
 }

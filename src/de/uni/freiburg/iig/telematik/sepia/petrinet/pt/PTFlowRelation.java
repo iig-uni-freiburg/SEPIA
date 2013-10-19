@@ -26,10 +26,14 @@ public class PTFlowRelation extends AbstractPTFlowRelation<PTPlace, PTTransition
 	@Override
 	public PTFlowRelation clone(PTPlace place, PTTransition transition, boolean directionPT) {
 		PTFlowRelation result = null;
-		try{
-			result = new PTFlowRelation(place, transition);
-			result.setDirectionPT(directionPT);
-		} catch(ParameterException e){
+		try {
+			if (getDirectionPT())
+				result = new PTFlowRelation(place, transition);
+			else
+				result = new PTFlowRelation(transition, place);
+			result.setDirectionPT(getDirectionPT());
+			result.setWeight(getWeight());
+		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
 		return result;

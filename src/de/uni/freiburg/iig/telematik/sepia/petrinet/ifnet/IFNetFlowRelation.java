@@ -16,13 +16,16 @@ public class IFNetFlowRelation extends AbstractCWNFlowRelation<IFNetPlace, Abstr
 	@Override
 	public IFNetFlowRelation clone(IFNetPlace place, AbstractIFNetTransition transition, boolean directionPT) {
 		IFNetFlowRelation result = null;
-		try{
-			result = new IFNetFlowRelation(place, transition);
-			result.setDirectionPT(directionPT);
-		} catch(ParameterException e){
+		try {
+			// Can't set direction afterwards. The default name could be wrong then when testing for equality.
+			if (directionPT)
+				result = new IFNetFlowRelation(place, transition);
+			else
+				result = new IFNetFlowRelation(transition, place);
+			result.setConstraint(getConstraint().clone());
+		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
-	
 }

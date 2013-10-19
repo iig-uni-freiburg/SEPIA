@@ -15,5 +15,4 @@ public class PTMarking extends AbstractPTMarking {
 		}catch(ParameterException e){}
 		return newMarking;
 	}
-
 }

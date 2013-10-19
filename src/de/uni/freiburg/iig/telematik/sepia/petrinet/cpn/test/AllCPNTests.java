@@ -6,9 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.test.CWNTest;
 
-
 @RunWith(Suite.class)
-@SuiteClasses({FiringRuleTest.class, CPNFlowRelationTest.class, CPNTransitionTest.class, CPNPlaceTest.class, CPNTest.class, CWNTest.class })
+@SuiteClasses({ FiringRuleTest.class, CPNFlowRelationTest.class, CPNTransitionTest.class, CPNPlaceTest.class, CPNTest.class, CWNTest.class })
 public class AllCPNTests {
-
 }

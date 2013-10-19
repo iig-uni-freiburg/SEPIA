@@ -26,5 +26,4 @@ public class PTPlace extends AbstractPTPlace<PTFlowRelation>{
 	public PTPlace clone(){
 		return (PTPlace) super.clone();
 	}
-	
 }

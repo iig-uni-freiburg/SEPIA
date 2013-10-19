@@ -14,8 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNUtils;
 
-
-public class AbstractCWNUtilsTest { 
+public class AbstractCWNUtilsTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -27,69 +26,65 @@ public class AbstractCWNUtilsTest {
 
 	@Test
 	public void testValidCompletion() throws ParameterException {
-	
-		//Get a simple CWN
+
+		// Get a simple CWN
 		CWN cwn = CWNTestUtils.createSimpleCWN();
-				
+
 		//////////////////////////
-		//The net is valid now  //
+		// The net is valid now //
 		//////////////////////////
 		try {
 			AbstractCWNUtils.validCompletion(cwn);
-			
+
 		} catch (PNSoundnessException e) {
 			fail("A valid net was reported to be unvalid!");
 		}
-		
-		
-		/////////////////////////////////////////
-		//Add a pink token to the outrelation  //
-		//The net is still valid               //
-		/////////////////////////////////////////
+
+		//////////////////////////////////////////
+		// Add a pink token to the out relation //
+		// The net is still valid               //
+		//////////////////////////////////////////
 		CWNFlowRelation outRel = null;
-		for(CWNFlowRelation f : cwn.getFlowRelations()){
-			if(f.getTarget().getName().equals("pOut")){
+		for (CWNFlowRelation f : cwn.getFlowRelations()) {
+			if (f.getTarget().getName().equals("pOut")) {
 				outRel = f;
 			}
 		}
-		
-		outRel.addConstraint("pink", 1);				
+
+		outRel.addConstraint("pink", 1);
 		cwn.getPlace("pOut").setColorCapacity("pink", 1);
-		
-		//The net is still valid now
+
+		// The net is still valid now
 		try {
 			AbstractCWNUtils.validCompletion(cwn);
 		} catch (PNSoundnessException e) {
 			fail("A valid net was reported to be unvalid!");
 		}
-		
-		
-		
-		//////////////////////////////////////
-		//remove black from the ourelation  //
-		//The net gets invalid by doing so  //
-		//////////////////////////////////////
+
+		////////////////////////////////////////
+		// remove black from the out relation //
+		// The net gets invalid by doing so   //
+		////////////////////////////////////////
 		Multiset<String> onlyPinkConst = new Multiset<String>();
 		onlyPinkConst.add("pink");
 		outRel.setConstraint(onlyPinkConst);
-		
-		
+
 		try {
-				AbstractCWNUtils.validCompletion(cwn);
-				fail("A invalid net was reported to be valid!");
+			AbstractCWNUtils.validCompletion(cwn);
+			fail("A invalid net was reported to be valid!");
 		} catch (PNSoundnessException e) {
 		}
-		
-		//////////////////////////////////////////////////////////////////////////
-		//change the net to contain a non terminal state where a black token is //
-		//in a place other than the sink place. ==> add a black token to the    //
-		//sink place in the inital marking                                      //
-		//////////////////////////////////////////////////////////////////////////
+
+		///////////////////////////////////////////////////////////////////////////
+		// change the net to contain a non terminal state where a black token is //
+		// in a place other than the sink place. ==> add a black token to the    //
+		// sink place in the inital marking                                      //
+		///////////////////////////////////////////////////////////////////////////
 		CWNMarking newInitialMarking = new CWNMarking();
 		Multiset<String> b1 = new Multiset<String>();
 		Multiset<String> b2 = new Multiset<String>();
 		b1.add("black");
-		b2.add("black");		
+		b2.add("black");
 		newInitialMarking.set("pIn", b1);
 		newInitialMarking.set("pOut", b2);
 		cwn.setInitialMarking(newInitialMarking);
@@ -98,9 +93,5 @@ public class AbstractCWNUtilsTest {
 			fail("A invalid net was reported to be valid!");
 		} catch (PNSoundnessException e) {
 		}
-		
-				
-		 
 	}
-
 }

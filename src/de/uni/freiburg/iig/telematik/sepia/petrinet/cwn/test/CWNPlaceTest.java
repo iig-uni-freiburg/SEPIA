@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.test;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.test;
 
 import static org.junit.Assert.*;
 
@@ -6,24 +6,24 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNPlace;
 
 /**
- * This are the test cases for the class CPNPlace and AbstractCPNPlace.
+ * This are the test cases for the class {@link CWNPlace}.
  * 
  * @author boehr
  */
-public class CPNPlaceTest {
+public class CWNPlaceTest {
 
-	/* Test the constructors of CPNPlace */
+	/* Test the constructors of CWNPlace */
 	@Test
-	public void testCPNPlaceConstructor() {
+	public void testCWNPlaceConstructor() throws ParameterException {
 		// create some places
-		CPNPlace p0 = null;
-		CPNPlace p1 = null;
+		CWNPlace p0 = null;
+		CWNPlace p1 = null;
 		try {
-			p0 = new CPNPlace("name_p0");
-			p1 = new CPNPlace("name_p1", "label_p1");
+			p0 = new CWNPlace("name_p0");
+			p1 = new CWNPlace("name_p1", "label_p1");
 		} catch (ParameterException e) {
 			fail("Constructor failed!");
 			e.printStackTrace();
@@ -37,9 +37,9 @@ public class CPNPlaceTest {
 
 	/* Add tokens to a place and check the place contains the tokens */
 	@Test
-	public void testCPNPlaceAddTokens() throws ParameterException {
+	public void testCWNPlaceAddTokens() throws ParameterException {
 		// Create Place
-		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
+		CWNPlace p1 = new CWNPlace("name_p1", "label_p1");
 		boolean yes = p1.hasEmptyState();
 		assertTrue(yes);
 
@@ -91,9 +91,9 @@ public class CPNPlaceTest {
 
 	/* Set some color capacities and see whether the place knows about them */
 	@Test
-	public void testCPNPlaceSetCapacities() throws ParameterException {
+	public void testCWNPlaceSetCapacities() throws ParameterException {
 		// Create Place
-		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
+		CWNPlace p1 = new CWNPlace("name_p1", "label_p1");
 
 		// set a color capacity
 		p1.setColorCapacity("red", 2);
@@ -115,9 +115,9 @@ public class CPNPlaceTest {
 
 	/* Remove some capacities */
 	@Test
-	public void testCPNPlaceRemoveCapacities() throws ParameterException {
+	public void testCWNPlaceRemoveCapacities() throws ParameterException {
 		// Create Place
-		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
+		CWNPlace p1 = new CWNPlace("name_p1", "label_p1");
 
 		// remove a non exiting color
 		p1.removeColorCapacity("unknownColor");
@@ -150,7 +150,7 @@ public class CPNPlaceTest {
 	@Test
 	public void testSetEmptyState() throws ParameterException {
 		// Create place
-		CPNPlace p1 = new CPNPlace("name_p1");
+		CWNPlace p1 = new CWNPlace("name_p1");
 		Multiset<String> placeMarking = new Multiset<String>();
 
 		// Set the capacity to 2 and add two tokens
@@ -168,9 +168,9 @@ public class CPNPlaceTest {
 
 	/* check the capacity of unused colors is zero */
 	@Test
-	public void testCPNPlaceEmptyCapacities() throws ParameterException {
+	public void testCWNPlaceEmptyCapacities() throws ParameterException {
 		// Create Place
-		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
+		CWNPlace p1 = new CWNPlace("name_p1", "label_p1");
 
 		// set a capacity
 		p1.setColorCapacity("green", 1);
@@ -181,9 +181,9 @@ public class CPNPlaceTest {
 
 	/* Test what happens if the capacity is set to a value lower than the tokens actually contained in the place */
 	@Test
-	public void testCPNPlaceSetLowCapacity() throws ParameterException {
+	public void testCWNPlaceSetLowCpacity() throws ParameterException {
 		// Create place
-		CPNPlace p1 = new CPNPlace("name_p1");
+		CWNPlace p1 = new CWNPlace("name_p1");
 
 		// Get the place marking
 		Multiset<String> newPlaceMarking = new Multiset<String>();
@@ -209,9 +209,9 @@ public class CPNPlaceTest {
 
 	/* Try to add more tokens than the capacity allows */
 	@Test
-	public void testCPNPlaceAddToManyTokens() throws ParameterException {
+	public void testCWNPlaceAddToManyTokens() throws ParameterException {
 		// Create place
-		CPNPlace p1 = new CPNPlace("name_p1");
+		CWNPlace p1 = new CWNPlace("name_p1");
 		Multiset<String> placeMarking = new Multiset<String>();
 
 		// Set the capacity to 2 and add two tokens
@@ -237,7 +237,7 @@ public class CPNPlaceTest {
 	@Test
 	public void testcanConsume() throws ParameterException {
 		// Create place
-		CPNPlace p1 = new CPNPlace("name_p1");
+		CWNPlace p1 = new CWNPlace("name_p1");
 		Multiset<String> placeMarking = new Multiset<String>();
 
 		// Set the capacity of green to 2 and add two green tokens
@@ -260,9 +260,9 @@ public class CPNPlaceTest {
 	 * Test the clone() method
 	 */
 	@Test
-	public void testCPNPlaceClone() throws ParameterException {
+	public void testCWNPlaceClone() throws ParameterException {
 		// Create place with color capacities
-		CPNPlace placeWithColorCapacities1 = new CPNPlace("name_p1_with_capacities");
+		CWNPlace placeWithColorCapacities1 = new CWNPlace("name_p1_with_capacities");
 
 		Multiset<String> placeMarking1 = new Multiset<String>();
 		placeWithColorCapacities1.setColorCapacity("black", 2);
@@ -270,7 +270,7 @@ public class CPNPlaceTest {
 		placeMarking1.addAll("black", "green", "green");
 		placeWithColorCapacities1.setState(placeMarking1);
 
-		CPNPlace placeWithColorCapacities1Clone = placeWithColorCapacities1.clone();
+		CWNPlace placeWithColorCapacities1Clone = (CWNPlace) placeWithColorCapacities1.clone();
 		assertEquals(placeWithColorCapacities1, placeWithColorCapacities1Clone);
 		assertNotSame(placeWithColorCapacities1, placeWithColorCapacities1Clone);
 		assertEquals(placeWithColorCapacities1.getState(), placeWithColorCapacities1Clone.getState());
@@ -299,13 +299,13 @@ public class CPNPlaceTest {
 		assertFalse(placeWithColorCapacities1Clone.equals(placeWithColorCapacities1));
 
 		// Create place without any color capacities
-		CPNPlace placeWithoutColorCapacities1 = new CPNPlace("name_p1_without_capacities");
+		CWNPlace placeWithoutColorCapacities1 = new CWNPlace("name_p1_without_capacities");
 
 		Multiset<String> placeMarking2 = new Multiset<String>();
 		placeMarking2.addAll("black", "green", "green");
 		placeWithoutColorCapacities1.setState(placeMarking2);
 
-		CPNPlace placeWithoutColorCapacities1Clone = placeWithoutColorCapacities1.clone();
+		CWNPlace placeWithoutColorCapacities1Clone = (CWNPlace) placeWithoutColorCapacities1.clone();
 		assertEquals(placeWithoutColorCapacities1, placeWithoutColorCapacities1Clone);
 		assertNotSame(placeWithoutColorCapacities1, placeWithoutColorCapacities1Clone);
 		assertEquals(placeWithoutColorCapacities1.getState(), placeWithoutColorCapacities1Clone.getState());
