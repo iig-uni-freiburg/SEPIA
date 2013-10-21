@@ -25,7 +25,7 @@ public abstract class AbstractCPNGraphics<P extends AbstractCPNPlace<F>,
 		super();
 	}
 
-	private Map<String, Color> colors = new HashMap<String, Color>();
+	protected Map<String, Color> colors = new HashMap<String, Color>();
 
 	public Map<String, Color> getColors() {
 		return colors;
