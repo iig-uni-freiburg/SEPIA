@@ -19,7 +19,7 @@ import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundExcepti
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.OldPNMLParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLPTNetParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;

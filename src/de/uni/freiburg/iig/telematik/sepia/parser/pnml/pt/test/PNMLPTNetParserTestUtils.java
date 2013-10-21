@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml.test;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.test;
 
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
@@ -6,6 +6,8 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.test.AbstractPNMLPNParserTestUtils;
 
 /**
  * @author Adrian Lange

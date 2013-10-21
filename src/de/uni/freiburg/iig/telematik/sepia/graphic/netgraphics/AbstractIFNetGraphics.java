@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
 public class AbstractIFNetGraphics<P extends AbstractIFNetPlace<F>,
  								   T extends AbstractIFNetTransition<F>, 
  								   F extends AbstractIFNetFlowRelation<P,T>, 
- 								   M extends AbstractIFNetMarking> extends  AbstractCPNGraphics<P, T, F, M> {
+ 								   M extends AbstractIFNetMarking> extends  AbstractCWNGraphics<P, T, F, M> {
 	
 	private Map<String, AnnotationGraphics> accessFunctionGraphics = new HashMap<String, AnnotationGraphics>();
 	private Map<String, AnnotationGraphics> subjectGraphics = new HashMap<String, AnnotationGraphics>();

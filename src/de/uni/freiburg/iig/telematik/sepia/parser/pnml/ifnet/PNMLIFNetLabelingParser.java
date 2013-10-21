@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;

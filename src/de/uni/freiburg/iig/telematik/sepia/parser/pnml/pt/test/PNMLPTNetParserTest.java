@@ -1,13 +1,14 @@
 /**
  * 
  */
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml.test;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.test;
 
 import static org.junit.Assert.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,13 +28,12 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.D
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLPTNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 
 /**
  * <p>
- * Unit tests for the P/T-net PNML parser and the abstract PNML parser class. The component unit tests for these classes is made in
- * {@link PNMLPTNetParserComponentTest}.
+ * Unit tests for the P/T-net PNML parser and the abstract PNML parser class. The component unit tests for these classes is made in {@link PNMLPTNetParserComponentTest}.
  * </p>
  * 
  * @author Adrian Lange
@@ -42,6 +42,13 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
  * @see PNMLPTNetParser
  */
 public class PNMLPTNetParserTest {
+
+	public PNMLPTNetParser parser = null;
+	
+	@Before
+	public void setup() {
+		parser = new PNMLPTNetParser();
+	}
 
 	/**
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readDimension(org.w3c.dom.Element)}.
@@ -57,7 +64,7 @@ public class PNMLPTNetParserTest {
 				NodeList dimensionList = graphicsElement.getElementsByTagName("dimension");
 				if (dimensionList.getLength() > 0) {
 					Element dimensionElement = (Element) dimensionList.item(0);
-					Dimension dimension = AbstractPNMLParser.readDimension(dimensionElement);
+					Dimension dimension = parser.readDimension(dimensionElement);
 					assertTrue(dimension.getX() == 37.0);
 					assertTrue(dimension.getY() == 33.0);
 				}
@@ -73,7 +80,7 @@ public class PNMLPTNetParserTest {
 				NodeList dimensionList = graphicsElement.getElementsByTagName("dimension");
 				if (dimensionList.getLength() > 0) {
 					Element dimensionElement = (Element) dimensionList.item(0);
-					Dimension dimension = AbstractPNMLParser.readDimension(dimensionElement);
+					Dimension dimension = parser.readDimension(dimensionElement);
 					assertTrue(dimension.getX() == 37.0);
 					assertTrue(dimension.getY() == Dimension.DEFAULT_DIMENSION_Y);
 				}
@@ -94,7 +101,7 @@ public class PNMLPTNetParserTest {
 				NodeList fillList = graphicsElement.getElementsByTagName("fill");
 				if (fillList.getLength() > 0) {
 					Element fillElement = (Element) fillList.item(0);
-					Fill fill = AbstractPNMLParser.readFill(fillElement);
+					Fill fill = parser.readFill(fillElement);
 					assertEquals("#FF0000", fill.getColor());
 					assertEquals("#FFFFFF", fill.getGradientColor());
 					assertEquals(GradientRotation.DIAGONAL, fill.getGradientRotation());
@@ -121,7 +128,7 @@ public class PNMLPTNetParserTest {
 						NodeList fontList = graphicsElement.getElementsByTagName("font");
 						if (fontList.getLength() > 0) {
 							Element fontElement = (Element) fontList.item(0);
-							Font font = AbstractPNMLParser.readFont(fontElement);
+							Font font = parser.readFont(fontElement);
 							assertEquals("arial,sans-serif", font.getFamily());
 							assertEquals("italic", font.getStyle());
 							assertEquals("bold", font.getWeight());
@@ -146,7 +153,7 @@ public class PNMLPTNetParserTest {
 		for (int i = 0; i < initialMarkingList.getLength(); i++) {
 			if (initialMarkingList.item(i).getParentNode().equals(place.getDocumentElement())) {
 				Element initialMarkingElement = (Element) initialMarkingList.item(i);
-				int initialMarking = AbstractPNMLParser.readInitialMarking(initialMarkingElement);
+				int initialMarking = parser.readInitialMarking(initialMarkingElement);
 				assertTrue(initialMarking == 3);
 			}
 		}
@@ -165,7 +172,7 @@ public class PNMLPTNetParserTest {
 				NodeList lineList = graphicsElement.getElementsByTagName("line");
 				if (lineList.getLength() > 0) {
 					Element lineElement = (Element) lineList.item(0);
-					Line line = AbstractPNMLParser.readLine(lineElement);
+					Line line = parser.readLine(lineElement);
 					assertEquals(Shape.LINE, line.getShape());
 					assertEquals("black", line.getColor());
 					assertEquals(Style.SOLID, line.getStyle());
@@ -195,7 +202,7 @@ public class PNMLPTNetParserTest {
 						NodeList offsetList = graphicsElement.getElementsByTagName("offset");
 						if (offsetList.getLength() > 0) {
 							Element offsetElement = (Element) offsetList.item(0);
-							Offset offset = AbstractPNMLParser.readOffset(offsetElement);
+							Offset offset = parser.readOffset(offsetElement);
 							assertTrue(offset.getX() == 1.0);
 							assertTrue(offset.getY() == -5.0);
 						}
@@ -217,7 +224,7 @@ public class PNMLPTNetParserTest {
 						NodeList offsetList = graphicsElement.getElementsByTagName("offset");
 						if (offsetList.getLength() > 0) {
 							Element offsetElement = (Element) offsetList.item(0);
-							Offset offset = AbstractPNMLParser.readOffset(offsetElement);
+							Offset offset = parser.readOffset(offsetElement);
 							assertTrue(offset.getX() == 1.0);
 							assertTrue(offset.getY() == Offset.DEFAULT_OFFSET_Y);
 						}
@@ -237,7 +244,7 @@ public class PNMLPTNetParserTest {
 		for (int i = 0; i < capacityList.getLength(); i++) {
 			if (capacityList.item(i).getParentNode().equals(place.getDocumentElement())) {
 				Element capacityElement = (Element) capacityList.item(i);
-				int capacity = AbstractPNMLParser.readPlaceCapacity(capacityElement);
+				int capacity = parser.readPlaceCapacity(capacityElement);
 				assertTrue(capacity == 10);
 			}
 		}
@@ -257,7 +264,7 @@ public class PNMLPTNetParserTest {
 				NodeList positionList = graphicsElement.getElementsByTagName("position");
 				if (positionList.getLength() > 0) {
 					Element positionElement = (Element) positionList.item(0);
-					Position position = AbstractPNMLParser.readPosition(positionElement);
+					Position position = parser.readPosition(positionElement);
 					assertTrue(position.getX() == 20.0);
 					assertTrue(position.getY() == 25.0);
 				}
@@ -273,7 +280,7 @@ public class PNMLPTNetParserTest {
 				NodeList positionList = graphicsElement.getElementsByTagName("position");
 				if (positionList.getLength() > 0) {
 					Element positionElement = (Element) positionList.item(0);
-					Position position = AbstractPNMLParser.readPosition(positionElement);
+					Position position = parser.readPosition(positionElement);
 					assertTrue(position.getX() == 20.0);
 					assertTrue(position.getY() == Position.DEFAULT_POSITION_Y);
 				}
@@ -291,7 +298,7 @@ public class PNMLPTNetParserTest {
 		for (int j = 0; j < nameList.getLength(); j++) {
 			if (nameList.item(j).getParentNode().equals(place.getDocumentElement())) {
 				Element nameElement = (Element) nameList.item(j);
-				String text = AbstractPNMLParser.readText(nameElement);
+				String text = parser.readText(nameElement);
 				assertEquals("ready", text);
 			}
 		}

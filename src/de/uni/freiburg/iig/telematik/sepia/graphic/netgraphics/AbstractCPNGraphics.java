@@ -17,9 +17,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransit
  * @author Adrian Lange
  */
 public abstract class AbstractCPNGraphics<P extends AbstractCPNPlace<F>,
-						 		  T extends AbstractCPNTransition<F>, 
-						 		  F extends AbstractCPNFlowRelation<P,T>, 
-						 		  M extends AbstractCPNMarking> extends  AbstractPNGraphics<P, T, F, M, Multiset<String>> {
+										  T extends AbstractCPNTransition<F>, 
+										  F extends AbstractCPNFlowRelation<P,T>, 
+										  M extends AbstractCPNMarking>
+	extends AbstractPNGraphics<P, T, F, M, Multiset<String>> {
 
 	public AbstractCPNGraphics() {
 		super();

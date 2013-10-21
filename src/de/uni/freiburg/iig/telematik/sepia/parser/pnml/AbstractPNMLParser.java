@@ -1,12 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 
-import java.awt.Color;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Vector;
 
 import org.w3c.dom.Attr;
@@ -36,16 +31,14 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.A
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
 /**
- * Static reader class containing methods to read elements and attributes occurring in different net types.
+ * Abstract super class of the PNML parsers containing methods to read elements and attributes occurring in all net types.
  * 
  * @author Adrian Lange
  */
@@ -53,16 +46,18 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 										 T extends AbstractTransition<F, S>,
 										 F extends AbstractFlowRelation<P, T, S>,
 										 M extends AbstractMarking<S>,
-										 S extends Object> {
+										 S extends Object,
+										 N extends AbstractPetriNet<P, T, F, M, S>,
+										 G extends AbstractPNGraphics<P, T, F, M, S>> {
 
-	protected AbstractPetriNet<P, T, F, M, S> net;
-	protected AbstractPNGraphics<P, T, F, M, S> graphics;
+	protected N net;
+	protected G graphics;
 
-	public AbstractPNGraphics<P, T, F, M, S> getGraphics() {
+	public G getGraphics() {
 		return graphics;
 	}
 
-	public AbstractPetriNet<P, T, F, M, S> getNet() {
+	public N getNet() {
 		return net;
 	}
 
@@ -74,6 +69,11 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 * @return Petri net with graphical information
 	 */
 	public abstract AbstractGraphicalPN<P, T, F, M, S> parse(Document pnmlDocument) throws ParameterException, ParserException;
+
+	/**
+	 * Parses a PNML document into an existing instance of an {@link AbstractGraphicalPN}. Use {@link #parse(Document)} to return an {@link AbstractGraphicalPN}.
+	 */
+	public abstract void parseDocument(Document pnmlDocument) throws ParameterException, ParserException;
 
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
@@ -91,71 +91,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	protected abstract void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException;
 
 	/**
-	 * Reads the access functions of a transition in an IF-net and returns a Map<tokenColorName, Map<accessmode, boolean>>.
-	 */
-	public static Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) throws ParameterException {
-		Validate.notNull(accessFunctionsElement);
-
-		Map<String, Collection<AccessMode>> accessFunctions = new HashMap<String, Collection<AccessMode>>();
-
-		// iterate through all access functions
-		NodeList accessFunctionNodes = accessFunctionsElement.getElementsByTagName("accessfunction");
-		for (int af = 0; af < accessFunctionNodes.getLength(); af++) {
-			if (accessFunctionNodes.item(af).getNodeType() == Node.ELEMENT_NODE && accessFunctionNodes.item(af).getParentNode().equals(accessFunctionsElement)) {
-				Element accessFunctionElement = (Element) accessFunctionNodes.item(af);
-
-				// read the color element and create the access function or ignore the access function if the color can't be read
-				NodeList colorNodes = accessFunctionElement.getElementsByTagName("color");
-				if (colorNodes.getLength() > 0) {
-					Element colorElement = (Element) colorNodes.item(0);
-					if (colorElement.getTextContent().length() > 0) {
-						String color = colorElement.getTextContent();
-						Collection<AccessMode> accessModes = new HashSet<AccessMode>();
-
-						// read access modes and write set not listed modes to false
-						NodeList accessModesNodes = accessFunctionElement.getElementsByTagName("accessmodes");
-						if (accessModesNodes.getLength() > 0) {
-							Element accessModesElement = (Element) accessModesNodes.item(0);
-							if (readAccessMode(accessModesElement.getElementsByTagName("read")))
-								accessModes.add(AccessMode.READ);
-							if (readAccessMode(accessModesElement.getElementsByTagName("create")))
-								accessModes.add(AccessMode.CREATE);
-							if (readAccessMode(accessModesElement.getElementsByTagName("write")))
-								accessModes.add(AccessMode.WRITE);
-							if (readAccessMode(accessModesElement.getElementsByTagName("delete")))
-								accessModes.add(AccessMode.DELETE);
-						}
-						
-						// add access function
-						accessFunctions.put(color, accessModes);
-					}
-				}
-			}
-		}
-
-		// return null if there are no access functions
-		if (accessFunctions.isEmpty())
-			return null;
-		else
-			return accessFunctions;
-	}
-
-	/**
-	 * Returns a boolean value for the given access mode nodes.
-	 */
-	private static boolean readAccessMode(NodeList accessModeNodes) {
-		if (accessModeNodes.getLength() > 0) {
-			Element accessModeElement = (Element) accessModeNodes.item(0);
-			if (accessModeElement.getTextContent().equals("true"))
-				return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Reads the graphical information of an annotation element and returns a {@link AnnotationGraphics} object.
 	 */
-	public static AnnotationGraphics readAnnotationGraphicsElement(Element annotationGraphicsElement) throws ParameterException, ParserException {
+	public AnnotationGraphics readAnnotationGraphicsElement(Element annotationGraphicsElement) throws ParameterException, ParserException {
 		Validate.notNull(annotationGraphicsElement);
 
 		String elementType = annotationGraphicsElement.getNodeName();
@@ -197,7 +135,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of an arc element and returns a {@link ArcGraphics} object.
 	 */
-	public static ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
+	public ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
 		Validate.notNull(arcGraphicsElement);
 
 		String elementType = arcGraphicsElement.getNodeName();
@@ -233,37 +171,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Reads an initial color marking tag and returns its values as {@link Map}.
-	 */
-	public static Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
-		Validate.notNull(colorInscriptionNode);
-
-		Element initialColorMarkingElement = (Element) colorInscriptionNode;
-		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
-		Map<String, Integer> colorInscription = new HashMap<String, Integer>();
-
-		if (colorNodes.getLength() > 0) {
-			for (int c = 0; c < colorNodes.getLength(); c++) {
-				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
-					String color = colorNodes.item(c).getTextContent();
-					if (colorInscription.containsKey(color))
-						colorInscription.put(color, colorInscription.get(color) + 1);
-					else
-						colorInscription.put(color, 1);
-				}
-			}
-		}
-
-		if (colorInscription.isEmpty())
-			return null;
-		else
-			return colorInscription;
-	}
-
-	/**
 	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
-	public static Dimension readDimension(Element dimensionNode) throws ParameterException {
+	public Dimension readDimension(Element dimensionNode) throws ParameterException {
 		Validate.notNull(dimensionNode);
 
 		Dimension dimension = new Dimension();
@@ -293,7 +203,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a fill tag and returns it as {@link Fill}.
 	 */
-	public static Fill readFill(Element fillNode) throws ParameterException {
+	public Fill readFill(Element fillNode) throws ParameterException {
 		Validate.notNull(fillNode);
 
 		Fill fill = new Fill();
@@ -341,7 +251,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a font tag and returns it as {@link Font}.
 	 */
-	public static Font readFont(Element fontNode) throws ParameterException {
+	public Font readFont(Element fontNode) throws ParameterException {
 		Validate.notNull(fontNode);
 
 		Font font = new Font();
@@ -405,7 +315,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphics tag of the given element.
 	 */
-	public static AbstractObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
+	public AbstractObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
 		Validate.notNull(element);
 
 		// get node element type
@@ -422,37 +332,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Reads an initial color marking tag and returns its values as {@link Map}.
-	 */
-	public static Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) throws ParameterException {
-		Validate.notNull(initialColorMarkingNode);
-
-		Element initialColorMarkingElement = (Element) initialColorMarkingNode;
-		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
-		Map<String, Integer> initialColorMarking = new HashMap<String, Integer>();
-
-		if (colorNodes.getLength() > 0) {
-			for (int c = 0; c < colorNodes.getLength(); c++) {
-				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
-					String color = colorNodes.item(c).getTextContent();
-					if (initialColorMarking.containsKey(color))
-						initialColorMarking.put(color, initialColorMarking.get(color) + 1);
-					else
-						initialColorMarking.put(color, 1);
-				}
-			}
-		}
-
-		if (initialColorMarking.isEmpty())
-			return null;
-		else
-			return initialColorMarking;
-	}
-
-	/**
 	 * Reads an initial marking tag and returns its value as {@link Integer}.
 	 */
-	public static int readInitialMarking(Node initialMarkingNode) throws XMLParserException, ParameterException {
+	public int readInitialMarking(Node initialMarkingNode) throws XMLParserException, ParameterException {
 		Validate.notNull(initialMarkingNode);
 
 		String markingStr = readText(initialMarkingNode);
@@ -467,7 +349,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a line tag and returns it as {@link Line}.
 	 */
-	public static Line readLine(Element lineNode) throws ParameterException {
+	public Line readLine(Element lineNode) throws ParameterException {
 		Validate.notNull(lineNode);
 
 		Line line = new Line();
@@ -513,7 +395,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the ID-attribute of the net-tag in a PNML document.
 	 */
-	public static String readNetName(Document pnmlDocument) {
+	public String readNetName(Document pnmlDocument) {
 		// Read net ID as name
 		NodeList netList = pnmlDocument.getElementsByTagName("net");
 		for (int i = 0; i < netList.getLength(); i++) {
@@ -533,7 +415,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of a node element line a place or a transition and returns a {@link NodeGraphics} object.
 	 */
-	public static NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParameterException, ParserException {
+	public NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParameterException, ParserException {
 		Validate.notNull(nodeGraphicsElement);
 
 		String elementType = nodeGraphicsElement.getNodeName();
@@ -575,7 +457,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads an offset tag and returns it as {@link Offset}. If validated, an offset tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
-	public static Offset readOffset(Element offsetNode) throws ParameterException {
+	public Offset readOffset(Element offsetNode) throws ParameterException {
 		Validate.notNull(offsetNode);
 
 		Offset offset = new Offset();
@@ -603,67 +485,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Gets the place capacity element of a PN and returns an {@link Integer} value.
-	 */
-	public static Integer readPlaceCapacity(Element placeCapacityElement) throws ParameterException, PNMLParserException {
-		Validate.notNull(placeCapacityElement);
-
-		int capacity = Integer.parseInt(placeCapacityElement.getTextContent());
-
-		if (capacity < 1)
-			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or higher.");
-
-		return capacity;
-	}
-
-	/**
-	 * Gets the place color capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
-	 */
-	public static Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
-		Validate.notNull(placeCapacitiesElement);
-
-		Map<String, Integer> placeCapacities = new HashMap<String, Integer>();
-
-		NodeList placeCapacitiesList = placeCapacitiesElement.getElementsByTagName("colorcapacity");
-		for (int i = 0; i < placeCapacitiesList.getLength(); i++) {
-			Element placeCapacityElement = (Element) placeCapacitiesList.item(i);
-			if (placeCapacityElement.getNodeType() == Node.ELEMENT_NODE && placeCapacityElement.getParentNode().equals(placeCapacitiesElement)) {
-
-				NodeList colorNameList = placeCapacityElement.getElementsByTagName("color");
-				if (colorNameList.getLength() == 0) // take first occurrence
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No color name element specified.");
-				String colorName = ((Element) colorNameList.item(0)).getTextContent();
-
-				if (colorName.length() == 0)
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Color token name must at least have a length of one.");
-
-				NodeList capacityList = placeCapacityElement.getElementsByTagName("capacity");
-				if (capacityList.getLength() == 0) // take first occurrence
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No capacity element specified.");
-				int capacity = Integer.parseInt(((Element) capacityList.item(0)).getTextContent());
-
-				if (capacity < 1)
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or bigger.");
-
-				if (placeCapacities.containsKey(colorName) == false)
-					placeCapacities.put(colorName, capacity);
-				else if (placeCapacities.get(colorName) == capacity) {
-					// do nothing
-				} else
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "There are different capacity assignments defined for the same place and token color name \"" + colorName + "\": " + capacity + " and " + placeCapacities.get(colorName) + ".");
-			}
-		}
-
-		if (placeCapacities.size() > 0)
-			return placeCapacities;
-		else
-			return null;
-	}
-
-	/**
 	 * Reads a position tag and returns it as {@link Position}. If validated, a position tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
-	public static Position readPosition(Element positionNode) throws ParameterException {
+	public Position readPosition(Element positionNode) throws ParameterException {
 		Validate.notNull(positionNode);
 
 		Position position = new Position();
@@ -693,7 +517,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the content of text tags and returns them as string.
 	 */
-	public static String readText(Node textNode) throws XMLParserException, ParameterException {
+	public String readText(Node textNode) throws XMLParserException, ParameterException {
 		Validate.notNull(textNode);
 
 		if (textNode.getNodeType() != Node.ELEMENT_NODE)
@@ -714,52 +538,9 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
-	 * Gets the tokencolors element of a CPN, CWN, or IFNet and returns a {@link Map} containing all color values for the specific token color names.
-	 */
-	public static Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException, PNMLParserException {
-		Validate.notNull(tokenColorsElement);
-
-		Map<String, Color> tokenColors = new HashMap<String, Color>();
-
-		NodeList tokenColorList = tokenColorsElement.getElementsByTagName("tokencolor");
-		for (int i = 0; i < tokenColorList.getLength(); i++) {
-			Element tokenColorElement = (Element) tokenColorList.item(i);
-			if (tokenColorElement.getNodeType() == Node.ELEMENT_NODE) {
-
-				NodeList colorNameList = tokenColorElement.getElementsByTagName("color");
-				if (colorNameList.getLength() != 1)
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No color name element specified.");
-				String colorName = ((Element) colorNameList.item(0)).getTextContent();
-
-				NodeList rgbColorList = tokenColorElement.getElementsByTagName("rgbcolor");
-				if (rgbColorList.getLength() != 1)
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No RGB color element specified.");
-				Element rgbColor = (Element) rgbColorList.item(0);
-
-				int red = 0;
-				int green = 0;
-				int blue = 0;
-				NodeList redElements = rgbColor.getElementsByTagName("r");
-				if (redElements.getLength() == 1)
-					red = Integer.parseInt(((Element) redElements.item(0)).getTextContent());
-				NodeList greenElements = rgbColor.getElementsByTagName("g");
-				if (greenElements.getLength() == 1)
-					green = Integer.parseInt(((Element) greenElements.item(0)).getTextContent());
-				NodeList blueElements = rgbColor.getElementsByTagName("b");
-				if (blueElements.getLength() == 1)
-					blue = Integer.parseInt(((Element) blueElements.item(0)).getTextContent());
-				Color color = new Color(red, green, blue);
-				tokenColors.put(colorName, color);
-			}
-		}
-
-		return tokenColors;
-	}
-
-	/**
 	 * Gets a tokenposition node and reads its x and y attributes. Returns a {@link Position}.
 	 */
-	public static Position readTokenPosition(Element tokenPositionNode) throws ParameterException {
+	public Position readTokenPosition(Element tokenPositionNode) throws ParameterException {
 		Validate.notNull(tokenPositionNode);
 
 		Position tokenPosition = new Position();
@@ -786,87 +567,15 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		return tokenPosition;
 	}
 
-	/**
-	 * Reads the type of a transition of an IF-net. If there's no transition type, it returns the type "regular".
-	 */
-	public String readTransitionType(Element transitionElement) throws ParameterException {
-		Validate.notNull(transitionElement);
-
-		NodeList transitionTypeNodes = transitionElement.getElementsByTagName("transitiontype");
-		if (transitionTypeNodes.getLength() > 0) {
-			// Iterate through all text nodes and take only that with the given node as parent
-			for (int i = 0; i < transitionTypeNodes.getLength(); i++) {
-				if (transitionTypeNodes.item(i).getNodeType() == Node.ELEMENT_NODE && transitionTypeNodes.item(i).getParentNode().equals(transitionElement)) {
-					Element transitionType = (Element) transitionTypeNodes.item(i);
-					return transitionType.getTextContent();
-				}
-			}
-		}
-		return "regular";
-	}
-
-	public void setGraphics(AbstractPNGraphics<P, T, F, M, S> graphics) throws ParameterException {
+	public void setGraphics(G graphics) throws ParameterException {
 		Validate.notNull(graphics);
 
 		this.graphics = graphics;
 	}
 
-	public void setNet(AbstractPetriNet<P, T, F, M, S> net) {
+	public void setNet(N net) throws ParameterException {
+		Validate.notNull(graphics);
+
 		this.net = net;
-	}
-
-	/**
-	 * Helper class to temporary save firing rules for a place
-	 * 
-	 * @author Adrian Lange
-	 */
-	protected class PlaceFiringRules {
-
-		private Map<String, Integer> incomingColorTokens = new HashMap<String, Integer>();
-		private Map<String, Integer> outgoingColorTokens = new HashMap<String, Integer>();
-
-		/**
-		 * Adds a specified amount of color tokens to the incoming color tokens.
-		 */
-		public void addIncomingColorTokens(String color, int amount) throws ParameterException {
-			Validate.notNegative(amount);
-
-			if (incomingColorTokens.containsKey(color)) {
-				int oldValue = incomingColorTokens.get(color);
-				incomingColorTokens.put(color, oldValue + amount);
-			} else {
-				incomingColorTokens.put(color, amount);
-			}
-		}
-
-		/**
-		 * Adds a specified amount of color tokens to the outgoing color tokens.
-		 */
-		public void addOutgoingColorTokens(String color, int amount) throws ParameterException {
-	Validate.notNegative(amount);
-
-			if (outgoingColorTokens.containsKey(color)) {
-				int oldValue = outgoingColorTokens.get(color);
-				outgoingColorTokens.put(color, oldValue + amount);
-			} else {
-				outgoingColorTokens.put(color, amount);
-			}
-		}
-
-		public Map<String, Integer> getIncomingColorTokens() {
-			return incomingColorTokens;
-		}
-
-		public Map<String, Integer> getOutgoingColorTokens() {
-			return outgoingColorTokens;
-		}
-
-		public void setIncomingColorTokens(Map<String, Integer> incomingColorTokens) {
-			this.incomingColorTokens = incomingColorTokens;
-		}
-
-		public void setOutgoingColorTokens(Map<String, Integer> outgoingColorTokens) {
-			this.outgoingColorTokens = outgoingColorTokens;
-		}
 	}
 }

@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -16,47 +16,45 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
+import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CWNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PlaceFiringRules;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 
 /**
  * <p>
- * Parser for CWNs. The process of parsing a PNML file is the following:
+ * Abstract parser for abstract CPNs.
  * </p>
- * <ol>
- * <li>Check if the document is well-formed XML.</li>
- * <li>Determine net type by reading the net type URI (get type from URINettypeRefs table).</li>
- * <li>Read the net type specific net components. To avoid violating a constraint, the objects must be read in multiple iterations:
- * <ol>
- * <li>Read nodes (places and transitions) with their marking and labeling.</li>
- * <li>Read edges (arcs) with their annotations and specific starting and ending nodes.</li>
- * </ol>
- * </li>
- * </ol>
  * 
  * @author Adrian Lange
  */
-public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>> {
+public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
+											T extends AbstractCPNTransition<F>,
+											F extends AbstractCPNFlowRelation<P, T>,
+											M extends AbstractCPNMarking,
+											N extends AbstractCPN<P, T, F, M>,
+											G extends AbstractCPNGraphics<P, T, F, M>>
+
+	extends AbstractPNMLParser<P, T, F, M, Multiset<String>, N, G> {
 
 	private Map<String, Color> tokencolors = null;
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
 
-	public GraphicalCWN parse(Document pnmlDocument) throws ParameterException, ParserException {
-
-		net = new CWN();
-		graphics = new CWNGraphics();
+	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
 
 		// Check if the net is defined on a single page
 		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
@@ -86,12 +84,10 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 		String netName = readNetName(pnmlDocument);
 		if (netName != null)
 			net.setName(netName);
-
-		return new GraphicalCWN(net, graphics);
 	}
 
 	/**
-	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalCWN}.
+	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link Abstract}.
 	 */
 	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
 
@@ -104,20 +100,20 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				String targetName = arc.getAttribute("target");
 
 				// get inscriptions
-				int inscription = 1;
+				int inscription = 0;
 				Map<String, Integer> colorInscription = null;
 				NodeList arcInscriptions = arc.getElementsByTagName("inscription");
 				if (arcInscriptions.getLength() == 1) {
 					Element inscriptionElement = (Element) arcInscriptions.item(0);
 					String inscriptionStr = readText(inscriptionElement);
-					if (inscriptionStr != null && Integer.parseInt(inscriptionStr) > 0)
+					if (inscriptionStr != null)
 						inscription = Integer.parseInt(inscriptionStr);
 					NodeList arcColorInscriptions = inscriptionElement.getElementsByTagName("colors");
 					if (arcColorInscriptions.getLength() == 1)
 						colorInscription = readColorInscription(arcColorInscriptions.item(0));
 				}
 
-				CWNFlowRelation flowRelation;
+				F flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
 					flowRelation = getNet().addFlowRelationPT(sourceName, targetName);
@@ -129,10 +125,10 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
-							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addOutgoingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(targetName).put(sourceName, tempPlaceFiringRule);
 						}
 					}
@@ -171,10 +167,10 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
-							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addIncomingColorTokens(CWN.CONTROL_FLOW_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
 							transitionFiringRules.get(sourceName).put(targetName, tempPlaceFiringRule);
 						}
 					}
@@ -226,11 +222,11 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 	}
 
 	/**
-	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalCWN}.
+	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractCPNGraphics}.
 	 */
 	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
-		CWNMarking marking = new CWNMarking();
+		M marking = net.getMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
 			Node placeNode = placeNodes.item(p);
 			if (placeNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -264,7 +260,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
 					} else if (initialMarking > 0) {
 						for (int i = 0; i < initialMarking; i++) {
-							markingMultiset.add(CWN.CONTROL_FLOW_TOKEN_COLOR);
+							markingMultiset.add(CPN.DEFAULT_TOKEN_COLOR);
 						}
 
 						// graphics
@@ -308,7 +304,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 					// If node is element node and is direct child of the place node
 					if (placeCapacitiesList.item(i).getNodeType() == Node.ELEMENT_NODE && placeCapacitiesList.item(i).getParentNode().equals(place)) {
 						Element placeCapacitiesElement = (Element) placeCapacitiesList.item(i);
-						CWNPlace currentPlace = net.getPlace(placeName);
+						P currentPlace = net.getPlace(placeName);
 
 						Map<String, Integer> placeCapacities = readPlaceColorCapacities(placeCapacitiesElement);
 						// add place color capacities
@@ -330,7 +326,7 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 	}
 
 	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalCWN}.
+	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractCPNGraphics}.
 	 */
 	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
 		// read and add each transition
@@ -360,35 +356,176 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
 					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
-
-				// transitions have no inscription/marking
 			}
 		}
 	}
 
-	private void addFiringRulesToNet() throws ParameterException {
+	protected void addFiringRulesToNet() throws ParameterException {
 		for (Map.Entry<String, Map<String, PlaceFiringRules>> placeFiringRules : transitionFiringRules.entrySet()) {
 			FiringRule firingRule = new FiringRule();
-
+	
 			for (Entry<String, PlaceFiringRules> placeRule : placeFiringRules.getValue().entrySet()) {
 				if (placeRule.getValue().getOutgoingColorTokens().size() > 0)
 					firingRule.addRequirement(placeRule.getKey(), placeRule.getValue().getOutgoingColorTokens());
 				if (placeRule.getValue().getIncomingColorTokens().size() > 0)
 					firingRule.addProduction(placeRule.getKey(), placeRule.getValue().getIncomingColorTokens());
 			}
-
+	
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
 				getNet().addFiringRule(placeFiringRules.getKey(), firingRule);
 		}
 	}
-	
+
 	@Override
-	public CWNGraphics getGraphics() {
-		return (CWNGraphics) graphics;
+	public G getGraphics() {
+		return (G) graphics;
 	}
 
 	@Override
-	public CWN getNet() {
-		return (CWN) net;
+	public N getNet() {
+		return (N) net;
+	}
+
+	/**
+	 * Reads an initial color marking tag and returns its values as {@link Map}.
+	 */
+	public Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
+		Validate.notNull(colorInscriptionNode);
+
+		Element initialColorMarkingElement = (Element) colorInscriptionNode;
+		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
+		Map<String, Integer> colorInscription = new HashMap<String, Integer>();
+
+		if (colorNodes.getLength() > 0) {
+			for (int c = 0; c < colorNodes.getLength(); c++) {
+				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
+					String color = colorNodes.item(c).getTextContent();
+					if (colorInscription.containsKey(color))
+						colorInscription.put(color, colorInscription.get(color) + 1);
+					else
+						colorInscription.put(color, 1);
+				}
+			}
+		}
+
+		if (colorInscription.isEmpty())
+			return null;
+		else
+			return colorInscription;
+	}
+
+	/**
+	 * Reads an initial color marking tag and returns its values as {@link Map}.
+	 */
+	public Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) throws ParameterException {
+		Validate.notNull(initialColorMarkingNode);
+
+		Element initialColorMarkingElement = (Element) initialColorMarkingNode;
+		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
+		Map<String, Integer> initialColorMarking = new HashMap<String, Integer>();
+
+		if (colorNodes.getLength() > 0) {
+			for (int c = 0; c < colorNodes.getLength(); c++) {
+				if (colorNodes.item(c).getNodeType() == Node.ELEMENT_NODE) {
+					String color = colorNodes.item(c).getTextContent();
+					if (initialColorMarking.containsKey(color))
+						initialColorMarking.put(color, initialColorMarking.get(color) + 1);
+					else
+						initialColorMarking.put(color, 1);
+				}
+			}
+		}
+
+		if (initialColorMarking.isEmpty())
+			return null;
+		else
+			return initialColorMarking;
+	}
+
+	/**
+	 * Gets the place color capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
+	 */
+	public Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
+		Validate.notNull(placeCapacitiesElement);
+
+		Map<String, Integer> placeCapacities = new HashMap<String, Integer>();
+
+		NodeList placeCapacitiesList = placeCapacitiesElement.getElementsByTagName("colorcapacity");
+		for (int i = 0; i < placeCapacitiesList.getLength(); i++) {
+			Element placeCapacityElement = (Element) placeCapacitiesList.item(i);
+			if (placeCapacityElement.getNodeType() == Node.ELEMENT_NODE && placeCapacityElement.getParentNode().equals(placeCapacitiesElement)) {
+
+				NodeList colorNameList = placeCapacityElement.getElementsByTagName("color");
+				if (colorNameList.getLength() == 0) // take first occurrence
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No color name element specified.");
+				String colorName = ((Element) colorNameList.item(0)).getTextContent();
+
+				if (colorName.length() == 0)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Color token name must at least have a length of one.");
+
+				NodeList capacityList = placeCapacityElement.getElementsByTagName("capacity");
+				if (capacityList.getLength() == 0) // take first occurrence
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No capacity element specified.");
+				int capacity = Integer.parseInt(((Element) capacityList.item(0)).getTextContent());
+
+				if (capacity < 1)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or bigger.");
+
+				if (placeCapacities.containsKey(colorName) == false)
+					placeCapacities.put(colorName, capacity);
+				else if (placeCapacities.get(colorName) == capacity) {
+					// do nothing
+				} else
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "There are different capacity assignments defined for the same place and token color name \"" + colorName + "\": " + capacity + " and " + placeCapacities.get(colorName) + ".");
+			}
+		}
+
+		if (placeCapacities.size() > 0)
+			return placeCapacities;
+		else
+			return null;
+	}
+
+	/**
+	 * Gets the tokencolors element of a CPN, CWN, or IFNet and returns a {@link Map} containing all color values for the specific token color names.
+	 */
+	public Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException, PNMLParserException {
+		Validate.notNull(tokenColorsElement);
+
+		Map<String, Color> tokenColors = new HashMap<String, Color>();
+
+		NodeList tokenColorList = tokenColorsElement.getElementsByTagName("tokencolor");
+		for (int i = 0; i < tokenColorList.getLength(); i++) {
+			Element tokenColorElement = (Element) tokenColorList.item(i);
+			if (tokenColorElement.getNodeType() == Node.ELEMENT_NODE) {
+
+				NodeList colorNameList = tokenColorElement.getElementsByTagName("color");
+				if (colorNameList.getLength() != 1)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No color name element specified.");
+				String colorName = ((Element) colorNameList.item(0)).getTextContent();
+
+				NodeList rgbColorList = tokenColorElement.getElementsByTagName("rgbcolor");
+				if (rgbColorList.getLength() != 1)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "No RGB color element specified.");
+				Element rgbColor = (Element) rgbColorList.item(0);
+
+				int red = 0;
+				int green = 0;
+				int blue = 0;
+				NodeList redElements = rgbColor.getElementsByTagName("r");
+				if (redElements.getLength() == 1)
+					red = Integer.parseInt(((Element) redElements.item(0)).getTextContent());
+				NodeList greenElements = rgbColor.getElementsByTagName("g");
+				if (greenElements.getLength() == 1)
+					green = Integer.parseInt(((Element) greenElements.item(0)).getTextContent());
+				NodeList blueElements = rgbColor.getElementsByTagName("b");
+				if (blueElements.getLength() == 1)
+					blue = Integer.parseInt(((Element) blueElements.item(0)).getTextContent());
+				Color color = new Color(red, green, blue);
+				tokenColors.put(colorName, color);
+			}
+		}
+
+		return tokenColors;
 	}
 }

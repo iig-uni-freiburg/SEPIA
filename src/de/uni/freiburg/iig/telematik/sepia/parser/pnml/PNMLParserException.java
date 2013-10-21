@@ -32,10 +32,11 @@ public class PNMLParserException extends ParserException {
 		this.object = object;
 	}
 
+	@Override
 	public Object getObject() {
 		return object;
 	}
-	
+
 	@Override
 	protected StringBuffer checkErrorCode() {
 		StringBuffer buffer = new StringBuffer();
@@ -65,10 +66,7 @@ public class PNMLParserException extends ParserException {
 		return buffer;
 	}
 
-
-
 	public enum ErrorCode {
 		INVALID_FLOW_RELATION, INVALID_NET_TYPE, MISSING_NET_TAG, MISSING_NET_TYPE_ATTRIBUTE, NOT_ON_ONE_PAGE, VALIDATION_FAILED, VALIDATION_CONFIGURATION_ERROR;
 	}
-
 }

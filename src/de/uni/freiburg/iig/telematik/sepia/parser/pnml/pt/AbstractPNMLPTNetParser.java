@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,42 +10,39 @@ import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
+import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 
 /**
  * <p>
- * Parser for PT nets. The process of parsing a PNML file is the following:
+ * Abstract parser for abstract PT nets.
  * </p>
- * <ol>
- * <li>Check if the document is well-formed XML.</li>
- * <li>Determine net type by reading the net type URI (get type from URINettypeRefs table).</li>
- * <li>Read the net type specific net components. To avoid violating a constraint, the objects must be read in multiple iterations:
- * <ol>
- * <li>Read nodes (places and transitions) with their marking and labeling.</li>
- * <li>Read edges (arcs) with their annotations and specific starting and ending nodes.</li>
- * </ol>
- * </li>
- * </ol>
  * 
  * @author Adrian Lange
  */
-public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
+public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
+											  T extends AbstractPTTransition<F>,
+											  F extends AbstractPTFlowRelation<P, T>,
+											  M extends AbstractPTMarking,
+											  N extends AbstractPTNet<P, T, F, M>,
+											  G extends AbstractPTGraphics<P, T, F, M>>
 
-	public GraphicalPTNet parse(Document pnmlDocument) throws ParameterException, ParserException {
+	extends AbstractPNMLParser<P, T, F, M, Integer, N, G> {
 
-		net = new PTNet();
-		graphics = new PTGraphics();
+	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
 
 		// Check if the net is defined on a single page
 		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
@@ -65,12 +62,10 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 		String netName = readNetName(pnmlDocument);
 		if (netName != null)
 			net.setName(netName);
-
-		return new GraphicalPTNet(net, graphics);
 	}
 
 	/**
-	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
+	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
 		// read and add each arc/flow relation
@@ -90,7 +85,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 						inscription = Integer.parseInt(inscriptionStr);
 				}
 
-				PTFlowRelation flowRelation;
+				F flowRelation;
 				// if PT relation
 				if (net.getPlace(sourceName) != null && net.getTransition(targetName) != null) {
 					flowRelation = getNet().addFlowRelationPT(sourceName, targetName, inscription);
@@ -123,11 +118,11 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 	}
 
 	/**
-	 * Reads all places given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
+	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
-		PTMarking marking = new PTMarking();
+		M marking = net.getMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
 			Node placeNode = placeNodes.item(p);
 			if (placeNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -183,7 +178,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 						Integer placeCapacity = readPlaceCapacity(placeCapacitiesElement);
 						// add place capacity
 						if (placeCapacity != null) {
-							PTPlace currentPlace = net.getPlace(placeName);
+							P currentPlace = net.getPlace(placeName);
 							currentPlace.setCapacity(placeCapacity);
 						}
 					}
@@ -199,7 +194,7 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 	}
 
 	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalPTNet}.
+	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
 		// read and add each transition
@@ -234,14 +229,28 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 			}
 		}
 	}
-	
+
 	@Override
-	public PTGraphics getGraphics() {
-		return (PTGraphics) graphics;
+	public G getGraphics() {
+		return (G) graphics;
 	}
 
 	@Override
-	public PTNet getNet() {
-		return (PTNet) net;
+	public N getNet() {
+		return (N) net;
+	}
+
+	/**
+	 * Gets the place capacity element of a PN and returns an {@link Integer} value.
+	 */
+	public Integer readPlaceCapacity(Element placeCapacityElement) throws ParameterException, PNMLParserException {
+		Validate.notNull(placeCapacityElement);
+
+		int capacity = Integer.parseInt(placeCapacityElement.getTextContent());
+
+		if (capacity < 1)
+			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Capacity must be 1 or higher.");
+
+		return capacity;
 	}
 }

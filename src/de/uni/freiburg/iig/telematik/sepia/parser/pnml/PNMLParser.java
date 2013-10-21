@@ -24,6 +24,10 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.PNMLCWNParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.ParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -220,7 +224,7 @@ public class PNMLParser implements ParserInterface {
 	 *            PNML file to read
 	 * @return Readable, well-formed and normalized PNML document
 	 */
-	protected static Document readRNGFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
+	public static Document readRNGFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
 
 		// Check if pnmlFile exists and is readable
@@ -253,7 +257,7 @@ public class PNMLParser implements ParserInterface {
 	 * @param pntdUrl
 	 *            {@link URL} of the petri net type definition
 	 */
-	protected static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
+	public static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
 		VerifierFactory factory = null;
 		try {
