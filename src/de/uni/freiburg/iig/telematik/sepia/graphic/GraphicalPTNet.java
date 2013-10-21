@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
@@ -27,7 +28,7 @@ public class GraphicalPTNet extends AbstractGraphicalPN<PTPlace, PTTransition, P
 	}
 
 	@Override
-	public AbstractPTGraphics getPetriNetGraphics() {
-		return (AbstractPTGraphics) super.getPetriNetGraphics();
+	public PTGraphics getPetriNetGraphics() {
+		return (PTGraphics) super.getPetriNetGraphics();
 	}
 }
