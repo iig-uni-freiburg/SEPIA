@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.GuardDataContainer;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.GuardDataContainer;
 
 /**
  * An implemetation of the interface GuardDataContainer used to test SNets.

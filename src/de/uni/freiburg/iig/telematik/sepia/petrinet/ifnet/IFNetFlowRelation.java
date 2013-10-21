@@ -1,20 +1,21 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 
-public class IFNetFlowRelation extends AbstractCWNFlowRelation<IFNetPlace, AbstractIFNetTransition> {
+public class IFNetFlowRelation extends AbstractIFNetFlowRelation<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>> {
 
-	public IFNetFlowRelation(IFNetPlace place, AbstractIFNetTransition transition) throws ParameterException {
+	public IFNetFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) throws ParameterException {
 		super(place, transition);
 	}
 
-	public IFNetFlowRelation(AbstractIFNetTransition transition, IFNetPlace place) throws ParameterException {
+	public IFNetFlowRelation(AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetPlace place) throws ParameterException {
 		super(transition, place);
 	}
 
 	@Override
-	public IFNetFlowRelation clone(IFNetPlace place, AbstractIFNetTransition transition, boolean directionPT) {
+	public IFNetFlowRelation clone(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition, boolean directionPT) {
 		IFNetFlowRelation result = null;
 		try {
 			// Can't set direction afterwards. The default name could be wrong then when testing for equality.

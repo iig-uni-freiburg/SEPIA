@@ -163,7 +163,7 @@ public class DeclassificationTransitionTest {
 		dtOutRelation.setConstraint(constraint);
 
 		try {
-			td.checkValidity();
+			dSNet.checkValidity();
 			fail("An invalid declassification transition is reported to be valid.");
 		} catch (PNValidationException e) {
 		}
@@ -231,7 +231,7 @@ public class DeclassificationTransitionTest {
 		dt2OutRel.setConstraint(dtOutRelation.getConstraint());
 
 		try {
-			td.checkValidity();
+			dSNet.checkValidity();
 			fail("An invalid declassification transition is reported to be valid.");
 		} catch (PNValidationException e) {
 		}
@@ -364,7 +364,7 @@ public class DeclassificationTransitionTest {
 
 		DeclassificationTransition dt = null;
 		try {
-			dt = new DeclassificationTransition(dSNet, "dec", true);
+			dt = new DeclassificationTransition("dec", true);
 		} catch (ParameterException e) {
 			fail("Cannot create DeclassificationTransition.");
 		}
@@ -376,7 +376,7 @@ public class DeclassificationTransitionTest {
 
 		DeclassificationTransition dt2 = null;
 		try {
-			dt2 = new DeclassificationTransition(dSNet, "dec", false);
+			dt2 = new DeclassificationTransition("dec", false);
 		} catch (ParameterException e) {
 			fail("Cannot create DeclassificationTransition.");
 		}
@@ -396,7 +396,7 @@ public class DeclassificationTransitionTest {
 
 		DeclassificationTransition dt = null;
 		try {
-			dt = new DeclassificationTransition(dSNet, "dec");
+			dt = new DeclassificationTransition("dec");
 		} catch (ParameterException e) {
 			fail("Cannot create DeclassificationTransition.");
 		}
@@ -426,7 +426,5 @@ public class DeclassificationTransitionTest {
 		assertEquals(t.isDrain(), tClone.isDrain());
 		assertEquals(t.isSource(), tClone.isSource());
 		assertEquals(t.isTransition(), tClone.isTransition());
-		assertEquals(t.getIFNet(), tClone.getIFNet());
-		assertTrue(t.getIFNet() == tClone.getIFNet());
 	}
 }

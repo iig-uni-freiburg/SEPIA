@@ -43,7 +43,7 @@ public class PTSerializer_PNML<P extends AbstractPTPlace<F>,
 		inscriptionElement.appendChild(textElement);
 		
 		if(annotationGraphics != null && annotationGraphics.hasContent()){
-			Element graphicsElement = getTextGraphics(annotationGraphics);
+			Element graphicsElement = createTextGraphicsElement(annotationGraphics);
 			if(graphicsElement != null)
 				inscriptionElement.appendChild(graphicsElement);
 		}

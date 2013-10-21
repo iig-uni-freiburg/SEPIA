@@ -2,12 +2,13 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import de.invation.code.toval.misc.SetUtils;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -93,6 +94,10 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		} else {
 			return -1;
 		}
+	}
+	
+	public Set<String> getColorsWithCapacityRestriction(){
+		return colorCapacity.keySet();
 	}
 	
 	public boolean hasCapacityRestriction(String color) throws ParameterException{

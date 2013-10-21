@@ -13,10 +13,11 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.CPNSerializer_PNML;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.IFNetSerializer_PNML;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_PNML;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_Petrify;
 
@@ -35,10 +36,11 @@ public class PNSerialization {
 		
 		switch(format){
 		case PNML:
-			if(net.getPetriNet() instanceof AbstractCWN){
-				
+			if(net.getPetriNet() instanceof IFNet){
+				return new IFNetSerializer_PNML(net);
 			}
 			if(net.getPetriNet() instanceof AbstractCPN){
+				// CWNs fall into this category.
 				return new CPNSerializer_PNML(net);
 			}
 			if(net.getPetriNet() instanceof AbstractPTNet){
@@ -68,10 +70,11 @@ public class PNSerialization {
 		
 		switch(format){
 		case PNML:
-			if(net instanceof AbstractCWN){
-				
+			if(net instanceof IFNet){
+				return (PNSerializer<P, T, F, M, S>) new IFNetSerializer_PNML(net);
 			}
 			if(net instanceof AbstractCPN){
+				// CWNs fall into this category.
 				return new CPNSerializer_PNML(net);
 			}
 			if(net instanceof AbstractPTNet){

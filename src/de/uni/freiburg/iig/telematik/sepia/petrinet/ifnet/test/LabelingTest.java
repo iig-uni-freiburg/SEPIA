@@ -16,8 +16,8 @@ import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.Labeling;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.SecurityLevel;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
 
 public class LabelingTest {
 

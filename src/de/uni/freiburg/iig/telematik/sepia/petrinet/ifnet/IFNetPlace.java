@@ -1,9 +1,9 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetPlace;
 
-public class IFNetPlace extends AbstractCWNPlace<IFNetFlowRelation> {
+public class IFNetPlace extends AbstractIFNetPlace<IFNetFlowRelation> {
 	
 	protected IFNetPlace(){
 		super();

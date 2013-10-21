@@ -1,9 +1,9 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMarking;
 
-public class IFNetMarking extends AbstractCWNMarking {
+public class IFNetMarking extends AbstractIFNetMarking {
 
 	public IFNetMarking() {
 		super();

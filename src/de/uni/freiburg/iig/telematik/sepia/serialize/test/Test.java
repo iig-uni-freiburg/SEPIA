@@ -28,10 +28,15 @@ public class Test {
 //		System.out.println(net.getPetriNet());
 //		System.out.println(PNSerialization.serialize(net, PNSerializationFormat.PNML));
 		
-		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/cpn.pnml");
+//		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/cpn.pnml");
+//		System.out.println(net.getPetriNet().getNetType());
+//		System.out.println(net.getPetriNet());
+//		PNSerialization.serialize(net.getPetriNet(), PNSerializationFormat.PNML, "/Users/stocker/Desktop/cpnout.pnml");
+		
+		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ifnet.pnml");
 		System.out.println(net.getPetriNet().getNetType());
 		System.out.println(net.getPetriNet());
-		PNSerialization.serialize(net.getPetriNet(), PNSerializationFormat.PNML, "/Users/stocker/Desktop/cpnout.pnml");
+		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/ifnetout.pnml");
 	}
 
 }

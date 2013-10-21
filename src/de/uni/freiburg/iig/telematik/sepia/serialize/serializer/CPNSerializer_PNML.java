@@ -63,6 +63,26 @@ public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>,
 	}
 
 	@Override
+	protected void addCapacity(P place, Element placeElement) {
+		if(place.getCapacity() >= 0){
+			Element capacitiesElement = createElement("capacities");
+			for(String color: place.getColorsWithCapacityRestriction()){
+				Element capacityElement = createElement("colorcapacity");
+				capacityElement.appendChild(createTextElement("color", color));
+				try {
+					capacityElement.appendChild(createTextElement("capacity", new Integer(place.getColorCapacity(color)).toString()));
+				} catch (ParameterException e) {
+					// Should not happen, since we know, that the place has a capacity for this color.
+					e.printStackTrace();
+				}
+				capacitiesElement.appendChild(capacityElement);
+			}
+			
+			placeElement.appendChild(capacitiesElement);
+		}
+	}
+
+	@Override
 	protected Element addInitialMarking(Element placeElement, Multiset<String> state) {
 		Element markingElement = createElement("initialMarking");
 		try {
@@ -107,7 +127,7 @@ public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>,
 			inscriptionElement.appendChild(colorsElement);
 		
 		if(annotationGraphics != null && annotationGraphics.hasContent()){
-			Element graphicsElement = getTextGraphics(annotationGraphics);
+			Element graphicsElement = createTextGraphicsElement(annotationGraphics);
 			if(graphicsElement != null)
 				inscriptionElement.appendChild(graphicsElement);
 		}

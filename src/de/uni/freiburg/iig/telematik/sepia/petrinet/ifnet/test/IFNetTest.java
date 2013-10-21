@@ -14,16 +14,16 @@ import org.junit.Test;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.SecurityLevel;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
 
 /**
  * @author boehr
@@ -158,6 +158,8 @@ public class IFNetTest {
 		dSNet.getAnalysisContext().getLabeling().removeAttribute("yellow");
 		try {
 			dSNet.checkValidity();
+			//TODO: This test fails, because the test itself is not set up properly.
+			//The test assumes, that the analysis context contains all process activities, which is not true!
 			fail("An invalid ifNet  is not detected!");
 		} catch (PNValidationException e) {
 		}

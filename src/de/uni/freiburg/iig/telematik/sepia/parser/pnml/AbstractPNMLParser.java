@@ -42,7 +42,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AccessMode;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
 /**
  * Static reader class containing methods to read elements and attributes occurring in different net types.
@@ -125,7 +125,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 							if (readAccessMode(accessModesElement.getElementsByTagName("delete")))
 								accessModes.add(AccessMode.DELETE);
 						}
-
+						
 						// add access function
 						accessFunctions.put(color, accessModes);
 					}

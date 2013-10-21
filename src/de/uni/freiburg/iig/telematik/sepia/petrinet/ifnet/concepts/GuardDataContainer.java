@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 
 import java.util.Set;
 

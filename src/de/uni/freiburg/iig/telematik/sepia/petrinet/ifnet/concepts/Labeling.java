@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +12,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 

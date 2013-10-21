@@ -84,27 +84,33 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	
 	protected void addFooter(){}
 	
-	protected void addPlaceInformation(){
+	private void addPlaceInformation(){
 		Element placeElement = null;
 		for(P place: getPetriNet().getPlaces()){
 			placeElement = createElement("place");
 			placeElement.setAttribute("id", place.getName());
 			
+			// Add label information
 			AnnotationGraphics annotationGraphics = null;
 			if(hasGraphics()){
 				annotationGraphics = graphics.getPlaceLabelAnnotationGraphics().get(place.getName());
 			}
 			placeElement.appendChild(createNameElement(place.getLabel(), annotationGraphics));
 			
+			// Add graphics information
 			if(hasGraphics()){
 				NodeGraphics placeGraphics = graphics.getPlaceGraphics().get(place.getName());
 				if(placeGraphics != null && placeGraphics.hasContent()){
-					Element graphicsElement = getNodeGraphics(placeGraphics);
+					Element graphicsElement = createNodeGraphicsElement(placeGraphics);
 					if(graphicsElement != null)
 						placeElement.appendChild(graphicsElement);
 				}
 			}
+			
+			// Add capacity information
+			addCapacity(place, placeElement);
 	
+			// Add initial marking information
 			if(getPetriNet().getInitialMarking().contains(place.getName())){
 				try {
 					Element markingElement = addInitialMarking(placeElement, getPetriNet().getInitialMarking().get(place.getName()));
@@ -113,11 +119,26 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 						addTokenGraphics(markingElement, tokenGraphics);
 					}
 				} catch (ParameterException e) {
-					// TODO Auto-generated catch block
+					// Should not happen, since we know, that the initial marking contains the place
 					e.printStackTrace();
 				}
 			}
+			
+			// Add additional information
+			appendPlaceInformation(place, placeElement);
+			
 			pageElement.appendChild(placeElement);
+		}
+	}
+	
+	protected void appendPlaceInformation(P place, Element placeElement){}
+	
+	protected void addCapacity(P place, Element placeElement){
+		if(place.getCapacity() >= 0){
+			Element capacityElement = createTextElement("capacity", new Integer(place.getCapacity()).toString());
+			if(capacityElement != null){
+				placeElement.appendChild(capacityElement);
+			}
 		}
 	}
 	
@@ -128,7 +149,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	}
 	
 	protected Element createTokenGraphicsElement(Set<TokenGraphics> tokenGraphics){
-		Element toolElement = getToolSpecificElement();
+		Element toolElement = createToolSpecificElement();
 	
 		Element tokenGraphicsElement = createElement("tokengraphics");
 		for(TokenGraphics graphics: tokenGraphics){
@@ -146,53 +167,65 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	
 	protected abstract Element addInitialMarking(Element placeElement, S state);
 	
-	protected void addTransitionInformation(){
+	private void addTransitionInformation(){
 		Element transitionElement = null;
 		for(T transition: getPetriNet().getTransitions()){
 			transitionElement = createElement("transition");
 			transitionElement.setAttribute("id", transition.getName());
 			
+			// Add label information
 			AnnotationGraphics annotationGraphics = null;
 			if(hasGraphics()){
 				annotationGraphics = graphics.getTransitionLabelAnnotationGraphics().get(transition.getName());
 			}
 			transitionElement.appendChild(createNameElement(transition.getLabel(), annotationGraphics));
 			
+			// Add graphics information
 			if(hasGraphics()){
 				NodeGraphics transitionGraphics = graphics.getTransitionGraphics().get(transition.getName());
 				if(transitionGraphics != null && transitionGraphics.hasContent()){
-					Element graphicsElement = getNodeGraphics(transitionGraphics);
+					Element graphicsElement = createNodeGraphicsElement(transitionGraphics);
 					if(graphicsElement != null)
 						transitionElement.appendChild(graphicsElement);
 				}
 			}
 			
+			// Add additional information
+			appendTransitionInformation(transition, transitionElement);
+			
 			pageElement.appendChild(transitionElement);
 		}
 	}
 	
-	protected void addArcInformation(){
+	protected void appendTransitionInformation(T transition, Element transitionElement){}
+	
+	private void addArcInformation(){
 		Element arcElement = null;
 		for(F relation: getPetriNet().getFlowRelations()){
 			arcElement = createElement("arc");
 			arcElement.setAttribute("id", relation.getName());
+			
+			// Add source and target information
 			arcElement.setAttribute("source", relation.getSource().getName());
 			arcElement.setAttribute("target", relation.getTarget().getName());
 			
+			// Add graphics information
 			if(hasGraphics()){
 				ArcGraphics arcGraphics = graphics.getArcGraphics().get(relation.getName());
 				if(arcGraphics != null && arcGraphics.hasContent()){
-					Element graphicsElement = getArcGraphics(arcGraphics);
+					Element graphicsElement = createArcGraphicsElement(arcGraphics);
 					if(graphicsElement != null)
 						arcElement.appendChild(graphicsElement);
 				}
 			}
 			
+			// Add constraint information
 			AnnotationGraphics annotationGraphics = null;
 			if(hasGraphics()){
 				annotationGraphics = graphics.getArcAnnotationGraphics().get(relation.getName());
 			}
 			addConstraint(arcElement, relation.getConstraint(), annotationGraphics);
+			
 			pageElement.appendChild(arcElement);
 		}
 	}
@@ -207,7 +240,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	//------- Helper methods for PNML-tag generation ---------------------------------------------------
 	
 
-	protected Element getToolSpecificElement(){
+	protected Element createToolSpecificElement(){
 		Element toolElement = createElement("toolspecific");
 		toolElement.setAttribute("tool", "org.pnml.tool");
 		toolElement.setAttribute("version", "1.0");
@@ -218,31 +251,31 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		Element nameElement = createElement("name");
 		nameElement.appendChild(createTextElement("text", label));
 		if(graphics != null && graphics.hasContent()){
-			Element graphicsElement = getTextGraphics(graphics);
+			Element graphicsElement = createTextGraphicsElement(graphics);
 			if(graphicsElement != null)
 				nameElement.appendChild(graphicsElement);
 		}
 		return nameElement;
 	}
 	
-	protected Element getTextGraphics(AnnotationGraphics annotationGraphics){
+	protected Element createTextGraphicsElement(AnnotationGraphics annotationGraphics){
 		Element graphicsElement = createElement("graphics");
 		
 		Offset offset = annotationGraphics.getOffset();
 		if(offset != null && offset.hasContent()){
-			graphicsElement.appendChild(getOffsetElement(offset));
+			graphicsElement.appendChild(createOffsetElement(offset));
 		}
 		Fill fill = annotationGraphics.getFill();
 		if(fill != null && fill.hasContent()){
-			graphicsElement.appendChild(getFillElement(fill));
+			graphicsElement.appendChild(createFillElement(fill));
 		}
 		Line line = annotationGraphics.getLine();
 		if(line != null && line.hasContent()){
-			graphicsElement.appendChild(getLineElement(line));
+			graphicsElement.appendChild(createLineElement(line));
 		}
 		Font font = annotationGraphics.getFont();
 		if(font != null && font.hasContent()){
-			graphicsElement.appendChild(getFontElement(font));
+			graphicsElement.appendChild(createFontElement(font));
 		}
 		
 		if(graphicsElement.getChildNodes().getLength() == 0)
@@ -250,18 +283,18 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		return graphicsElement;
 	}
 	
-	protected Element getArcGraphics(ArcGraphics arcGraphics){
+	protected Element createArcGraphicsElement(ArcGraphics arcGraphics){
 		Element graphicsElement = createElement("graphics");
 		
 		Line line = arcGraphics.getLine();
 		if(line != null && line.hasContent()){
-			graphicsElement.appendChild(getLineElement(line));
+			graphicsElement.appendChild(createLineElement(line));
 		}
 		Vector<Position> positions = arcGraphics.getPositions();
 		if(positions != null && !positions.isEmpty()){
 			for(Position position: positions){
 				if(position != null && position.hasContent()){
-					graphicsElement.appendChild(getPositionElement(position));
+					graphicsElement.appendChild(createPositionElement(position));
 				}
 			}
 		}
@@ -271,24 +304,24 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		return graphicsElement;
 	}
 
-	protected Element getNodeGraphics(NodeGraphics nodeGraphics){
+	protected Element createNodeGraphicsElement(NodeGraphics nodeGraphics){
 		Element graphicsElement = createElement("graphics");
 		
 		Dimension dimension = nodeGraphics.getDimension();
 		if(dimension != null && dimension.hasContent()){
-			graphicsElement.appendChild(getDimensionElement(dimension));
+			graphicsElement.appendChild(createDimensionElement(dimension));
 		}
 		Position position = nodeGraphics.getPosition();
 		if(position != null && position.hasContent()){
-			graphicsElement.appendChild(getPositionElement(position));
+			graphicsElement.appendChild(createPositionElement(position));
 		}
 		Fill fill = nodeGraphics.getFill();
 		if(fill != null && fill.hasContent()){
-			graphicsElement.appendChild(getFillElement(fill));
+			graphicsElement.appendChild(createFillElement(fill));
 		}
 		Line line = nodeGraphics.getLine();
 		if(line != null && line.hasContent()){
-			graphicsElement.appendChild(getLineElement(line));
+			graphicsElement.appendChild(createLineElement(line));
 		}
 		
 		if(graphicsElement.getChildNodes().getLength() == 0)
@@ -296,28 +329,28 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		return graphicsElement;
 	}
 	
-	private Element getDimensionElement(Dimension dimension){
+	private Element createDimensionElement(Dimension dimension){
 		Element dimensionElement = createElement("dimension");
 		dimensionElement.setAttribute("x", ((Double) dimension.getX()).toString());
 		dimensionElement.setAttribute("y", ((Double) dimension.getY()).toString());
 		return dimensionElement;
 	}
 	
-	private Element getPositionElement(Position position){
+	protected Element createPositionElement(Position position){
 		Element positionElement = createElement("position");
 		positionElement.setAttribute("x", ((Double) position.getX()).toString());
 		positionElement.setAttribute("y", ((Double) position.getY()).toString());
 		return positionElement;
 	}
 	
-	private Element getOffsetElement(Offset offset){
+	private Element createOffsetElement(Offset offset){
 		Element positionElement = createElement("offset");
 		positionElement.setAttribute("x", ((Double) offset.getX()).toString());
 		positionElement.setAttribute("y", ((Double) offset.getY()).toString());
 		return positionElement;
 	}
 	
-	private Element getFillElement(Fill fill){
+	private Element createFillElement(Fill fill){
 		Element fillElement = createElement("fill");
 
 		String color = fill.getColor();
@@ -340,7 +373,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		return fillElement;
 	}
 	
-	private Element getLineElement(Line line){
+	private Element createLineElement(Line line){
 		Element lineElement = createElement("line");
 		
 		Shape shape = line.getShape();
@@ -363,7 +396,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		return lineElement;
 	}
 	
-	private Element getFontElement(Font font){
+	private Element createFontElement(Font font){
 		Element fontElement = createElement("font");
 
 		String family = font.getFamily();
