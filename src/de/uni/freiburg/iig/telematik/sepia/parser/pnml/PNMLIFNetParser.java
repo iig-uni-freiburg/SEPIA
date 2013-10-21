@@ -29,7 +29,6 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.Error
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AccessMode;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
@@ -58,8 +57,6 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 	private Map<String, Color> tokencolors = null;
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
-
-	private Map<String, String> activitySubjectReferences = new HashMap<String, String>();
 
 	public GraphicalIFNet parse(Document pnmlDocument) throws ParameterException, ParserException {
 
@@ -118,14 +115,10 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 
 		addFiringRulesToNet();
 
-		// create initial analysis context and give it to the net
-		if (activitySubjectReferences.size() > 0) {
-			AnalysisContext analysisContext = new AnalysisContext((IFNet) net, activitySubjectReferences.values());
-			for (Entry<String, String> ref : activitySubjectReferences.entrySet()) {
-				analysisContext.setSubjectDescriptor(ref.getKey(), ref.getValue());
-			}
-			getNet().setAnalysisContext(analysisContext);
-		}
+		// Read net ID as name
+		String netName = readNetName(pnmlDocument);
+		if (netName != null)
+			net.setName(netName);
 
 		return new GraphicalIFNet(net, graphics);
 	}
@@ -438,17 +431,12 @@ public class PNMLIFNetParser extends AbstractPNMLParser<IFNetPlace, AbstractIFNe
 				}
 
 				// read subject and subject graphics
-				NodeList subjectList = transition.getElementsByTagName("subject");
-				if (subjectList.getLength() > 0) {
-					String subject = readText(subjectList.item(0));
-					if (subject.length() > 0) {
-						// add subject to the reference map
-						activitySubjectReferences.put(transitionLabel, subject);
-						// read graphics
-						AnnotationGraphics subjectGraphics = readAnnotationGraphicsElement((Element) subjectList.item(0));
-						if (subjectGraphics != null)
-							getGraphics().getSubjectGraphics().put(transitionName, subjectGraphics);
-					}
+				NodeList subjectgraphicsList = transition.getElementsByTagName("subjectgraphics");
+				if (subjectgraphicsList.getLength() > 0) {
+					// read graphics
+					AnnotationGraphics subjectgraphicsGraphics = readAnnotationGraphicsElement((Element) subjectgraphicsList.item(0));
+					if (subjectgraphicsGraphics != null)
+						getGraphics().getSubjectGraphics().put(transitionName, subjectgraphicsGraphics);
 				}
 
 				// read graphical information

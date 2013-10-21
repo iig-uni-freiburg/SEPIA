@@ -82,6 +82,11 @@ public class PNMLCWNParser extends AbstractPNMLParser<CWNPlace, CWNTransition, C
 
 		addFiringRulesToNet();
 
+		// Read net ID as name
+		String netName = readNetName(pnmlDocument);
+		if (netName != null)
+			net.setName(netName);
+
 		return new GraphicalCWN(net, graphics);
 	}
 

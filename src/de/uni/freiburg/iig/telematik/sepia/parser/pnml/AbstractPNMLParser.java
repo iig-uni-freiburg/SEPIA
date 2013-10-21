@@ -160,7 +160,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 
 		String elementType = annotationGraphicsElement.getNodeName();
 
-		if (!elementType.equals("name") && !elementType.equals("inscription") && !elementType.equals("colorInscription") && !elementType.equals("accessfunctions") && !elementType.equals("subject"))
+		if (!elementType.equals("name") && !elementType.equals("inscription") && !elementType.equals("colorInscription") && !elementType.equals("accessfunctions") && !elementType.equals("subjectgraphics"))
 			throw new ParserException("The given element mustn't have an annotation.");
 
 		NodeList graphicsList = annotationGraphicsElement.getElementsByTagName("graphics");
@@ -508,6 +508,26 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		}
 
 		return line;
+	}
+
+	/**
+	 * Reads the ID-attribute of the net-tag in a PNML document.
+	 */
+	public static String readNetName(Document pnmlDocument) {
+		// Read net ID as name
+		NodeList netList = pnmlDocument.getElementsByTagName("net");
+		for (int i = 0; i < netList.getLength(); i++) {
+			if (netList.item(i).getNodeType() == Node.ELEMENT_NODE && netList.item(i).getParentNode().equals(pnmlDocument.getDocumentElement())) {
+				Element netElement = (Element) netList.item(i);
+				if (netElement.hasAttribute("id")) {
+					String id = netElement.getAttribute("id");
+					if (id.length() > 0)
+						return id;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**

@@ -61,6 +61,11 @@ public class PNMLPTNetParser extends AbstractPNMLParser<PTPlace, PTTransition, P
 		NodeList arcNodes = pnmlDocument.getElementsByTagName("arc");
 		readArcs(arcNodes);
 
+		// Read net ID as name
+		String netName = readNetName(pnmlDocument);
+		if (netName != null)
+			net.setName(netName);
+
 		return new GraphicalPTNet(net, graphics);
 	}
 

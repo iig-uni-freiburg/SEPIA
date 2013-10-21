@@ -15,6 +15,7 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.SecurityLevel;
@@ -36,7 +37,7 @@ public class PNMLIFNetLabelingParser {
 	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
 	 * </p>
 	 */
-	public static Labeling parse(File labelingFile) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(File labelingFile) throws ParserException, ParameterException, IOException {
 		return parse(labelingFile, true);
 	}
 
@@ -45,7 +46,7 @@ public class PNMLIFNetLabelingParser {
 	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
 	 * </p>
 	 */
-	public static Labeling parse(String labelingFilePath) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(String labelingFilePath) throws ParserException, ParameterException, IOException {
 		return parse(new File(labelingFilePath));
 	}
 
@@ -54,7 +55,7 @@ public class PNMLIFNetLabelingParser {
 	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
 	 * </p>
 	 */
-	public static Labeling parse(File labelingFile, boolean validate) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(File labelingFile, boolean validate) throws ParserException, ParameterException, IOException {
 		Validate.notNull(labelingFile);
 
 		if (validate)
@@ -90,7 +91,34 @@ public class PNMLIFNetLabelingParser {
 		for (Entry<String, SecurityLevel> activityClassification : activityClassifications.entrySet())
 			labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
 
-		return labeling;
+		AnalysisContext analysisContext = new AnalysisContext(labeling);
+
+		// read activity descriptors
+		NodeList subjectDescriptorsList = labelingDocument.getElementsByTagName("subjectdescriptors");
+		if (subjectDescriptorsList.getLength() > 0) {
+			Element subjectDescriptorsElement = (Element) subjectDescriptorsList.item(0);
+			NodeList subjectDescriptorList = subjectDescriptorsElement.getElementsByTagName("subjectdescriptor");
+			for (int sd = 0; sd < subjectDescriptorList.getLength(); sd++) {
+				if (subjectDescriptorList.item(sd).getNodeType() == Node.ELEMENT_NODE && subjectDescriptorList.item(sd).getParentNode().equals(subjectDescriptorsElement)) {
+					Element subjectDescriptorElement = (Element) subjectDescriptorList.item(sd);
+					// read activity
+					String activity = null;
+					NodeList activityList = subjectDescriptorElement.getElementsByTagName("activity");
+					if (activityList.getLength() > 0)
+						activity = ((Element) activityList.item(0)).getTextContent();
+					// read subject
+					String subject = null;
+					NodeList subjectList = subjectDescriptorElement.getElementsByTagName("subject");
+					if (subjectList.getLength() > 0)
+						subject = ((Element) subjectList.item(0)).getTextContent();
+
+					if (activity != null && subject != null)
+						analysisContext.setSubjectDescriptor(activity, subject);
+				}
+			}
+		}
+
+		return analysisContext;
 	}
 
 	/**
@@ -98,7 +126,7 @@ public class PNMLIFNetLabelingParser {
 	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
 	 * </p>
 	 */
-	public static Labeling parse(String labelingFilePath, boolean validate) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(String labelingFilePath, boolean validate) throws ParserException, ParameterException, IOException {
 		return parse(new File(labelingFilePath), validate);
 	}
 
