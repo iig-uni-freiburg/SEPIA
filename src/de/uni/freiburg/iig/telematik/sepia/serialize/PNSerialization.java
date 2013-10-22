@@ -16,10 +16,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
-import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.CPNSerializer_PNML;
-import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.IFNetSerializer_PNML;
-import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_PNML;
-import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PTSerializer_Petrify;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLCPNSerializer;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLIFNetSerializer;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLPTNetSerializer;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PetrifyPTNetSerializer;
 
 public class PNSerialization {
 	
@@ -37,19 +37,19 @@ public class PNSerialization {
 		switch(format){
 		case PNML:
 			if(net.getPetriNet() instanceof IFNet){
-				return new IFNetSerializer_PNML(net);
+				return new PNMLIFNetSerializer(net);
 			}
 			if(net.getPetriNet() instanceof AbstractCPN){
 				// CWNs fall into this category.
-				return new CPNSerializer_PNML(net);
+				return new PNMLCPNSerializer(net);
 			}
 			if(net.getPetriNet() instanceof AbstractPTNet){
-				return new PTSerializer_PNML(net);
+				return new PNMLPTNetSerializer(net);
 			}
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		case PETRIFY:
 			if(net.getPetriNet() instanceof AbstractPTNet)
-				return new PTSerializer_Petrify(net);
+				return new PetrifyPTNetSerializer(net);
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		default:
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);
@@ -71,20 +71,20 @@ public class PNSerialization {
 		switch(format){
 		case PNML:
 			if(net instanceof IFNet){
-				return (PNSerializer<P, T, F, M, S>) new IFNetSerializer_PNML(net);
+				return (PNSerializer<P, T, F, M, S>) new PNMLIFNetSerializer(net);
 			}
 			if(net instanceof AbstractCPN){
 				// CWNs fall into this category.
-				return new CPNSerializer_PNML(net);
+				return new PNMLCPNSerializer(net);
 			}
 			if(net instanceof AbstractPTNet){
-				return new PTSerializer_PNML(net);
+				return new PNMLPTNetSerializer(net);
 				
 			}
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		case PETRIFY:
 			if(net instanceof AbstractPTNet)
-				return new PTSerializer_Petrify(net);
+				return new PetrifyPTNetSerializer(net);
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		default:
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);
@@ -164,9 +164,6 @@ public class PNSerialization {
 	serialize(AbstractGraphicalPN<P,T,F,M,S> net, PNSerializationFormat format, String path, String fileName) 
 			throws SerializationException, ParameterException, IOException{
 
-		Validate.notNull(net);
-		Validate.notNull(format);
-		
 		Validate.notNull(net);
 		Validate.notNull(format);
 		

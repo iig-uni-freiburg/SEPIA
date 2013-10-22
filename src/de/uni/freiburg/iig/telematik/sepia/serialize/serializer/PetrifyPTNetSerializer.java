@@ -18,7 +18,7 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_Petrify;
 
-public class PTSerializer_Petrify<P extends AbstractPTPlace<F>, 
+public class PetrifyPTNetSerializer<P extends AbstractPTPlace<F>, 
 									  T extends AbstractPTTransition<F>, 
 									  F extends AbstractPTFlowRelation<P,T>, 
 									  M extends AbstractPTMarking> extends PNSerializer<P,T,F,M,Integer>{
@@ -28,11 +28,11 @@ public class PTSerializer_Petrify<P extends AbstractPTPlace<F>,
 	private final String BOUNDED_PLACE_FORMAT = " %s=%s";
 	private final String MARKING_FORMAT = " %s=%s";
 	
-	public PTSerializer_Petrify(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PetrifyPTNetSerializer(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 	
-	public PTSerializer_Petrify(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PetrifyPTNetSerializer(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 

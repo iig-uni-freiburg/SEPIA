@@ -21,16 +21,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.TransitionType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
-public class IFNetSerializer_PNML<P extends AbstractIFNetPlace<F>, 
+public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>, 
 								  T extends AbstractIFNetTransition<F>, 
 								  F extends AbstractIFNetFlowRelation<P,T>, 
-								  M extends AbstractIFNetMarking> extends CPNSerializer_PNML<P, T, F, M> {
+								  M extends AbstractIFNetMarking> extends PNMLCPNSerializer<P, T, F, M> {
 
-	public IFNetSerializer_PNML(AbstractGraphicalPN<P, T, F, M, Multiset<String>> ifNet) throws ParameterException {
+	public PNMLIFNetSerializer(AbstractGraphicalPN<P, T, F, M, Multiset<String>> ifNet) throws ParameterException {
 		super(ifNet);
 	}
 
-	public IFNetSerializer_PNML(AbstractPetriNet<P, T, F, M, Multiset<String>> ifNet) throws ParameterException {
+	public PNMLIFNetSerializer(AbstractPetriNet<P, T, F, M, Multiset<String>> ifNet) throws ParameterException {
 		super(ifNet);
 	}
 	
@@ -45,7 +45,7 @@ public class IFNetSerializer_PNML<P extends AbstractIFNetPlace<F>,
 			Position clearancePosition = getGraphics().getClearancesPosition();
 			if(clearancePosition != null && clearancePosition.hasContent()){
 				Element clearancesElement = createElement("clearances");
-				Element positionElement = createPositionElement(clearancePosition);
+				Element positionElement = getSupport().createPositionElement(clearancePosition);
 				if(positionElement != null){
 					clearancesElement.appendChild(positionElement);
 				}
@@ -56,14 +56,14 @@ public class IFNetSerializer_PNML<P extends AbstractIFNetPlace<F>,
 			Position tokenLabelPosition = getGraphics().getTokenLabelsPosition();
 			if(tokenLabelPosition != null && tokenLabelPosition.hasContent()){
 				Element tokenLabelsElement = createElement("tokenlabels");
-				Element positionElement = createPositionElement(tokenLabelPosition);
+				Element positionElement = getSupport().createPositionElement(tokenLabelPosition);
 				if(positionElement != null){
 					tokenLabelsElement.appendChild(positionElement);
 				}
 				classificationPositionsElement.appendChild(tokenLabelsElement);
 			}
 			if(classificationPositionsElement.getChildNodes().getLength() > 0)
-				netElement.appendChild(classificationPositionsElement);
+				getSupport().getNetElement().appendChild(classificationPositionsElement);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class IFNetSerializer_PNML<P extends AbstractIFNetPlace<F>,
 				AnnotationGraphics subjectGraphics = getGraphics().getSubjectGraphics().get(transition.getName());
 				if(subjectGraphics != null && subjectGraphics.hasContent()){
 					Element subjectGraphicsRootElement = createElement("subjectgraphics");
-					Element subjectGraphicsElement = createTextGraphicsElement(subjectGraphics);
+					Element subjectGraphicsElement = getSupport().createTextGraphicsElement(subjectGraphics);
 					if(subjectGraphicsElement != null){
 						subjectGraphicsRootElement.appendChild(subjectGraphicsElement);
 						transitionElement.appendChild(subjectGraphicsRootElement);
@@ -123,7 +123,7 @@ public class IFNetSerializer_PNML<P extends AbstractIFNetPlace<F>,
 				if(hasGraphics()){
 					AnnotationGraphics functionGraphics = getGraphics().getAccessFunctionGraphics().get(transition.getName());
 					if(functionGraphics != null && functionGraphics.hasContent()){
-						Element graphicsElement = createTextGraphicsElement(functionGraphics);
+						Element graphicsElement = getSupport().createTextGraphicsElement(functionGraphics);
 						if(graphicsElement != null){
 							accessFunctionsElement.appendChild(graphicsElement);
 						}

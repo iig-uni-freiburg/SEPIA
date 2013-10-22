@@ -15,16 +15,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
 
-public class PTSerializer_PNML<P extends AbstractPTPlace<F>, 
+public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>, 
 								T extends AbstractPTTransition<F>, 
 								F extends AbstractPTFlowRelation<P,T>, 
 								M extends AbstractPTMarking> extends PNSerializer_PNML<P, T, F, M, Integer> {
 
-	public PTSerializer_PNML(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
-	public PTSerializer_PNML(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 	
@@ -43,7 +43,7 @@ public class PTSerializer_PNML<P extends AbstractPTPlace<F>,
 		inscriptionElement.appendChild(textElement);
 		
 		if(annotationGraphics != null && annotationGraphics.hasContent()){
-			Element graphicsElement = createTextGraphicsElement(annotationGraphics);
+			Element graphicsElement = getSupport().createTextGraphicsElement(annotationGraphics);
 			if(graphicsElement != null)
 				inscriptionElement.appendChild(graphicsElement);
 		}

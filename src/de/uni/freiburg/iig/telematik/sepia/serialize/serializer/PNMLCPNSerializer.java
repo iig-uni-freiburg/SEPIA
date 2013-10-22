@@ -18,16 +18,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
 
-public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>, 
+public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>, 
 								T extends AbstractCPNTransition<F>, 
 								F extends AbstractCPNFlowRelation<P,T>, 
 								M extends AbstractCPNMarking> extends PNSerializer_PNML<P, T, F, M, Multiset<String>> {
 
-	public CPNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
+	public PNMLCPNSerializer(AbstractGraphicalPN<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
-	public CPNSerializer_PNML(AbstractPetriNet<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
+	public PNMLCPNSerializer(AbstractPetriNet<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
@@ -40,7 +40,7 @@ public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>,
 	    	tokenColorsElement.appendChild(createTokenColorElement(colorName));
 	    }
 	    if(tokenColorsElement.getChildNodes().getLength() > 0)
-	    	netElement.appendChild(tokenColorsElement);
+	    	getSupport().getNetElement().appendChild(tokenColorsElement);
 	}
 	
 	protected Element createTokenColorElement(String colorName){
@@ -127,7 +127,7 @@ public class CPNSerializer_PNML<P extends AbstractCPNPlace<F>,
 			inscriptionElement.appendChild(colorsElement);
 		
 		if(annotationGraphics != null && annotationGraphics.hasContent()){
-			Element graphicsElement = createTextGraphicsElement(annotationGraphics);
+			Element graphicsElement = getSupport().createTextGraphicsElement(annotationGraphics);
 			if(graphicsElement != null)
 				inscriptionElement.appendChild(graphicsElement);
 		}

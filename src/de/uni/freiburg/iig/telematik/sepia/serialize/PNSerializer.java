@@ -22,6 +22,7 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 	
 	protected AbstractPetriNet<P,T,F,M,S> petriNet = null;
 	protected AbstractPNGraphics<P,T,F,M,S> graphics = null;
+	protected SerializationSupport support = null;
 	
 	public PNSerializer(AbstractPetriNet<P,T,F,M,S> petriNet) throws ParameterException{
 		validatePetriNet(petriNet);
@@ -49,6 +50,10 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 	
 	public AbstractPNGraphics<P,T,F,M,S> getGraphics(){
 		return graphics;
+	}
+	
+	public SerializationSupport getSupport(){
+		return support;
 	}
 	
 	protected boolean hasGraphics(){
