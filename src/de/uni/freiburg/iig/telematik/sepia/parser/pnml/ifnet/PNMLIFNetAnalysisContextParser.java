@@ -23,53 +23,53 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel
 
 /**
  * <p>
- * Parser for labeling files for {@link IFNet}s.
+ * Parser for analysis context files for {@link IFNet}s.
  * </p>
  * 
  * @author Adrian Lange
  */
-public class PNMLIFNetLabelingParser {
+public class PNMLIFNetAnalysisContextParser {
 
-	/** URL to the RelaxNG schema of the labeling */
-	public final static String LABELING_SCHEMA = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/labeling.rng";
+	/** URL to the RelaxNG schema of the analysis context */
+	public final static String ANALYSIS_CONTEXT_SCHEMA = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/analysiscontext.rng";
 
 	/**
 	 * <p>
-	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
+	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(File labelingFile) throws ParserException, ParameterException, IOException {
-		return parse(labelingFile, true);
+	public static AnalysisContext parse(File analysisContextFile) throws ParserException, ParameterException, IOException {
+		return parse(analysisContextFile, true);
 	}
 
 	/**
 	 * <p>
-	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
+	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(String labelingFilePath) throws ParserException, ParameterException, IOException {
-		return parse(new File(labelingFilePath));
+	public static AnalysisContext parse(String analysisContextFilePath) throws ParserException, ParameterException, IOException {
+		return parse(new File(analysisContextFilePath));
 	}
 
 	/**
 	 * <p>
-	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
+	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(File labelingFile, boolean validate) throws ParserException, ParameterException, IOException {
-		Validate.notNull(labelingFile);
+	public static AnalysisContext parse(File analysisContextFile, boolean validate) throws ParserException, ParameterException, IOException {
+		Validate.notNull(analysisContextFile);
 
 		if (validate)
-			PNMLParser.verifySchema(labelingFile, new URL(LABELING_SCHEMA));
+			PNMLParser.verifySchema(analysisContextFile, new URL(ANALYSIS_CONTEXT_SCHEMA));
 
-		if (!labelingFile.exists())
-			throw new IOException("The given PNML file doesn't exist.");
-		if (!labelingFile.canRead())
-			throw new IOException("The given PNML file exists but is not readable.");
+		if (!analysisContextFile.exists())
+			throw new IOException("The given analysis context file doesn't exist.");
+		if (!analysisContextFile.canRead())
+			throw new IOException("The given analysis context file exists but is not readable.");
 
-		Document labelingDocument = null;
+		Document analysisContextDocument = null;
 		try {
-			labelingDocument = PNMLParser.readRNGFile(labelingFile);
+			analysisContextDocument = PNMLParser.readRNGFile(analysisContextFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -77,17 +77,17 @@ public class PNMLIFNetLabelingParser {
 		Labeling labeling = new Labeling();
 
 		// read token labels
-		Map<String, SecurityLevel> tokenLabels = readLabeling(labelingDocument, "tokenlabels", "tokenlabel", "color");
+		Map<String, SecurityLevel> tokenLabels = readLabeling(analysisContextDocument, "tokenlabels", "tokenlabel", "color");
 		labeling.addAttributes(tokenLabels.keySet());
 		for (Entry<String, SecurityLevel> attributeClassification : tokenLabels.entrySet())
 			labeling.setAttributeClassification(attributeClassification.getKey(), attributeClassification.getValue());
 		// read clearances
-		Map<String, SecurityLevel> clearances = readLabeling(labelingDocument, "clearances", "clearance", "subject");
+		Map<String, SecurityLevel> clearances = readLabeling(analysisContextDocument, "clearances", "clearance", "subject");
 		labeling.addSubjects(clearances.keySet());
 		for (Entry<String, SecurityLevel> clearance : clearances.entrySet())
 			labeling.setSubjectClearance(clearance.getKey(), clearance.getValue());
 		// read activity classifications
-		Map<String, SecurityLevel> activityClassifications = readLabeling(labelingDocument, "classifications", "activityClassification", "activity");
+		Map<String, SecurityLevel> activityClassifications = readLabeling(analysisContextDocument, "classifications", "classification", "activity");
 		labeling.addActivities(activityClassifications.keySet());
 		for (Entry<String, SecurityLevel> activityClassification : activityClassifications.entrySet())
 			labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
@@ -95,7 +95,7 @@ public class PNMLIFNetLabelingParser {
 		AnalysisContext analysisContext = new AnalysisContext(labeling);
 
 		// read activity descriptors
-		NodeList subjectDescriptorsList = labelingDocument.getElementsByTagName("subjectdescriptors");
+		NodeList subjectDescriptorsList = analysisContextDocument.getElementsByTagName("subjectdescriptors");
 		if (subjectDescriptorsList.getLength() > 0) {
 			Element subjectDescriptorsElement = (Element) subjectDescriptorsList.item(0);
 			NodeList subjectDescriptorList = subjectDescriptorsElement.getElementsByTagName("subjectdescriptor");
@@ -124,11 +124,11 @@ public class PNMLIFNetLabelingParser {
 
 	/**
 	 * <p>
-	 * Parses a given labeling file for IF-nets and returns the {@link Labeling}.
+	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(String labelingFilePath, boolean validate) throws ParserException, ParameterException, IOException {
-		return parse(new File(labelingFilePath), validate);
+	public static AnalysisContext parse(String analysisContextFilePath, boolean validate) throws ParserException, ParameterException, IOException {
+		return parse(new File(analysisContextFilePath), validate);
 	}
 
 	private static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) throws ParameterException {
@@ -155,7 +155,7 @@ public class PNMLIFNetLabelingParser {
 						objectDescriptor = ((Element) objectDescriptorList.item(0)).getTextContent();
 
 					// read security level
-					NodeList securityLevelList = labelingTypeElement.getElementsByTagName("classification");
+					NodeList securityLevelList = labelingTypeElement.getElementsByTagName("securitydomain");
 					if (securityLevelList.getLength() > 0) {
 						String securityLevelStr = ((Element) securityLevelList.item(0)).getTextContent();
 						if (securityLevelStr.equals("low"))

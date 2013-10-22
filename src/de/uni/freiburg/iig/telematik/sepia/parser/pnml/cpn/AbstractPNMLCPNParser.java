@@ -26,7 +26,6 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PlaceFiringRules;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
@@ -125,10 +124,10 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 						}
 
 						if (transitionFiringRules.get(targetName).containsKey(sourceName)) {
-							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(targetName).get(sourceName).addOutgoingColorTokens(net.defaultTokenColor(), inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addOutgoingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addOutgoingColorTokens(net.defaultTokenColor(), inscription);
 							transitionFiringRules.get(targetName).put(sourceName, tempPlaceFiringRule);
 						}
 					}
@@ -167,10 +166,10 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 						}
 
 						if (transitionFiringRules.get(sourceName).containsKey(targetName)) {
-							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							transitionFiringRules.get(sourceName).get(targetName).addIncomingColorTokens(net.defaultTokenColor(), inscription);
 						} else {
 							PlaceFiringRules tempPlaceFiringRule = new PlaceFiringRules();
-							tempPlaceFiringRule.addIncomingColorTokens(CPN.DEFAULT_TOKEN_COLOR, inscription);
+							tempPlaceFiringRule.addIncomingColorTokens(net.defaultTokenColor(), inscription);
 							transitionFiringRules.get(sourceName).put(targetName, tempPlaceFiringRule);
 						}
 					}
@@ -260,7 +259,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 						throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Place initial markings must not be a negative number.");
 					} else if (initialMarking > 0) {
 						for (int i = 0; i < initialMarking; i++) {
-							markingMultiset.add(CPN.DEFAULT_TOKEN_COLOR);
+							markingMultiset.add(net.defaultTokenColor());
 						}
 
 						// graphics
