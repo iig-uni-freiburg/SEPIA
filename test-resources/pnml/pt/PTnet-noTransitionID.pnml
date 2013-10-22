@@ -1,5 +1,5 @@
 <pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
-  <net id="ptnet-example" type="http://files.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ptnet">
+  <net id="ptnet-example" type="http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ptnet">
     <!--     ->- t1 ->- p2
             |
             p1             -->
