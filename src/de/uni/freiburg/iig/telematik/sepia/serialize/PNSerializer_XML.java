@@ -2,8 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.serialize;
 
 import java.io.IOException;
 
-import org.w3c.dom.Element;
-
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -34,16 +32,6 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 	
 	protected abstract String getRootElementName();
 	
-	protected Element createTextElement(String elementName, String elementText) {
-		Element textElement = createElement(elementName);
-		textElement.setTextContent(elementText);
-		return textElement;
-	}
-	
-	protected Element createElement(String elementName){
-		return createElement(elementName);
-	}
-	
 	protected abstract void addContent() throws SerializationException;
 	
 	@Override
@@ -54,6 +42,7 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 	
 	@Override
 	public void serialize(String path, String fileName) throws ParameterException, SerializationException, IOException {
+		addContent();
 		support.serialize(path, fileName, getFileExtension());
 	}
 	

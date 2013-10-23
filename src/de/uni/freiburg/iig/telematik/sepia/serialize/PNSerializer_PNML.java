@@ -127,7 +127,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 		for(TokenGraphics graphics: tokenGraphics){
 			if(!graphics.hasContent())
 				continue;
-			Element tokenPositionElement = createElement("tokenposition");
+			Element tokenPositionElement = getSupport().createElement("tokenposition");
 			tokenPositionElement.setAttribute("x", ((Double) graphics.getTokenposition().getX()).toString());
 			tokenPositionElement.setAttribute("y", ((Double) graphics.getTokenposition().getY()).toString());
 			tokenGraphicsElement.appendChild(tokenPositionElement);
@@ -142,7 +142,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	private void addTransitionInformation(){
 		Element transitionElement = null;
 		for(T transition: getPetriNet().getTransitions()){
-			transitionElement = createElement("transition");
+			transitionElement = getSupport().createElement("transition");
 			transitionElement.setAttribute("id", transition.getName());
 			
 			// Add label information
@@ -174,7 +174,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	private void addArcInformation(){
 		Element arcElement = null;
 		for(F relation: getPetriNet().getFlowRelations()){
-			arcElement = createElement("arc");
+			arcElement = getSupport().createElement("arc");
 			arcElement.setAttribute("id", relation.getName());
 			
 			// Add source and target information
