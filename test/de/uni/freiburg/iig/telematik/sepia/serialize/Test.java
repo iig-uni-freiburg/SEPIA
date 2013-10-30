@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.serialize.test;
+package de.uni.freiburg.iig.telematik.sepia.serialize;
 
 import java.io.IOException;
 

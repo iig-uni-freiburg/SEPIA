@@ -111,6 +111,9 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 					if (arcColorInscriptions.getLength() == 1)
 						colorInscription = readColorInscription(arcColorInscriptions.item(0));
 				}
+				
+				if (inscription < 0)
+					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "The arc inscription mustn't be smaller than 0.");
 
 				F flowRelation;
 				// if PT relation
@@ -391,8 +394,8 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	public Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
 		Validate.notNull(colorInscriptionNode);
 
-		Element initialColorMarkingElement = (Element) colorInscriptionNode;
-		NodeList colorNodes = initialColorMarkingElement.getElementsByTagName("color");
+		Element colorInscriptionElement = (Element) colorInscriptionNode;
+		NodeList colorNodes = colorInscriptionElement.getElementsByTagName("color");
 		Map<String, Integer> colorInscription = new HashMap<String, Integer>();
 
 		if (colorNodes.getLength() > 0) {

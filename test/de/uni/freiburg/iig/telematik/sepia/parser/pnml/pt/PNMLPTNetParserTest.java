@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt;
 
 import static org.junit.Assert.*;
@@ -33,7 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 
 /**
  * <p>
- * Unit tests for the P/T-net PNML parser and the abstract PNML parser class. The component unit tests for these classes is made in {@link PNMLPTNetParserComponentTest}.
+ * Unit tests for the P/T-net PNML parser and the abstract PNML parser class. The component unit tests for these classes is made in {@link PNMLCPNParserComponentTest}.
  * </p>
  * 
  * @author Adrian Lange

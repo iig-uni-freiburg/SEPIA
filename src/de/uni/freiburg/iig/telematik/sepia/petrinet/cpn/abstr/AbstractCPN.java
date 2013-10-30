@@ -337,7 +337,6 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 				throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown place: "+prodPlaceName);
 			P place = places.get(prodPlaceName);
 			F relationToPlace = (F) transition.getRelationTo(place);
-			System.out.println("to: "+relationToPlace);  // FIXME remove?
 			if(relationToPlace == null)
 				throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net contains no transition from transition "+transitionName+" to place "+prodPlaceName);
 			Map<String, Integer> colorRequirement = rule.getProductions().get(prodPlaceName);
