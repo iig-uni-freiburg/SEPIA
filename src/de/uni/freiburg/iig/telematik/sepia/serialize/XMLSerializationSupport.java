@@ -74,7 +74,7 @@ public class XMLSerializationSupport implements SerializationSupport{
 		}
 	}
 	
-	protected Element createTextElement(String elementName, String elementText) {
+	public Element createTextElement(String elementName, String elementText) {
 		Element textElement = document.createElement(elementName);
 		textElement.setTextContent(elementText);
 		return textElement;

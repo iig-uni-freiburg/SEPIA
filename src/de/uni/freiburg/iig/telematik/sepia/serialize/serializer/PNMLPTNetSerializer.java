@@ -30,16 +30,16 @@ public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>,
 	
 	@Override
 	protected Element addInitialMarking(Element placeElement, Integer state){
-		Element markingElement = createElement("initialMarking");
-		markingElement.appendChild(createTextElement("text", state.toString()));
+		Element markingElement = getSupport().createElement("initialMarking");
+		markingElement.appendChild(getSupport().createTextElement("text", state.toString()));
 		placeElement.appendChild(markingElement);
 		return markingElement;
 	}
 	
 	@Override
 	protected void addConstraint(Element arcElement, Integer constraint, AnnotationGraphics annotationGraphics) {
-		Element inscriptionElement = createElement("inscription");
-		Element textElement = createTextElement("text", constraint.toString());
+		Element inscriptionElement = getSupport().createElement("inscription");
+		Element textElement = getSupport().createTextElement("text", constraint.toString());
 		inscriptionElement.appendChild(textElement);
 		
 		if(annotationGraphics != null && annotationGraphics.hasContent()){

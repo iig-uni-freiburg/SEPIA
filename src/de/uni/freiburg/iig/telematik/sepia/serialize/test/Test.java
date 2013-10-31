@@ -23,20 +23,20 @@ public class Test {
 	 */
 	public static void main(String[] args) throws Exception {
 		PNMLParser parser = new PNMLParser();
-//		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ptnet.pnml");
-//		System.out.println(net.getPetriNet().getNetType());
+		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ptnet.pnml");
+		System.out.println(net.getPetriNet().getNetType());
 //		System.out.println(net.getPetriNet());
-//		System.out.println(PNSerialization.serialize(net, PNSerializationFormat.PNML));
+		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/ptnetout.pnml");
 		
 //		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/cpn.pnml");
 //		System.out.println(net.getPetriNet().getNetType());
 //		System.out.println(net.getPetriNet());
 //		PNSerialization.serialize(net.getPetriNet(), PNSerializationFormat.PNML, "/Users/stocker/Desktop/cpnout.pnml");
 		
-		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ifnet.pnml");
-		System.out.println(net.getPetriNet().getNetType());
-		System.out.println(net.getPetriNet());
-		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/ifnetout.pnml");
+//		AbstractGraphicalPN net = parser.parse("/Users/stocker/Desktop/ifnet.pnml");
+//		System.out.println(net.getPetriNet().getNetType());
+//		System.out.println(net.getPetriNet());
+//		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/ifnetout.pnml");
 	}
 
 }

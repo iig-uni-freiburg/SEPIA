@@ -40,11 +40,11 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 		
 		// Add classification position information
 		if(hasGraphics()){
-			Element classificationPositionsElement = createElement("classificationpositions");
+			Element classificationPositionsElement = getSupport().createElement("classificationpositions");
 			// Add clearance position information
 			Position clearancePosition = getGraphics().getClearancesPosition();
 			if(clearancePosition != null && clearancePosition.hasContent()){
-				Element clearancesElement = createElement("clearances");
+				Element clearancesElement = getSupport().createElement("clearances");
 				Element positionElement = getSupport().createPositionElement(clearancePosition);
 				if(positionElement != null){
 					clearancesElement.appendChild(positionElement);
@@ -55,7 +55,7 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 			// Add token label position information
 			Position tokenLabelPosition = getGraphics().getTokenLabelsPosition();
 			if(tokenLabelPosition != null && tokenLabelPosition.hasContent()){
-				Element tokenLabelsElement = createElement("tokenlabels");
+				Element tokenLabelsElement = getSupport().createElement("tokenlabels");
 				Element positionElement = getSupport().createPositionElement(tokenLabelPosition);
 				if(positionElement != null){
 					tokenLabelsElement.appendChild(positionElement);
@@ -70,7 +70,7 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 	@Override
 	protected void appendTransitionInformation(AbstractIFNetTransition transition, Element transitionElement) {
 		// Add transition type information
-		Element transitionTypeElement = createTextElement("transitiontype", transition.getType().toString().toLowerCase());
+		Element transitionTypeElement = getSupport().createTextElement("transitiontype", transition.getType().toString().toLowerCase());
 		transitionElement.appendChild(transitionTypeElement);
 		
 //		<subject>
@@ -88,7 +88,7 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 			if(hasGraphics()){
 				AnnotationGraphics subjectGraphics = getGraphics().getSubjectGraphics().get(transition.getName());
 				if(subjectGraphics != null && subjectGraphics.hasContent()){
-					Element subjectGraphicsRootElement = createElement("subjectgraphics");
+					Element subjectGraphicsRootElement = getSupport().createElement("subjectgraphics");
 					Element subjectGraphicsElement = getSupport().createTextGraphicsElement(subjectGraphics);
 					if(subjectGraphicsElement != null){
 						subjectGraphicsRootElement.appendChild(subjectGraphicsElement);
@@ -100,19 +100,19 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 			// Add data access information
 			Map<String, Set<AccessMode>> accessModes = regularTransition.getAccessModes();
 			if(!accessModes.isEmpty()){
-				Element accessFunctionsElement = createElement("accessfunctions");
+				Element accessFunctionsElement = getSupport().createElement("accessfunctions");
 				for(String color: accessModes.keySet()){
 					if(accessModes.get(color).isEmpty())
 						continue;
 					
-					Element accessfunctionElement = createElement("accessfunction");
-					accessfunctionElement.appendChild(createTextElement("color", color));
-					Element accessModesElement = createElement("accessmodes");
+					Element accessfunctionElement = getSupport().createElement("accessfunction");
+					accessfunctionElement.appendChild(getSupport().createTextElement("color", color));
+					Element accessModesElement = getSupport().createElement("accessmodes");
 					for(AccessMode mode: AccessMode.values()){
 						if(accessModes.get(color).contains(mode)){
-							accessModesElement.appendChild(createTextElement(mode.toString().toLowerCase(), "true"));
+							accessModesElement.appendChild(getSupport().createTextElement(mode.toString().toLowerCase(), "true"));
 						} else {
-							accessModesElement.appendChild(createTextElement(mode.toString().toLowerCase(), "false"));
+							accessModesElement.appendChild(getSupport().createTextElement(mode.toString().toLowerCase(), "false"));
 						}
 					}
 					accessfunctionElement.appendChild(accessModesElement);
