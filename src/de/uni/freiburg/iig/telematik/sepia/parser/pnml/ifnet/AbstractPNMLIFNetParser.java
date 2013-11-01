@@ -127,7 +127,10 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 				}
 
 				// read access modes
-				if (ifnet.getTransition(transitionName) instanceof RegularIFNetTransition) {
+
+				// ugly unbounded wildcard as work-around for bug JDK-6932571
+				Object transitionObject = ifnet.getTransition(transitionName);
+				if (transitionObject instanceof RegularIFNetTransition) {
 					NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
 					if (accessFunctionsNodes.getLength() > 0) {
 						if (accessFunctionsNodes.item(0).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(0).getParentNode().equals(transition)) {
@@ -135,7 +138,7 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 							Map<String, Collection<AccessMode>> accessFunctions = readAccessFunctions(accessFunctionsElement);
 							if (accessFunctions != null) {
 								// get transition and add access functions
-								RegularIFNetTransition currentTransition = (RegularIFNetTransition) ifnet.getTransition(transitionName);
+								RegularIFNetTransition currentTransition = (RegularIFNetTransition) transitionObject;
 								Validate.notNull(currentTransition);
 
 								for (Entry<String, Collection<AccessMode>> accessFunction : accessFunctions.entrySet()) {

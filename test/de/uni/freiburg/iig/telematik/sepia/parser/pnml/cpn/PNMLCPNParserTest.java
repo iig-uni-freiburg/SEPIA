@@ -32,12 +32,12 @@ public class PNMLCPNParserTest {
 		parser = new PNMLCPNParser();
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readColorInscription(org.w3c.dom.Node)}.
 	 */
 	@Test
 	public void testReadColorInscription() throws ParameterException {
-		Document arc = (Document) PNMLCPNParserTestUtils.createCPNArc(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document arc = (Document) PNMLCPNParserTestUtils.createCPNArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true);
 		NodeList colorInscriptionNodes = arc.getElementsByTagName("inscription");
 		if (colorInscriptionNodes.getLength() == 1) {
 			Element colorInscriptionElement = (Element) colorInscriptionNodes.item(0);
@@ -60,7 +60,7 @@ public class PNMLCPNParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readInitialColorMarking(org.w3c.dom.Node)}.
 	 */
 	@Test
@@ -86,7 +86,7 @@ public class PNMLCPNParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readPlaceColorCapacities(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -107,7 +107,7 @@ public class PNMLCPNParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readTokenColors(org.w3c.dom.Element)}.
 	 */
 	@Test

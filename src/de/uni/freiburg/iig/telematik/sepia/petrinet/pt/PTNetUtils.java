@@ -10,7 +10,7 @@ import de.invation.code.toval.validate.Validate;
 public class PTNetUtils {
 	
 	/**
-	 * Generates a set of transitions labeled with numbers from 1 to {@link number}.<br>
+	 * Generates a set of transitions labeled with numbers from 1 to number.<br>
 	 * The method generated at most 26 transitions.
 	 * @param number The number n of transitions to generate (e in [1;26])
 	 * @return A set of transitions.

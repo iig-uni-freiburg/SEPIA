@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.util;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,19 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.xml.stream.XMLStreamException;
-
 import de.invation.code.toval.math.MathUtils;
-import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.OldPNMLParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
@@ -112,6 +104,7 @@ public class PNUtils {
 		return predecessors;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <P extends AbstractPlace<F,S>, 
 	   				T extends AbstractTransition<F,S>, 
 	   				F extends AbstractFlowRelation<P,T,S>, 
@@ -198,7 +191,7 @@ public class PNUtils {
 		return ptNet;
 	}
 	
-	public static void main(String[] args) throws ParameterException, PNException, IOException, ParserException, XMLStreamException {
+//	public static void main(String[] args) throws ParameterException, PNException, IOException, ParserException, XMLStreamException {
 //		Set<String> alternatives = new HashSet<String>(Arrays.asList("A","B","C"));
 //		PTNet net = getORFragment(alternatives);
 //		RandomPTTraverser traverser = new RandomPTTraverser(net);
@@ -213,10 +206,9 @@ public class PNUtils {
 //			}
 //			System.out.println("-------");
 //		}
-		
-		AbstractPetriNet net = new PNMLParser().parse("/Users/stocker/Desktop/LoanApplication.pnml", false, false).getPetriNet();
+//		
+//		AbstractPetriNet net = new PNMLParser().parse("/Users/stocker/Desktop/LoanApplication.pnml", false, false).getPetriNet();
 //		PTNet ptNet = OldPNMLParser.parsePNML("/Users/stocker/Desktop/LoanApplication.pnml", false);
 //		System.out.println(getAllPredecessors((PTNet) net));
-	}
-
+//	}
 }

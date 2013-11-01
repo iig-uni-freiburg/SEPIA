@@ -316,7 +316,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Adds a token listener.
 	 * 
-	 * @param listener
+	 * @param l
 	 *            The token listener to add.
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
@@ -328,7 +328,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Removes a token listener.
 	 * 
-	 * @param listener
+	 * @param l
 	 *            The token listener to remove.
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
@@ -340,7 +340,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Adds a capacity listener.
 	 * 
-	 * @param listener
+	 * @param l
 	 *            The capacity listener to add.
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
@@ -352,7 +352,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Removes a capacity listener.
 	 * 
-	 * @param listener
+	 * @param l
 	 *            The capacity listener to remove.
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
@@ -411,7 +411,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	}
 
 	protected void cloneCapacity(AbstractPlace<E, S> clone) throws ParameterException {
-		clone.setCapacity(getCapacity());
+		if (getCapacity() > 0)
+			clone.setCapacity(getCapacity());
 	}
 
 }

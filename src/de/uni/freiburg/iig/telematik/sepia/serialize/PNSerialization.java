@@ -32,29 +32,37 @@ public class PNSerialization {
 
 	PNSerializer<P,T,F,M,S> 
 
-	getSerializer(AbstractGraphicalPN<P,T,F,M,S> net, PNSerializationFormat format) throws ParameterException, SerializationException{
-		
-		switch(format){
+	getSerializer(AbstractGraphicalPN<P, T, F, M, S> net, PNSerializationFormat format) throws ParameterException, SerializationException {
+
+		// ugly unbounded wildcards as work-around for bug JDK-6932571
+		Object serializer = null;
+		Object petriNet = net.getPetriNet();
+
+		switch (format) {
 		case PNML:
-			if(net.getPetriNet() instanceof IFNet){
-				return new PNMLIFNetSerializer(net);
+			if (petriNet instanceof IFNet) {
+				serializer = new PNMLIFNetSerializer(net);
 			}
-			if(net.getPetriNet() instanceof AbstractCPN){
+			if (petriNet instanceof AbstractCPN) {
 				// CWNs fall into this category.
-				return new PNMLCPNSerializer(net);
+				serializer = new PNMLCPNSerializer(net);
 			}
-			if(net.getPetriNet() instanceof AbstractPTNet){
-				return new PNMLPTNetSerializer(net);
+			if (petriNet instanceof AbstractPTNet) {
+				serializer = new PNMLPTNetSerializer(net);
 			}
-			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
+			break;
 		case PETRIFY:
-			if(net.getPetriNet() instanceof AbstractPTNet)
-				return new PetrifyPTNetSerializer(net);
-			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
+			if (petriNet instanceof AbstractPTNet)
+				serializer = new PetrifyPTNetSerializer(net);
+			break;
 		default:
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);
-			
 		}
+
+		if (serializer != null)
+			return (PNSerializer<P, T, F, M, S>) serializer;
+		else
+			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -67,17 +75,20 @@ public class PNSerialization {
 	PNSerializer<P,T,F,M,S> 
 
 	getSerializer(AbstractPetriNet<P,T,F,M,S> net, PNSerializationFormat format) throws ParameterException, SerializationException{
-		
+
+		// ugly unbounded wildcard as work-around for bug JDK-6932571
+		Object netObject = net;
+
 		switch(format){
 		case PNML:
-			if(net instanceof IFNet){
+			if(netObject instanceof IFNet){
 				return (PNSerializer<P, T, F, M, S>) new PNMLIFNetSerializer(net);
 			}
-			if(net instanceof AbstractCPN){
+			if(netObject instanceof AbstractCPN){
 				// CWNs fall into this category.
 				return new PNMLCPNSerializer(net);
 			}
-			if(net instanceof AbstractPTNet){
+			if(netObject instanceof AbstractPTNet){
 				return new PNMLPTNetSerializer(net);
 				
 			}

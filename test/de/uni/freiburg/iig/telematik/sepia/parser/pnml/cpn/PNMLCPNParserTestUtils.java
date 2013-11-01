@@ -17,7 +17,7 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	/**
 	 * Creates a complete CPN arc
 	 */
-	public static Node createCPNArc(boolean showIDAttribute, boolean showSourceAttribute, boolean showTargetAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInscription, boolean showInscriptionGraphics, boolean showCompleteInscriptionGraphics, boolean showCompleteInscriptionOffsetGraphics,
+	public static Node createCPNArc(boolean showIDAttribute, boolean showSourceAttribute, boolean showTargetAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInscription, int inscriptionValue, boolean showInscriptionGraphics, boolean showCompleteInscriptionGraphics, boolean showCompleteInscriptionOffsetGraphics,
 			boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showExistingColorTokenName) {
 		Document a = createDocumentInstance();
 
@@ -54,7 +54,7 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 
 		if (showInscription) {
 			// Inscription for the arc
-			Element arcInscription = createTextElement(a, "inscription", "2");
+			Element arcInscription = createTextElement(a, "inscription", Integer.toString(inscriptionValue));
 			arc.appendChild(arcInscription);
 			// colors
 			Element placeInitialMarkingColors = a.createElement("colors");
@@ -358,7 +358,7 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	}
 
 	public static void main(String[] args) throws TransformerFactoryConfigurationError, TransformerException {
-		System.out.println(toXML(createCPNArc(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createCPNArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createCPNPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createTokenColors(true, true, true)));
 		System.out.println(toXML(createCPNTransition(true, true, true, true, true, true, true, true, true)));

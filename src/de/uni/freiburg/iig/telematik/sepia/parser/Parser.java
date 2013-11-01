@@ -55,13 +55,13 @@ public class Parser {
 		if(format == null)
 			throw new ParserException(ErrorCode.UNKNOWN_FILE_EXTENSION);
 		ParserInterface parser = getParser(file, format);
-		return parser.parse(file);
+		return parser.<P, T, F, M, S>parse(file);
 	}
 	
 	/**
 	 * Parses the given file with the parser respective to the file extension.
 	 * 
-	 * @param file
+	 * @param fileName
 	 *            File to parse
 	 * @return A {@link AbstractGraphicalPN}
 	 * @throws IOException
@@ -81,7 +81,7 @@ public class Parser {
 	
 	parse(String fileName) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return parse(prepareFile(fileName));
+		return Parser.<P, T, F, M, S>parse(prepareFile(fileName));
 	}
 	
 	/**
@@ -109,13 +109,13 @@ public class Parser {
 		validateFile(file);
 		Validate.notNull(format);
 		ParserInterface parser = getParser(file, format);
-		return parser.parse(file);
+		return parser.<P, T, F, M, S>parse(file);
 	}
 	
 	/**
 	 * Parses the given file with the parser respective to the file extension.
 	 * 
-	 * @param file
+	 * @param fileName
 	 *            File to parse
 	 * @return A {@link AbstractGraphicalPN}
 	 * @throws IOException
@@ -135,7 +135,7 @@ public class Parser {
 	
 	parse(String fileName, ParsingFormat format) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return parse(prepareFile(fileName), format);
+		return Parser.<P, T, F, M, S>parse(prepareFile(fileName), format);
 	}
 	
 	private static File prepareFile(String fileName) throws IOException{

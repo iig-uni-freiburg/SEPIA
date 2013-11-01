@@ -47,7 +47,7 @@ public class PNMLPTNetParserTest {
 		parser = new PNMLPTNetParser();
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readDimension(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -85,7 +85,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readFill(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -108,7 +108,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readFont(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -140,7 +140,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readInitialMarking(org.w3c.dom.Node)}.
 	 */
 	@Test
@@ -156,7 +156,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readLine(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -179,7 +179,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readOffset(org.w3c.dom.Element)}.
 	 * 
 	 * @throws ParameterException
@@ -231,7 +231,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readPlaceCapacity(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -247,7 +247,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readPosition(org.w3c.dom.Element)}.
 	 */
 	@Test
@@ -285,7 +285,7 @@ public class PNMLPTNetParserTest {
 		}
 	}
 
-	/**
+	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readText(org.w3c.dom.Node)}.
 	 */
 	@Test

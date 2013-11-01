@@ -159,14 +159,10 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * Depending on the state representation of places this may require different check routines,<br>
 	 * which have to be implemented by subclasses.<br>
 	 * <br>
-	 * To allow subclasses the definition of additional enabling constraints, the method also calls the method<br>
-	 * {@link #additionalEnablingConstraintsHold()}, which can be overridden by subclasses.<br>
-	 * <br>
 	 * If the transition gets enabled or disabled, the transition notifies all transition listeners.
 	 * 
 	 * @see AbstractTransition#enoughTokensInInputPlaces()
 	 * @see AbstractTransition#enoughSpaceInOutputPlaces()
-	 * @see AbstractTransition#additionalEnablingConstraintsHold()
 	 */
 	public void checkState() {
 		
@@ -258,7 +254,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	
 	/**
 	 * Removes a transition listener.
-	 * @param listener The transition listener to remove.
+	 * @param l The transition listener to remove.
 	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
 	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l) throws ParameterException {

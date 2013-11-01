@@ -102,7 +102,7 @@ public class PNMLParser implements ParserInterface {
 
 	parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
-		return parse(pnmlFile, true, true);
+		return this.<P, T, F, M, S>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class PNMLParser implements ParserInterface {
 		if (!inputFile.canRead())
 			throw new IOException("I/O Error on opening file: Unable to read file!");
 
-		return parse(inputFile, requireNetType, verifySchema);
+		return this.<P, T, F, M, S>parse(inputFile, requireNetType, verifySchema);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class PNMLParser implements ParserInterface {
 	AbstractGraphicalPN<P, T, F, M, S>
 
 	parse(File pnmlFile) throws IOException, ParserException, ParameterException {
-		return parse(pnmlFile, true, true);
+		return this.<P, T, F, M, S>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -198,23 +198,33 @@ public class PNMLParser implements ParserInterface {
 			verifySchema(pnmlFile, NetType.getVerificationURL(netType));
 		}
 
+		// ugly unbounded wildcard as work-around for bug JDK-6932571
+		Object graphicalPN = null;
+
 		switch (netType) {
 		case PTNet:
 		case Unknown:
 			PNMLPTNetParser ptnetParser = new PNMLPTNetParser();
-			return (AbstractGraphicalPN<P, T, F, M, S>) ptnetParser.parse(pnmlDocument);
+			graphicalPN = ptnetParser.parse(pnmlDocument);
+			break;
 		case CPN:
 			PNMLCPNParser cpnParser = new PNMLCPNParser();
-			return (AbstractGraphicalPN<P, T, F, M, S>) cpnParser.parse(pnmlDocument);
+			graphicalPN = cpnParser.parse(pnmlDocument);
+			break;
 		case CWN:
 			PNMLCWNParser cwnParser = new PNMLCWNParser();
-			return (AbstractGraphicalPN<P, T, F, M, S>) cwnParser.parse(pnmlDocument);
+			graphicalPN = cwnParser.parse(pnmlDocument);
+			break;
 		case IFNet:
 			PNMLIFNetParser ifnetParser = new PNMLIFNetParser();
-			return (AbstractGraphicalPN<P, T, F, M, S>) ifnetParser.parse(pnmlDocument);
+			graphicalPN = ifnetParser.parse(pnmlDocument);
+			break;
 		}
 
-		throw new ParserException("Couldn't determine a proper PNML parser.");
+		if (graphicalPN != null)
+			return (AbstractGraphicalPN<P, T, F, M, S>) graphicalPN;
+		else
+			throw new ParserException("Couldn't determine a proper PNML parser.");
 	}
 
 	/**

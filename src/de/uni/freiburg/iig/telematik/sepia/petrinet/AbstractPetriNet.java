@@ -657,7 +657,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	/**
 	 * Protected method for adding a relation of type <code>F<code> to the relation map.<br>
-	 * This method is called from {@link #addFlowRelationPT(String)} and {@link #addFlowRelationTP(String, String)}
+	 * This method is called from {@link #addFlowRelationPT(String, String)} and {@link #addFlowRelationTP(String, String)}
 	 * which both check if there already exists a relation with equal name before making the call.<br>
 	 * They also ensure that the place/transition of the relation are places/transitions of the net.
 	 * @param relation The Petri net relation to add.
@@ -727,7 +727,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	/**
 	 * Checks if the Petri net contains the given relation.
-	 * @param place The relation to check.
+	 * @param relation The relation to check.
 	 * @return <code>true</code> if the net contains the relation;<br>
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given relation is <code>null</code>.
@@ -786,7 +786,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * When a Petri net is reset ({@link #reset()}), it should reach its initial marking.<br>
 	 * The initial marking does not have to contain all net places. For places not contained in the given initial marking,
 	 * the net assumes 0 tokens in the initial net state.<br>
-	 * This method uses {@link #setInitialMarking()} to actually transform the net state to the initial state.
+	 * This method uses {@link #setInitialMarking(M)} to actually transform the net state to the initial state.
 	 * @param marking The marking used as initial marking (state) of the net.
 	 * @throws ParameterException If parameters are <code>null</code>, contain <code>null</code>-values<br>
 	 * or the net does not contain some of the marking places.
