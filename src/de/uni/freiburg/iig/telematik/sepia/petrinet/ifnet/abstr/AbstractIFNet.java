@@ -56,7 +56,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * <li>Subject descriptors: Subjects assigned to process activities.</li>
 	 * </ul>
 	 */
-	protected AnalysisContext analysisContext;
+	protected AnalysisContext analysisContext = null;
 	
 	public AbstractIFNet() {
 		super();
@@ -230,6 +230,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	}
 	
 	protected void checkAnalysisContextValidity() throws PNValidationException{
+		
+		if(getAnalysisContext() == null)
+			return;
 		
 		// Check if there is a subject descriptor for every transition
 		for (T transition : getTransitions()) {
