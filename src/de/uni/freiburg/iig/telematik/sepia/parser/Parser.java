@@ -8,9 +8,11 @@ import de.invation.code.toval.parser.ParserException.ErrorCode;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
@@ -45,9 +47,11 @@ public class Parser {
 	   							T extends AbstractTransition<F,S>, 
 	   							F extends AbstractFlowRelation<P,T,S>, 
 	   							M extends AbstractMarking<S>, 
-	   							S extends Object>
+	   							S extends Object,
+	   					    	N extends AbstractPetriNet<P,T,F,M,S>,
+	   					    	G extends AbstractPNGraphics<P,T,F,M,S>>
 	
-							AbstractGraphicalPN<P, T, F, M, S>
+							AbstractGraphicalPN<P, T, F, M, S, N, G>
 	
 	parse(File file) throws IOException, ParserException, ParameterException {
 		validateFile(file);
@@ -55,7 +59,7 @@ public class Parser {
 		if(format == null)
 			throw new ParserException(ErrorCode.UNKNOWN_FILE_EXTENSION);
 		ParserInterface parser = getParser(file, format);
-		return parser.<P, T, F, M, S>parse(file);
+		return parser.<P,T,F,M,S,N,G>parse(file);
 	}
 	
 	/**
@@ -75,13 +79,15 @@ public class Parser {
 	   							T extends AbstractTransition<F,S>, 
 	   							F extends AbstractFlowRelation<P,T,S>, 
 	   							M extends AbstractMarking<S>, 
-	   							S extends Object>
+	   							S extends Object,
+	   					    	N extends AbstractPetriNet<P,T,F,M,S>,
+	   					    	G extends AbstractPNGraphics<P,T,F,M,S>>
 	
-							AbstractGraphicalPN<P, T, F, M, S>
+							AbstractGraphicalPN<P, T, F, M, S, N, G>
 	
 	parse(String fileName) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return Parser.<P, T, F, M, S>parse(prepareFile(fileName));
+		return Parser.<P,T,F,M,S,N,G>parse(prepareFile(fileName));
 	}
 	
 	/**
@@ -101,15 +107,17 @@ public class Parser {
 	   							T extends AbstractTransition<F,S>, 
 	   							F extends AbstractFlowRelation<P,T,S>, 
 	   							M extends AbstractMarking<S>, 
-	   							S extends Object>
+	   							S extends Object,
+	   					    	N extends AbstractPetriNet<P,T,F,M,S>,
+	   					    	G extends AbstractPNGraphics<P,T,F,M,S>>
 	
-							AbstractGraphicalPN<P, T, F, M, S>
+							AbstractGraphicalPN<P, T, F, M, S, N, G>
 	
 	parse(File file, ParsingFormat format) throws IOException, ParserException, ParameterException {
 		validateFile(file);
 		Validate.notNull(format);
 		ParserInterface parser = getParser(file, format);
-		return parser.<P, T, F, M, S>parse(file);
+		return parser.<P,T,F,M,S,N,G>parse(file);
 	}
 	
 	/**
@@ -129,13 +137,15 @@ public class Parser {
 	   							T extends AbstractTransition<F,S>, 
 	   							F extends AbstractFlowRelation<P,T,S>, 
 	   							M extends AbstractMarking<S>, 
-	   							S extends Object>
+	   							S extends Object,
+	   					    	N extends AbstractPetriNet<P,T,F,M,S>,
+	   					    	G extends AbstractPNGraphics<P,T,F,M,S>>
 	
-							AbstractGraphicalPN<P, T, F, M, S>
+							AbstractGraphicalPN<P,T,F,M,S,N,G>
 	
 	parse(String fileName, ParsingFormat format) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return Parser.<P, T, F, M, S>parse(prepareFile(fileName), format);
+		return Parser.<P,T,F,M,S,N,G>parse(prepareFile(fileName), format);
 	}
 	
 	private static File prepareFile(String fileName) throws IOException{

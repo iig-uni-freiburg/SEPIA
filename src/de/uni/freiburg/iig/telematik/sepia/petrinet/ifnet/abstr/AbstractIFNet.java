@@ -231,17 +231,15 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	protected void checkAnalysisContextValidity() throws PNValidationException{
 		
-		//Check if there is a subject descriptor for every transition
-		try{
-			for(T transition: getTransitions()){
-				if(getAnalysisContext().getSubjectDescriptor(transition.getName()) == null)
-					throw new PNValidationException("Transition without subject descriptor: "  + transition.getName());
+		// Check if there is a subject descriptor for every transition
+		for (T transition : getTransitions()) {
+			try {
+				getAnalysisContext().getSubjectDescriptor(transition.getName());
+			} catch (ParameterException e) {
+				throw new PNValidationException("Transition without subject descriptor: " + transition.getName());
 			}
-		} catch(ParameterException e){
-			System.out.println("ddddd");
-			e.printStackTrace();
 		}
-		
+
 		// Check security level consistency for regular transitions.
 		for(String attribute: getAnalysisContext().getAttributes()){
 			for(AbstractRegularIFNetTransition<F> transition: getRegularTransitions()){

@@ -170,7 +170,24 @@ public class PTNetTest {
 		relationsAfterSecondAdd = new HashSet<PTFlowRelation>(ptnet.getFlowRelations());
 		assertEquals(relationsBeforeSecondAdd, relationsAfterSecondAdd);
 	}
+	
+	/*
+	 * Tests setting an initial marking for a place with a too small capacity
+	 */
+	@Test(expected = ParameterException.class)
+	public void testInitialMarking() throws ParameterException {
+		PTNet ptnet = new PTNet();
 
+		ptnet.addPlace("p0");
+		ptnet.getPlace("p0").setCapacity(1);
+
+		// create the the token colors used in the initial marking
+		PTMarking marking = new PTMarking();
+		marking.set("p0", 5);
+
+		// create the P/T-net with all tokens in P0
+		ptnet.setInitialMarking(marking);
+	}
 
 	/*
 	 * Test the clone() method
@@ -252,19 +269,4 @@ public class PTNetTest {
 
 		return ptnet;
 	}
-	
-//	private void testInitialMarking(){
-//		PTNet ptnet = new PTNet();
-//		
-//		ptnet.addPlace("p0");
-//		ptnet.getPlace("p0").setCapacity(1);
-//
-//		// create the the token colors used in the initial marking
-//		PTMarking marking = new PTMarking();
-//		marking.set("p0", 5);
-//
-//		// create the P/T-net with all tokens in P0
-//		ptnet.setInitialMarking(marking);
-//	}
-	
 }

@@ -279,7 +279,8 @@ public class RegularIFNetTransitionTest {
 		assertFalse("A disabled transition is reported to be enabled", trans.isEnabled());
 
 		// removing of green enables the transition again
-		p0.getState().clear();
+		// p0.getState().clear(); cleaning a clone dosn't make sense
+		p0.setState(new Multiset<String>());
 		trans.checkState();
 		assertTrue("An enabled transition is reported to be disabled", trans.isEnabled());
 	}

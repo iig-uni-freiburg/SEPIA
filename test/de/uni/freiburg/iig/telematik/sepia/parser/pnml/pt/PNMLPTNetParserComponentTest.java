@@ -14,11 +14,13 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.TestResourceFile;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 
@@ -139,9 +141,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetResource.getFile(), true, true);
+			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -171,9 +173,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithoutValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetResource.getFile(), true, false);
+			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -208,7 +210,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noNetIDPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoNetIDResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoNetIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -221,9 +223,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDPTnetWithoutValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoNetIDResource.getFile(), true, false);
+			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -244,7 +246,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithoutTypeResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithoutTypeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -258,7 +260,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithoutTypeResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithoutTypeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -272,7 +274,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetNotRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithoutTypeResource.getFile(), false, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithoutTypeResource.getFile(), false, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -286,7 +288,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithoutTypeResource.getFile(), false, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithoutTypeResource.getFile(), false, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -300,7 +302,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypePTnetRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithUnknownTypeResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithUnknownTypeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -314,7 +316,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypePTnetRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithUnknownTypeResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithUnknownTypeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -328,7 +330,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypePTnetNotRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithUnknownTypeResource.getFile(), false, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithUnknownTypeResource.getFile(), false, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -341,9 +343,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypePTnetNotRequiringTypeWithoutValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> net = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> net = null;
 		try {
-			net = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithUnknownTypeResource.getFile(), false, false);
+			net = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithUnknownTypeResource.getFile(), false, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -365,7 +367,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPageTagsPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithoutPageTagsResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithoutPageTagsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -379,7 +381,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPageTagsPTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithoutPageTagsResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithoutPageTagsResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -395,7 +397,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithMultiplePageTagsResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithMultiplePageTagsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -409,7 +411,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetWithMultiplePageTagsResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetWithMultiplePageTagsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -427,7 +429,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoPlaceIDResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoPlaceIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -441,7 +443,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoPlaceIDResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoPlaceIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -455,7 +457,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNamePTnetWithValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoPlaceNameResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoPlaceNameResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -471,7 +473,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNamePTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoPlaceNameResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoPlaceNameResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -487,7 +489,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidInitialMarkingResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidInitialMarkingResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -501,7 +503,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidInitialMarkingResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidInitialMarkingResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -515,7 +517,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceGraphicsPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidPlaceGraphicsResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidPlaceGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -529,7 +531,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidPlaceGraphicsPTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidPlaceGraphicsResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidPlaceGraphicsResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -546,7 +548,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceCapacityPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidPlaceCapacityResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidPlaceCapacityResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -560,7 +562,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceCapacityPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidPlaceCapacityResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidPlaceCapacityResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -578,7 +580,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoTransitionIDResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoTransitionIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -592,7 +594,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoTransitionIDResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoTransitionIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -606,7 +608,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNamePTnetWithValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoTransitionNameResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoTransitionNameResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -622,7 +624,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNamePTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoTransitionNameResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoTransitionNameResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -638,7 +640,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionGraphicsPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidTransitionGraphicsResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidTransitionGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -652,7 +654,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidTransitionGraphicsPTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidTransitionGraphicsResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidTransitionGraphicsResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -673,7 +675,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcIDPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoArcIDResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoArcIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -687,7 +689,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcIDPTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoArcIDResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoArcIDResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -703,7 +705,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoSourceIDResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoSourceIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -717,7 +719,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoSourceIDResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoSourceIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -731,7 +733,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoTargetIDResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoTargetIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -745,7 +747,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDPTnetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoTargetIDResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoTargetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -759,7 +761,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionPTnetWithValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoArcInscriptionResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoArcInscriptionResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -775,7 +777,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionPTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNoArcInscriptionResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNoArcInscriptionResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -791,7 +793,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNegativeArcInscriptionResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNegativeArcInscriptionResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -805,7 +807,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void negativeArcInscriptionPTnetWithoutValidation() throws ParameterException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetNegativeArcInscriptionResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetNegativeArcInscriptionResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -819,7 +821,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidArcGraphicsPTnetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidArcGraphicsResource.getFile(), true, true);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidArcGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -833,7 +835,7 @@ public class PNMLPTNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidArcGraphicsPTnetWithoutValidation() {
 		try {
-			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetInvalidArcGraphicsResource.getFile(), true, false);
+			new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetInvalidArcGraphicsResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -853,9 +855,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedPTnetWithValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetBoundedResource.getFile(), true, true);
+			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -874,9 +876,9 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedPTnetWithoutValidation() {
-		AbstractGraphicalPN<?, ?, ?, ?, ?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer>parse(PTnetBoundedResource.getFile(), true, false);
+			abstrNet = new PNMLParser().<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer, PTNet, PTGraphics>parse(PTnetBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {

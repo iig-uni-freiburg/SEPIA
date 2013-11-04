@@ -3,11 +3,22 @@
 
 	<groupId>de.uni-freiburg.iig.telematik</groupId>
 	<artifactId>sepia</artifactId>
-	<version>1.0</version>
+	<version>0.1.2</version>
 	<packaging>jar</packaging>
 	<name>sepia</name>
+	<url>https://sourceforge.net/projects/sepiaframework/</url>
 
-	<url>http://maven.apache.org</url>
+	<organization>
+		<name>Institute of Computer Science and Social Studies, Department of Telematics, University of Freiburg</name>
+		<url>http://www.telematik.uni-freiburg.de/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL) 3.0</name>
+			<url>http://www.gnu.org/licenses/gpl.html</url>
+		</license>
+	</licenses>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,12 +28,12 @@
 		<dependency>
 			<groupId>de.uni-freiburg.iig.telematik</groupId>
 			<artifactId>jagal</artifactId>
-			<version>1.0</version>
+			<version>0.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>de.invation.code</groupId>
 			<artifactId>toval</artifactId>
-			<version>1.0</version>
+			<version>0.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.msv</groupId>

@@ -338,19 +338,17 @@ public class CWNTest {
 		}
 
 		// Set one green token to p0
-		invalidCwn1.setInitialMarking(p0g);
 		try {
-			invalidCwn1.checkValidity();
-			fail("An ivalid CWN (with one green token in the input place) is detected as valid!");
-		} catch (PNValidationException e) {
+			invalidCwn1.setInitialMarking(p0g);
+			fail("The capacity of green tokens is limited to two, so this initial marking shouldn't fit here!");
+		} catch(ParameterException e) {
 		}
 
 		// Set one green and one red token to p0
-		invalidCwn1.setInitialMarking(p0gr);
 		try {
-			invalidCwn1.checkValidity();
-			fail("An ivalid CWN (with one green and one red token in the input place) is detected as valid!");
-		} catch (PNValidationException e) {
+			invalidCwn1.setInitialMarking(p0gr);
+			fail("The capacity of red tokens is limited to two, so this initial marking shouldn't fit here!");
+		} catch(ParameterException e) {
 		}
 
 		// change the petriNet to not produce black tokens in the output place

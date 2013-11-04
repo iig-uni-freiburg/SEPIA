@@ -23,6 +23,7 @@ import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.PNMLCWNParser;
@@ -31,6 +32,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.ParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
@@ -96,13 +98,15 @@ public class PNMLParser implements ParserInterface {
 			T extends AbstractTransition<F, S>,
 			F extends AbstractFlowRelation<P, T, S>,
 			M extends AbstractMarking<S>,
-			S extends Object>
+			S extends Object,
+			N extends AbstractPetriNet<P,T,F,M,S>,
+			G extends AbstractPNGraphics<P,T,F,M,S>>
 
-	AbstractGraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
-		return this.<P, T, F, M, S>parse(pnmlFile, true, true);
+		return this.<P,T,F,M,S,N,G>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -121,9 +125,11 @@ public class PNMLParser implements ParserInterface {
 			T extends AbstractTransition<F, S>,
 			F extends AbstractFlowRelation<P, T, S>,
 			M extends AbstractMarking<S>,
-			S extends Object>
+			S extends Object,
+			N extends AbstractPetriNet<P,T,F,M,S>,
+			G extends AbstractPNGraphics<P,T,F,M,S>>
 
-	AbstractGraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 
@@ -135,7 +141,7 @@ public class PNMLParser implements ParserInterface {
 		if (!inputFile.canRead())
 			throw new IOException("I/O Error on opening file: Unable to read file!");
 
-		return this.<P, T, F, M, S>parse(inputFile, requireNetType, verifySchema);
+		return this.<P, T, F, M, S, N, G>parse(inputFile, requireNetType, verifySchema);
 	}
 
 	/**
@@ -150,12 +156,14 @@ public class PNMLParser implements ParserInterface {
 			T extends AbstractTransition<F, S>,
 			F extends AbstractFlowRelation<P, T, S>,
 			M extends AbstractMarking<S>,
-			S extends Object>
+			S extends Object,
+			N extends AbstractPetriNet<P,T,F,M,S>,
+			G extends AbstractPNGraphics<P,T,F,M,S>>
 
-	AbstractGraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(File pnmlFile) throws IOException, ParserException, ParameterException {
-		return this.<P, T, F, M, S>parse(pnmlFile, true, true);
+		return this.<P, T, F, M, S, N, G>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -175,9 +183,11 @@ public class PNMLParser implements ParserInterface {
 			T extends AbstractTransition<F, S>,
 			F extends AbstractFlowRelation<P, T, S>,
 			M extends AbstractMarking<S>,
-			S extends Object>
+			S extends Object,
+			N extends AbstractPetriNet<P,T,F,M,S>,
+			G extends AbstractPNGraphics<P,T,F,M,S>>
 
-	AbstractGraphicalPN<P, T, F, M, S>
+	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 
@@ -222,7 +232,7 @@ public class PNMLParser implements ParserInterface {
 		}
 
 		if (graphicalPN != null)
-			return (AbstractGraphicalPN<P, T, F, M, S>) graphicalPN;
+			return (AbstractGraphicalPN<P, T, F, M, S, N, G>) graphicalPN;
 		else
 			throw new ParserException("Couldn't determine a proper PNML parser.");
 	}

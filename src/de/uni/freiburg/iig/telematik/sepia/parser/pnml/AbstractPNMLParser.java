@@ -68,7 +68,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 *            DOM document to parse
 	 * @return Petri net with graphical information
 	 */
-	public abstract AbstractGraphicalPN<P, T, F, M, S> parse(Document pnmlDocument) throws ParameterException, ParserException;
+	public abstract AbstractGraphicalPN<P, T, F, M, S, N, G> parse(Document pnmlDocument) throws ParameterException, ParserException;
 
 	/**
 	 * Parses a PNML document into an existing instance of an {@link AbstractGraphicalPN}. Use {@link #parse(Document)} to return an {@link AbstractGraphicalPN}.
