@@ -1,10 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
-import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
@@ -17,19 +14,19 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalCPN extends AbstractGraphicalPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> {
+public class GraphicalCPN extends AbstractGraphicalCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPN, CPNGraphics> {
 
-	public GraphicalCPN(AbstractPetriNet<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> petriNet, AbstractPNGraphics<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, Multiset<String>> petriNetGraphics) {
+	public GraphicalCPN(CPN petriNet, CPNGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
 
-	@Override
-	public CPN getPetriNet() {
-		return (CPN) super.getPetriNet();
-	}
-
-	@Override
-	public CPNGraphics getPetriNetGraphics() {
-		return (CPNGraphics) super.getPetriNetGraphics();
-	}
+//	@Override
+//	public CPN getPetriNet() {
+//		return (CPN) super.getPetriNet();
+//	}
+//
+//	@Override
+//	public CPNGraphics getPetriNetGraphics() {
+//		return (CPNGraphics) super.getPetriNetGraphics();
+//	}
 }

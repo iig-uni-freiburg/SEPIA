@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
@@ -47,8 +48,15 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 		super(name, label);
 		state = 0;
 	}
-	
-	
+
+	@Override
+	public void setCapacity(int capacity) throws ParameterException {
+		Validate.bigger(capacity, 0);
+		if(getState() > capacity)
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "Place already contains more tokens than the new capacity for this color.");
+
+		super.setCapacity(capacity);
+	}
 
 	@Override
 	protected void addTokens(Integer tokens) throws ParameterException {

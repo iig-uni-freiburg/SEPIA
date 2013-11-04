@@ -18,25 +18,27 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
    							  	   T extends AbstractTransition<F,S>, 
    							  	   F extends AbstractFlowRelation<P,T,S>, 
    							  	   M extends AbstractMarking<S>, 
-   							  	   S extends Object> {
+   							  	   S extends Object,
+   							  	   N extends AbstractPetriNet<P,T,F,M,S>,
+							  	   G extends AbstractPNGraphics<P,T,F,M,S>> {
 	
-	protected AbstractPetriNet<P,T,F,M,S> petriNet = null;
-	protected AbstractPNGraphics<P,T,F,M,S> graphics = null;
+	protected N petriNet = null;
+	protected G graphics = null;
 	protected SerializationSupport support = null;
 	
-	public PNSerializer(AbstractPetriNet<P,T,F,M,S> petriNet) throws ParameterException{
+	public PNSerializer(N petriNet) throws ParameterException{
 		validatePetriNet(petriNet);
 		this.petriNet = petriNet;
 	}
 	
-	public PNSerializer(AbstractGraphicalPN<P,T,F,M,S> petriNet) throws ParameterException{
+	public PNSerializer(AbstractGraphicalPN<P,T,F,M,S,N,G> petriNet) throws ParameterException{
 		Validate.notNull(petriNet);
 		validatePetriNet(petriNet.getPetriNet());
 		this.petriNet = petriNet.getPetriNet();
 		this.graphics = petriNet.getPetriNetGraphics();
 	}
 	
-	private void validatePetriNet(AbstractPetriNet<P,T,F,M,S> petriNet) throws ParameterException{
+	private void validatePetriNet(N petriNet) throws ParameterException{
 		Validate.notNull(petriNet);
 		Class<?> requiredClassType = NetType.getClassType(acceptedNetType());
 		if(!(requiredClassType.isAssignableFrom(petriNet.getClass()))){
@@ -44,11 +46,11 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 		}
 	}
 	
-	public AbstractPetriNet<P,T,F,M,S> getPetriNet(){
+	public N getPetriNet(){
 		return petriNet;
 	}
 	
-	public AbstractPNGraphics<P,T,F,M,S> getGraphics(){
+	public G getGraphics(){
 		return graphics;
 	}
 	

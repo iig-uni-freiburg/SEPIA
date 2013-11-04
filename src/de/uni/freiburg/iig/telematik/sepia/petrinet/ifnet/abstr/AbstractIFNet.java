@@ -40,7 +40,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 						   			M extends AbstractIFNetMarking,
 						   			R extends AbstractRegularIFNetTransition<F>,
 						   			D extends AbstractDeclassificationTransition<F>> 
-
+ 
 							 		  extends AbstractCWN<P,T,F,M>{
 	
 	protected Map<String, R> regularTransitions;

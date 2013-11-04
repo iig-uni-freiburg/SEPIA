@@ -1,13 +1,12 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
-import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 
 /**
@@ -16,20 +15,19 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalIFNet extends AbstractGraphicalPN<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>> {
+public class GraphicalIFNet extends AbstractGraphicalIFNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition, IFNet, IFNetGraphics> {
 
-	public GraphicalIFNet(  AbstractPetriNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>> petriNet, 
-			              AbstractPNGraphics<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>> petriNetGraphics) {
+	public GraphicalIFNet(IFNet petriNet, IFNetGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
 
-	@Override
-	public IFNet getPetriNet() {
-		return (IFNet) super.getPetriNet();
-	}
-
-	@Override
-	public IFNetGraphics getPetriNetGraphics() {
-		return (IFNetGraphics) super.getPetriNetGraphics();
-	}
+//	@Override
+//	public IFNet getPetriNet() {
+//		return (IFNet) super.getPetriNet();
+//	}
+//
+//	@Override
+//	public IFNetGraphics getPetriNetGraphics() {
+//		return (IFNetGraphics) super.getPetriNetGraphics();
+//	}
 }

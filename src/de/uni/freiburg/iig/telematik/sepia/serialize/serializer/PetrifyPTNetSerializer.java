@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import de.invation.code.toval.file.FileFormat;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
@@ -21,18 +21,20 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_Petrify;
 public class PetrifyPTNetSerializer<P extends AbstractPTPlace<F>, 
 									  T extends AbstractPTTransition<F>, 
 									  F extends AbstractPTFlowRelation<P,T>, 
-									  M extends AbstractPTMarking> extends PNSerializer<P,T,F,M,Integer>{
+									  M extends AbstractPTMarking,
+									  N extends AbstractPTNet<P,T,F,M>,
+	   							  	  G extends AbstractPTGraphics<P,T,F,M>> extends PNSerializer<P,T,F,M,Integer,N,G>{
 	
 	private final String RELATION_FORMAT = "%s %s";
 	private final String RELATION_WEIGHTED_FORMAT = RELATION_FORMAT + "(%s)";
 	private final String BOUNDED_PLACE_FORMAT = " %s=%s";
 	private final String MARKING_FORMAT = " %s=%s";
 	
-	public PetrifyPTNetSerializer(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PetrifyPTNetSerializer(AbstractGraphicalPTNet<P, T, F, M, N, G> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 	
-	public PetrifyPTNetSerializer(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PetrifyPTNetSerializer(N petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
@@ -119,8 +121,4 @@ public class PetrifyPTNetSerializer<P extends AbstractPTPlace<F>,
 		return NetType.PTNet;
 	}
 
-	@Override
-	public AbstractPTNet<P, T, F, M> getPetriNet() {
-		return (AbstractPTNet<P,T,F,M>) super.getPetriNet();
-	}
 }

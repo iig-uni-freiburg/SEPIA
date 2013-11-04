@@ -6,10 +6,9 @@ import org.w3c.dom.Element;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
@@ -19,15 +18,17 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransit
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
 
 public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>, 
-								T extends AbstractCPNTransition<F>, 
-								F extends AbstractCPNFlowRelation<P,T>, 
-								M extends AbstractCPNMarking> extends PNSerializer_PNML<P, T, F, M, Multiset<String>> {
+							   T extends AbstractCPNTransition<F>, 
+							   F extends AbstractCPNFlowRelation<P,T>, 
+							   M extends AbstractCPNMarking,
+							   N extends AbstractCPN<P,T,F,M>,
+							   G extends AbstractCPNGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, N, G> {
 
-	public PNMLCPNSerializer(AbstractGraphicalPN<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
+	public PNMLCPNSerializer(AbstractGraphicalCPN<P, T, F, M, N, G> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
-	public PNMLCPNSerializer(AbstractPetriNet<P, T, F, M, Multiset<String>> petriNet) throws ParameterException {
+	public PNMLCPNSerializer(N petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
@@ -138,16 +139,6 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	@Override
 	public NetType acceptedNetType() {
 		return NetType.CPN;
-	}
-
-	@Override
-	public AbstractCPN<P, T, F, M> getPetriNet() {
-		return (AbstractCPN<P,T,F,M>) super.getPetriNet();
-	}
-	
-	@Override
-	public AbstractCPNGraphics<P, T, F, M> getGraphics() {
-		return (AbstractCPNGraphics<P, T, F, M>) super.getGraphics();
 	}
 	
 

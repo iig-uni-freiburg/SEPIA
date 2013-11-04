@@ -1,9 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
@@ -16,19 +14,19 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalPTNet extends AbstractGraphicalPN<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> {
+public class GraphicalPTNet extends AbstractGraphicalPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTNet, PTGraphics> {
 
-	public GraphicalPTNet(AbstractPetriNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> petriNet, AbstractPNGraphics<PTPlace, PTTransition, PTFlowRelation, PTMarking, Integer> petriNetGraphics) {
+	public GraphicalPTNet(PTNet petriNet, PTGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
 
-	@Override
-	public PTNet getPetriNet() {
-		return (PTNet) super.getPetriNet();
-	}
-
-	@Override
-	public PTGraphics getPetriNetGraphics() {
-		return (PTGraphics) super.getPetriNetGraphics();
-	}
+//	@Override
+//	public PTNet getPetriNet() {
+//		return (PTNet) super.getPetriNet();
+//	}
+//
+//	@Override
+//	public PTGraphics getPetriNetGraphics() {
+//		return (PTGraphics) super.getPetriNetGraphics();
+//	}
 }

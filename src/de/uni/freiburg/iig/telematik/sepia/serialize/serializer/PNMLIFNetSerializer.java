@@ -5,32 +5,36 @@ import java.util.Set;
 
 import org.w3c.dom.Element;
 
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractRegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.TransitionType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
 public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>, 
 								  T extends AbstractIFNetTransition<F>, 
 								  F extends AbstractIFNetFlowRelation<P,T>, 
-								  M extends AbstractIFNetMarking> extends PNMLCPNSerializer<P, T, F, M> {
+								  M extends AbstractIFNetMarking,
+								  R extends AbstractRegularIFNetTransition<F>,
+								  D extends AbstractDeclassificationTransition<F>,
+								  N extends AbstractIFNet<P,T,F,M,R,D>,
+  							  	  G extends AbstractIFNetGraphics<P,T,F,M>> extends PNMLCPNSerializer<P, T, F, M, N, G> {
 
-	public PNMLIFNetSerializer(AbstractGraphicalPN<P, T, F, M, Multiset<String>> ifNet) throws ParameterException {
+	public PNMLIFNetSerializer(AbstractGraphicalIFNet<P, T, F, M, R, D, N, G> ifNet) throws ParameterException {
 		super(ifNet);
 	}
 
-	public PNMLIFNetSerializer(AbstractPetriNet<P, T, F, M, Multiset<String>> ifNet) throws ParameterException {
+	public PNMLIFNetSerializer(N ifNet) throws ParameterException {
 		super(ifNet);
 	}
 	
@@ -68,7 +72,7 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 	}
 
 	@Override
-	protected void appendTransitionInformation(AbstractIFNetTransition transition, Element transitionElement) {
+	protected void appendTransitionInformation(T transition, Element transitionElement) {
 		// Add transition type information
 		Element transitionTypeElement = getSupport().createTextElement("transitiontype", transition.getType().toString().toLowerCase());
 		transitionElement.appendChild(transitionTypeElement);
@@ -135,17 +139,6 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 		}
 		
 	}
-
-	@Override
-	public AbstractIFNet<P,T,F,M,?,?> getPetriNet() {
-		return (AbstractIFNet<P,T,F,M,?,?>) super.getPetriNet();
-	}
-
-	@Override
-	public AbstractIFNetGraphics<P, T, F, M> getGraphics() {
-		return (AbstractIFNetGraphics<P, T, F, M>) super.getGraphics();
-	}
-
 	
 
 }

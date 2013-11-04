@@ -25,15 +25,21 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * @param <S>
  *            Type of Petri net place states
  */
-public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object> {
+public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>, 
+										  T extends AbstractTransition<F, S>, 
+										  F extends AbstractFlowRelation<P, T, S>, 
+										  M extends AbstractMarking<S>, 
+										  S extends Object,
+										  N extends AbstractPetriNet<P,T,F,M,S>,
+		   							  	  G extends AbstractPNGraphics<P,T,F,M,S>> {
 
-	private AbstractPetriNet<P, T, F, M, S> petriNet = null;
-	private AbstractPNGraphics<P, T, F, M, S> petriNetGraphics = null;
+	private N petriNet = null;
+	private G petriNetGraphics = null;
 
 	/**
 	 * Create new GraphicalPetriNet with the specified {@link AbstractPetriNet}.
 	 */
-	public AbstractGraphicalPN(AbstractPetriNet<P, T, F, M, S> petriNet, AbstractPNGraphics<P, T, F, M, S> petriNetGraphics) {
+	public AbstractGraphicalPN(N petriNet, G petriNetGraphics) {
 		setPetriNet(petriNet);
 		setPetriNetGraphics(petriNetGraphics);
 	}
@@ -41,7 +47,7 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>, T exten
 	/**
 	 * @return the {@link AbstractPetriNet}
 	 */
-	public AbstractPetriNet<P, T, F, M, S> getPetriNet() {
+	public N getPetriNet() {
 		return petriNet;
 	}
 
@@ -49,14 +55,14 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>, T exten
 	 * @param petriNet
 	 *            the petriNet to set
 	 */
-	public void setPetriNet(AbstractPetriNet<P, T, F, M, S> petriNet) {
+	public void setPetriNet(N petriNet) {
 		this.petriNet = petriNet;
 	}
 
 	/**
 	 * @return the {@link AbstractPNGraphics}
 	 */
-	public AbstractPNGraphics<P, T, F, M, S> getPetriNetGraphics() {
+	public G getPetriNetGraphics() {
 		return petriNetGraphics;
 	}
 
@@ -64,7 +70,7 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>, T exten
 	 * @param petriNetGraphics
 	 *            the petriNetGraphics to set
 	 */
-	public void setPetriNetGraphics(AbstractPNGraphics<P, T, F, M, S> petriNetGraphics) {
+	public void setPetriNetGraphics(G petriNetGraphics) {
 		this.petriNetGraphics = petriNetGraphics;
 	}
 }

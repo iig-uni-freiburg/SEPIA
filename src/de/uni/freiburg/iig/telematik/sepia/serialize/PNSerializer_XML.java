@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -14,14 +15,16 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 	   								   T extends AbstractTransition<F,S>, 
 	   								   F extends AbstractFlowRelation<P,T,S>, 
 	   								   M extends AbstractMarking<S>, 
-	   								   S extends Object>  extends PNSerializer<P, T, F, M, S> {
+	   								   S extends Object,
+	   								   N extends AbstractPetriNet<P,T,F,M,S>,
+	   							  	   G extends AbstractPNGraphics<P,T,F,M,S>>  extends PNSerializer<P, T, F, M, S, N, G> {
 	
-	public PNSerializer_XML(AbstractGraphicalPN<P, T, F, M, S> petriNet) throws ParameterException {
+	public PNSerializer_XML(AbstractGraphicalPN<P, T, F, M, S, N, G> petriNet) throws ParameterException {
 		super(petriNet);
 		initialize();
 	}
 
-	public PNSerializer_XML(AbstractPetriNet<P, T, F, M, S> petriNet) throws ParameterException {
+	public PNSerializer_XML(N petriNet) throws ParameterException {
 		super(petriNet);
 		initialize();
 	}

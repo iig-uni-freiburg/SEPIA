@@ -982,7 +982,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Places in initial marking must be places of the net.");
 	}
 	
-	
 	//------- validity and soundness -----------------------------------------------------------------
 	
 	/**

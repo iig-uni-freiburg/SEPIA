@@ -261,7 +261,21 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 		return newRelation;
 	}
 	
-	
+	@Override
+	protected void validateMarking(M marking) throws ParameterException {
+		super.validateMarking(marking);
+		for(P place: getPlaces()){
+			Multiset<String> placeMarking = marking.get(place.getName());
+			if(placeMarking != null && place.isBounded()){
+				for(String color: placeMarking.support()){
+					if(place.hasCapacityRestriction(color)){
+						if(place.getColorCapacity(color) < placeMarking.multiplicity(color))
+							throw new ParameterException("Place \""+place.getName()+"\" cannot contain more than " + place.getCapacity() + " tokens of color " + color);
+					}
+				}
+			}
+		}
+	}
 	
 	//------- Interface methods -------------------------------------------------------------
 	

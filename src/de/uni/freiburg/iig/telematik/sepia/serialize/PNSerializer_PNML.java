@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
@@ -21,13 +22,15 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
    							   T extends AbstractTransition<F,S>, 
    							   F extends AbstractFlowRelation<P,T,S>, 
    							   M extends AbstractMarking<S>, 
-   							   S extends Object>  extends PNSerializer_XML<P, T, F, M, S> {
+   							   S extends Object,
+   							   N extends AbstractPetriNet<P,T,F,M,S>,
+						  	   G extends AbstractPNGraphics<P,T,F,M,S>>  extends PNSerializer_XML<P, T, F, M, S, N, G> {
 
-	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S> petriNet) throws ParameterException {
+	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S, N, G> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
-	public PNSerializer_PNML(AbstractPetriNet<P, T, F, M, S> petriNet) throws ParameterException {
+	public PNSerializer_PNML(N petriNet) throws ParameterException {
 		super(petriNet);
 	}
 	

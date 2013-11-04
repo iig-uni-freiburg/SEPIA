@@ -66,5 +66,4 @@ public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFN
 		return new IFNetFlowRelation(transition, place);
 	}
 	
-	
 }

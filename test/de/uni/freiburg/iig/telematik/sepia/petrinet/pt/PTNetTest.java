@@ -110,30 +110,6 @@ public class PTNetTest {
 		}
 	}
 
-	/*
-	 * Check whether a net with a transition which is only connected via one arc is valid
-	 */
-	@Test
-	public void testCheckValidityOneArcTransition() throws ParameterException {
-		// Create the standard P/T-net
-		PTNet ptnet = createPTNet();
-
-		// Create a transition which does not consumes or produce a token
-		try {
-			ptnet.addTransition("t2");
-		} catch (ParameterException e) {
-			fail("Cannot add transition to P/T-net!");
-			e.printStackTrace();
-		}
-
-		// The net should not be valid now!
-		try {
-			ptnet.addFlowRelationPT("p0", "t2");
-			ptnet.checkValidity();
-			fail("The Net is not valid!");
-		} catch (PNValidationException e) {
-		}
-	}
 
 	/*
 	 * Check whether the standard net is sound
@@ -195,22 +171,6 @@ public class PTNetTest {
 		assertEquals(relationsBeforeSecondAdd, relationsAfterSecondAdd);
 	}
 
-	/*
-	 * Test whether a non effective relation is detected
-	 */
-	@Test
-	public void testRelationEffectiveness() throws ParameterException {
-		// Create the standard P/T-net
-		PTNet ptnet = createPTNet();
-
-		ptnet.addFlowRelationPT("p0", "t1");
-
-		try {
-			ptnet.checkValidity();
-			fail("A non effective relation was not detected.");
-		} catch (PNValidationException e) {
-		}
-	}
 
 	/*
 	 * Test the clone() method
@@ -288,8 +248,23 @@ public class PTNetTest {
 		ptnet.addFlowRelationPT("p1", "t1");
 		ptnet.addFlowRelationTP("t1", "p3");
 		ptnet.addFlowRelationTP("t1", "p2");
-		ptnet.addFlowRelationPT("p2", "t0");
+//		ptnet.addFlowRelationPT("p2", "t0");
 
 		return ptnet;
 	}
+	
+//	private void testInitialMarking(){
+//		PTNet ptnet = new PTNet();
+//		
+//		ptnet.addPlace("p0");
+//		ptnet.getPlace("p0").setCapacity(1);
+//
+//		// create the the token colors used in the initial marking
+//		PTMarking marking = new PTMarking();
+//		marking.set("p0", 5);
+//
+//		// create the P/T-net with all tokens in P0
+//		ptnet.setInitialMarking(marking);
+//	}
+	
 }

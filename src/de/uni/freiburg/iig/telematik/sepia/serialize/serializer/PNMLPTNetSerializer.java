@@ -3,10 +3,9 @@ package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 import org.w3c.dom.Element;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
@@ -18,13 +17,15 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
 public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>, 
 								T extends AbstractPTTransition<F>, 
 								F extends AbstractPTFlowRelation<P,T>, 
-								M extends AbstractPTMarking> extends PNSerializer_PNML<P, T, F, M, Integer> {
+								M extends AbstractPTMarking,
+								N extends AbstractPTNet<P,T,F,M>,
+							  	G extends AbstractPTGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Integer, N , G> {
 
-	public PNMLPTNetSerializer(AbstractGraphicalPN<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(AbstractGraphicalPTNet<P,T,F,M,N,G> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 
-	public PNMLPTNetSerializer(AbstractPetriNet<P, T, F, M, Integer> petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(N petriNet) throws ParameterException {
 		super(petriNet);
 	}
 	
@@ -53,16 +54,6 @@ public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>,
 	@Override
 	public NetType acceptedNetType() {
 		return NetType.PTNet;
-	}
-
-	@Override
-	public AbstractPTNet<P, T, F, M> getPetriNet() {
-		return (AbstractPTNet<P,T,F,M>) super.getPetriNet();
-	}
-
-	@Override
-	public AbstractPTGraphics<P, T, F, M> getGraphics() {
-		return (AbstractPTGraphics<P, T, F, M>) super.getGraphics();
 	}
 
 }

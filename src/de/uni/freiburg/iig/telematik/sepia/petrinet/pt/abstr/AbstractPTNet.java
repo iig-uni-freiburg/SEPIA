@@ -114,6 +114,19 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 		return newRelation;
 	}
 	
+	
+	
+	@Override
+	protected void validateMarking(M marking) throws ParameterException {
+		super.validateMarking(marking);
+		for(P place: getPlaces()){
+			if(marking.get(place.getName()) != null && place.isBounded()){
+				if(place.getCapacity() < marking.get(place.getName()))
+					throw new ParameterException("Place \""+place.getName()+"\" cannot contain more than " + place.getCapacity() + " tokens");
+			}
+		}
+	}
+
 	@Override
 	public void transitionFired(TransitionEvent<? extends AbstractTransition<F, Integer>> e) {
 		// TODO Auto-generated method stub

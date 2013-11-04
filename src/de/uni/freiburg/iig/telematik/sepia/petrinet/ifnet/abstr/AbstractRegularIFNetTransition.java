@@ -18,8 +18,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.GuardDataContainer;
 
-public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlowRelation<? extends AbstractIFNetPlace<E>, 
-		  											 ? extends AbstractIFNetTransition<E>>>  extends AbstractIFNetTransition<E>{
+public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlowRelation<? extends AbstractIFNetPlace<E>, ? extends AbstractIFNetTransition<E>>>  
+													 extends AbstractIFNetTransition<E>{
 	
 	protected Map<String, Set<AccessMode>> accessModes = new HashMap<String, Set<AccessMode>>();
 	protected GuardDataContainer dataContainer = null;
