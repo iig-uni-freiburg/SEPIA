@@ -99,16 +99,16 @@ public class IFNetTest {
 	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where subjects are missing.
 	 */
-	@Ignore
+	@Test
 	public void testCheckValidityAnalysisContextMissingSubject() throws ParameterException {
 		/*
-		 * TODO an IFNet without an AnalysisContext is currently not seen as invalid
+		 * an IFNet without an AnalysisContext is currently not seen as invalid
 		 */
 		IFNet net = IFNetTestUtil.createSimpleSnetWithDeclassificationNoAC();
 		try {
 			net.checkValidity();
-			fail("An invalid ifNet  is not detected!");
 		} catch (PNValidationException e) {
+			fail("An IF-net without analysis context should not be considered invalid!");
 		}
 	}
 

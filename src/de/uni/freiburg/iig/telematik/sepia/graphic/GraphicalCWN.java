@@ -19,14 +19,4 @@ public class GraphicalCWN extends AbstractGraphicalCWN<CWNPlace, CWNTransition, 
 	public GraphicalCWN(CWN petriNet, CWNGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-//
-//	@Override
-//	public CWN getPetriNet() {
-//		return (CWN) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public CWNGraphics getPetriNetGraphics() {
-//		return (CWNGraphics) super.getPetriNetGraphics();
-//	}
 }

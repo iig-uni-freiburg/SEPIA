@@ -56,7 +56,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * <li>Subject descriptors: Subjects assigned to process activities.</li>
 	 * </ul>
 	 */
-	protected AnalysisContext analysisContext = null;
+	protected AnalysisContext analysisContext;
 	
 	public AbstractIFNet() {
 		super();
@@ -80,7 +80,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		super.initialize();
 		regularTransitions = new HashMap<String, R>();
 		declassificationTransitions = new HashMap<String, D>();
-		analysisContext = new AnalysisContext();		
+		analysisContext = new AnalysisContext();
 	}
 	
 	public Collection<R> getRegularTransitions(){
@@ -90,7 +90,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	public Collection<D> getDeclassificationTransitions(){
 		return Collections.unmodifiableCollection(declassificationTransitions.values());
 	}
-	
+
 	@Override
 	protected void addTransition(T transition) throws ParameterException {
 		super.addTransition(transition);

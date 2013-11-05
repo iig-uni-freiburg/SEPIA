@@ -4,7 +4,6 @@ import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityListener;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityListenerSupport;

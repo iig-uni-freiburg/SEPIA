@@ -20,14 +20,4 @@ public class GraphicalIFNet extends AbstractGraphicalIFNet<IFNetPlace, AbstractI
 	public GraphicalIFNet(IFNet petriNet, IFNetGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-
-//	@Override
-//	public IFNet getPetriNet() {
-//		return (IFNet) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public IFNetGraphics getPetriNetGraphics() {
-//		return (IFNetGraphics) super.getPetriNetGraphics();
-//	}
 }

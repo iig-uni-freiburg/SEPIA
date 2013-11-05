@@ -1,8 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCWNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRelation;
@@ -26,14 +24,4 @@ public class AbstractGraphicalCWN<P extends AbstractCWNPlace<F>,
 	public AbstractGraphicalCWN(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-
-//	@Override
-//	public AbstractCWN<P,T,F,M> getPetriNet() {
-//		return (AbstractCWN<P,T,F,M>) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public AbstractCWNGraphics<P,T,F,M> getPetriNetGraphics() {
-//		return (AbstractCWNGraphics<P,T,F,M>) super.getPetriNetGraphics();
-//	}
 }

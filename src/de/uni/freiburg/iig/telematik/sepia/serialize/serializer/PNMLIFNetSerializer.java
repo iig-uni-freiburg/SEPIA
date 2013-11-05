@@ -72,7 +72,7 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 	}
 
 	@Override
-	protected void appendTransitionInformation(T transition, Element transitionElement) {
+	protected void appendTransitionInformation(AbstractIFNetTransition transition, Element transitionElement) {
 		// Add transition type information
 		Element transitionTypeElement = getSupport().createTextElement("transitiontype", transition.getType().toString().toLowerCase());
 		transitionElement.appendChild(transitionTypeElement);

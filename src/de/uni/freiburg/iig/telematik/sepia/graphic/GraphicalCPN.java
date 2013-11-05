@@ -19,14 +19,4 @@ public class GraphicalCPN extends AbstractGraphicalCPN<CPNPlace, CPNTransition, 
 	public GraphicalCPN(CPN petriNet, CPNGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-
-//	@Override
-//	public CPN getPetriNet() {
-//		return (CPN) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public CPNGraphics getPetriNetGraphics() {
-//		return (CPNGraphics) super.getPetriNetGraphics();
-//	}
 }

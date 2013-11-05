@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
@@ -30,15 +29,4 @@ public class AbstractGraphicalIFNet<P extends AbstractIFNetPlace<F>,
 	public AbstractGraphicalIFNet(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-
-//	@SuppressWarnings("unchecked")
-//	@Override
-//	public AbstractIFNet<P,T,F,M,R,D> getPetriNet() {
-//		return (AbstractIFNet<P,T,F,M,R,D>) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public AbstractIFNetGraphics<P,T,F,M> getPetriNetGraphics() {
-//		return (AbstractIFNetGraphics<P,T,F,M>) super.getPetriNetGraphics();
-//	}
 }

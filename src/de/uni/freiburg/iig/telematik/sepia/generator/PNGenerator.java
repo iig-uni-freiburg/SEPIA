@@ -47,17 +47,4 @@ public class PNGenerator {
 		
 		return ptNet;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		PTNet ptNet = sharedResource(20, 2);
-		
-		
-//		for(int i=0; i<10; i++){
-//			System.out.println(ptNet.getMarking());
-//			System.out.println(ptNet.getEnabledTransitions());
-//			System.out.println(ptNet.fireNext());
-//			System.out.println();
-//		}
-	}
-
 }

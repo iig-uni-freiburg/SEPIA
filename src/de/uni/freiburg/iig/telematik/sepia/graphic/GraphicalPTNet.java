@@ -19,14 +19,4 @@ public class GraphicalPTNet extends AbstractGraphicalPTNet<PTPlace, PTTransition
 	public GraphicalPTNet(PTNet petriNet, PTGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-
-//	@Override
-//	public PTNet getPetriNet() {
-//		return (PTNet) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public PTGraphics getPetriNetGraphics() {
-//		return (PTGraphics) super.getPetriNetGraphics();
-//	}
 }

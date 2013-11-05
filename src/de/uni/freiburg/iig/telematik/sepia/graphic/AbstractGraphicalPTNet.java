@@ -24,14 +24,4 @@ public abstract class AbstractGraphicalPTNet<P extends AbstractPTPlace<F>,
 	public AbstractGraphicalPTNet(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
-
-//	@Override
-//	public AbstractPTNet<P,T,F,M> getPetriNet() {
-//		return (AbstractPTNet<P,T,F,M>) super.getPetriNet();
-//	}
-//
-//	@Override
-//	public AbstractPTGraphics<P,T,F,M> getPetriNetGraphics() {
-//		return (AbstractPTGraphics<P,T,F,M>) super.getPetriNetGraphics();
-//	}
 }
