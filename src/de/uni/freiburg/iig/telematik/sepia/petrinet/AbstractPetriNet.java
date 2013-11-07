@@ -223,6 +223,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	public abstract NetType getNetType();
 	
+	public boolean isEmpty(){
+		return places.isEmpty() && transitions.isEmpty() && relations.isEmpty();
+	}
+	
 	//------- Transitions ------------------------------------------------------------------------
 	
 	/**
@@ -604,6 +608,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	
 	//------- Flow Relations ------------------------------------------------------------------------
+	
+	public F getFlowRelation(String name){
+		return relations.get(name);
+	}
 	
 	/**
 	 * Returns the flow relations of the Petri net.
