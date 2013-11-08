@@ -3,7 +3,9 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.pt;
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
@@ -90,5 +92,8 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	public PTNet newInstance() {
 		return new PTNet();
 	}
+
+	@Override
+	public void capacityChanged(CapacityEvent<? extends AbstractPlace<PTFlowRelation, Integer>> o) {}
 	
 }

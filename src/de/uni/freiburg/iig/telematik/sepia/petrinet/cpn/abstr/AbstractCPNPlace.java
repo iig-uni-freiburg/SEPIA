@@ -65,7 +65,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		}
 		capacity += value;
 		if(capacity != oldCapacity)
-			capacityListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
+			placeListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
 	}
 	
 	public void removeColorCapacity(String color) throws ParameterException{
@@ -79,7 +79,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 			capacity = -1;
 		}
 		if(capacity != oldCapacity)
-			capacityListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
+			placeListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
 	}
 	
 	public int getColorCapacity(String color) throws ParameterException{

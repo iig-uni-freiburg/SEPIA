@@ -58,7 +58,6 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	private PNNodeType type = null;
 	
-	
 	//------- Constructors ---------------------------------------------------------------------------
 	
 	protected AbstractPNNode(PNNodeType type){
@@ -86,7 +85,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public AbstractPNNode(PNNodeType type, String name, String label) throws ParameterException {
 		Validate.notNull(name);
 		Validate.notNull(label);
-		setName(name);
+		this.name = name;
 		setLabel(label);
 		this.type = type;
 	}
@@ -103,14 +102,12 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	}
 	
 	/**
-	 * Sets the name of the Petri net node.
+	 * Sets the name of the Petri net node.<br>
+	 * Implementing classes must make sure, that the net does not contain other nodes with the same name.
 	 * @param name New name for the Petri net node.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public void setName(String name) throws ParameterException{
-		Validate.notNull(name);
-		this.name = name;
-	}
+	public abstract void setName(String name) throws ParameterException;
 	
 	/**
 	 * Returns the label of the Petri net node.

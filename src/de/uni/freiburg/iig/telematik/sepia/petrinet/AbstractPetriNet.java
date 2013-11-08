@@ -11,10 +11,11 @@ import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
-import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintListener;
+import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListener;
+import de.uni.freiburg.iig.telematik.sepia.event.PlaceListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
@@ -61,8 +62,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 
 			    implements 	TransitionListener<AbstractTransition<F,S>>, 
 			    			TokenListener<AbstractPlace<F,S>>,
-			    			RelationConstraintListener<AbstractFlowRelation<P,T,S>>,
-							Traversable<AbstractPNNode<F>>{
+							Traversable<AbstractPNNode<F>>,
+							FlowRelationListener<AbstractFlowRelation<P,T,S>>,
+							PlaceListener<AbstractPlace<F,S>>{
 	
 	/**
 	 * Name of the Petri net.
@@ -368,13 +370,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @throws ParameterException If the given transition is <code>null</code>.
 	 */
 	protected void addTransition(T transition) throws ParameterException {
-		
-		
 		Validate.notNull(transition);
 		transitions.put(transition.getName(), transition);
 				
 		try {
-			transition.addTransitionListener(this);									
+			transition.addTransitionListener(this);							
 			enabledTransitions.add(transition);
 		} catch (ParameterException e) {
 			// Cannot happen, since "this" is not null
@@ -398,10 +398,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name of the transition to check.
 	 * @return <code>true</code> if the net contains a transition with the given name;<br>
 	 * <code>false</code> otherwise.
-	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
-	public boolean containsTransition(String transitionName) throws ParameterException{
-		Validate.notNull(transitionName);
+	public boolean containsTransition(String transitionName){
 		return transitions.keySet().contains(transitionName);
 	}
 	
@@ -542,6 +540,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		places.put(place.getName(), place);
 		try {
 			place.addTokenListener(this);
+			place.addPlaceListener(this);
 		} catch (ParameterException e) {
 			// Cannot happen, since "this" is not null
 			e.printStackTrace();
@@ -564,10 +563,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param placeName The name of the place to check.
 	 * @return <code>true</code> if the net contains a place with the given name;<br>
 	 * <code>false</code> otherwise.
-	 * @throws ParameterException If the place name is <code>null</code>.
 	 */
-	public boolean containsPlace(String placeName) throws ParameterException{
-		Validate.notNull(placeName);
+	public boolean containsPlace(String placeName){
 		return places.keySet().contains(placeName);
 	}
 	
@@ -610,6 +607,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	//------- Flow Relations ------------------------------------------------------------------------
 	
 	public F getFlowRelation(String name){
+		System.out.println(relations.keySet());
+		System.out.println(name);
 		return relations.get(name);
 	}
 	
@@ -688,8 +687,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
 		try{
-			relation.addRelationConstraintListener(this);
-		} catch(ParameterException e){}
+			relation.addRelationListener(this);
+		} catch(ParameterException e){
+			// Cannot happen, since this is not null
+			e.printStackTrace();
+		}
 		return true;
 	}
 	
@@ -773,6 +775,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		relation.getPlace().removeRelation(relation);
 		relation.getTransition().removeRelation(relation);
 		relations.remove(relation.getName());
+		relation.removeRelationListener(this);
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
 	}
@@ -1128,8 +1131,77 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		}
 	}
 	
-	//------- clone ----------------------------------------------------------------------------------
+
 	
+	//------- clone ----------------------------------------------------------------------------------
+
+	@Override
+	public boolean nameChangeRequest(AbstractPlace<F, S> place, String newName) {
+		if(!places.containsValue(place)){
+			// This Petri net does not contain the place whose name is changed.
+			// -> Don't care and return true
+			return true;
+		}
+		if(containsPlace(newName) && getPlace(newName) != place){
+			// The Petri net already contains another place with the same name
+			// -> Don't allow the name to be changed!
+			return false;
+		}
+		if(containsTransition(newName)){
+			// The Petri net contains a transition with the same name
+			// -> Don't allow the name to be changed!
+			return false;
+		}
+		// The Petri net contains the given place and no other node with the desired name.
+		// -> Allow the name change and store the place under the new name
+		P memberPlace = places.remove(place.getName());
+		places.put(newName, memberPlace);
+		return true;
+	}
+	
+	@Override
+	public boolean nameChangeRequest(AbstractTransition<F, S> transition, String newName) {
+		if(!transitions.containsValue(transition)){
+			// This Petri net does not contain the transition whose name is changed.
+			// -> Don't care and return true
+			return true;
+		}
+		if(containsTransition(newName) && getTransition(newName) != transition){
+			// The Petri net already contains another transition with the same name
+			// -> Don't allow the name to be changed!
+			return false;
+		}
+		if(containsPlace(newName)){
+			// The Petri net contains a place with the same name
+			// -> Don't allow the name to be changed!
+			return false;
+		}
+		// The Petri net contains the given transition and no other node with the desired name.
+		// -> Allow the name change and store the transition under the new name
+		T memberTransition = transitions.remove(transition.getName());
+		transitions.put(newName, memberTransition);
+		return true;
+	}
+
+	@Override
+	public boolean nameChangeRequest(AbstractFlowRelation<P, T, S> relation, String newName) {
+		if(!relations.containsValue(relation)){
+			// This Petri net does not contain the flow relation whose name is changed.
+			// -> Don't care and return true
+			return true;
+		}
+		if(containsFlowRelation(newName) && getFlowRelation(newName) != relation){
+			// The Petri net already contains another flow relation with the same name
+			// -> Don't allow the name to be changed!
+			return false;
+		}
+		// The Petri net contains the given flow relation and no other flow relation with the desired name.
+		// -> Allow the name change and store the relation under the new name
+		F memberRelation = relations.remove(relation.getName());
+		relations.put(newName, memberRelation);
+		return true;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public AbstractPetriNet<P,T,F,M,S> clone(){

@@ -2,7 +2,10 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn;
 
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 
 
@@ -86,5 +89,8 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 	public CWN newInstance() {
 		return new CWN();
 	}
+
+	@Override
+	public void capacityChanged(CapacityEvent<? extends AbstractPlace<CWNFlowRelation, Multiset<String>>> o) {}
 
 }

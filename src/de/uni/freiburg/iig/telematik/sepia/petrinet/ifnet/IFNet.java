@@ -2,15 +2,16 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import java.util.Set;
 
+import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 
 
 public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition> {
 
-	
-	
 	public IFNet() {
 		super();
 	}
@@ -65,5 +66,8 @@ public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFN
 			throws ParameterException {
 		return new IFNetFlowRelation(transition, place);
 	}
+
+	@Override
+	public void capacityChanged(CapacityEvent<? extends AbstractPlace<IFNetFlowRelation, Multiset<String>>> o) {}
 	
 }

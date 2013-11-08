@@ -1,9 +1,10 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintListener;
-import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintListenerSupport;
+import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListener;
+import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListenerSupport;
 
 /**
  * Abstract class that defines general properties for flow relations between Petri net places and transitions.<br>
@@ -26,7 +27,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	protected final String nameFormatTP = "arcTP_%s%s";
 	protected final String toStringFormat = "%s: %s -%s-> %s";
 	
-	protected RelationConstraintListenerSupport<AbstractFlowRelation<P,T,S>> listenerSupport = new RelationConstraintListenerSupport<AbstractFlowRelation<P,T,S>>();
+	protected FlowRelationListenerSupport<AbstractFlowRelation<P,T,S>> relationListenerSupport = new FlowRelationListenerSupport<AbstractFlowRelation<P,T,S>>();
 	
 	protected S constraint = null;
 	
@@ -84,7 +85,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	public void setConstraint(S constraint) throws ParameterException {
 		validateConstraint(constraint);
 		this.constraint = constraint;
-		listenerSupport.notifyCapacityChanged(this);
+		relationListenerSupport.notifyCapacityChanged(this);
 	}
 	
 	public S getConstraint() {
@@ -147,6 +148,8 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 */
 	public void setName(String name) throws ParameterException{
 		Validate.notNull(name);
+		if(!relationListenerSupport.requestNameChangePermission(this, name))
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a relation with this name.\n Cancel renaming to avoid name clash.");
 		this.name = name;
 	}
 	
@@ -252,23 +255,22 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	//------- Listener support ------------------------------------------------------------------------
 	
 		/**
-		 * Adds a transition listener.
-		 * @param listener The transition listener to add.
+		 * Adds a flow relation listener.
+		 * @param listener The flow relation listener to add.
 		 * @throws ParameterException If the listener reference is <code>null</code>.
 		 */
-		public void addRelationConstraintListener(RelationConstraintListener<AbstractFlowRelation<P,T,S>> listener) throws ParameterException {
-			listenerSupport.addCapacityListener(listener);
+		public void addRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener) throws ParameterException {
+			relationListenerSupport.addListener(listener);
 		}
 		
 		/**
-		 * Removes a transition listener.
-		 * @param listener The transition listener to remove.
+		 * Removes a flow relation listener.
+		 * @param listener The flow relation listener to remove.
 		 * @throws ParameterException If the listener reference is <code>null</code>.
 		 */
-		public void removeRelationConstraintListener(RelationConstraintListener<AbstractFlowRelation<P,T,S>> listener) throws ParameterException {
-			listenerSupport.removeCapacityListener(listener);
+		public void removeRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener) throws ParameterException {
+			relationListenerSupport.removeListener(listener);
 		}
-
 	
 	//------- toString -------------------------------------------------------------------------------
 	

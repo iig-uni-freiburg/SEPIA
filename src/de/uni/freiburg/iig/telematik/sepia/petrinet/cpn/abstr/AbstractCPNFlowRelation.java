@@ -50,7 +50,7 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 		Validate.notNull(number);
 		Validate.bigger(number, 0);
 		constraint.setMultiplicity(color, number);
-		listenerSupport.notifyCapacityChanged(this);
+		relationListenerSupport.notifyCapacityChanged(this);
 	}
 	
 	public int getConstraint(String color) throws ParameterException{

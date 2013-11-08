@@ -5,8 +5,8 @@ import java.util.List;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
-import de.uni.freiburg.iig.telematik.sepia.event.CapacityListener;
-import de.uni.freiburg.iig.telematik.sepia.event.CapacityListenerSupport;
+import de.uni.freiburg.iig.telematik.sepia.event.PlaceListener;
+import de.uni.freiburg.iig.telematik.sepia.event.PlaceListenerSupport;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenListenerSupport;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
@@ -38,9 +38,9 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 */
 	protected TokenListenerSupport<AbstractPlace<E, S>> tokenListenerSupport = new TokenListenerSupport<AbstractPlace<E, S>>();
 	/**
-	 * Support class for {@link CapacityListener} handling.
+	 * Support class for {@link PlaceListener} handling.
 	 */
-	protected CapacityListenerSupport<AbstractPlace<E, S>> capacityListenerSupport = new CapacityListenerSupport<AbstractPlace<E, S>>();
+	protected PlaceListenerSupport<AbstractPlace<E, S>> placeListenerSupport = new PlaceListenerSupport<AbstractPlace<E, S>>();
 	/**
 	 * Capacity of the place, i.e. the maximum number of tokens the place can hold.<br>
 	 * A capacity of -1 is interpreted as unboundedness, i.e. the number and kind of tokens is not restricted.
@@ -110,7 +110,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 		int oldCapacity = this.capacity;
 		this.capacity = capacity;
 		if (oldCapacity != capacity)
-			capacityListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E, S>>(this, capacity));
+			placeListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E, S>>(this, capacity));
 	}
 
 	/**
@@ -159,6 +159,14 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 				return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public void setName(String name) throws ParameterException{
+		Validate.notNull(name);
+		if(!placeListenerSupport.requestNameChangePermission(this, name))
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
+		this.name = name;
 	}
 
 	// ------- State manipulation -----------------------------------------------------------------------------
@@ -321,7 +329,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
 	 */
-	public void addTokenListener(TokenListener<AbstractPlace<E, S>> l) throws ParameterException {
+	public void addTokenListener(TokenListener<AbstractPlace<E,S>> l) throws ParameterException {
 		tokenListenerSupport.addTokenListener(l);
 	}
 
@@ -339,26 +347,20 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 
 	/**
 	 * Adds a capacity listener.
-	 * 
-	 * @param l
-	 *            The capacity listener to add.
-	 * @throws ParameterException
-	 *             If the listener reference is <code>null</code>.
+	 * @param l The capacity listener to add.
+	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
-	public void addCapacityListener(CapacityListener<AbstractPlace<E, S>> l) throws ParameterException {
-		capacityListenerSupport.addCapacityListener(l);
+	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l) throws ParameterException {
+		placeListenerSupport.addCapacityListener(l);
 	}
 
 	/**
 	 * Removes a capacity listener.
-	 * 
-	 * @param l
-	 *            The capacity listener to remove.
-	 * @throws ParameterException
-	 *             If the listener reference is <code>null</code>.
+	 * @param l The capacity listener to remove.
+	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
-	public void removeCapacityListener(CapacityListener<AbstractPlace<E, S>> l) throws ParameterException {
-		capacityListenerSupport.removeCapacityListener(l);
+	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l) throws ParameterException {
+		placeListenerSupport.removeCapacityListener(l);
 	}
 
 	@Override

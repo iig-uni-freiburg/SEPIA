@@ -4,8 +4,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
 
 
-public interface CapacityListener<P extends AbstractPlace<?,?>> {
+public interface PlaceListener<P extends AbstractPlace<?,?>> {
 	
 	public void capacityChanged(CapacityEvent<? extends P> o);
+	
+	public boolean nameChangeRequest(P place, String newName);
 	
 }

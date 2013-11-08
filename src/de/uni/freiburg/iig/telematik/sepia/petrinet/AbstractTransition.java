@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListenerSupport;
@@ -139,6 +141,14 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 */
 	public boolean isEnabled() {
 		return enabled;
+	}
+	
+	@Override
+	public void setName(String name) throws ParameterException{
+		Validate.notNull(name);
+		if(!listenerSupport.requestNameChangePermission(this, name))
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
+		this.name = name;
 	}
 	
 	/**
