@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet;
 import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.PlaceListener;
