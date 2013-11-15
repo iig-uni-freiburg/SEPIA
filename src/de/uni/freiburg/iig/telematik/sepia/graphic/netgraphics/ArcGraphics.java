@@ -22,7 +22,7 @@ public class ArcGraphics extends AbstractObjectGraphics {
 	public static final Line DEFAULT_LINE = new Line();
 
 	/** Position field */
-	private Vector<Position> positions;
+	private Vector<Position> positions = new Vector<Position>();
 	/** Line attribute */
 	private Line line;
 

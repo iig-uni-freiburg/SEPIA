@@ -135,8 +135,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The next enabled transition is chosen randomly.
 	 */
 	public AbstractPetriNet(){
-
-		
 		initialize();
 		initialMarking = createNewMarking();
 		marking = createNewMarking();
@@ -411,21 +409,25 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given transition name is <code>null</code>.
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean removeTransition(String transitionName) throws ParameterException{
 		if(!containsTransition(transitionName))
 			return false;
-		for(AbstractFlowRelation<? extends AbstractPlace<F,S>,? extends AbstractTransition<F,S>, S> relation: transitions.get(transitionName).getIncomingRelations()){
-			removeFlowRelation((F) relation);
-		}
-		for(AbstractFlowRelation<? extends AbstractPlace<F,S>,? extends AbstractTransition<F,S>, S> relation: transitions.get(transitionName).getOutgoingRelations()){
-			removeFlowRelation((F) relation);
-		}
-		enabledTransitions.remove(getTransition(transitionName));
-		transitions.remove(transitionName);
-		sourceTransitions.remove(transitionName);
-		drainTransitions.remove(transitionName);
+		removeTransition(transitions.get(transitionName));
 		return true;
+	}
+	
+	protected void removeTransition(T transition) throws ParameterException{
+		for(F relation: transition.getIncomingRelations()){
+			removeFlowRelation(relation);
+		}
+		for(F relation: transition.getOutgoingRelations()){
+			removeFlowRelation(relation);
+		}
+		transition.removeTransitionListener(this);
+		enabledTransitions.remove(transition);
+		transitions.remove(transition.getName());
+		sourceTransitions.remove(transition.getName());
+		drainTransitions.remove(transition.getName());
 	}
 	
 	/**
@@ -585,22 +587,27 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given place name is <code>null</code>.
 	 */
-	@SuppressWarnings("unchecked")
 	public boolean removePlace(String placeName) throws ParameterException{
 		if(!containsPlace(placeName))
 			return false;
-		for(AbstractFlowRelation<? extends AbstractPlace<F,S>,? extends AbstractTransition<F,S>, S> relation: places.get(placeName).getIncomingRelations()){
-			removeFlowRelation((F) relation);
-		}
-		for(AbstractFlowRelation<? extends AbstractPlace<F,S>,? extends AbstractTransition<F,S>, S> relation: places.get(placeName).getOutgoingRelations()){
-			removeFlowRelation((F) relation);
-		}
-		places.remove(placeName);
-		sourcePlaces.remove(placeName);
-		drainPlaces.remove(placeName);
-		initialMarking.remove(placeName);
-		marking.remove(placeName);
+		removePlace(places.get(placeName));
 		return true;
+	}
+	
+	protected void removePlace(P place) throws ParameterException{
+		for(F relation: place.getIncomingRelations()){
+			removeFlowRelation(relation);
+		}
+		for(F relation: place.getOutgoingRelations()){
+			removeFlowRelation(relation);
+		}
+		place.removePlaceListener(this);
+		place.removeTokenListener(this);
+		places.remove(place.getName());
+		sourcePlaces.remove(place.getName());
+		drainPlaces.remove(place.getName());
+		initialMarking.remove(place.getName());
+		marking.remove(place.getName());
 	}
 	
 	
