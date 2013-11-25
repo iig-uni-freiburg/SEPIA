@@ -1,43 +1,73 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet;
 
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.util.Collection;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
 /**
  * <p>
- * Unit tests for the PNML CPN parser. The component unit tests for these classes is made in {@link PNMLCPNParserComponentTest}.
+ * Unit tests for the PNML IFNet parser. The component unit tests for these classes is made in {@link PNMLIFNetParserComponentTest}.
  * </p>
  * 
  * @author Adrian Lange
  * 
- * @see PNMLCPNParser
+ * @see PNMLIFNetParser
  */
-public class PNMLCPNParserTest {
+public class PNMLIFNetParserTest {
 
-	public PNMLCPNParser parser = null;
+	public PNMLIFNetParser parser = null;
 
 	@Before
 	public void setup() {
-		parser = new PNMLCPNParser();
+		parser = new PNMLIFNetParser();
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readColorInscription(org.w3c.dom.Node)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLIFNetParser#readAccessFunctions(org.w3c.dom.Element)}.
+	 */
+	@Test
+	public void testReadAccessFunctions() throws ParameterException {
+		Document transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
+		for (int a = 0; a < accessFunctionsNodes.getLength(); a++) {
+			if (accessFunctionsNodes.item(a).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(a).getParentNode().equals(transition)) {
+				Element accessFunctionsElement = (Element) accessFunctionsNodes.item(a);
+				Map<String, Collection<AccessMode>> accessFunctions = parser.readAccessFunctions(accessFunctionsElement);
+				assertEquals(1, accessFunctions.size());
+				assertTrue(accessFunctions.containsKey("green"));
+				Collection<AccessMode> accessModes = accessFunctions.get("green");
+				assertEquals(2, accessModes.size());
+				assertTrue(accessModes.contains("read"));
+				assertTrue(accessModes.contains("create"));
+				assertFalse(accessModes.contains("write"));
+				assertFalse(accessModes.contains("delete"));
+			}
+		}
+
+		transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, false, true, true);
+		accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
+		assertEquals(0, accessFunctionsNodes.getLength());
+	}
+
+	/*
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLIFNetParser#readColorInscription(org.w3c.dom.Node)}.
 	 */
 	@Test
 	public void testReadColorInscription() throws ParameterException {
-		Document arc = (Document) PNMLCPNParserTestUtils.createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true);
+		Document arc = (Document) PNMLIFNetParserTestUtils.createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true);
 		NodeList colorInscriptionNodes = arc.getElementsByTagName("inscription");
 		if (colorInscriptionNodes.getLength() == 1) {
 			Element colorInscriptionElement = (Element) colorInscriptionNodes.item(0);
@@ -61,11 +91,11 @@ public class PNMLCPNParserTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readInitialColorMarking(org.w3c.dom.Node)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLIFNetParser#readInitialColorMarking(org.w3c.dom.Node)}.
 	 */
 	@Test
 	public void testReadInitialColorMarking() throws ParameterException {
-		Document place = (Document) PNMLCPNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLIFNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList initialMarkingNodes = place.getElementsByTagName("initialMarking");
 		if (initialMarkingNodes.getLength() == 1) {
 			Element initialMarkingElement = (Element) initialMarkingNodes.item(0);
@@ -87,11 +117,11 @@ public class PNMLCPNParserTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readPlaceColorCapacities(org.w3c.dom.Element)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLIFNetParser#readPlaceColorCapacities(org.w3c.dom.Element)}.
 	 */
 	@Test
 	public void testReadPlaceColorCapacities() throws PNMLParserException, ParameterException {
-		Document place = (Document) PNMLCPNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLIFNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList capacityList = place.getElementsByTagName("capacities");
 		for (int i = 0; i < capacityList.getLength(); i++) {
 			if (capacityList.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -108,11 +138,11 @@ public class PNMLCPNParserTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readTokenColors(org.w3c.dom.Element)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLIFNetParser#readTokenColors(org.w3c.dom.Element)}.
 	 */
 	@Test
 	public void testReadTokenColors() throws PNMLParserException, ParameterException {
-		Document tokencolors = (Document) PNMLCPNParserTestUtils.createTokenColors(true, true, true);
+		Document tokencolors = (Document) PNMLIFNetParserTestUtils.createTokenColors(true, true, true);
 		Map<String, Color> colors = parser.readTokenColors(tokencolors.getDocumentElement());
 		assertEquals(3, colors.size());
 		assertTrue(colors.containsKey("green"));
@@ -123,25 +153,41 @@ public class PNMLCPNParserTest {
 		assertEquals(Color.BLUE, colors.get("blue"));
 		assertFalse(colors.containsKey("pink"));
 
-		Document tokencolorsNoColorName = (Document) PNMLCPNParserTestUtils.createTokenColors(false, true, true);
+		Document tokencolorsNoColorName = (Document) PNMLIFNetParserTestUtils.createTokenColors(false, true, true);
 		try {
 			parser.readTokenColors(tokencolorsNoColorName.getDocumentElement());
 			fail("An exception should be thrown because of the missing color name.");
 		} catch (Exception e) {
 		}
 
-		Document tokencolorsNoRGBColor = (Document) PNMLCPNParserTestUtils.createTokenColors(true, false, true);
+		Document tokencolorsNoRGBColor = (Document) PNMLIFNetParserTestUtils.createTokenColors(true, false, true);
 		try {
 			parser.readTokenColors(tokencolorsNoRGBColor.getDocumentElement());
 			fail("An exception should be thrown because of the missing RGB color tag.");
 		} catch (Exception e) {
 		}
 
-		Document tokencolorsMissingRGBColorAttribute = (Document) PNMLCPNParserTestUtils.createTokenColors(true, true, false);
+		Document tokencolorsMissingRGBColorAttribute = (Document) PNMLIFNetParserTestUtils.createTokenColors(true, true, false);
 		try {
 			parser.readTokenColors(tokencolorsMissingRGBColorAttribute.getDocumentElement());
 		} catch (Exception e) {
 			fail("No exception should be thrown if a RGB color attribute is missing.");
 		}
+	}
+
+	/*
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLIFNetParser#readTransitionType(org.w3c.dom.Element)}.
+	 */
+	@Test
+	public void testReadTransitionType() throws ParameterException {
+		Document transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Element transitionElement = transition.getDocumentElement();
+		String transitionType = parser.readTransitionType(transitionElement);
+		assertEquals("regular", transitionType);
+
+		transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, false, true, true, true);
+		transitionElement = transition.getDocumentElement();
+		transitionType = parser.readTransitionType(transitionElement);
+		assertEquals("declassification", transitionType);
 	}
 }

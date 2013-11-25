@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn;
 
 import static org.junit.Assert.*;
 
@@ -16,28 +16,28 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 
 /**
  * <p>
- * Unit tests for the PNML CPN parser. The component unit tests for these classes is made in {@link PNMLCPNParserComponentTest}.
+ * Unit tests for the PNML CWN parser. The component unit tests for these classes is made in {@link PNMLCWNParserComponentTest}.
  * </p>
  * 
  * @author Adrian Lange
  * 
- * @see PNMLCPNParser
+ * @see PNMLCWNParser
  */
-public class PNMLCPNParserTest {
+public class PNMLCWNParserTest {
 
-	public PNMLCPNParser parser = null;
+	public PNMLCWNParser parser = null;
 
 	@Before
 	public void setup() {
-		parser = new PNMLCPNParser();
+		parser = new PNMLCWNParser();
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readColorInscription(org.w3c.dom.Node)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readColorInscription(org.w3c.dom.Node)}.
 	 */
 	@Test
 	public void testReadColorInscription() throws ParameterException {
-		Document arc = (Document) PNMLCPNParserTestUtils.createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true);
+		Document arc = (Document) PNMLCWNParserTestUtils.createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true);
 		NodeList colorInscriptionNodes = arc.getElementsByTagName("inscription");
 		if (colorInscriptionNodes.getLength() == 1) {
 			Element colorInscriptionElement = (Element) colorInscriptionNodes.item(0);
@@ -61,11 +61,11 @@ public class PNMLCPNParserTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readInitialColorMarking(org.w3c.dom.Node)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readInitialColorMarking(org.w3c.dom.Node)}.
 	 */
 	@Test
 	public void testReadInitialColorMarking() throws ParameterException {
-		Document place = (Document) PNMLCPNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLCWNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList initialMarkingNodes = place.getElementsByTagName("initialMarking");
 		if (initialMarkingNodes.getLength() == 1) {
 			Element initialMarkingElement = (Element) initialMarkingNodes.item(0);
@@ -87,11 +87,11 @@ public class PNMLCPNParserTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readPlaceColorCapacities(org.w3c.dom.Element)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readPlaceColorCapacities(org.w3c.dom.Element)}.
 	 */
 	@Test
 	public void testReadPlaceColorCapacities() throws PNMLParserException, ParameterException {
-		Document place = (Document) PNMLCPNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLCWNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList capacityList = place.getElementsByTagName("capacities");
 		for (int i = 0; i < capacityList.getLength(); i++) {
 			if (capacityList.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -108,11 +108,11 @@ public class PNMLCPNParserTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser#readTokenColors(org.w3c.dom.Element)}.
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readTokenColors(org.w3c.dom.Element)}.
 	 */
 	@Test
 	public void testReadTokenColors() throws PNMLParserException, ParameterException {
-		Document tokencolors = (Document) PNMLCPNParserTestUtils.createTokenColors(true, true, true);
+		Document tokencolors = (Document) PNMLCWNParserTestUtils.createTokenColors(true, true, true);
 		Map<String, Color> colors = parser.readTokenColors(tokencolors.getDocumentElement());
 		assertEquals(3, colors.size());
 		assertTrue(colors.containsKey("green"));
@@ -123,21 +123,21 @@ public class PNMLCPNParserTest {
 		assertEquals(Color.BLUE, colors.get("blue"));
 		assertFalse(colors.containsKey("pink"));
 
-		Document tokencolorsNoColorName = (Document) PNMLCPNParserTestUtils.createTokenColors(false, true, true);
+		Document tokencolorsNoColorName = (Document) PNMLCWNParserTestUtils.createTokenColors(false, true, true);
 		try {
 			parser.readTokenColors(tokencolorsNoColorName.getDocumentElement());
 			fail("An exception should be thrown because of the missing color name.");
 		} catch (Exception e) {
 		}
 
-		Document tokencolorsNoRGBColor = (Document) PNMLCPNParserTestUtils.createTokenColors(true, false, true);
+		Document tokencolorsNoRGBColor = (Document) PNMLCWNParserTestUtils.createTokenColors(true, false, true);
 		try {
 			parser.readTokenColors(tokencolorsNoRGBColor.getDocumentElement());
 			fail("An exception should be thrown because of the missing RGB color tag.");
 		} catch (Exception e) {
 		}
 
-		Document tokencolorsMissingRGBColorAttribute = (Document) PNMLCPNParserTestUtils.createTokenColors(true, true, false);
+		Document tokencolorsMissingRGBColorAttribute = (Document) PNMLCWNParserTestUtils.createTokenColors(true, true, false);
 		try {
 			parser.readTokenColors(tokencolorsMissingRGBColorAttribute.getDocumentElement());
 		} catch (Exception e) {

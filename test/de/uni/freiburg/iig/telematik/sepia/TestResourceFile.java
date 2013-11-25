@@ -57,6 +57,8 @@ public class TestResourceFile extends ExternalResource {
 	 * Creates a new TestResourceFile from the given path.
 	 */
 	public TestResourceFile(String resourcePath) {
+		if (resourcePath == null)
+			throw new NullPointerException("Resource path mustn't be null!");
 		this.resourcePath = resourcePath;
 	}
 
@@ -112,7 +114,7 @@ public class TestResourceFile extends ExternalResource {
 	}
 
 	/**
-	 * Initializes the resource file and ints {@link InputStream}.
+	 * Initializes the resource file and initiates {@link InputStream}.
 	 */
 	@Override
 	protected void before() throws Throwable {
@@ -128,11 +130,7 @@ public class TestResourceFile extends ExternalResource {
 		try {
 			stream.close();
 		} catch (Exception e) {
-			// do nothing
 		}
-		// if (file != null) {
-		// file.delete();
-		// }
 		super.after();
 	}
 
@@ -148,7 +146,8 @@ public class TestResourceFile extends ExternalResource {
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
-			file = new File(uri);
+			if (uri != null)
+				file = new File(uri);
 		}
 		if (url == null || file == null) {
 			// having an initialized File object leads to an assertion error instead of a NullPointerException

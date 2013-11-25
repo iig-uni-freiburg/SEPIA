@@ -17,8 +17,8 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	/**
 	 * Creates a complete CPN arc
 	 */
-	public static Node createCPNArc(boolean showIDAttribute, boolean showSourceAttribute, boolean showTargetAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInscription, int inscriptionValue, boolean showInscriptionGraphics, boolean showCompleteInscriptionGraphics, boolean showCompleteInscriptionOffsetGraphics,
-			boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showExistingColorTokenName) {
+	public static Node createArc(boolean showIDAttribute, boolean showSourceAttribute, boolean showTargetAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInscription, int inscriptionValue, boolean showInscriptionGraphics, boolean showCompleteInscriptionGraphics,
+			boolean showCompleteInscriptionOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showExistingColorTokenName) {
 		Document a = createDocumentInstance();
 
 		// Root element "arc"
@@ -112,7 +112,7 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	/**
 	 * Creates a complete CPN place
 	 */
-	public static Node createCPNPlace(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInitialMarking, boolean showValidInitialMarking, boolean showInitialMarkingGraphics, boolean showCompleteInitialMarkingTokenpositionGraphics, boolean showCapacities, boolean showGraphics,
+	public static Node createPlace(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInitialMarking, boolean showValidInitialMarking, boolean showInitialMarkingGraphics, boolean showCompleteInitialMarkingTokenpositionGraphics, boolean showCapacities, boolean showGraphics,
 			boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics, boolean showExistingColorTokenName) {
 		Document p = createDocumentInstance();
 
@@ -308,7 +308,7 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	/**
 	 * Creates a complete CPN transition
 	 */
-	public static Node createCPNTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics) {
+	public static Node createTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics) {
 		Document t = createDocumentInstance();
 
 		// Root element "transition"
@@ -358,9 +358,9 @@ public class PNMLCPNParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	}
 
 	public static void main(String[] args) throws TransformerFactoryConfigurationError, TransformerException {
-		System.out.println(toXML(createCPNArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true)));
-		System.out.println(toXML(createCPNPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createTokenColors(true, true, true)));
-		System.out.println(toXML(createCPNTransition(true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createTransition(true, true, true, true, true, true, true, true, true)));
 	}
 }

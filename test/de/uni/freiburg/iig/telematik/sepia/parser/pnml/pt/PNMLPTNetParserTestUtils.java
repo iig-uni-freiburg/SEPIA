@@ -15,9 +15,9 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLPNParserTestU
 public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 
 	/**
-	 * Creates a complete PT-net arc
+	 * Creates a complete P/T-net arc
 	 */
-	public static Node createPTNetArc(boolean showIDAttribute, boolean showSourceAttribute, boolean showTargetAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics,
+	public static Node createArc(boolean showIDAttribute, boolean showSourceAttribute, boolean showTargetAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics,
 			boolean showInscription, boolean showInscriptionGraphics, boolean showCompleteInscriptionGraphics, boolean showCompleteInscriptionOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics,
 			boolean showCompletePositionGraphics) {
 		Document a = createDocumentInstance();
@@ -91,9 +91,9 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	}
 
 	/**
-	 * Creates a complete PT-net place
+	 * Creates a complete P/T-net place
 	 */
-	public static Node createPTNetPlace(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInitialMarking,
+	public static Node createPlace(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showInitialMarking,
 			boolean showValidInitialMarking, boolean showInitialMarkingGraphics, boolean showCompleteInitialMarkingTokenpositionGraphics, boolean showCapacity, boolean showGraphics, boolean showCompleteGraphics,
 			boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics) {
 		Document p = createDocumentInstance();
@@ -176,9 +176,9 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	}
 
 	/**
-	 * Creates a complete PT-net transition
+	 * Creates a complete P/T-net transition
 	 */
-	public static Node createPTNetTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics,
+	public static Node createTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics,
 			boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics) {
 		Document t = createDocumentInstance();
 
@@ -229,8 +229,8 @@ public class PNMLPTNetParserTestUtils extends AbstractPNMLPNParserTestUtils {
 	}
 
 	public static void main(String[] args) throws TransformerFactoryConfigurationError, TransformerException {
-		System.out.println(toXML(createPTNetArc(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
-		System.out.println(toXML(createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
-		System.out.println(toXML(createPTNetTransition(true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createArc(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createTransition(true, true, true, true, true, true, true, true, true)));
 	}
 }

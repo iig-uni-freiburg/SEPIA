@@ -53,7 +53,7 @@ public class PNMLPTNetParserTest {
 	@Test
 	public void testReadDimension() throws ParameterException {
 		// Read complete dimension
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList graphicsList1 = place.getElementsByTagName("graphics");
 		for (int i = 0; i < graphicsList1.getLength(); i++) {
 			if (graphicsList1.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -69,7 +69,7 @@ public class PNMLPTNetParserTest {
 		}
 
 		// Read incomplete dimension
-		Document placeIncompleteDimension = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, false);
+		Document placeIncompleteDimension = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, false);
 		NodeList graphicsList2 = placeIncompleteDimension.getElementsByTagName("graphics");
 		for (int i = 0; i < graphicsList2.getLength(); i++) {
 			if (graphicsList2.item(i).getParentNode().equals(placeIncompleteDimension.getDocumentElement())) {
@@ -90,7 +90,7 @@ public class PNMLPTNetParserTest {
 	 */
 	@Test
 	public void testReadFill() throws ParameterException, URISyntaxException {
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList graphicsList = place.getElementsByTagName("graphics");
 		for (int i = 0; i < graphicsList.getLength(); i++) {
 			if (graphicsList.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -113,7 +113,7 @@ public class PNMLPTNetParserTest {
 	 */
 	@Test
 	public void testReadFont() throws ParameterException, URISyntaxException {
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList nameList = place.getElementsByTagName("name");
 		for (int j = 0; j < nameList.getLength(); j++) {
 			if (nameList.item(j).getParentNode().equals(place.getDocumentElement())) {
@@ -145,7 +145,7 @@ public class PNMLPTNetParserTest {
 	 */
 	@Test
 	public void testReadInitialMarking() throws XMLParserException, ParameterException {
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList initialMarkingList = place.getElementsByTagName("initialMarking");
 		for (int i = 0; i < initialMarkingList.getLength(); i++) {
 			if (initialMarkingList.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -161,7 +161,7 @@ public class PNMLPTNetParserTest {
 	 */
 	@Test
 	public void testReadLine() throws ParameterException {
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList graphicsList = place.getElementsByTagName("graphics");
 		for (int i = 0; i < graphicsList.getLength(); i++) {
 			if (graphicsList.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -187,7 +187,7 @@ public class PNMLPTNetParserTest {
 	@Test
 	public void testReadOffset() throws ParameterException {
 		// Read complete offset
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList nameList1 = place.getElementsByTagName("name");
 		for (int j = 0; j < nameList1.getLength(); j++) {
 			if (nameList1.item(j).getParentNode().equals(place.getDocumentElement())) {
@@ -209,7 +209,7 @@ public class PNMLPTNetParserTest {
 		}
 
 		// Read incomplete dimension
-		Document placeIncompleteDimension = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, false, true, true, true, true, true, true, true, true, false);
+		Document placeIncompleteDimension = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, false, true, true, true, true, true, true, true, true, false);
 		NodeList nameList2 = placeIncompleteDimension.getElementsByTagName("name");
 		for (int j = 0; j < nameList2.getLength(); j++) {
 			if (nameList2.item(j).getParentNode().equals(placeIncompleteDimension.getDocumentElement())) {
@@ -236,7 +236,7 @@ public class PNMLPTNetParserTest {
 	 */
 	@Test
 	public void testReadPlaceCapacity() throws PNMLParserException, ParameterException {
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList capacityList = place.getElementsByTagName("capacity");
 		for (int i = 0; i < capacityList.getLength(); i++) {
 			if (capacityList.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -253,7 +253,7 @@ public class PNMLPTNetParserTest {
 	@Test
 	public void testReadPosition() throws ParameterException {
 		// Read complete position
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList graphicsList1 = place.getElementsByTagName("graphics");
 		for (int i = 0; i < graphicsList1.getLength(); i++) {
 			if (graphicsList1.item(i).getParentNode().equals(place.getDocumentElement())) {
@@ -269,7 +269,7 @@ public class PNMLPTNetParserTest {
 		}
 
 		// Read incomplete dimension
-		Document placeIncompletePosition = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, false, true);
+		Document placeIncompletePosition = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, false, true);
 		NodeList graphicsList2 = placeIncompletePosition.getElementsByTagName("graphics");
 		for (int i = 0; i < graphicsList2.getLength(); i++) {
 			if (graphicsList2.item(i).getParentNode().equals(placeIncompletePosition.getDocumentElement())) {
@@ -290,7 +290,7 @@ public class PNMLPTNetParserTest {
 	 */
 	@Test
 	public void testReadText() throws XMLParserException, ParameterException {
-		Document place = (Document) PNMLPTNetParserTestUtils.createPTNetPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document place = (Document) PNMLPTNetParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList nameList = place.getElementsByTagName("name");
 		for (int j = 0; j < nameList.getLength(); j++) {
 			if (nameList.item(j).getParentNode().equals(place.getDocumentElement())) {

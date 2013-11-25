@@ -82,12 +82,12 @@
 		<echo>Creating new JARs...</echo>
 		<jar jarfile="${target.dir}/${jar.file.name}.jar" basedir="${classes.target.dir}">
 			<manifest>
-				<attribute name="X-date" value="${touch.time}" />
+				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
 		</jar>
 		<jar jarfile="${target.dir}/${jar.sources.file.name}.jar" includes="**/*.java" basedir="${src.dir}">
 			<manifest>
-				<attribute name="X-date" value="${touch.time}" />
+				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
 		</jar>
 		<jar jarfile="${target.dir}/${jar.javadoc.file.name}.jar" basedir="${docs.temp.dir}">
