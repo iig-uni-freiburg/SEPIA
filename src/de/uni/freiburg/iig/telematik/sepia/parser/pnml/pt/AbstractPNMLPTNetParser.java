@@ -215,10 +215,14 @@ public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
 					if (transitionLabelAnnotationGraphics != null)
 						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
 				}
-				if (transitionLabel != null)
+				if (transitionLabel != null){
 					net.addTransition(transitionName, transitionLabel);
-				else
+				} else {
 					net.addTransition(transitionName);
+				}
+				if(transitionName.startsWith("_")){
+					net.getTransition(transitionName).setSilent(true);
+				}
 
 				// read graphical information
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);

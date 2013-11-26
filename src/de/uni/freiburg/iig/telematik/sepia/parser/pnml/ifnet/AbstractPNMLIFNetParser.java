@@ -124,6 +124,10 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 						ifnet.addTransition(transitionName);
 					else if (transitionType.equals("declassification"))
 						ifnet.addDeclassificationTransition(transitionName);
+					
+					if(transitionName.startsWith("_")){
+						ifnet.getTransition(transitionName).setSilent(true);
+					}
 				}
 
 				// read access modes
