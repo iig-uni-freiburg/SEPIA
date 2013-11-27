@@ -30,7 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 
 /**
  * <p>
- * Unit tests for the P/T-net PNML parser and the abstract PNML parser class. The component unit tests for these classes is made in {@link PNMLCPNParserComponentTest}.
+ * Unit tests for the P/T-net PNML parser and the abstract PNML parser class. The component unit tests for these classes is made in {@link PNMLPTNetParserComponentTest}.
  * </p>
  * 
  * @author Adrian Lange

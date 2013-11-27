@@ -10,6 +10,6 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Adrian Lange
  */
 @RunWith(Suite.class)
-@SuiteClasses({ PNMLCWNParserTest.class })
+@SuiteClasses({ PNMLCWNParserTest.class, PNMLCWNParserComponentTest.class })
 public class AllPNMLCWNParserTests {
 }

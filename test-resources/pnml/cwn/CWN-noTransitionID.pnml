@@ -1,0 +1,133 @@
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="cwn-example" type="http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/cwnet">
+    <tokencolors>
+      <tokencolor>
+        <color>green</color>
+        <rgbcolor>
+          <r>0</r>
+          <g>255</g>
+          <b>0</b>
+        </rgbcolor>
+      </tokencolor>
+      <tokencolor>
+        <color>yellow</color>
+        <rgbcolor>
+          <r>255</r>
+          <g>255</g>
+          <b>0</b>
+        </rgbcolor>
+      </tokencolor>
+      <tokencolor>
+        <color>blue</color>
+        <rgbcolor>
+          <r>0</r>
+          <g>0</g>
+          <b>255</b>
+        </rgbcolor>
+      </tokencolor>
+    </tokencolors>
+    <page id="top-level">
+      <name>
+        <text>An example colored petri net</text>
+      </name>
+      <place id="p1">
+        <name>
+          <text>ready</text>
+          <graphics>
+            <offset x="1.0" y="-5.0"/>
+            <fill color="#FF0000" gradient-color="#FFFFFF" gradient-rotation="diagonal" image="http://www.some-url.com/image.png"/>
+            <line color="black" shape="line" style="solid" width="1.5"/>
+            <font align="left" decoration="underline" family="arial,sans-serif" rotation="0.0" size="medium" style="italic" weight="bold"/>
+          </graphics>
+        </name>
+        <graphics>
+          <position x="20.0" y="20.0"/>
+        </graphics>
+        <initialMarking>
+          <text>3</text>
+          <colors>
+            <color>green</color>
+            <color>green</color>
+            <color>yellow</color>
+          </colors>
+          <toolspecific tool="org.pnml.tool" version="1.0">
+            <tokengraphics>
+              <tokenposition x="-1.0" y="-1.0"/>
+              <tokenposition x="1.0" y="0.0"/>
+              <tokenposition x="-1.0" y="1.0"/>
+              <tokenposition x="-2.0" y="-2.0"/>
+              <tokenposition x="2.0" y="0.0"/>
+              <tokenposition x="-2.0" y="2.0"/>
+            </tokengraphics>
+          </toolspecific>
+        </initialMarking>
+      </place>
+      <place id="p2">
+        <name>
+          <text>end</text>
+          <graphics>
+            <offset x="1.0" y="-5.0"/>
+            <fill color="#FF0000" gradient-color="#FFFFFF" gradient-rotation="diagonal" image="http://www.some-url.com/image.png"/>
+            <line color="black" shape="line" style="solid" width="1.5"/>
+            <font align="left" decoration="underline" family="arial,sans-serif" rotation="0.0" size="medium" style="italic" weight="bold"/>
+          </graphics>
+        </name>
+        <graphics>
+          <position x="100.0" y="60.0"/>
+        </graphics>
+        <capacities>
+          <colorcapacity>
+            <color>green</color>
+            <capacity>2</capacity>
+          </colorcapacity>
+          <colorcapacity>
+            <color>yellow</color>
+            <capacity>5</capacity>
+          </colorcapacity>
+        </capacities>
+      </place>
+      <transition>
+        <name>
+          <text>do smth</text>
+          <graphics>
+            <offset x="1.0" y="-5.0"/>
+            <fill color="#FF0000" gradient-color="#FFFFFF" gradient-rotation="diagonal" image="http://www.some-url.com/image.png"/>
+            <line color="black" shape="line" style="solid" width="1.5"/>
+            <font align="left" decoration="underline" family="arial,sans-serif" rotation="0.0" size="medium" style="italic" weight="bold"/>
+          </graphics>
+        </name>
+        <graphics>
+          <position x="60.0" y="60.0"/>
+        </graphics>
+      </transition>
+      <arc id="a1" source="p1" target="t1">
+        <inscription>
+          <text>1</text>
+          <colors>
+            <color>green</color>
+          </colors>
+          <graphics>
+            <offset x="0.0" y="5"/>
+          </graphics>
+        </inscription>
+        <graphics>
+          <position x="60" y="20"/>
+        </graphics>
+      </arc>
+      <arc id="a2" source="t1" target="p2">
+        <inscription>
+          <text>2</text>
+          <colors>
+            <color>yellow</color>
+            <color>yellow</color>
+            <color>green</color>
+            <color>blue</color>
+          </colors>
+          <graphics>
+            <offset x="0" y="-5"/>
+          </graphics>
+        </inscription>
+      </arc>
+    </page>
+  </net>
+</pnml>
