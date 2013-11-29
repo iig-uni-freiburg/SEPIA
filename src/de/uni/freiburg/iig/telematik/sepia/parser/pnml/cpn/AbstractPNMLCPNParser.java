@@ -354,7 +354,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 				else
 					net.addTransition(transitionName);
 				
-				if(transitionName.startsWith("_")){
+				if(readSilent(transition) || transitionName.startsWith("_")){
 					net.getTransition(transitionName).setSilent(true);
 				}
 

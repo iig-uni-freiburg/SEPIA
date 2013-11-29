@@ -133,7 +133,7 @@ public class AbstractPNMLPNParserTestUtils {
 	/**
 	 * Returns a new {@link Document} instance from a {@link DocumentBuilderFactory}.
 	 */
-	protected static final Document createDocumentInstance() {
+	public static final Document createDocumentInstance() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = null;
 		try {

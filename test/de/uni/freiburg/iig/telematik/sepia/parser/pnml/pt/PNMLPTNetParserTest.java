@@ -41,7 +41,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 public class PNMLPTNetParserTest {
 
 	public PNMLPTNetParser parser = null;
-	
+
 	@Before
 	public void setup() {
 		parser = new PNMLPTNetParser();
@@ -283,6 +283,28 @@ public class PNMLPTNetParserTest {
 				}
 			}
 		}
+	}
+
+	/*
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser#readSilent(org.w3c.dom.Element)}.
+	 */
+	@Test
+	public void testReadSilent() throws ParameterException {
+		// Read transition without silent tag
+		Element transition = ((Document) PNMLPTNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, false, false, true)).getDocumentElement();
+		assertFalse(parser.readSilent(transition));
+
+		// Read silent transition
+		transition = ((Document) PNMLPTNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true)).getDocumentElement();
+		assertTrue(parser.readSilent(transition));
+
+		// Read non-silent transition
+		transition = ((Document) PNMLPTNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, false, true)).getDocumentElement();
+		assertFalse(parser.readSilent(transition));
+
+		// Read transition with invalid silent tag value
+		transition = ((Document) PNMLPTNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, false, false)).getDocumentElement();
+		assertFalse(parser.readSilent(transition));
 	}
 
 	/*

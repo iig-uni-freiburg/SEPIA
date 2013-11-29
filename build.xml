@@ -24,7 +24,7 @@
 
 	<!-- Project details -->
 	<property name="artifact.name" value="sepia" />
-	<property name="version.name" value="0.1.2" />
+	<property name="version.name" value="0.1.4" />
 
 	<!-- Names for generated files -->
 	<property name="jar.file.name" value="${artifact.name}-${version.name}" />

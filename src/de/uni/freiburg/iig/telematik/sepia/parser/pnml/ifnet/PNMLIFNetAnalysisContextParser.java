@@ -131,7 +131,7 @@ public class PNMLIFNetAnalysisContextParser {
 		return parse(new File(analysisContextFilePath), validate);
 	}
 
-	private static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) throws ParameterException {
+	protected static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) throws ParameterException {
 		Validate.notNull(doc);
 		Validate.notEmpty(labelingListTypeName);
 		Validate.notEmpty(labelingTypeName);

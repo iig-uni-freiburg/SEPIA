@@ -515,6 +515,26 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	}
 
 	/**
+	 * Reads a silent tag and returns it as {@link Boolean}. If it's not found, the method returns <code>false</code>.
+	 */
+	public boolean readSilent(Element transitionElement) throws ParameterException {
+		Validate.notNull(transitionElement);
+		
+		NodeList silentList = transitionElement.getElementsByTagName("silent");
+		for (int i = 0; i < silentList.getLength(); i++) {
+			if (silentList.item(i).getNodeType() == Node.ELEMENT_NODE && silentList.item(i).getParentNode().equals(transitionElement)) {
+				Element silentElement = (Element) silentList.item(i);
+				String silent = silentElement.getTextContent();
+				if (silent.equals("true")) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	/**
 	 * Reads the content of text tags and returns them as string.
 	 */
 	public String readText(Node textNode) throws XMLParserException, ParameterException {

@@ -1,0 +1,90 @@
+<analysiscontext xmlns="http://www.pnml.org/version-2009/grammar/pnml" id="ifn-analysiscontext-example" type="http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/analysiscontext">
+  <classifications>
+    <classification>
+      <activity>first activity</activity>
+      <securitydomain>low</securitydomain>
+    </classification>
+    <classification>
+      <activity>second activity</activity>
+      <securitydomain>low</securitydomain>
+    </classification>
+    <classification>
+      <activity>third activity</activity>
+      <securitydomain>high</securitydomain>
+    </classification>
+    <classification>
+      <activity>fourth activity</activity>
+      <securitydomain>low</securitydomain>
+    </classification>
+    <classification>
+      <activity>fifth activity</activity>
+      <securitydomain>high</securitydomain>
+    </classification>
+  </classifications>
+  <tokenlabels>
+    <tokenlabel>
+      <color>blue</color>
+      <securitydomain>invalid</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>green</color>
+      <securitydomain>low</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>pink</color>
+      <securitydomain>low</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>red</color>
+      <securitydomain>low</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>yellow</color>
+      <securitydomain>high</securitydomain>
+    </tokenlabel>
+  </tokenlabels>
+  <clearances>
+    <clearance>
+      <subject>subjectA</subject>
+      <securitydomain>low</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectB</subject>
+      <securitydomain>low</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectC</subject>
+      <securitydomain>high</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectD</subject>
+      <securitydomain>high</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectE</subject>
+      <securitydomain>low</securitydomain>
+    </clearance>
+  </clearances>
+  <subjectdescriptors>
+    <subjectdescriptor>
+      <activity>first activity</activity>
+      <subject>subjectA</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>second activity</activity>
+      <subject>subjectE</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>third activity</activity>
+      <subject>subjectD</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>fourth activity</activity>
+      <subject>subjectB</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>fifth activity</activity>
+      <subject>subjectC</subject>
+    </subjectdescriptor>
+  </subjectdescriptors>
+</analysiscontext>

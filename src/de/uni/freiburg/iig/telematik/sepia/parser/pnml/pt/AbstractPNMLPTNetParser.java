@@ -220,7 +220,7 @@ public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
 				} else {
 					net.addTransition(transitionName);
 				}
-				if(transitionName.startsWith("_")){
+				if(readSilent(transition) || transitionName.startsWith("_")){
 					net.getTransition(transitionName).setSilent(true);
 				}
 

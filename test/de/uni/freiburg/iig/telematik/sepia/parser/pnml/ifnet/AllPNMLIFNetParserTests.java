@@ -10,6 +10,6 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Adrian Lange
  */
 @RunWith(Suite.class)
-@SuiteClasses({ PNMLIFNetParserTest.class, PNMLIFNetParserComponentTest.class })
+@SuiteClasses({ PNMLIFNetParserTest.class, PNMLIFNetParserComponentTest.class, PNMLIFNetAnalysisContextParserTest.class, PNMLIFNetAnalysisContextParserComponentTest.class })
 public class AllPNMLIFNetParserTests {
 }

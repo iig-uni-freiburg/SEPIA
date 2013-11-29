@@ -125,7 +125,7 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 					else if (transitionType.equals("declassification"))
 						ifnet.addDeclassificationTransition(transitionName);
 					
-					if(transitionName.startsWith("_")){
+					if(readSilent(transition) || transitionName.startsWith("_")){
 						ifnet.getTransition(transitionName).setSilent(true);
 					}
 				}

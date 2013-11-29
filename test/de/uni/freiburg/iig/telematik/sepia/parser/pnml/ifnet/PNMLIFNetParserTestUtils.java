@@ -17,7 +17,7 @@ public class PNMLIFNetParserTestUtils extends PNMLCWNParserTestUtils {
 	/**
 	 * Creates a complete IF-net transition
 	 */
-	public static Node createTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics, boolean showTransitiontype, boolean isRegularTransition, boolean showAccessFunctions, boolean showAccessFunctionColor, boolean showAccessFunctionAccessModes) {
+	public static Node createTransition(boolean showIDAttribute, boolean showName, boolean showNameGraphics, boolean showCompleteNameGraphics, boolean showCompleteNameOffsetGraphics, boolean showGraphics, boolean showCompleteGraphics, boolean showCompletePositionGraphics, boolean showCompleteDimensionGraphics, boolean showTransitiontype, boolean isRegularTransition, boolean showAccessFunctions, boolean showAccessFunctionColor, boolean showAccessFunctionAccessModes, boolean showSilent, boolean isSilent, boolean showValidSilent) {
 		Document t = createDocumentInstance();
 
 		// Root element "transition"
@@ -90,6 +90,17 @@ public class PNMLIFNetParserTestUtils extends PNMLCWNParserTestUtils {
 			}
 		}
 
+		if (showSilent) {
+			Element transitionSilent = t.createElement("silent");
+			if (isSilent)
+				transitionSilent.setTextContent("true");
+			else
+				transitionSilent.setTextContent("false");
+			if (!showValidSilent)
+				transitionSilent.setTextContent("invalid");
+			transition.appendChild(transitionSilent);
+		}
+
 		if (showGraphics) {
 			// Graphics element for the transition
 			Element transitionGraphics = t.createElement("graphics");
@@ -113,6 +124,6 @@ public class PNMLIFNetParserTestUtils extends PNMLCWNParserTestUtils {
 		System.out.println(toXML(createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createTokenColors(true, true, true)));
-		System.out.println(toXML(createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, true)));
 	}
 }

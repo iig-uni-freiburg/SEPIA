@@ -14,6 +14,6 @@ public class PNMLCWNParserTestUtils extends PNMLCPNParserTestUtils {
 		System.out.println(toXML(createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true)));
 		System.out.println(toXML(createTokenColors(true, true, true)));
-		System.out.println(toXML(createTransition(true, true, true, true, true, true, true, true, true)));
+		System.out.println(toXML(createTransition(true, true, true, true, true, true, true, true, true, true, false, true)));
 	}
 }

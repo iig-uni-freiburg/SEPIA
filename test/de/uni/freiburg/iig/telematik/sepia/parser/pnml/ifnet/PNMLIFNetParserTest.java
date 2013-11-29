@@ -40,7 +40,7 @@ public class PNMLIFNetParserTest {
 	 */
 	@Test
 	public void testReadAccessFunctions() throws ParameterException {
-		Document transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, true);
 		NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
 		for (int a = 0; a < accessFunctionsNodes.getLength(); a++) {
 			if (accessFunctionsNodes.item(a).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(a).getParentNode().equals(transition)) {
@@ -57,7 +57,7 @@ public class PNMLIFNetParserTest {
 			}
 		}
 
-		transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, false, true, true);
+		transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, false, true, true, false, false, true);
 		accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
 		assertEquals(0, accessFunctionsNodes.getLength());
 	}
@@ -180,12 +180,12 @@ public class PNMLIFNetParserTest {
 	 */
 	@Test
 	public void testReadTransitionType() throws ParameterException {
-		Document transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+		Document transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, true);
 		Element transitionElement = transition.getDocumentElement();
 		String transitionType = parser.readTransitionType(transitionElement);
 		assertEquals("regular", transitionType);
 
-		transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, false, true, true, true);
+		transition = (Document) PNMLIFNetParserTestUtils.createTransition(true, true, true, true, true, true, true, true, true, true, false, true, true, true, false, false, true);
 		transitionElement = transition.getDocumentElement();
 		transitionType = parser.readTransitionType(transitionElement);
 		assertEquals("declassification", transitionType);
