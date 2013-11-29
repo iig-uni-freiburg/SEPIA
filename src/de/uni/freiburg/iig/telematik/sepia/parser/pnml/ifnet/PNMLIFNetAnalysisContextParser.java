@@ -131,6 +131,24 @@ public class PNMLIFNetAnalysisContextParser {
 		return parse(new File(analysisContextFilePath), validate);
 	}
 
+	/**
+	 * <p>
+	 * Reads a labeling list of the following structure and returns a {@link Map} of the object descriptor and its {@link SecurityLevel}:
+	 * </p>
+	 * 
+	 * <pre>
+	 * &lt;labelingListTypeName&gt;
+	 *   &lt;labelingTypeName&gt;
+	 *     &lt;objectDescriptorName&gt;objectDescriptor1&lt;objectDescriptorName&gt;
+	 *     &lt;securitydomain&gt;securityLevel1&lt;securitydomain&gt;
+	 *   &lt;/labelingTypeName&gt;
+	 *   &lt;labelingTypeName&gt;
+	 *     &lt;objectDescriptorName&gt;objectDescriptor2&lt;objectDescriptorName&gt;
+	 *     &lt;securitydomain&gt;securityLevel2&lt;securitydomain&gt;
+	 *   &lt;/labelingTypeName&gt;
+	 * &lt;/labelingListTypeName&gt;
+	 * </pre>
+	 */
 	protected static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) throws ParameterException {
 		Validate.notNull(doc);
 		Validate.notEmpty(labelingListTypeName);

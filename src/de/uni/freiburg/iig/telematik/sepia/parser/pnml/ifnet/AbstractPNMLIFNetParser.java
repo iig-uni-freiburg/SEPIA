@@ -39,20 +39,13 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
  * 
  * @author Adrian Lange
  */
-public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
-											  T extends AbstractIFNetTransition<F>, 
-											  F extends AbstractIFNetFlowRelation<P,T>, 
-											  M extends AbstractIFNetMarking,
-											  R extends AbstractRegularIFNetTransition<F>,
-											  D extends AbstractDeclassificationTransition<F>,
-											  N extends AbstractIFNet<P, T, F, M, R, D>,
-											  G extends AbstractIFNetGraphics<P, T, F, M>>
+public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>, T extends AbstractIFNetTransition<F>, F extends AbstractIFNetFlowRelation<P, T>, M extends AbstractIFNetMarking, R extends AbstractRegularIFNetTransition<F>, D extends AbstractDeclassificationTransition<F>, N extends AbstractIFNet<P, T, F, M, R, D>, G extends AbstractIFNetGraphics<P, T, F, M>>
 
-	extends AbstractPNMLCWNParser<P, T, F, M, N, G> {
+extends AbstractPNMLCWNParser<P, T, F, M, N, G> {
 
 	@Override
 	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
-		
+
 		super.parseDocument(pnmlDocument);
 
 		// read positions of the classification annotations for token labels and clearances
@@ -124,10 +117,10 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 						ifnet.addTransition(transitionName);
 					else if (transitionType.equals("declassification"))
 						ifnet.addDeclassificationTransition(transitionName);
-					
-					if(readSilent(transition) || transitionName.startsWith("_")){
-						ifnet.getTransition(transitionName).setSilent(true);
-					}
+				}
+
+				if (readSilent(transition)) {
+					ifnet.getTransition(transitionName).setSilent(true);
 				}
 
 				// read access modes
@@ -173,20 +166,8 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
 				if (transitionGraphics != null)
 					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
-
-				// transitions have no inscription/marking
 			}
 		}
-	}
-
-	@Override
-	public G getGraphics() {
-		return (G) graphics;
-	}
-
-	@Override
-	public N getNet() {
-		return (N) net;
 	}
 
 	/**

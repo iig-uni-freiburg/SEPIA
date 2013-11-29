@@ -4,7 +4,6 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-
 public class PNMLFilter extends FileFilter {
 
 	@Override

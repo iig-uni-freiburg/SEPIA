@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
+package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn;
 
 import java.util.HashMap;
 import java.util.Map;

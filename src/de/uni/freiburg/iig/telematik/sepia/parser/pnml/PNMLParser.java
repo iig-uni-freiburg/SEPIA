@@ -94,19 +94,13 @@ public class PNMLParser implements ParserInterface {
 	 *            Path to the file to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public <P extends AbstractPlace<F, S>,
-			T extends AbstractTransition<F, S>,
-			F extends AbstractFlowRelation<P, T, S>,
-			M extends AbstractMarking<S>,
-			S extends Object,
-			N extends AbstractPetriNet<P,T,F,M,S>,
-			G extends AbstractPNGraphics<P,T,F,M,S>>
+	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
 	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
-		return this.<P,T,F,M,S,N,G>parse(pnmlFile, true, true);
+		return this.<P, T, F, M, S, N, G> parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -115,19 +109,12 @@ public class PNMLParser implements ParserInterface {
 	 * @param pnmlFile
 	 *            File to parse
 	 * @param requireNetType
-	 *            Set to <code>true</code> if the net type should be required. If the net type can't be determined an exception will be thrown. If set to
-	 *            <code>false</code>, the parser will try to read the file as P/T-net.
+	 *            Set to <code>true</code> if the net type should be required. If the net type can't be determined an exception will be thrown. If set to <code>false</code>, the parser will try to read the file as P/T-net.
 	 * @param verifySchema
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public <P extends AbstractPlace<F, S>,
-			T extends AbstractTransition<F, S>,
-			F extends AbstractFlowRelation<P, T, S>,
-			M extends AbstractMarking<S>,
-			S extends Object,
-			N extends AbstractPetriNet<P,T,F,M,S>,
-			G extends AbstractPNGraphics<P,T,F,M,S>>
+	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
 	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
@@ -141,7 +128,7 @@ public class PNMLParser implements ParserInterface {
 		if (!inputFile.canRead())
 			throw new IOException("I/O Error on opening file: Unable to read file!");
 
-		return this.<P, T, F, M, S, N, G>parse(inputFile, requireNetType, verifySchema);
+		return this.<P, T, F, M, S, N, G> parse(inputFile, requireNetType, verifySchema);
 	}
 
 	/**
@@ -152,18 +139,12 @@ public class PNMLParser implements ParserInterface {
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	@Override
-	public <P extends AbstractPlace<F, S>,
-			T extends AbstractTransition<F, S>,
-			F extends AbstractFlowRelation<P, T, S>,
-			M extends AbstractMarking<S>,
-			S extends Object,
-			N extends AbstractPetriNet<P,T,F,M,S>,
-			G extends AbstractPNGraphics<P,T,F,M,S>>
+	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
 	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(File pnmlFile) throws IOException, ParserException, ParameterException {
-		return this.<P, T, F, M, S, N, G>parse(pnmlFile, true, true);
+		return this.<P, T, F, M, S, N, G> parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -172,20 +153,13 @@ public class PNMLParser implements ParserInterface {
 	 * @param pnmlFile
 	 *            File to parse
 	 * @param requireNetType
-	 *            Set to <code>true</code> if the net type should be required. If the net type can't be determined an exception will be thrown. If set to
-	 *            <code>false</code>, the parser will try to read the file as P/T-net.
+	 *            Set to <code>true</code> if the net type should be required. If the net type can't be determined an exception will be thrown. If set to <code>false</code>, the parser will try to read the file as P/T-net.
 	 * @param verifySchema
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	@SuppressWarnings("unchecked")
-	public <P extends AbstractPlace<F, S>,
-			T extends AbstractTransition<F, S>,
-			F extends AbstractFlowRelation<P, T, S>,
-			M extends AbstractMarking<S>,
-			S extends Object,
-			N extends AbstractPetriNet<P,T,F,M,S>,
-			G extends AbstractPNGraphics<P,T,F,M,S>>
+	public <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
 	AbstractGraphicalPN<P, T, F, M, S, N, G>
 

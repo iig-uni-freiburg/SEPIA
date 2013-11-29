@@ -33,6 +33,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
  */
 public class PNMLIFNetParser extends AbstractPNMLIFNetParser<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition, IFNet, IFNetGraphics> {
 
+	@Override
 	public GraphicalIFNet parse(Document pnmlDocument) throws ParameterException, ParserException {
 
 		net = new IFNet();
@@ -41,15 +42,5 @@ public class PNMLIFNetParser extends AbstractPNMLIFNetParser<IFNetPlace, Abstrac
 		parseDocument(pnmlDocument);
 
 		return new GraphicalIFNet(net, graphics);
-	}
-
-	@Override
-	public IFNetGraphics getGraphics() {
-		return (IFNetGraphics) graphics;
-	}
-
-	@Override
-	public IFNet getNet() {
-		return (IFNet) net;
 	}
 }

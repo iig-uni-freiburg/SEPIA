@@ -23,14 +23,4 @@ public abstract class AbstractPNMLCWNParser<P extends AbstractCWNPlace<F>,
 											G extends AbstractCWNGraphics<P, T, F, M>>
 
 	extends AbstractPNMLCPNParser<P, T, F, M, N, G> {
-
-	@Override
-	public G getGraphics() {
-		return (G) graphics;
-	}
-
-	@Override
-	public N getNet() {
-		return (N) net;
-	}
 }

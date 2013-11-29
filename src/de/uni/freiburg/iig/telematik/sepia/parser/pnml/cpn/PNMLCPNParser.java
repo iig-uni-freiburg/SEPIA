@@ -31,6 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
  */
 public class PNMLCPNParser extends AbstractPNMLCPNParser<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPN, CPNGraphics> {
 
+	@Override
 	public GraphicalCPN parse(Document pnmlDocument) throws ParameterException, ParserException {
 
 		net = new CPN();
@@ -39,15 +40,5 @@ public class PNMLCPNParser extends AbstractPNMLCPNParser<CPNPlace, CPNTransition
 		parseDocument(pnmlDocument);
 
 		return new GraphicalCPN(net, graphics);
-	}
-	
-	@Override
-	public CPNGraphics getGraphics() {
-		return (CPNGraphics) graphics;
-	}
-
-	@Override
-	public CPN getNet() {
-		return (CPN) net;
 	}
 }

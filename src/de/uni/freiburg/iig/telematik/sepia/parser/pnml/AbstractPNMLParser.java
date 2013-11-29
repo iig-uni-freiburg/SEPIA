@@ -31,6 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.A
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -73,7 +74,26 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Parses a PNML document into an existing instance of an {@link AbstractGraphicalPN}. Use {@link #parse(Document)} to return an {@link AbstractGraphicalPN}.
 	 */
-	public abstract void parseDocument(Document pnmlDocument) throws ParameterException, ParserException;
+	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
+		// Check if the net is defined on a single page
+		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
+		if (pageNodes.getLength() > 1)
+			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
+
+		// Read places and transitions
+		NodeList placeNodes = pnmlDocument.getElementsByTagName("place");
+		readPlaces(placeNodes);
+		NodeList transitionNodes = pnmlDocument.getElementsByTagName("transition");
+		readTransitions(transitionNodes);
+		// Read arcs
+		NodeList arcNodes = pnmlDocument.getElementsByTagName("arc");
+		readArcs(arcNodes);
+
+		// Read net ID as name
+		String netName = readNetName(pnmlDocument);
+		if (netName != null)
+			net.setName(netName);
+	}
 
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
@@ -88,7 +108,41 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
-	protected abstract void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException;
+	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
+		// read and add each transition
+		for (int t = 0; t < transitionNodes.getLength(); t++) {
+			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
+				Element transition = (Element) transitionNodes.item(t);
+				// ID must be available in a valid net
+				String transitionName = transition.getAttribute("id");
+				String transitionLabel = null;
+				// Check if there's a label
+				NodeList transitionLabels = transition.getElementsByTagName("name");
+				if (transitionLabels.getLength() == 1) {
+					transitionLabel = readText(transitionLabels.item(0));
+					if (transitionLabel != null && transitionLabel.length() == 0)
+						transitionLabel = null;
+					// annotation graphics
+					AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
+					if (transitionLabelAnnotationGraphics != null)
+						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
+				}
+				if (transitionLabel != null){
+					net.addTransition(transitionName, transitionLabel);
+				} else {
+					net.addTransition(transitionName);
+				}
+				if(readSilent(transition)){
+					net.getTransition(transitionName).setSilent(true);
+				}
+
+				// read graphical information
+				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
+				if (transitionGraphics != null)
+					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
+			}
+		}
+	}
 
 	/**
 	 * Reads the graphical information of an annotation element and returns a {@link AnnotationGraphics} object.

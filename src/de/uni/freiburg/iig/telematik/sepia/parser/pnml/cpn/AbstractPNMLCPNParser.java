@@ -25,7 +25,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PlaceFiringRules;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
@@ -53,12 +52,8 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
 
+	@Override
 	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
-
-		// Check if the net is defined on a single page
-		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
-		if (pageNodes.getLength() > 1)
-			throw new PNMLParserException(ErrorCode.NOT_ON_ONE_PAGE);
 
 		NodeList tokencolorsNodes = pnmlDocument.getElementsByTagName("tokencolors");
 		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
@@ -67,29 +62,17 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 				getGraphics().setColors(tokencolors);
 			}
 		}
-
-		// Read places and transitions
-		NodeList placeNodes = pnmlDocument.getElementsByTagName("place");
-		readPlaces(placeNodes);
-		NodeList transitionNodes = pnmlDocument.getElementsByTagName("transition");
-		readTransitions(transitionNodes);
-		// Read arcs
-		NodeList arcNodes = pnmlDocument.getElementsByTagName("arc");
-		readArcs(arcNodes);
+		
+		super.parseDocument(pnmlDocument);
 
 		addFiringRulesToNet();
-
-		// Read net ID as name
-		String netName = readNetName(pnmlDocument);
-		if (netName != null)
-			net.setName(netName);
 	}
 
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link Abstract}.
 	 */
+	@Override
 	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
-
 		// read and add each arc/flow relation
 		for (int a = 0; a < arcNodes.getLength(); a++) {
 			if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
@@ -226,6 +209,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	/**
 	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractCPNGraphics}.
 	 */
+	@Override
 	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
 		// add each place
 		M marking = net.getMarking();
@@ -327,45 +311,6 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 		net.setInitialMarking(marking);
 	}
 
-	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractCPNGraphics}.
-	 */
-	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
-		// read and add each transition
-		for (int t = 0; t < transitionNodes.getLength(); t++) {
-			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
-				Element transition = (Element) transitionNodes.item(t);
-				// ID must be available in a valid net
-				String transitionName = transition.getAttribute("id");
-				String transitionLabel = null;
-				// Check if there's a label
-				NodeList transitionLabels = transition.getElementsByTagName("name");
-				if (transitionLabels.getLength() == 1) {
-					transitionLabel = readText(transitionLabels.item(0));
-					if (transitionLabel != null && transitionLabel.length() == 0)
-						transitionLabel = null;
-					// annotation graphics
-					AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
-					if (transitionLabelAnnotationGraphics != null)
-						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
-				}
-				if (transitionLabel != null)
-					net.addTransition(transitionName, transitionLabel);
-				else
-					net.addTransition(transitionName);
-				
-				if(readSilent(transition) || transitionName.startsWith("_")){
-					net.getTransition(transitionName).setSilent(true);
-				}
-
-				// read graphical information
-				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
-				if (transitionGraphics != null)
-					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
-			}
-		}
-	}
-
 	protected void addFiringRulesToNet() throws ParameterException {
 		for (Map.Entry<String, Map<String, PlaceFiringRules>> placeFiringRules : transitionFiringRules.entrySet()) {
 			FiringRule firingRule = new FiringRule();
@@ -380,16 +325,6 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 			if (firingRule.containsRequirements() || firingRule.containsProductions())
 				getNet().addFiringRule(placeFiringRules.getKey(), firingRule);
 		}
-	}
-
-	@Override
-	public G getGraphics() {
-		return (G) graphics;
-	}
-
-	@Override
-	public N getNet() {
-		return (N) net;
 	}
 
 	/**
