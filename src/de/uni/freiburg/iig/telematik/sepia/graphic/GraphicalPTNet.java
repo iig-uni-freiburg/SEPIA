@@ -16,6 +16,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
  */
 public class GraphicalPTNet extends AbstractGraphicalPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTNet, PTGraphics> {
 
+	public GraphicalPTNet() {
+		this(new PTNet(), new PTGraphics());
+	}
+	
 	public GraphicalPTNet(PTNet petriNet, PTGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}

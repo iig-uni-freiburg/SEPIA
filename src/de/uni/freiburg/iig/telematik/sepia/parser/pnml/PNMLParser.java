@@ -119,7 +119,6 @@ public class PNMLParser implements ParserInterface {
 	AbstractGraphicalPN<P, T, F, M, S, N, G>
 
 	parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
-
 		File inputFile = new File(pnmlFile);
 		if (inputFile.isDirectory())
 			throw new IOException("I/O Error on opening file: File is a directory!");

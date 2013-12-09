@@ -31,12 +31,12 @@ public class PNUtils {
 	 * @return A set of activity names.
 	 * @throws ParameterException 
 	 */
-	public static <T extends AbstractTransition<?,?>> Set<String> getNameSetFromTransitions(Collection<T> transitions) throws ParameterException{
+	public static <T extends AbstractTransition<?,?>> Set<String> getNameSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions) throws ParameterException{
 		Validate.notNull(transitions);
 		Validate.noNullElements(transitions);
 		Set<String> cActivities = new HashSet<String>();
 		for(AbstractTransition<?,?> t: transitions){
-			if(!t.isSilent())
+			if(includeSilentTransitions || !t.isSilent())
 				cActivities.add(t.getName());
 		}
 		return cActivities;
@@ -67,12 +67,12 @@ public class PNUtils {
 	 * @return A set of activity labels.
 	 * @throws ParameterException 
 	 */
-	public static <T extends AbstractTransition<?,?>> Set<String> getLabelSetFromTransitions(Collection<T> transitions) throws ParameterException{
+	public static <T extends AbstractTransition<?,?>> Set<String> getLabelSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions) throws ParameterException{
 		Validate.notNull(transitions);
 		Validate.noNullElements(transitions);
 		Set<String> cActivities = new HashSet<String>();
 		for(AbstractTransition<?,?> t: transitions){
-			if(!t.isSilent())
+			if(includeSilentTransitions || !t.isSilent())
 				cActivities.add(t.getLabel());
 		}
 		return cActivities;

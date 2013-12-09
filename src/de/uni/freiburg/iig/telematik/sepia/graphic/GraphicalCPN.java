@@ -16,6 +16,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
  */
 public class GraphicalCPN extends AbstractGraphicalCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPN, CPNGraphics> {
 
+	public GraphicalCPN() {
+		this(new CPN(), new CPNGraphics());
+	}
+	
 	public GraphicalCPN(CPN petriNet, CPNGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}

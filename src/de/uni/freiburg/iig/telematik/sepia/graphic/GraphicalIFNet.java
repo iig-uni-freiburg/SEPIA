@@ -17,6 +17,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
  */
 public class GraphicalIFNet extends AbstractGraphicalIFNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition, IFNet, IFNetGraphics> {
 
+	public GraphicalIFNet() {
+		this(new IFNet(), new IFNetGraphics());
+	}
+	
 	public GraphicalIFNet(IFNet petriNet, IFNetGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}

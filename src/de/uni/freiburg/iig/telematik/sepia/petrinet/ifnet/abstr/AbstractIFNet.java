@@ -162,7 +162,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	public void setAnalysisContext(AnalysisContext analysisContext) throws ParameterException{
 		Validate.notNull(analysisContext);
-		if(!analysisContext.getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions())))
+		if(!analysisContext.getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions(), false)))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all Petri net transitions as activities.");
 		this.analysisContext = analysisContext;
 	}

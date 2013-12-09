@@ -16,6 +16,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
  */
 public class GraphicalCWN extends AbstractGraphicalCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, CWN, CWNGraphics> {
 
+	public GraphicalCWN() {
+		this(new CWN(), new CWNGraphics());
+	}
+	
 	public GraphicalCWN(CWN petriNet, CWNGraphics petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}

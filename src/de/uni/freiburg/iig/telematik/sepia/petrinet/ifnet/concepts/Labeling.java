@@ -62,13 +62,13 @@ public class Labeling {
 	public Labeling(){};
 	
 	public Labeling(IFNet ifNet, Collection<String> subjects) throws ParameterException{
-		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions()), ifNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
+		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions(), false), ifNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
 	}
 	
 	public Labeling(IFNet ifNet, 
 					Collection<String> subjects, 
 				    SecurityLevel defaultSecurityLevel) throws ParameterException{
-		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions()), ifNet.getTokenColors(), subjects, defaultSecurityLevel);
+		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions(), false), ifNet.getTokenColors(), subjects, defaultSecurityLevel);
 	}
 	
 	public Labeling(Collection<String> activities,
