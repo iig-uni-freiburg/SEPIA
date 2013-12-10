@@ -12,20 +12,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.TestResourceFile;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CWNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
 
 /**
  * <p>
@@ -37,6 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
  * 
  * @author Adrian Lange
  */
+@SuppressWarnings("rawtypes")
 public class PNMLCWNParserComponentTest {
 
 	/*
@@ -149,7 +143,7 @@ public class PNMLCWNParserComponentTest {
 	public void validCWNWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNResource.getFile(), true, true);
+			abstrNet = new PNMLParser().parse(CWNResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -183,7 +177,7 @@ public class PNMLCWNParserComponentTest {
 	public void validCWNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(CWNResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -220,7 +214,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noNetIDCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoNetIDResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoNetIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -235,7 +229,7 @@ public class PNMLCWNParserComponentTest {
 	public void noNetIDCWNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoNetIDResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(CWNNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -256,7 +250,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCWNRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTypeAttributeResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoTypeAttributeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -270,7 +264,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCWNRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTypeAttributeResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoTypeAttributeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -284,7 +278,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCWNNotRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTypeAttributeResource.getFile(), false, true);
+			new PNMLParser().parse(CWNNoTypeAttributeResource.getFile(), false, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -298,7 +292,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCWNNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTypeAttributeResource.getFile(), false, false);
+			new PNMLParser().parse(CWNNoTypeAttributeResource.getFile(), false, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -312,7 +306,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeCWNRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNUnknownTypeResource.getFile(), true, true);
+			new PNMLParser().parse(CWNUnknownTypeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -326,7 +320,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeCWNRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNUnknownTypeResource.getFile(), true, false);
+			new PNMLParser().parse(CWNUnknownTypeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -340,7 +334,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeCWNNotRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNUnknownTypeResource.getFile(), false, true);
+			new PNMLParser().parse(CWNUnknownTypeResource.getFile(), false, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -354,7 +348,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypeCWNNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNUnknownTypeResource.getFile(), false, false);
+			new PNMLParser().parse(CWNUnknownTypeResource.getFile(), false, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -372,7 +366,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPageTagsCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoPageTagsResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoPageTagsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -386,7 +380,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPageTagsCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoPageTagsResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoPageTagsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -402,7 +396,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNMultiplePageTagsResource.getFile(), true, true);
+			new PNMLParser().parse(CWNMultiplePageTagsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -416,7 +410,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNMultiplePageTagsResource.getFile(), true, false);
+			new PNMLParser().parse(CWNMultiplePageTagsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -434,7 +428,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoPlaceIDResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoPlaceIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -448,7 +442,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoPlaceIDResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoPlaceIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -462,7 +456,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameCWNWithValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoPlaceNameResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoPlaceNameResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -478,7 +472,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoPlaceNameResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoPlaceNameResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -494,7 +488,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidInitialMarkingResource.getFile(), true, true);
+			new PNMLParser().parse(CWNInvalidInitialMarkingResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -508,7 +502,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidInitialMarkingResource.getFile(), true, false);
+			new PNMLParser().parse(CWNInvalidInitialMarkingResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -522,7 +516,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceGraphicsCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidPlaceGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(CWNInvalidPlaceGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -536,7 +530,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidPlaceGraphicsCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidPlaceGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(CWNInvalidPlaceGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -552,7 +546,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidPlaceCapacityResource.getFile(), true, true);
+			new PNMLParser().parse(CWNInvalidPlaceCapacityResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -566,7 +560,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidPlaceCapacityResource.getFile(), true, false);
+			new PNMLParser().parse(CWNInvalidPlaceCapacityResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -584,7 +578,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTransitionIDResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoTransitionIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -598,7 +592,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTransitionIDResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoTransitionIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -612,7 +606,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameCWNWithValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTransitionNameResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoTransitionNameResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -628,7 +622,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoTransitionNameResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoTransitionNameResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -644,7 +638,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionGraphicsCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidTransitionGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(CWNInvalidTransitionGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -658,7 +652,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidTransitionGraphicsCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidTransitionGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(CWNInvalidTransitionGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -678,7 +672,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcIDCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcIDResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoArcIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -692,7 +686,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcIDCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcIDResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoArcIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -708,7 +702,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcSourceIDResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoArcSourceIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -722,7 +716,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcSourceIDResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoArcSourceIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -736,7 +730,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcTargetIDResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoArcTargetIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -750,7 +744,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcTargetIDResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoArcTargetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -764,7 +758,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected=ParserException.class)
 	public void noArcInscriptionCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcInscriptionResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNoArcInscriptionResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -778,7 +772,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNoArcInscriptionResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNoArcInscriptionResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -794,7 +788,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNegativeArcInscriptionResource.getFile(), true, true);
+			new PNMLParser().parse(CWNNegativeArcInscriptionResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -808,7 +802,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionCWNWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNNegativeArcInscriptionResource.getFile(), true, false);
+			new PNMLParser().parse(CWNNegativeArcInscriptionResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -822,7 +816,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidArcGraphicsCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidArcGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(CWNInvalidArcGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -836,7 +830,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidArcGraphicsCWNWithoutValidation() {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNInvalidArcGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(CWNInvalidArcGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -857,7 +851,7 @@ public class PNMLCWNParserComponentTest {
 	public void boundedCWNWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNBoundedResource.getFile(), true, true);
+			abstrNet = new PNMLParser().parse(CWNBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -878,7 +872,7 @@ public class PNMLCWNParserComponentTest {
 	public void boundedCWNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNBoundedResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(CWNBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -902,7 +896,7 @@ public class PNMLCWNParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void incompleteTokencolorsCWNWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNIncompleteTokencolorsResource.getFile(), true, true);
+			new PNMLParser().parse(CWNIncompleteTokencolorsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -917,7 +911,7 @@ public class PNMLCWNParserComponentTest {
 	public void incompleteTokencolorsCWNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, Multiset<String>, CWN, CWNGraphics>parse(CWNIncompleteTokencolorsResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(CWNIncompleteTokencolorsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {

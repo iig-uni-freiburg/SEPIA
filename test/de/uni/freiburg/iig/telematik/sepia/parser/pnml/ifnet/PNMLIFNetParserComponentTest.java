@@ -13,21 +13,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.TestResourceFile;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
 /**
@@ -40,6 +33,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
  * 
  * @author Adrian Lange
  */
+@SuppressWarnings("rawtypes")
 public class PNMLIFNetParserComponentTest {
 
 	/*
@@ -172,7 +166,7 @@ public class PNMLIFNetParserComponentTest {
 	public void validIFNetWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetResource.getFile(), true, true);
+			abstrNet = new PNMLParser().parse(IFNetResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -206,7 +200,7 @@ public class PNMLIFNetParserComponentTest {
 	public void validIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(IFNetResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -243,7 +237,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noNetIDIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoNetIDResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoNetIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -258,7 +252,7 @@ public class PNMLIFNetParserComponentTest {
 	public void noNetIDIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoNetIDResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(IFNetNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -279,7 +273,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTypeAttributeResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoTypeAttributeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -293,7 +287,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTypeAttributeResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoTypeAttributeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -307,7 +301,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetNotRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTypeAttributeResource.getFile(), false, true);
+			new PNMLParser().parse(IFNetNoTypeAttributeResource.getFile(), false, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -321,7 +315,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTypeAttributeResource.getFile(), false, false);
+			new PNMLParser().parse(IFNetNoTypeAttributeResource.getFile(), false, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -335,7 +329,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeIFNetRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetUnknownTypeResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetUnknownTypeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -349,7 +343,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeIFNetRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetUnknownTypeResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetUnknownTypeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -363,7 +357,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeIFNetNotRequiringTypeWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetUnknownTypeResource.getFile(), false, true);
+			new PNMLParser().parse(IFNetUnknownTypeResource.getFile(), false, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -377,7 +371,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypeIFNetNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetUnknownTypeResource.getFile(), false, false);
+			new PNMLParser().parse(IFNetUnknownTypeResource.getFile(), false, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -395,7 +389,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPageTagsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoPageTagsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoPageTagsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -409,7 +403,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPageTagsIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoPageTagsResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoPageTagsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -425,7 +419,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetMultiplePageTagsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetMultiplePageTagsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -439,7 +433,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetMultiplePageTagsResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetMultiplePageTagsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -457,7 +451,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoPlaceIDResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoPlaceIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -471,7 +465,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoPlaceIDResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoPlaceIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -485,7 +479,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameIFNetWithValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoPlaceNameResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoPlaceNameResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -501,7 +495,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoPlaceNameResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoPlaceNameResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -517,7 +511,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidInitialMarkingResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidInitialMarkingResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -531,7 +525,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidInitialMarkingResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidInitialMarkingResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -545,7 +539,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceGraphicsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidPlaceGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidPlaceGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -559,7 +553,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidPlaceGraphicsIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidPlaceGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidPlaceGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -575,7 +569,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidPlaceCapacityResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidPlaceCapacityResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -589,7 +583,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidPlaceCapacityResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidPlaceCapacityResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -607,7 +601,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTransitionIDResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoTransitionIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -621,7 +615,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTransitionIDResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoTransitionIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -635,7 +629,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameIFNetWithValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTransitionNameResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoTransitionNameResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -651,7 +645,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoTransitionNameResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoTransitionNameResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -667,7 +661,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionGraphicsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidTransitionGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidTransitionGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -681,7 +675,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidTransitionGraphicsIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidTransitionGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidTransitionGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -697,7 +691,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionTypeIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidTransitionTypeResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidTransitionTypeResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -711,7 +705,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionTypeIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidTransitionTypeResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidTransitionTypeResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -725,7 +719,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noAccessFunctionsTagIFNetWithValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoAccessFunctionsTagResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoAccessFunctionsTagResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -741,7 +735,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noAccessFunctionsTagIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoAccessFunctionsTagResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoAccessFunctionsTagResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -757,7 +751,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected=ParserException.class)
 	public void noAccessFunctionColorIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoAccessFunctionColorResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoAccessFunctionColorResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -771,7 +765,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noAccessFunctionColorIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoAccessFunctionColorResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoAccessFunctionColorResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -788,7 +782,7 @@ public class PNMLIFNetParserComponentTest {
 	public void incompleteAccessModesIFNetWithValidation() throws ParameterException {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetIncompleteAccessModesResource.getFile(), true, true);
+			abstrNet = new PNMLParser().parse(IFNetIncompleteAccessModesResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -816,7 +810,7 @@ public class PNMLIFNetParserComponentTest {
 	public void incompleteAccessModesIFNetWithoutValidation() throws ParameterException {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetIncompleteAccessModesResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(IFNetIncompleteAccessModesResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -843,7 +837,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidAccessFunctionsGraphicsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidAccessFunctionsGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidAccessFunctionsGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -857,7 +851,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidAccessFunctionsGraphicsIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidAccessFunctionsGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidAccessFunctionsGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -877,7 +871,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcIDIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcIDResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoArcIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -891,7 +885,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcIDIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcIDResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoArcIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -907,7 +901,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcSourceIDResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoArcSourceIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -921,7 +915,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcSourceIDResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoArcSourceIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -935,7 +929,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcTargetIDResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoArcTargetIDResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -949,7 +943,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcTargetIDResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoArcTargetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -963,7 +957,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected=ParserException.class)
 	public void noArcInscriptionIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcInscriptionResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNoArcInscriptionResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -977,7 +971,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNoArcInscriptionResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNoArcInscriptionResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -993,7 +987,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNegativeArcInscriptionResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetNegativeArcInscriptionResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -1007,7 +1001,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionIFNetWithoutValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetNegativeArcInscriptionResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetNegativeArcInscriptionResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -1021,7 +1015,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidArcGraphicsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidArcGraphicsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetInvalidArcGraphicsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -1035,7 +1029,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidArcGraphicsIFNetWithoutValidation() {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetInvalidArcGraphicsResource.getFile(), true, false);
+			new PNMLParser().parse(IFNetInvalidArcGraphicsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
@@ -1056,7 +1050,7 @@ public class PNMLIFNetParserComponentTest {
 	public void boundedIFNetWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetBoundedResource.getFile(), true, true);
+			abstrNet = new PNMLParser().parse(IFNetBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -1077,7 +1071,7 @@ public class PNMLIFNetParserComponentTest {
 	public void boundedIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetBoundedResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(IFNetBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -1101,7 +1095,7 @@ public class PNMLIFNetParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void incompleteTokencolorsIFNetWithValidation() throws ParserException {
 		try {
-			new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetIncompleteTokencolorsResource.getFile(), true, true);
+			new PNMLParser().parse(IFNetIncompleteTokencolorsResource.getFile(), true, true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -1116,7 +1110,7 @@ public class PNMLIFNetParserComponentTest {
 	public void incompleteTokencolorsIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
-			abstrNet = new PNMLParser().<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, Multiset<String>, IFNet, IFNetGraphics>parse(IFNetIncompleteTokencolorsResource.getFile(), true, false);
+			abstrNet = new PNMLParser().parse(IFNetIncompleteTokencolorsResource.getFile(), true, false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
