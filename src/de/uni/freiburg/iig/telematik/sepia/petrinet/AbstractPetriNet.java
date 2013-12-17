@@ -237,6 +237,22 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		return Collections.unmodifiableCollection(transitions.values());
 	}
 	
+	public Collection<T> getTransitions(boolean includeSilentTransitions){
+		if(includeSilentTransitions)
+			return getTransitions();
+		List<T> result = new ArrayList<T>(getTransitions());
+		result.removeAll(getSilentTransitions());
+		return result;
+	}
+	
+	public Collection<T> getSilentTransitions(){
+		List<T> result = new ArrayList<T>();
+		for(T transition: transitions.values())
+			if(transition.isSilent())
+				result.add(transition);
+		return result;
+	}
+	
 	/**
 	 * Returns the Petri net source transitions.
 	 * @return A collection of Petri net transitions.

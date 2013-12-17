@@ -55,7 +55,6 @@ public class ParserDialog extends JDialog {
 	private ParserDialog(Window owner) {
 		super(owner);
 		setModal(true);
-		setLocationRelativeTo(owner);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	
 		setTitle("Choose Petri net");
@@ -67,6 +66,7 @@ public class ParserDialog extends JDialog {
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 		adjustParameterPanel();
 		pack();
+		setLocationRelativeTo(owner);
 		setVisible(true);
 	}
 	
