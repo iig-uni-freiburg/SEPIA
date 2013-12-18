@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/msv/msv-core-2013.6.1.jar" sourcepath="lib/msv/msv-core-2013.6.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/relaxngDatatype/relaxngDatatype-20020414.jar"/>
 	<classpathentry kind="lib" path="lib/xsdlib/xsdlib-2.2.jar"/>
-	<classpathentry kind="lib" path="lib/xsom/xsom-20110101-SNAPSHOT.jar" sourcepath="lib/xsom/xsom-20110101-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
