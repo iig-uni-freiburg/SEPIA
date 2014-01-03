@@ -31,7 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 
 
 
-public class ParserDialog extends JDialog {
+public class PNParserDialog extends JDialog {
 
 	private static final long serialVersionUID = -1556400321094068143L;
 
@@ -52,7 +52,7 @@ public class ParserDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	private ParserDialog(Window owner) {
+	private PNParserDialog(Window owner) {
 		super(owner);
 		setModal(true);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -124,7 +124,7 @@ public class ParserDialog extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(petriNet == null){
-						JOptionPane.showMessageDialog(ParserDialog.this, "Please parse a Petri net first.", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(PNParserDialog.this, "Please parse a Petri net first.", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					for(String silentTransition: transitionPanel.getSilentTransitions()){
@@ -155,7 +155,7 @@ public class ParserDialog extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					PNChooser pnChooser = new PNChooser();
-					int returnVal = pnChooser.showOpenDialog(ParserDialog.this);
+					int returnVal = pnChooser.showOpenDialog(PNParserDialog.this);
 
 			        if (returnVal == JFileChooser.APPROVE_OPTION) {
 			            File file = pnChooser.getSelectedFile();
@@ -175,7 +175,7 @@ public class ParserDialog extends JDialog {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(getPNFileName() == null || getPNFileName().isEmpty()){
-						JOptionPane.showMessageDialog(ParserDialog.this, "Please choose an input file first!", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(PNParserDialog.this, "Please choose an input file first!", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
 						return;
 					}	
 					switch(getParsingFormat()){
@@ -187,10 +187,10 @@ public class ParserDialog extends JDialog {
 						getPNFileName();
 						try {
 							petriNet = parser.parse(getPNFileName(), pnmlParameterPanel.requireNetType(), pnmlParameterPanel.validation());
+							transitionPanel.update(petriNet.getPetriNet());
 						} catch (Exception ex) {
-							JOptionPane.showMessageDialog(ParserDialog.this, "Exception in parsing procedure:\nReason: "+ex.getMessage(), "Parsing Exception", JOptionPane.ERROR_MESSAGE);						
+							JOptionPane.showMessageDialog(PNParserDialog.this, "Exception in parsing procedure:\nReason: "+ex.getMessage(), "Parsing Exception", JOptionPane.ERROR_MESSAGE);						
 						}
-						transitionPanel.update(petriNet.getPetriNet());
 						break;
 					}
 				}
@@ -238,7 +238,7 @@ public class ParserDialog extends JDialog {
 	
 	@SuppressWarnings("rawtypes")
 	public static AbstractGraphicalPN showPetriNetDialog(Window parentWindow){
-		ParserDialog dialog = new ParserDialog(parentWindow);
+		PNParserDialog dialog = new PNParserDialog(parentWindow);
 		return dialog.getPetriNet();
 	}
 	
@@ -248,7 +248,7 @@ public class ParserDialog extends JDialog {
 	
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
-		AbstractGraphicalPN net = ParserDialog.showPetriNetDialog(null);
+		AbstractGraphicalPN net = PNParserDialog.showPetriNetDialog(null);
 		System.out.println(net);
 	}
 }

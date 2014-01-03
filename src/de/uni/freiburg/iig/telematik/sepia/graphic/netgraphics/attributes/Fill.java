@@ -1,6 +1,9 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes;
 
+import java.awt.Color;
 import java.net.URI;
+
+import de.invation.code.toval.validate.ParameterException;
 
 /**
  * <p>
@@ -19,25 +22,20 @@ public class Fill extends AbstractAttribute {
 	/** Default gradient rotation */
 	public static final GradientRotation DEFAULT_GRADIENT_ROTATION = null;
 	/** Default image */
-	public static final URI DFAULT_IMAGE = null;
+	public static final URI DEFAULT_IMAGE = null;
 	/** CSS2 color string */
-	private String color;
+	private String color = DEFAULT_COLOR;
 	/** CSS2 color string */
-	private String gradientColor;
+	private String gradientColor = DEFAULT_GRADIENT_COLOR;
 	/** Gradient rotation enumeration value */
-	private GradientRotation gradientRotation;
+	private GradientRotation gradientRotation = DEFAULT_GRADIENT_ROTATION;
 	/** URI to an image */
-	private URI image;
+	private URI image = DEFAULT_IMAGE;
 
 	/**
 	 * Creates new fill attribute with default values.
 	 */
-	public Fill() {
-		setColor(DEFAULT_COLOR);
-		setGradientColor(DEFAULT_GRADIENT_COLOR);
-		setGradientRotation(DEFAULT_GRADIENT_ROTATION);
-		setImage(DFAULT_IMAGE);
-	}
+	public Fill() {}
 
 	/**
 	 * Creates a new fill attribute with the specified values.
@@ -50,8 +48,9 @@ public class Fill extends AbstractAttribute {
 	 *            Rotation of the gradient or <code>null</code> if it should be ignored.
 	 * @param image
 	 *            Filling image URI or <code>null</code> if it should be ignored.
+	 * @throws ParameterException 
 	 */
-	public Fill(String color, String gradientColor, GradientRotation gradientRotation, URI image) {
+	public Fill(String color, String gradientColor, GradientRotation gradientRotation, URI image) throws ParameterException {
 		setColor(color);
 		setGradientColor(gradientColor);
 		setGradientRotation(gradientRotation);
@@ -99,8 +98,16 @@ public class Fill extends AbstractAttribute {
 	 * 
 	 * @param color
 	 *            the color to set
+	 * @throws ParameterException 
 	 */
-	public void setColor(String color) {
+	public void setColor(String color) throws ParameterException {
+		if(color == null)
+			return;
+		try {
+			Color.decode("0xFF0096");
+		} catch(Exception e){
+			throw new ParameterException("Invalid CSS color code: " + color);
+		}
 		this.color = color;
 	}
 
@@ -109,8 +116,16 @@ public class Fill extends AbstractAttribute {
 	 * 
 	 * @param gradientColor
 	 *            the gradientColor to set
+	 * @throws ParameterException 
 	 */
-	public void setGradientColor(String gradientColor) {
+	public void setGradientColor(String gradientColor) throws ParameterException {
+		if(gradientColor == null)
+			return;
+		try {
+			Color.decode("0xFF0096");
+		} catch(Exception e){
+			throw new ParameterException("Invalid CSS color code: " + color);
+		}
 		this.gradientColor = gradientColor;
 	}
 

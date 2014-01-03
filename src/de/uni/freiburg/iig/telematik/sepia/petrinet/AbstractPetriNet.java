@@ -630,8 +630,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	//------- Flow Relations ------------------------------------------------------------------------
 	
 	public F getFlowRelation(String name){
-		System.out.println(relations.keySet());
-		System.out.println(name);
 		return relations.get(name);
 	}
 	

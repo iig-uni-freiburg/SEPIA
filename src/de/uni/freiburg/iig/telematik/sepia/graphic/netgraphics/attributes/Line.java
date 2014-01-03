@@ -1,5 +1,9 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes;
 
+import java.awt.Color;
+
+import de.invation.code.toval.validate.ParameterException;
+
 /**
  * <p>
  * The line attribute class can define a color, a shape, a style, and a width. It is used by places, transitions, pages, annotations and arcs.
@@ -18,23 +22,18 @@ public class Line extends AbstractAttribute {
 	/** Default width of the line */
 	public static final double DEFAULT_WIDTH = 1.0;
 	/** Line color as CSS2 color string */
-	private String color;
+	private String color = DEFAULT_COLOR;
 	/** Shape of the line */
-	private Shape shape;
+	private Shape shape = DEFAULT_SHAPE;
 	/** Style of the line */
-	private Style style;
+	private Style style = DEFAULT_STYLE;
 	/** Width of the line */
-	private double width;
+	private double width = DEFAULT_WIDTH;
 
 	/**
 	 * Creates new line attribute with default values.
 	 */
-	public Line() {
-		setColor(DEFAULT_COLOR);
-		setShape(DEFAULT_SHAPE);
-		setStyle(DEFAULT_STYLE);
-		setWidth(DEFAULT_WIDTH);
-	}
+	public Line() {}
 
 	/**
 	 * Creates new line attribute with the specified values.
@@ -47,8 +46,9 @@ public class Line extends AbstractAttribute {
 	 *            Style of the line
 	 * @param width
 	 *            Width of the line
+	 * @throws ParameterException 
 	 */
-	public Line(String color, Shape shape, Style style, double width) {
+	public Line(String color, Shape shape, Style style, double width) throws ParameterException {
 		setColor(color);
 		setShape(shape);
 		setStyle(style);
@@ -96,8 +96,16 @@ public class Line extends AbstractAttribute {
 	 * 
 	 * @param color
 	 *            the color to set
+	 * @throws ParameterException 
 	 */
-	public void setColor(String color) {
+	public void setColor(String color) throws ParameterException {
+		if(color == null)
+			return;
+		try {
+			Color.decode("0xFF0096");
+		} catch(Exception e){
+			throw new ParameterException("Invalid CSS color code: " + color);
+		}
 		this.color = color;
 	}
 

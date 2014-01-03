@@ -25,32 +25,24 @@ public class Font extends AbstractAttribute {
 	/** Default font weight as CSS2 font weight string */
 	public static final String DEFAULT_WEIGHT = null;
 	/** Align */
-	private Align align;
+	private Align align = DEFAULT_ALIGN;
 	/** Text decoration */
-	private Decoration decoration;
+	private Decoration decoration = DEFAULT_DECORATION;
 	/** Font family as CSS2 font family string */
-	private String family;
+	private String family = DEFAULT_FAMILY;
 	/** Text rotation as CSS2 text rotation value */
-	private double rotation;
+	private double rotation = DEFAULT_ROTATION;
 	/** Font size as CSS2 font size string */
-	private String size;
+	private String size = DEFAULT_SIZE;
 	/** Font style as CSS2 font style string */
-	private String style;
+	private String style = DEFAULT_STYLE;
 	/** Font weight as CSS2 font weight string */
-	private String weight;
+	private String weight = DEFAULT_WEIGHT;
 
 	/**
 	 * Creates new font attribute with default values.
 	 */
-	public Font() {
-		setAlign(DEFAULT_ALIGN);
-		setDecoration(DEFAULT_DECORATION);
-		setFamily(DEFAULT_FAMILY);
-		setRotation(DEFAULT_ROTATION);
-		setSize(DEFAULT_SIZE);
-		setStyle(DEFAULT_STYLE);
-		setWeight(DEFAULT_WEIGHT);
-	}
+	public Font() {}
 
 	/**
 	 * Creates new font attribute with the specified values.
