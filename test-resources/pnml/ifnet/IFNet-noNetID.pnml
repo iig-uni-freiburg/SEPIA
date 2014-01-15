@@ -1,5 +1,5 @@
 <pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
-  <net type="http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/ifnet">
+  <net type="http://ifnml.process-security.de/grammar/v1.0/ifnet">
     <tokencolors>
       <tokencolor>
         <color>green</color>

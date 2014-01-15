@@ -8,13 +8,13 @@
 	- sepia-0.1.2.jar
 	- sepia-0.1.2-sources.jar
 	- sepia-0.1.2-javadoc.jar
+	- sepia-0.1.2-consistent.jar
 	
 	The building process starts with cleaning all target files including compiles
 	java classes, compiled tests, and test reports (see #clean). Afterwards a
 	timestamp is generated and the target directory structure is created (see #init).
-	Then the project gets compiled (see #compile) and all unit tests get performed
-	(see #test). If the compilation and the tests ran without errors, the JARs get
-	packaged (see #package).
+	Then the project gets compiled (see #compile) and all unit tests are performed
+	(see #test). If the compilation ran without errors, the JARs are packaged (see #package).
 	
 	SEPIA depends on the projects TOVAL and JAGAL, which compiled classes must be
 	present under the specified paths.

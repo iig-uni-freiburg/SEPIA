@@ -31,7 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel
 public class PNMLIFNetAnalysisContextParser {
 
 	/** URL to the RelaxNG schema of the analysis context */
-	public final static String ANALYSIS_CONTEXT_SCHEMA = "http://ifnml.telematik.uni-freiburg.de/ifnml/grammar/v1.0/analysiscontext.rng";
+	public final static String ANALYSIS_CONTEXT_SCHEMA = "http://ifnml.process-security.de/grammar/v1.0/analysiscontext.rng";
 
 	/**
 	 * <p>
