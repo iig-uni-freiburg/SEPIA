@@ -124,8 +124,10 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 						transitionLabel = null;
 					// annotation graphics
 					AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
-					if (transitionLabelAnnotationGraphics != null)
+					if (transitionLabelAnnotationGraphics != null) {
+						transitionLabelAnnotationGraphics.setVisibility(readAnnotationVisibility(transitionLabels.item(0)));
 						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
+					}
 				}
 				if (transitionLabel != null){
 					net.addTransition(transitionName, transitionLabel);
@@ -161,7 +163,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 				AnnotationGraphics annotationGraphics = new AnnotationGraphics();
 				Element graphics = (Element) graphicsList.item(inscriptionIndex);
 
-				// fill, font, line, and offset
+				// fill, font, line, offset, and offset
 				if (graphics.getElementsByTagName("fill").getLength() > 0) {
 					Node fill = graphics.getElementsByTagName("fill").item(0);
 					annotationGraphics.setFill(readFill((Element) fill));
@@ -179,11 +181,46 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 					annotationGraphics.setOffset(readOffset((Element) offset));
 				}
 
+				// Read annotation visibility
+				annotationGraphics.setVisibility(readAnnotationVisibility(annotationGraphicsElement));
+				
 				return annotationGraphics;
 			}
 		}
 		// No graphics found
 		return null;
+	}
+
+	/**
+	 * Reads the visibility information of an annotation element and returns a boolean value.
+	 */
+	public boolean readAnnotationVisibility(Node annotationNode) throws ParameterException {
+		Validate.notNull(annotationNode);
+
+		if (annotationNode.getNodeType() != Node.ELEMENT_NODE)
+			throw new ParameterException("The given annotation node is note of an element type.");
+		Element annotationElement = (Element) annotationNode;
+
+		NodeList toolspecificList = annotationElement.getElementsByTagName("toolspecific");
+		for (int toolspecificIndex = 0; toolspecificIndex < toolspecificList.getLength(); toolspecificIndex++) {
+			if (toolspecificList.item(toolspecificIndex).getParentNode().equals(annotationElement) && toolspecificList.item(toolspecificIndex).getNodeType() == Node.ELEMENT_NODE) {
+				Element toolspecificElement = (Element) toolspecificList.item(toolspecificIndex);
+				if (toolspecificElement.hasAttribute("tool") && toolspecificElement.getAttribute("tool").equals("de.uni-freiburg.telematik.editor") && toolspecificElement.hasAttribute("version") && toolspecificElement.getAttribute("version").equals("1.0")) {
+					NodeList visibleList = toolspecificElement.getElementsByTagName("visible");
+					for (int visibleIndex = 0; visibleIndex < visibleList.getLength(); visibleIndex++) {
+						if (visibleList.item(visibleIndex).getParentNode().equals(toolspecificElement) && visibleList.item(visibleIndex).getNodeType() == Node.ELEMENT_NODE) {
+							Element visibleElement = (Element) visibleList.item(visibleIndex);
+							String visibleString = visibleElement.getTextContent().trim().toLowerCase();
+							if (visibleString.equals("true"))
+								return true;
+							else if (visibleString.equals("false"))
+								return false;
+						}
+					}
+				}
+			}
+		}
+		return AnnotationGraphics.DEFAULT_VISIBILITY;
 	}
 
 	/**

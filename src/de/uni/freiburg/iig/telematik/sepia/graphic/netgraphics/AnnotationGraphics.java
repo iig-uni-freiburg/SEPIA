@@ -24,11 +24,14 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	public static final Line DEFAULT_LINE = new Line();
 	/** Default font attribute */
 	public static final Font DEFAULT_FONT = new Font();
+	/** Default visibility */
+	public static final boolean DEFAULT_VISIBILITY = true;
 
 	private Offset offset;
 	private Fill fill;
 	private Line line;
 	private Font font;
+	private boolean visibility;
 
 	/**
 	 * Creates a new annotation graphics object with default values.
@@ -38,16 +41,18 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 		setFill(DEFAULT_FILL);
 		setLine(DEFAULT_LINE);
 		setFont(DEFAULT_FONT);
+		setVisibility(DEFAULT_VISIBILITY);
 	}
 
 	/**
 	 * Creates a new annotation graphics object with the specified values.
 	 */
-	public AnnotationGraphics(Offset offset, Fill fill, Line line, Font font) throws ParameterException {
+	public AnnotationGraphics(Offset offset, Fill fill, Line line, Font font, boolean visibility) throws ParameterException {
 		setOffset(offset);
 		setFill(fill);
 		setLine(line);
 		setFont(font);
+		setVisibility(visibility);
 	}
 
 	/**
@@ -76,6 +81,18 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	 */
 	public Font getFont() {
 		return font;
+	}
+
+	@Override
+	public boolean hasContent() {
+		return offset.hasContent() || fill.hasContent() || line.hasContent() || font.hasContent();
+	}
+
+	/**
+	 * @return visibility
+	 */
+	public boolean isVisible() {
+		return visibility;
 	}
 
 	/**
@@ -114,9 +131,12 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 		this.font = font;
 	}
 
-	@Override
-	public boolean hasContent() {
-		return offset.hasContent() || fill.hasContent() || line.hasContent() || font.hasContent();
+	/**
+	 * @param visibility
+	 *            the visibility to set
+	 */
+	public void setVisibility(boolean visibility) {
+		this.visibility = visibility;
 	}
 
 	public String toString() {
@@ -146,7 +166,10 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 			if (!empty)
 				str.append(",");
 			str.append(font);
+			empty = false;
 		}
+		str.append(",");
+		str.append(visibility ? "visible" : "invisible");
 
 		str.append("]");
 
