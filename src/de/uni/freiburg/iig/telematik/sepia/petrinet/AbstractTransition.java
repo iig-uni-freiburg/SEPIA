@@ -175,9 +175,6 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @see AbstractTransition#enoughSpaceInOutputPlaces()
 	 */
 	public void checkState() {
-		
-		
-		
 		boolean oldEnabledState = isEnabled();				
 		
 		enabled = true;
@@ -185,13 +182,9 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 			enabled = false;
 		}
 		
-	
-		
 		if(!enoughSpaceInOutputPlaces()){
 			enabled = false;
 		}
-		
-	
 		
 		if(enabled && !oldEnabledState){
 			listenerSupport.notifyEnabling(new TransitionEvent<AbstractTransition<E,S>>(this));

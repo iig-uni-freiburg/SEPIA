@@ -249,6 +249,5 @@ public class PNParserDialog extends JDialog {
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args) {
 		AbstractGraphicalPN net = PNParserDialog.showPetriNetDialog(null);
-		System.out.println(net);
 	}
 }

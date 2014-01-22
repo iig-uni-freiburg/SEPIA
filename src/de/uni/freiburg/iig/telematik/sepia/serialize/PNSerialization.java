@@ -208,8 +208,7 @@ public class PNSerialization {
 	serialize(AbstractGraphicalPN<P,T,F,M,S,N,G> net, PNSerializationFormat format, String fileName) 
 			throws SerializationException, ParameterException, IOException{
 
-		Validate.noDirectory(fileName);
-		
+		Validate.notNull(fileName);
 		File file = new File(fileName);
 		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
 	}

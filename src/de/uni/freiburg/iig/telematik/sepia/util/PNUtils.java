@@ -126,8 +126,25 @@ public class PNUtils {
 		return predecessors;
 	}
 
-		
+	public static <T extends AbstractTransition<?,?>> Set<T> getSilentTransitions(Collection<T> transitions){
+		Set<T> result = new HashSet<T>();
+		for(T transition: transitions){
+			if(transition.isSilent()){
+				result.add(transition);
+			}
+		}
+		return result;
+	}
 	
+	public static <T extends AbstractTransition<?,?>> Set<T> getNonSilentTransitions(Collection<T> transitions){
+		Set<T> result = new HashSet<T>();
+		for(T transition: transitions){
+			if(!transition.isSilent()){
+				result.add(transition);
+			}
+		}
+		return result;
+	}
 	
 	public static PTNet getORFragment(Set<String> alternatives) throws ParameterException{
 		PTNet ptNet = new PTNet();
