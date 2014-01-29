@@ -100,7 +100,7 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 		placeElement.appendChild(markingElement);
 		return markingElement;
 	}
-	
+
 	protected Element createColorsElement(Multiset<String> state){
 		Element colorsElement = getSupport().createElement("colors");
 		for(String tokenColor: state.support()){
@@ -122,6 +122,20 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	@Override
 	protected void addConstraint(Element arcElement, Multiset<String> constraint, AnnotationGraphics annotationGraphics) {
 		Element inscriptionElement = getSupport().createElement("inscription");
+		
+		int defaultTokenColorTokens = 0;
+		for(String tokenColor: constraint.support()){
+			if(tokenColor.equals(getPetriNet().defaultTokenColor())){
+				try {
+					defaultTokenColorTokens += constraint.multiplicity(tokenColor);
+				} catch (ParameterException e) {
+					// Should not happen, since tokenColor is not null
+					e.printStackTrace();
+				}
+			}
+		}
+		Element textElement = getSupport().createTextElement("text", String.valueOf(defaultTokenColorTokens));
+		inscriptionElement.appendChild(textElement);
 		
 		Element colorsElement = createColorsElement(constraint);
 		if(colorsElement.getChildNodes().getLength() > 0)

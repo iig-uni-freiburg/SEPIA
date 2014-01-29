@@ -124,10 +124,8 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 						transitionLabel = null;
 					// annotation graphics
 					AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
-					if (transitionLabelAnnotationGraphics != null) {
-						transitionLabelAnnotationGraphics.setVisibility(readAnnotationVisibility(transitionLabels.item(0)));
+					if (transitionLabelAnnotationGraphics != null)
 						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
-					}
 				}
 				if (transitionLabel != null){
 					net.addTransition(transitionName, transitionLabel);

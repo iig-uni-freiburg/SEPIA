@@ -124,7 +124,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 	}
 	
 	protected Element createTokenGraphicsElement(Set<TokenGraphics> tokenGraphics){
-		Element toolElement = getSupport().createToolSpecificElement();
+		Element toolElement = getSupport().createToolSpecificElement("org.pnml.tool", "1.0");
 	
 		Element tokenGraphicsElement = getSupport().createElement("tokengraphics");
 		for(TokenGraphics graphics: tokenGraphics){
@@ -204,7 +204,7 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 			getSupport().getPageElement().appendChild(arcElement);
 		}
 	}
-	
+
 	protected abstract void addConstraint(Element arcElement, S constraint, AnnotationGraphics annotationGraphics);
 	
 	@Override

@@ -59,10 +59,10 @@ public class PNMLSerializationSupport extends XMLSerializationSupport{
 	//------- Methods for PNML-tag generation ---------------------------------------------------
 	
 
-		protected Element createToolSpecificElement(){
+		protected Element createToolSpecificElement(String tool, String version){
 			Element toolElement = createElement("toolspecific");
-			toolElement.setAttribute("tool", "org.pnml.tool");
-			toolElement.setAttribute("version", "1.0");
+			toolElement.setAttribute("tool", tool);
+			toolElement.setAttribute("version", version);
 			return toolElement;
 		}
 		
@@ -73,6 +73,7 @@ public class PNMLSerializationSupport extends XMLSerializationSupport{
 				Element graphicsElement = createTextGraphicsElement(graphics);
 				if(graphicsElement != null)
 					nameElement.appendChild(graphicsElement);
+				nameElement.appendChild(createAnnotationVisibilityElement(graphics.isVisible()));
 			}
 			return nameElement;
 		}
@@ -146,6 +147,15 @@ public class PNMLSerializationSupport extends XMLSerializationSupport{
 			if(graphicsElement.getChildNodes().getLength() == 0)
 				return null;
 			return graphicsElement;
+		}
+
+		protected Element createAnnotationVisibilityElement(boolean visible){
+			Element toolElement = createToolSpecificElement("de.uni-freiburg.telematik.editor", "1.0");
+			
+			Element visibleElement = createTextElement("visible", String.valueOf(visible));
+			toolElement.appendChild(visibleElement);
+			
+			return toolElement;
 		}
 		
 		private Element createDimensionElement(Dimension dimension){
