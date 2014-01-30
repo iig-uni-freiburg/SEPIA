@@ -164,6 +164,10 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
 						transitionElement.appendChild(graphicsElement);
 				}
 			}
+
+			// Add silence information
+			Element silentElement = getSupport().createTextElement("silent", String.valueOf(transition.isSilent()));
+			transitionElement.appendChild(silentElement);
 			
 			// Add additional information
 			appendTransitionInformation(transition, transitionElement);

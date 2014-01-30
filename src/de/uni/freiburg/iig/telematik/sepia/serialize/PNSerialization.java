@@ -10,6 +10,10 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -47,14 +51,13 @@ public class PNSerialization {
 
 		switch (format) {
 		case PNML:
-			if (netObject instanceof AbstractGraphicalIFNet) {
+			if (netObject instanceof GraphicalIFNet) {
 				serializer = new PNMLIFNetSerializer((AbstractGraphicalIFNet) net);
 			}
-			if (netObject instanceof AbstractGraphicalCPN) {
-				// CWNs fall into this category.
+			if (netObject instanceof GraphicalCPN || netObject instanceof GraphicalCWN) {
 				serializer = new PNMLCPNSerializer((AbstractGraphicalCPN) net);
 			}
-			if (netObject instanceof AbstractGraphicalPTNet) {
+			if (netObject instanceof GraphicalPTNet) {
 				serializer = new PNMLPTNetSerializer((AbstractGraphicalPTNet) net);
 			}
 			break;
