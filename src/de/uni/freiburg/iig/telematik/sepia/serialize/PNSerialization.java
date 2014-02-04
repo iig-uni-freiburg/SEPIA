@@ -276,8 +276,7 @@ public class PNSerialization {
 	serialize(N net, PNSerializationFormat format, String fileName) 
 			throws SerializationException, ParameterException, IOException {
 
-		Validate.noDirectory(fileName);
-		
+		Validate.notNull(fileName);
 		File file = new File(fileName);
 		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
 	}
