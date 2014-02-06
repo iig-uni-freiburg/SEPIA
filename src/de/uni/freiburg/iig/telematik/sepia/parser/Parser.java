@@ -9,6 +9,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.parser.other.PetrifyParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -173,9 +174,7 @@ public class Parser {
 	public static synchronized ParserInterface getParser(File file, ParsingFormat format) throws ParserException {
 		switch(format){
 		case PNML: return new PNMLParser();
-		case PETRIFY:
-			//TODO:
-			break;
+		case PETRIFY: return new PetrifyParser();
 		}
 		throw new ParserException(ErrorCode.UNSUPPORTED_FORMAT);
 	}

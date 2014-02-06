@@ -48,9 +48,25 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	public Map<String, ArcGraphics> getArcGraphics() {
 		return arcGraphics;
 	}
+	
+	public ArcGraphics getArcGraphics(String arcName) {
+		return arcGraphics.get(arcName);
+	}
+	
+	public boolean containsArcGraphics(String arcName){
+		return arcGraphics.containsKey(arcName);
+	}
 
 	public Map<String, AnnotationGraphics> getArcAnnotationGraphics() {
 		return arcAnnotationGraphics;
+	}
+	
+	public boolean containsArcAnnotationGraphics(String arcName){
+		return arcAnnotationGraphics.containsKey(arcName);
+	}
+	
+	public AnnotationGraphics getArcAnnotationGraphics(String arcName) {
+		return arcAnnotationGraphics.get(arcName);
 	}
 
 	/**
@@ -59,6 +75,14 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	public Map<String, NodeGraphics> getPlaceGraphics() {
 		return placeGraphics;
 	}
+	
+	public NodeGraphics getPlaceGraphics(String placeName) {
+		return placeGraphics.get(placeName);
+	}
+	
+	public boolean containsPlaceGraphics(String placeName){
+		return placeGraphics.containsKey(placeName);
+	}
 
 	/**
 	 * @return the placeLabelAnnotationGraphics
@@ -66,9 +90,25 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	public Map<String, AnnotationGraphics> getPlaceLabelAnnotationGraphics() {
 		return placeLabelAnnotationGraphics;
 	}
+	
+	public AnnotationGraphics getPlaceLabelAnnotationGraphics(String placeName) {
+		return placeLabelAnnotationGraphics.get(placeName);
+	}
+	
+	public boolean containsPlaceLabelAnnotationGraphics(String placeName){
+		return placeLabelAnnotationGraphics.containsKey(placeName);
+	}
 
 	public Map<String, Set<TokenGraphics>> getTokenGraphics() {
 		return tokenGraphics;
+	}
+	
+	public Set<TokenGraphics> getTokenGraphics(String placeName) {
+		return tokenGraphics.get(placeName);
+	}
+	
+	public boolean containsTokenGraphics(String placeName){
+		return tokenGraphics.containsKey(placeName);
 	}
 
 	/**
@@ -77,12 +117,29 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 	public Map<String, NodeGraphics> getTransitionGraphics() {
 		return transitionGraphics;
 	}
+	
+	public NodeGraphics getTransitionGraphics(String transitionName) {
+		return transitionGraphics.get(transitionName);
+	}
+	
+	public boolean containsTransitionGraphics(String transitionName){
+		return transitionGraphics.containsKey(transitionName);
+	}
 
 	/**
 	 * @return the transitionLabelAnnotationGraphics
 	 */
 	public Map<String, AnnotationGraphics> getTransitionLabelAnnotationGraphics() {
 		return transitionLabelAnnotationGraphics;
+	}
+	
+	
+	public AnnotationGraphics getTransitionLabelAnnotationGraphics(String transitionName) {
+		return transitionLabelAnnotationGraphics.get(transitionName);
+	}
+	
+	public boolean containsTransitionLabelAnnotationGraphics(String transitionName){
+		return transitionLabelAnnotationGraphics.containsKey(transitionName);
 	}
 
 	public void setArcAnnotationGraphics(Map<String, AnnotationGraphics> arcAnnotationGraphics) {

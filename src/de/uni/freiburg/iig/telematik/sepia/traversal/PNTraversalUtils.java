@@ -31,10 +31,10 @@ public class PNTraversalUtils {
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object> 
 	
-				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs) 
+				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace) 
 			                         throws ParameterException{
 		
-		return testTraces(net, runs, false, false);
+		return testTraces(net, runs, maxEventsPerTrace, false, false);
 	}
 	
 	/**
@@ -52,17 +52,18 @@ public class PNTraversalUtils {
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object> 
 	
-				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, boolean printOut, boolean useLabelNames) 
+				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace, boolean printOut, boolean useLabelNames) 
 			                         throws ParameterException{
 		
 		Validate.notNull(net);
 		Set<List<String>> traces = new HashSet<List<String>>();
 		List<String> newTrace = null;
 		PNTraverser<T> traverser = new RandomPNTraverser<T>(net);
-		for(int i = 0; i<100; i++){
+		for(int i = 0; i<runs; i++){
 			newTrace = new ArrayList<String>();
 			net.reset();
-			while(net.hasEnabledTransitions()){
+			int c = 0;
+			while(net.hasEnabledTransitions() && c++ < maxEventsPerTrace){
 				T nextTransition = traverser.chooseNextTransition(net.getEnabledTransitions());
 				String descriptor = useLabelNames ? nextTransition.getLabel() : nextTransition.getName();
 				if(!nextTransition.isSilent()){
