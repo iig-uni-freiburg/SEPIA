@@ -50,10 +50,10 @@ public class PNMLIFNetParserTest {
 				assertTrue(accessFunctions.containsKey("green"));
 				Collection<AccessMode> accessModes = accessFunctions.get("green");
 				assertEquals(2, accessModes.size());
-				assertTrue(accessModes.contains("read"));
-				assertTrue(accessModes.contains("create"));
-				assertFalse(accessModes.contains("write"));
-				assertFalse(accessModes.contains("delete"));
+				assertTrue(accessModes.contains(AccessMode.READ));
+				assertTrue(accessModes.contains(AccessMode.CREATE));
+				assertFalse(accessModes.contains(AccessMode.WRITE));
+				assertFalse(accessModes.contains(AccessMode.DELETE));
 			}
 		}
 

@@ -74,52 +74,55 @@ public class PNMLIFNetAnalysisContextParser {
 			e.printStackTrace();
 		}
 
-		Labeling labeling = new Labeling();
+		if (analysisContextDocument != null) {
+			Labeling labeling = new Labeling();
 
-		// read token labels
-		Map<String, SecurityLevel> tokenLabels = readLabeling(analysisContextDocument, "tokenlabels", "tokenlabel", "color");
-		labeling.addAttributes(tokenLabels.keySet());
-		for (Entry<String, SecurityLevel> attributeClassification : tokenLabels.entrySet())
-			labeling.setAttributeClassification(attributeClassification.getKey(), attributeClassification.getValue());
-		// read clearances
-		Map<String, SecurityLevel> clearances = readLabeling(analysisContextDocument, "clearances", "clearance", "subject");
-		labeling.addSubjects(clearances.keySet());
-		for (Entry<String, SecurityLevel> clearance : clearances.entrySet())
-			labeling.setSubjectClearance(clearance.getKey(), clearance.getValue());
-		// read activity classifications
-		Map<String, SecurityLevel> activityClassifications = readLabeling(analysisContextDocument, "classifications", "classification", "activity");
-		labeling.addActivities(activityClassifications.keySet());
-		for (Entry<String, SecurityLevel> activityClassification : activityClassifications.entrySet())
-			labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
+			// read token labels
+			Map<String, SecurityLevel> tokenLabels = readLabeling(analysisContextDocument, "tokenlabels", "tokenlabel", "color");
+			labeling.addAttributes(tokenLabels.keySet());
+			for (Entry<String, SecurityLevel> attributeClassification : tokenLabels.entrySet())
+				labeling.setAttributeClassification(attributeClassification.getKey(), attributeClassification.getValue());
+			// read clearances
+			Map<String, SecurityLevel> clearances = readLabeling(analysisContextDocument, "clearances", "clearance", "subject");
+			labeling.addSubjects(clearances.keySet());
+			for (Entry<String, SecurityLevel> clearance : clearances.entrySet())
+				labeling.setSubjectClearance(clearance.getKey(), clearance.getValue());
+			// read activity classifications
+			Map<String, SecurityLevel> activityClassifications = readLabeling(analysisContextDocument, "classifications", "classification", "activity");
+			labeling.addActivities(activityClassifications.keySet());
+			for (Entry<String, SecurityLevel> activityClassification : activityClassifications.entrySet())
+				labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
 
-		AnalysisContext analysisContext = new AnalysisContext(labeling);
+			AnalysisContext analysisContext = new AnalysisContext(labeling);
 
-		// read activity descriptors
-		NodeList subjectDescriptorsList = analysisContextDocument.getElementsByTagName("subjectdescriptors");
-		if (subjectDescriptorsList.getLength() > 0) {
-			Element subjectDescriptorsElement = (Element) subjectDescriptorsList.item(0);
-			NodeList subjectDescriptorList = subjectDescriptorsElement.getElementsByTagName("subjectdescriptor");
-			for (int sd = 0; sd < subjectDescriptorList.getLength(); sd++) {
-				if (subjectDescriptorList.item(sd).getNodeType() == Node.ELEMENT_NODE && subjectDescriptorList.item(sd).getParentNode().equals(subjectDescriptorsElement)) {
-					Element subjectDescriptorElement = (Element) subjectDescriptorList.item(sd);
-					// read activity
-					String activity = null;
-					NodeList activityList = subjectDescriptorElement.getElementsByTagName("activity");
-					if (activityList.getLength() > 0)
-						activity = ((Element) activityList.item(0)).getTextContent();
-					// read subject
-					String subject = null;
-					NodeList subjectList = subjectDescriptorElement.getElementsByTagName("subject");
-					if (subjectList.getLength() > 0)
-						subject = ((Element) subjectList.item(0)).getTextContent();
+			// read activity descriptors
+			NodeList subjectDescriptorsList = analysisContextDocument.getElementsByTagName("subjectdescriptors");
+			if (subjectDescriptorsList.getLength() > 0) {
+				Element subjectDescriptorsElement = (Element) subjectDescriptorsList.item(0);
+				NodeList subjectDescriptorList = subjectDescriptorsElement.getElementsByTagName("subjectdescriptor");
+				for (int sd = 0; sd < subjectDescriptorList.getLength(); sd++) {
+					if (subjectDescriptorList.item(sd).getNodeType() == Node.ELEMENT_NODE && subjectDescriptorList.item(sd).getParentNode().equals(subjectDescriptorsElement)) {
+						Element subjectDescriptorElement = (Element) subjectDescriptorList.item(sd);
+						// read activity
+						String activity = null;
+						NodeList activityList = subjectDescriptorElement.getElementsByTagName("activity");
+						if (activityList.getLength() > 0)
+							activity = ((Element) activityList.item(0)).getTextContent();
+						// read subject
+						String subject = null;
+						NodeList subjectList = subjectDescriptorElement.getElementsByTagName("subject");
+						if (subjectList.getLength() > 0)
+							subject = ((Element) subjectList.item(0)).getTextContent();
 
-					if (activity != null && subject != null)
-						analysisContext.setSubjectDescriptor(activity, subject);
+						if (activity != null && subject != null)
+							analysisContext.setSubjectDescriptor(activity, subject);
+					}
 				}
 			}
-		}
 
-		return analysisContext;
+			return analysisContext;
+		}
+		return null;
 	}
 
 	/**
