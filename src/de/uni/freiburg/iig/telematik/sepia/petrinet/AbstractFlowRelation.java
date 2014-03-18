@@ -86,6 +86,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 		validateConstraint(constraint);
 		this.constraint = constraint;
 		relationListenerSupport.notifyCapacityChanged(this);
+		getTransition().checkState();
 	}
 	
 	public S getConstraint() {
