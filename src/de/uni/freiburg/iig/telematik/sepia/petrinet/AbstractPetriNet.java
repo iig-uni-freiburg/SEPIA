@@ -23,6 +23,8 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
 
 
 /**
@@ -235,6 +237,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	public Collection<T> getTransitions(){
 		return Collections.unmodifiableCollection(transitions.values());
+	}
+	
+	public int getTransitionCount(){
+		return transitions.size();
 	}
 	
 	public Collection<T> getTransitions(boolean includeSilentTransitions){
@@ -454,6 +460,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected abstract T createNewTransition(String name, String label, boolean isSilent) throws ParameterException;
 	
+	public abstract <X extends AbstractMarkingGraphState<M,S>> AbstractMarkingGraph<M,S,X> createNewMarkingGraph() throws ParameterException;
 	
 	//------- Places ---------------------------------------------------------------------------------
 
@@ -464,6 +471,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	public Collection<P> getPlaces(){
 		return Collections.unmodifiableCollection(places.values());
+	}
+	
+	public int getPlaceCount(){
+		return places.size();
 	}
 	
 	/**
@@ -641,6 +652,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		return Collections.unmodifiableCollection(relations.values());
 	}
 	
+	public int getFlowRelationCount(){
+		return relations.size();
+	}
+	
 	/**
 	 * Adds a flow relation starting at a place and ending at a transition.
 	 * @param placeName The name of the place where toe relation starts.
@@ -704,6 +719,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 			relation.getTransition().addOutgoingRelation(relation);
 			relation.getPlace().addIncomingRelation(relation);
 		}
+		relation.getTransition().checkState();
 		relations.put(relation.getName(), relation);
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
@@ -826,8 +842,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	@SuppressWarnings("unchecked")
 	public void setInitialMarking(M marking) throws ParameterException{
 		validateMarking(marking);
-		if(initialMarking != null)
-			initialMarking.clear();
+//		if(initialMarking != null)
+//			initialMarking.clear();
+		initialMarking = createNewMarking();
 		for(String placeName: marking.places()){
 			initialMarking.set(placeName, marking.get(placeName));
 		}
@@ -854,8 +871,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	public void setMarking(M marking) throws ParameterException {
 		validateMarking(marking);
-		if(this.marking != null)
-			this.marking.clear();
+//		if(this.marking != null)
+//			this.marking.clear();
+		M oldMarking = 
+		this.marking = createNewMarking();
 		for(String placeName: places.keySet()){
 			if(marking.contains(placeName)){
 				this.marking.set(placeName, marking.get(placeName));
