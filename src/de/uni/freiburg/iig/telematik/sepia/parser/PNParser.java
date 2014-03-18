@@ -9,7 +9,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.parser.other.PetrifyParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.petrify.PetrifyParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -19,7 +19,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 /**
  * <p>
- * Parser class which determines the file type and calls the specific parser implementing the {@link ParserInterface}.
+ * Parser class which determines the file type and calls the specific parser implementing the {@link PNParserInterface}.
  * </p>
  * <ul>
  * <li>determine file type</li>
@@ -29,7 +29,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * @author Adrian Lange
  * 
  */
-public class Parser {
+public class PNParser {
 	
 	/**
 	 * Parses the given file with the parser respective to the file extension.
@@ -56,10 +56,10 @@ public class Parser {
 	
 	parse(File file) throws IOException, ParserException, ParameterException {
 		validateFile(file);
-		ParsingFormat format = guessFormat(file);
+		PNParsingFormat format = guessFormat(file);
 		if(format == null)
 			throw new ParserException(ErrorCode.UNKNOWN_FILE_EXTENSION);
-		ParserInterface parser = getParser(file, format);
+		PNParserInterface parser = getParser(file, format);
 		return parser.<P,T,F,M,S,N,G>parse(file);
 	}
 	
@@ -88,7 +88,7 @@ public class Parser {
 	
 	parse(String fileName) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return Parser.<P,T,F,M,S,N,G>parse(prepareFile(fileName));
+		return PNParser.<P,T,F,M,S,N,G>parse(prepareFile(fileName));
 	}
 	
 	/**
@@ -114,10 +114,10 @@ public class Parser {
 	
 							AbstractGraphicalPN<P, T, F, M, S, N, G>
 	
-	parse(File file, ParsingFormat format) throws IOException, ParserException, ParameterException {
+	parse(File file, PNParsingFormat format) throws IOException, ParserException, ParameterException {
 		validateFile(file);
 		Validate.notNull(format);
-		ParserInterface parser = getParser(file, format);
+		PNParserInterface parser = getParser(file, format);
 		return parser.<P,T,F,M,S,N,G>parse(file);
 	}
 	
@@ -144,9 +144,9 @@ public class Parser {
 	
 							AbstractGraphicalPN<P,T,F,M,S,N,G>
 	
-	parse(String fileName, ParsingFormat format) throws IOException, ParserException, ParameterException {
+	parse(String fileName, PNParsingFormat format) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return Parser.<P,T,F,M,S,N,G>parse(prepareFile(fileName), format);
+		return PNParser.<P,T,F,M,S,N,G>parse(prepareFile(fileName), format);
 	}
 	
 	private static File prepareFile(String fileName) throws IOException{
@@ -171,7 +171,7 @@ public class Parser {
 	 * @throws IOException
 	 *             If the file can't be found
 	 */
-	public static synchronized ParserInterface getParser(File file, ParsingFormat format) throws ParserException {
+	public static synchronized PNParserInterface getParser(File file, PNParsingFormat format) throws ParserException {
 		switch(format){
 		case PNML: return new PNMLParser();
 		case PETRIFY: return new PetrifyParser();
@@ -179,8 +179,8 @@ public class Parser {
 		throw new ParserException(ErrorCode.UNSUPPORTED_FORMAT);
 	}
 	
-	public static ParsingFormat guessFormat(File file){
-		for(ParsingFormat format: ParsingFormat.values()){
+	public static PNParsingFormat guessFormat(File file){
+		for(PNParsingFormat format: PNParsingFormat.values()){
 			if(file.getName().endsWith(format.getFileFormat().getFileExtension())){
 				return format;
 			}

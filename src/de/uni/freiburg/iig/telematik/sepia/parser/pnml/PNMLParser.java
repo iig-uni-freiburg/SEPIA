@@ -29,7 +29,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.PNMLCWNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.ParserInterface;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -63,7 +63,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 						 M extends AbstractMarking<S>,
 						 S extends Object,
 						 N extends AbstractPetriNet<P, T, F, M, S>,
-						 G extends AbstractPNGraphics<P, T, F, M, S>> implements ParserInterface {
+						 G extends AbstractPNGraphics<P, T, F, M, S>> implements PNParserInterface {
 
 	/** Relax NG namespace */
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";

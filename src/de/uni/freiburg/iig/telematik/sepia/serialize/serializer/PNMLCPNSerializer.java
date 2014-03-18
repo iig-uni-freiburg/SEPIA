@@ -86,12 +86,12 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	@Override
 	protected Element addInitialMarking(Element placeElement, Multiset<String> state) {
 		Element markingElement = getSupport().createElement("initialMarking");
-		try {
+//		try {
 			markingElement.appendChild(getSupport().createTextElement("text", (new Integer(state.multiplicity(getPetriNet().defaultTokenColor()))).toString()));
-		} catch (ParameterException e) {
-			// Should not happen, since default token color is not null
-			e.printStackTrace();
-		}
+//		} catch (ParameterException e) {
+//			// Should not happen, since default token color is not null
+//			e.printStackTrace();
+//		}
 		
 		Element colorsElement = createColorsElement(state);
 		if(colorsElement.getChildNodes().getLength() > 0)
@@ -107,14 +107,14 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 			if(tokenColor.equals(getPetriNet().defaultTokenColor()))
 				continue;
 			
-			try {
+//			try {
 				for(int i=0; i<state.multiplicity(tokenColor); i++){
 					colorsElement.appendChild(getSupport().createTextElement("color", tokenColor));
 				}
-			} catch (ParameterException e) {
-				// Should not happen, since tokenColor is not null
-				e.printStackTrace();
-			}
+//			} catch (ParameterException e) {
+//				// Should not happen, since tokenColor is not null
+//				e.printStackTrace();
+//			}
 		}
 		return colorsElement;
 	}
@@ -126,12 +126,12 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 		int defaultTokenColorTokens = 0;
 		for(String tokenColor: constraint.support()){
 			if(tokenColor.equals(getPetriNet().defaultTokenColor())){
-				try {
+//				try {
 					defaultTokenColorTokens += constraint.multiplicity(tokenColor);
-				} catch (ParameterException e) {
-					// Should not happen, since tokenColor is not null
-					e.printStackTrace();
-				}
+//				} catch (ParameterException e) {
+//					// Should not happen, since tokenColor is not null
+//					e.printStackTrace();
+//				}
 			}
 		}
 		Element textElement = getSupport().createTextElement("text", String.valueOf(defaultTokenColorTokens));

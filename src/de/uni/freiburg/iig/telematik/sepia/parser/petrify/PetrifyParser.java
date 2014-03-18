@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.parser.other;
+package de.uni.freiburg.iig.telematik.sepia.parser.petrify;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,23 +11,18 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
-import de.uni.freiburg.iig.telematik.sepia.parser.Parser;
-import de.uni.freiburg.iig.telematik.sepia.parser.ParserInterface;
-import de.uni.freiburg.iig.telematik.sepia.parser.ParsingFormat;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerialization;
-import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
-import de.uni.freiburg.iig.telematik.sepia.traversal.PNTraversalUtils;
 
-public class PetrifyParser implements ParserInterface{
+public class PetrifyParser implements PNParserInterface{
 	
 	private static final String PREFIX_OUTPUTS = ".outputs ";
 	private static final String PREFIX_GRAPH = ".graph";
 	private static final String PREFIX_END = ".end";
 	private static final String PREFIX_CAPACITIES = ".capacity ";
 	private static final String PREFIX_MARKING = ".marking ";
+	private static final String PREFIX_COMMENT = "#";
 
 	@Override
 	public GraphicalPTNet parse(File file) throws IOException, ParserException, ParameterException {
@@ -36,7 +31,9 @@ public class PetrifyParser implements ParserInterface{
 		String nextLine = null;
 		while((nextLine = reader.readLine()) != null){
 			String lineContent = null;
-			if(nextLine.startsWith(PREFIX_OUTPUTS)){
+			if(nextLine.startsWith(PREFIX_COMMENT)){
+				// Do nothing
+			} else if(nextLine.startsWith(PREFIX_OUTPUTS)){
 				lineContent = nextLine.replace(PREFIX_OUTPUTS, "");
 				insertTransitions(net.getPetriNet(), lineContent);
 			} else if(nextLine.isEmpty() || nextLine.startsWith(PREFIX_GRAPH) || nextLine.startsWith(PREFIX_END)){
@@ -53,20 +50,28 @@ public class PetrifyParser implements ParserInterface{
 				addFlowRelation(net.getPetriNet(), nextLine);
 			}
 		}
+		reader.closeFile();
 		return net;
 	}
 
 	private void addFlowRelation(PTNet net, String lineContent) throws ParameterException {
 		String sourceName = lineContent.substring(0, lineContent.indexOf(" "));
-		String targetName = lineContent.substring(lineContent.indexOf(" ") + 1, lineContent.indexOf("("));
-		String weightString = lineContent.substring(lineContent.indexOf("(") + 1, lineContent.indexOf(")"));
-		Validate.positiveInteger(weightString);
+		String targetName = null;
+		int weight = 1;
+		if(lineContent.contains("(")){
+			targetName = lineContent.substring(lineContent.indexOf(" ") + 1, lineContent.indexOf("("));
+			String weightString = lineContent.substring(lineContent.indexOf("(") + 1, lineContent.indexOf(")"));
+			Validate.positiveInteger(weightString);
+			weight = Integer.parseInt(weightString);
+		} else {
+			targetName = lineContent.substring(lineContent.indexOf(" ") + 1);
+		}
 		if(net.containsTransition(sourceName)){
 			ensurePlace(net, targetName);
-			net.addFlowRelationTP(sourceName, targetName, Integer.parseInt(weightString));
+			net.addFlowRelationTP(sourceName, targetName, weight);
 		} else {
 			ensurePlace(net, sourceName);
-			net.addFlowRelationPT(sourceName, targetName, Integer.parseInt(weightString));
+			net.addFlowRelationPT(sourceName, targetName, weight);
 		}
 	}
 
@@ -79,14 +84,21 @@ public class PetrifyParser implements ParserInterface{
 	private void setMarking(PTNet net, String lineContent) throws ParameterException {
 		PTMarking marking = new PTMarking();
 		String placeName = null;
-		String capacityString = null;
+		String multiplicityString = null;
 		for(String token: getTokens(lineContent)){
-			placeName = token.substring(0, token.indexOf("="));
-			capacityString = token.substring(token.indexOf("=")+1);
-			Validate.notNegativeInteger(capacityString);
+			int multiplicity = 0;
+			if(token.contains("=")){
+				placeName = token.substring(0, token.indexOf("="));
+				multiplicityString = token.substring(token.indexOf("=")+1);
+				Validate.notNegativeInteger(multiplicityString);
+				multiplicity = Integer.parseInt(multiplicityString);
+			} else {
+				placeName = token;
+				multiplicity = 1;
+			}
 			if(!net.containsPlace(placeName))
 				throw new ParameterException("Unknown place: " + placeName);
-			marking.set(placeName, Integer.parseInt(capacityString));
+			marking.set(placeName, multiplicity);
 		}
 		net.setInitialMarking(marking);
 	}
@@ -119,11 +131,6 @@ public class PetrifyParser implements ParserInterface{
 		return result;
 	}
 	
-	public static void main(String[] args) throws IOException, ParserException, ParameterException {
-		AbstractPetriNet net = Parser.parse("/Users/stocker/Desktop/kmg4_2.g", ParsingFormat.PETRIFY).getPetriNet();
-		PNTraversalUtils.testTraces(net, 1, 30, true, false);
-		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/", "kmg4_2.g");
-	}
-
+	
 
 }

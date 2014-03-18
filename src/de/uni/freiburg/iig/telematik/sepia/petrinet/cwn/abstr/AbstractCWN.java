@@ -80,7 +80,6 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		// TODO Auto-generated method stub
 	}
 	
-	
 	//------- Soundness and validity ---------------------------------------------------------------
 
 	@Override

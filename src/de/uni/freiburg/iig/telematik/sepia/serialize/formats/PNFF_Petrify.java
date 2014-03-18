@@ -19,7 +19,7 @@ public class PNFF_Petrify  extends FileFormat{
 
 	@Override
 	public String getName() {
-		return "SoleCarmona";
+		return "Petrify";
 	}
 
 	@Override

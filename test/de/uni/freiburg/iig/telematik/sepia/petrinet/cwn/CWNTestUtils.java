@@ -196,7 +196,7 @@ public class CWNTestUtils {
 		f2.addConstraint("pink", 1);
 	}
 
-	/* Removes place p0 from the standard cwn and conncts t0 to p1 (as input place). */
+	/* Removes place p0 from the standard cwn and connects t0 to p1 (as input place). */
 	static void removeInputPlace(CWN origCWN) throws ParameterException {
 		// remove p0
 		origCWN.removePlace("p0");

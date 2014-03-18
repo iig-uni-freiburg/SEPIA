@@ -1,9 +1,9 @@
 package de.uni.freiburg.iig.telematik.sepia.traversal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
@@ -31,10 +31,10 @@ public class PNTraversalUtils {
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object> 
 	
-				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace) 
+				   Collection<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace) 
 			                         throws ParameterException{
 		
-		return testTraces(net, runs, maxEventsPerTrace, false, false);
+		return testTraces(net, runs, maxEventsPerTrace, false, false, false);
 	}
 	
 	/**
@@ -52,11 +52,16 @@ public class PNTraversalUtils {
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object> 
 	
-				   Set<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace, boolean printOut, boolean useLabelNames) 
+				   Collection<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace, boolean printOut, boolean onlyDistinctTraces, boolean useLabelNames) 
 			                         throws ParameterException{
 		
 		Validate.notNull(net);
-		Set<List<String>> traces = new HashSet<List<String>>();
+		Collection<List<String>> traces = null;
+		if(onlyDistinctTraces){
+			traces = new HashSet<List<String>>();
+		} else {
+			traces = new ArrayList<List<String>>();
+		}
 		List<String> newTrace = null;
 		PNTraverser<T> traverser = new RandomPNTraverser<T>(net);
 		for(int i = 0; i<runs; i++){
@@ -80,5 +85,6 @@ public class PNTraversalUtils {
 		}
 		return traces;
 	}
+
 
 }

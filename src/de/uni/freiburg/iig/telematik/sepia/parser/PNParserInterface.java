@@ -20,7 +20,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * 
  * @author Adrian Lange
  */
-public interface ParserInterface {
+public interface PNParserInterface {
 
 	/**
 	 * Parses the given file and returns a {@link AbstractGraphicalPN}.

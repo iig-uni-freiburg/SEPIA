@@ -8,6 +8,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.ifnet.IFNetMarkingGraph;
 
 
 public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition> {
@@ -29,6 +30,12 @@ public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFN
 	protected IFNetMarking createNewMarking() {
 		return new IFNetMarking();
 	}	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public IFNetMarkingGraph createNewMarkingGraph() throws ParameterException {
+		return new IFNetMarkingGraph();
+	}
 
 	@Override
 	protected IFNetPlace createNewPlace(String name, String label) 

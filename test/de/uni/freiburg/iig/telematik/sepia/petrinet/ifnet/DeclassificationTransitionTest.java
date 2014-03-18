@@ -15,6 +15,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 
 /**
  * @author boehr
@@ -161,6 +162,10 @@ public class DeclassificationTransitionTest {
 		constraint.addAll("black");
 		constraint.addAll("blue");
 		dtOutRelation.setConstraint(constraint);
+		((RegularIFNetTransition) dSNet.getTransition("t0")).setAccessMode("blue", AccessMode.CREATE);
+//		System.out.println(dSNet.getTransition("t0").producesColor("blue"));
+//		System.out.println(((RegularIFNetTransition) dSNet.getTransition("t0")).getAccessModes("blue").contains(AccessMode.CREATE));
+//		System.out.println(dSNet.getDeclassificationTransitions());
 
 		try {
 			dSNet.checkValidity();

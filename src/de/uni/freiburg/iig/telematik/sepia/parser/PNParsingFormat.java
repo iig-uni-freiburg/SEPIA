@@ -5,7 +5,7 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_PNML;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_Petrify;
 
 
-public enum ParsingFormat {
+public enum PNParsingFormat {
 	
 	PNML(new PNFF_PNML()),
 	
@@ -13,7 +13,7 @@ public enum ParsingFormat {
 	
 	private FileFormat fileFormat = null;
 	
-	private ParsingFormat(FileFormat fileFormat){
+	private PNParsingFormat(FileFormat fileFormat){
 		this.fileFormat = fileFormat;
 	}
 	

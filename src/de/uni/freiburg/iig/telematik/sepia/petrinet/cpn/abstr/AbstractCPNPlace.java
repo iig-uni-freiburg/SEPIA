@@ -238,9 +238,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	@Override
 	protected void stateChange(Multiset<String> oldState, Multiset<String> newState) {
 		for(String color: SetUtils.union(oldState.support(), newState.support())){
-			try {
-				checkTokenDifference(color, oldState.multiplicity(color), newState.multiplicity(color));
-			} catch (ParameterException e) {}
+			checkTokenDifference(color, oldState.multiplicity(color), newState.multiplicity(color));
 		}
 	}
 	

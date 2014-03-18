@@ -7,7 +7,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
-import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.pt.PTMarkingGraph;
 
 
 public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{
@@ -61,7 +61,23 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	protected PTFlowRelation createNewFlowRelation(PTTransition transition, PTPlace place) throws ParameterException{
 		return new PTFlowRelation(transition, place);
 	}
+	
+	
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public PTMarkingGraph createNewMarkingGraph() throws ParameterException {
+		return new PTMarkingGraph();
+	}
+
+	@Override
+	public PTNet newInstance() {
+		return new PTNet();
+	}
+
+	@Override
+	public void capacityChanged(CapacityEvent<? extends AbstractPlace<PTFlowRelation, Integer>> o) {}
+	
 	public static void main(String[] args) throws Exception {
 		PTNet net = new PTNet();
 		net.addPlace("p1");
@@ -83,17 +99,8 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 		System.out.println(net.getMarking());
 		System.out.println(net.fireCheck("t1"));
 		
-		System.out.println(ReachabilityUtils.buildMarkingGraph(net));
+//		System.out.println(ReachabilityUtils.buildMarkingGraph(net));
 		
-		System.out.println(ReachabilityUtils.containsDeadTransitions(net));
+//		System.out.println(ReachabilityUtils.containsDeadTransitions(net));
 	}
-
-	@Override
-	public PTNet newInstance() {
-		return new PTNet();
-	}
-
-	@Override
-	public void capacityChanged(CapacityEvent<? extends AbstractPlace<PTFlowRelation, Integer>> o) {}
-	
 }

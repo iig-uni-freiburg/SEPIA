@@ -7,6 +7,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.CWNMarkingGraph;
 
 
 public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking> {
@@ -25,6 +26,12 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 	@Override
 	protected CWNMarking createNewMarking() {
 		return new CWNMarking();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public CWNMarkingGraph createNewMarkingGraph() throws ParameterException {
+		return new CWNMarkingGraph();
 	}
 
 	@Override

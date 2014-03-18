@@ -6,6 +6,7 @@ import java.io.IOException;
 import de.invation.code.toval.file.FileUtils;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
@@ -255,8 +256,17 @@ public class PNSerialization {
 		
 		Validate.notNull(net);
 		Validate.notNull(format);
-		Validate.directory(path);
+		Validate.notNull(path);
 		Validate.fileName(fileName);
+		
+		//Check if path and file name are valid
+		File cPath = new File(path);
+		if (!cPath.exists())
+			cPath.mkdirs();
+		if (!cPath.isDirectory())
+			throw new IOException(path + " is not a valid path!");
+		if (fileName.isEmpty())
+			throw new ParameterException(ErrorCode.EMPTY);
 		
 		PNSerializer<P,T,F,M,S,N,G> serializer = getSerializer(net, format);
 

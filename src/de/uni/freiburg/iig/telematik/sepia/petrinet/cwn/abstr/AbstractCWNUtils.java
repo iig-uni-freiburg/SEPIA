@@ -1,16 +1,16 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
-import de.uni.freiburg.iig.telematik.jagal.graph.Vertex;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
-
-import java.util.HashSet;
-import java.util.Set;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraphState;
 
 
 
@@ -32,21 +32,24 @@ public class AbstractCWNUtils {
 	 * @throws ParameterException If the CWN parameter is <code>null<code> or the net is not bounded.
 	 * @throws PNSoundnessException 
 	 */
-	public static void validCompletion(@SuppressWarnings("rawtypes") AbstractCWN cwn) throws ParameterException, PNSoundnessException{
-		Validate.notNull(cwn);			
-		
-		@SuppressWarnings("unchecked")		
-		Graph<AbstractCWNMarking> markingGraph = ReachabilityUtils.buildMarkingGraph(cwn);
+	public static <	P extends AbstractCWNPlace<F>,
+	  				T extends AbstractCWNTransition<F>, 
+	  				F extends AbstractCWNFlowRelation<P,T>, 
+	  				M extends AbstractCWNMarking> 
 	
-		Set<Vertex<AbstractCWNMarking>> drains = new HashSet<Vertex<AbstractCWNMarking>>(markingGraph.getDrains());
-		for(Vertex<AbstractCWNMarking> drainVertex : drains){			
+	void validCompletion(AbstractCWN<P,T,F,M> cwn) throws ParameterException, PNSoundnessException{
+		Validate.notNull(cwn);			
+			
+		AbstractCWNMarkingGraph<M, AbstractCWNMarkingGraphState<M>> markingGraph = (AbstractCWNMarkingGraph) ReachabilityUtils.buildMarkingGraph(cwn);
+		Set<AbstractCWNMarkingGraphState<M>> drains = new HashSet<AbstractCWNMarkingGraphState<M>>(markingGraph.getDrains());
+		for(AbstractCWNMarkingGraphState<M> drainVertex : drains){
 			if(!isEndState(drainVertex.getElement(), cwn)){
 				throw new PNSoundnessException("At least one drain in the marking graph of the given cwn is not a valid end state:\n" + drainVertex.getElement());
 			}
 		}
-		Set<Vertex<AbstractCWNMarking>> otherVertexes = new HashSet<Vertex<AbstractCWNMarking>>(markingGraph.getVertexes());
+		Set<AbstractCWNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCWNMarkingGraphState<M>>(markingGraph.getVertices());
 		otherVertexes.removeAll(drains);
-		for(Vertex<AbstractCWNMarking> otherVertex : otherVertexes){			
+		for(AbstractCWNMarkingGraphState<M> otherVertex : otherVertexes){			
 			if(isEndState(otherVertex.getElement(), cwn)){
 				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cwn is an end state:\n" + otherVertex.getElement());
 			}

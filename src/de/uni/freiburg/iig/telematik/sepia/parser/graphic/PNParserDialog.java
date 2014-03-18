@@ -25,8 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.parser.Parser;
-import de.uni.freiburg.iig.telematik.sepia.parser.ParsingFormat;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 
 
@@ -160,7 +160,7 @@ public class PNParserDialog extends JDialog {
 			        if (returnVal == JFileChooser.APPROVE_OPTION) {
 			            File file = pnChooser.getSelectedFile();
 			            getPNPathField().setText(file.getAbsolutePath());
-						getFormatBox().setSelectedItem(Parser.guessFormat(file));
+						getFormatBox().setSelectedItem(PNParser.guessFormat(file));
 			        }
 				}
 			});
@@ -213,7 +213,7 @@ public class PNParserDialog extends JDialog {
 	
 	private JComboBox getFormatBox(){
 		if(formatBox == null){
-			formatBox = new JComboBox(ParsingFormat.values());
+			formatBox = new JComboBox(PNParsingFormat.values());
 			formatBox.addItemListener(new ItemListener(){
 
 				@Override
@@ -227,8 +227,8 @@ public class PNParserDialog extends JDialog {
 		return formatBox;
 	}
 	
-	private ParsingFormat getParsingFormat(){
-		return ParsingFormat.valueOf(getFormatBox().getSelectedItem().toString());
+	private PNParsingFormat getParsingFormat(){
+		return PNParsingFormat.valueOf(getFormatBox().getSelectedItem().toString());
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -242,8 +242,8 @@ public class PNParserDialog extends JDialog {
 		return dialog.getPetriNet();
 	}
 	
-	private ParsingFormat getFormat(){
-		return (ParsingFormat) getFormatBox().getSelectedItem();
+	private PNParsingFormat getFormat(){
+		return (PNParsingFormat) getFormatBox().getSelectedItem();
 	}
 	
 	@SuppressWarnings("rawtypes")

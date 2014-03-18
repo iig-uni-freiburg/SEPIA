@@ -2,13 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.generator;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.RandomPTTraverser;
-import de.uni.freiburg.iig.telematik.sepia.traversal.PNTraversalUtils;
-import de.uni.freiburg.iig.telematik.sepia.traversal.PNTraverser;
 
 
 public class PNGenerator {
@@ -61,7 +56,9 @@ public class PNGenerator {
 		PTMarking initialMarking = new PTMarking();
 		
 		ptNet.addPlace("r1");
+		ptNet.getPlace("r1").setCapacity(producer);
 		ptNet.addPlace("r2");
+		ptNet.getPlace("r2").setCapacity(producer);
 		ptNet.addTransition("c");
 		ptNet.addFlowRelationPT("r1", "c").setWeight(consumer);
 		ptNet.addFlowRelationTP("c", "r2").setWeight(consumer);
@@ -71,7 +68,9 @@ public class PNGenerator {
 			ptNet.addTransition("use_"+i);
 			ptNet.addTransition("produce_"+i);
 			ptNet.addPlace("ready_"+i);
+			ptNet.getPlace("ready_"+i).setCapacity(producer);
 			ptNet.addPlace("produced_"+i);
+			ptNet.getPlace("produced_"+i).setCapacity(producer);
 			ptNet.addFlowRelationPT("ready_"+i, "produce_"+i);
 			ptNet.addFlowRelationTP("produce_"+i, "produced_"+i);
 			ptNet.addFlowRelationPT("produced_"+i, "use_"+i);
@@ -95,25 +94,25 @@ public class PNGenerator {
 		
 		for(int i=1; i<=processes; i++){
 			if(i==1){
-				ptNet.addTransition("c_0");
+				ptNet.addTransition("a0");
 			}
-			ptNet.addTransition("c_"+i);
-			ptNet.addPlace("p_"+i+"_1");
-			ptNet.addPlace("p_"+i+"_2");
-			ptNet.addFlowRelationTP("c_"+(i-1), "p_"+i+"_2").setWeight(bound);
-			ptNet.addFlowRelationPT("p_"+i+"_1", "c_"+(i-1)).setWeight(bound);
-			ptNet.addFlowRelationPT("p_"+i+"_2", "c_"+i);
-			ptNet.addFlowRelationTP("c_"+i, "p_"+i+"_1");
+			ptNet.addTransition("a"+i);
+			ptNet.addPlace("p"+i+"1");
+			ptNet.addPlace("p"+i+"2");
+			ptNet.addFlowRelationTP("a"+(i-1), "p"+i+"2").setWeight(bound);
+			ptNet.addFlowRelationPT("p"+i+"1", "a"+(i-1)).setWeight(bound);
+			ptNet.addFlowRelationPT("p"+i+"2", "a"+i);
+			ptNet.addFlowRelationTP("a"+i, "p"+i+"1");
 			switch(i){
 			case 1:
 //				ptNet.addFlowRelationTP("c_"+i, "p_"+i+"_1").setWeight(bound);
 //				ptNet.addFlowRelationPT("p_"+i+"_1", "c_"+(i-1));
-				initialMarking.set("p_"+i+"_2", 1);
+				initialMarking.set("p"+i+"2", bound);
 				break;
 			default:
 //				ptNet.addFlowRelationTP("c_"+i, "p_"+i+"_1");
 //				ptNet.addFlowRelationPT("p_"+i+"_1", "c_"+(i-1)).setWeight(bound);
-				initialMarking.set("p_"+i+"_1", bound);
+				initialMarking.set("p"+i+"1", bound);
 			}
 		}
 		
@@ -121,11 +120,4 @@ public class PNGenerator {
 		return ptNet;
 	}
 	
-	public static void main(String[] args) throws ParameterException, PNException {
-		PTNet pc = producerConsumer(5, 2);
-		PTNet pipeline = boundedPipeline(2, 2);
-		System.out.println(pipeline);
-		PNTraversalUtils.testTraces(pipeline, 1, 10, true, false);
-
-	}
 }

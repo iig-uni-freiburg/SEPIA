@@ -1,21 +1,26 @@
 package de.uni.freiburg.iig.telematik.sepia.util;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
-import de.uni.freiburg.iig.telematik.jagal.graph.Graph;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.MGTraversalResult;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.MarkingGraphUtils;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
 
 
 /**
@@ -27,6 +32,8 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @author Thomas Stocker
  */
 public class ReachabilityUtils {
+	
+	private static final String rgGraphNodeFormat = "s%s";
 	
 	/**
 	 * Checks if the transition within the given net with the given name is dead,<br>
@@ -112,9 +119,10 @@ public class ReachabilityUtils {
 		Validate.notNull(petriNet);
 		
 		Set<T> netTransitions = new HashSet<T>(petriNet.getTransitions());
-		for(M reachableMarking: buildMarkingGraph(petriNet).getElementSet()){
+		AbstractMarkingGraph<M, S, AbstractMarkingGraphState<M,S>> markingGraph = buildMarkingGraph(petriNet);
+		for(AbstractMarkingGraphState<M,S> reachableMarking: markingGraph.getStates()){
 			try{
-				petriNet.setMarking(reachableMarking);
+				petriNet.setMarking(reachableMarking.getElement());
 				netTransitions.removeAll(petriNet.getEnabledTransitions());
 			} catch(ParameterException e){
 				e.printStackTrace();
@@ -138,40 +146,87 @@ public class ReachabilityUtils {
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is nor bounded.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
+	public static <	P extends AbstractPlace<F, S>, 
+					T extends AbstractTransition<F, S>, 
+					F extends AbstractFlowRelation<P, T, S>, 
+					M extends AbstractMarking<S>, 
+					S extends Object,
+					X extends AbstractMarkingGraphState<M,S>>
 
-	Graph<M> buildMarkingGraph(AbstractPetriNet<P, T, F, M, S> petriNet)
+	AbstractMarkingGraph<M,S,X> buildMarkingGraph(AbstractPetriNet<P, T, F, M, S> petriNet)
 			throws ParameterException {
 
 		Validate.notNull(petriNet);
 		if (petriNet.isBounded() != Boundedness.BOUNDED)
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY,
-					"Cannot determine marking graph for unbounded nets.");
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
 
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
 		Set<M> allKnownStates = new HashSet<M>();
 
 		allKnownStates.add(petriNet.getInitialMarking());
-		Graph<M> markingGraph = new Graph<M>();
-		queue.offer(petriNet.getInitialMarking());
-
+		AbstractMarkingGraph<M,S,X> markingGraph = petriNet.createNewMarkingGraph();
+		int stateCount = 0;
+		Map<Integer, String> stateNames = new HashMap<Integer, String>();
+		M initialMarking = petriNet.getInitialMarking();
+		queue.offer(initialMarking);
+		String stateName = String.format(rgGraphNodeFormat, stateCount++);
+		markingGraph.addState(stateName, (M) initialMarking.clone());
+		markingGraph.setInitialState(markingGraph.getState(stateName));
+		markingGraph.addStartState(stateName);
+		stateNames.put(initialMarking.hashCode(), stateName);
+		allKnownStates.add((M) initialMarking.clone());
+		
 		try {
 			while (!queue.isEmpty()) {
-				M queueMarking = queue.poll();
-				petriNet.setMarking(queueMarking);
-				markingGraph.addElement((M) queueMarking.clone());
+				M nextMarking = queue.poll();
+//				System.out.println("Next marking: " + nextMarking);
+				petriNet.setMarking(nextMarking);
+//				M marking = (M) nextMarking.clone();
+				String nextStateName = stateNames.get(nextMarking.hashCode());
+//				System.out.println(nextStateName + " " + nextMarking);
 
-				for (T enabledTransition : petriNet.getEnabledTransitions()) {
+				if(petriNet.hasEnabledTransitions()){
+					String newStateName = null;
+					for (T enabledTransition : petriNet.getEnabledTransitions()) {
 
-					M newMarking = petriNet.fireCheck(enabledTransition.getName());
+//						System.out.println("enabled: " + enabledTransition.getName());
+						M newMarking = petriNet.fireCheck(enabledTransition.getName());
+						int newMarkingHash = newMarking.hashCode();
+//						System.out.println("new marking: " + newMarking);
+						
+						// Check if this marking is already known
+						M equalMarking = null;
+						for(M storedMarking: allKnownStates){
+							if(storedMarking.equals(newMarking)){
+								equalMarking = storedMarking;
+								break;
+							}
+						}
 
-					if (!allKnownStates.contains(newMarking)) {
-						queue.offer((M) newMarking.clone());
-						allKnownStates.add((M) newMarking.clone());
-						markingGraph.addElement((M) newMarking.clone());
+						// System.out.println("new marking: " + newMarking);
+						if(equalMarking == null) {
+							// This is a new marking
+//							System.out.println("New marking");
+							queue.offer(newMarking);
+							allKnownStates.add((M) newMarking.clone());
+							newStateName = String.format(rgGraphNodeFormat, stateCount++);
+							markingGraph.addState(newStateName, (M) newMarking.clone());
+							stateNames.put(newMarkingHash, newStateName);
+						} else {
+							// This marking is already known
+//							System.out.println("Known marking");
+							newStateName = stateNames.get(newMarkingHash);
+						}
+						if (!markingGraph.containsEvent(enabledTransition.getName())) {
+							markingGraph.addEvent(enabledTransition.getName(), enabledTransition.getLabel());
+						}
+//						 System.out.println("add relation: " + nextStateName + " to " + newStateName + " via " + enabledTransition.getName());
+						markingGraph.addRelation(nextStateName, newStateName, enabledTransition.getName());
 					}
-					markingGraph.addEdge(queueMarking, newMarking);
+				} else {
+					markingGraph.addEndState(nextStateName);
 				}
+				
 			}
 		} catch (ParameterException e) {
 			e.printStackTrace();
@@ -182,5 +237,19 @@ public class ReachabilityUtils {
 		}
 		return markingGraph;
 	}
+	
+	public static <	P extends AbstractPlace<F, S>, 
+					T extends AbstractTransition<F, S>, 
+					F extends AbstractFlowRelation<P, T, S>, 
+					M extends AbstractMarking<S>, 
+					S extends Object>
 
+		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S> petriNet, boolean includeSilentTransitions)
+			throws ParameterException {
+		
+		AbstractMarkingGraph<M, S, AbstractMarkingGraphState<M, S>> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
+		return MarkingGraphUtils.getSequences(petriNet, markingGraph, includeSilentTransitions);
+	}
+	
+	
 }

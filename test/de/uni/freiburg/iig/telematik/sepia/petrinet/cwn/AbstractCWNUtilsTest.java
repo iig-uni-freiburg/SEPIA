@@ -35,7 +35,6 @@ public class AbstractCWNUtilsTest {
 		//////////////////////////
 		try {
 			AbstractCWNUtils.validCompletion(cwn);
-
 		} catch (PNSoundnessException e) {
 			fail("A valid net was reported to be unvalid!");
 		}
@@ -71,7 +70,7 @@ public class AbstractCWNUtilsTest {
 
 		try {
 			AbstractCWNUtils.validCompletion(cwn);
-			fail("A invalid net was reported to be valid!");
+			fail("An invalid net was reported to be valid!");
 		} catch (PNSoundnessException e) {
 		}
 

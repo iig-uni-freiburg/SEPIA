@@ -8,6 +8,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.cpn.CPNMarkingGraph;
 
 
 public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking> {
@@ -46,7 +47,11 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 		return new CPNFlowRelation(transition, place, false);
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public CPNMarkingGraph createNewMarkingGraph() throws ParameterException {
+		return new CPNMarkingGraph();
+	}
 
 	@Override
 	public CPNMarking fireCheck(String transitionName) throws ParameterException, PNException {
