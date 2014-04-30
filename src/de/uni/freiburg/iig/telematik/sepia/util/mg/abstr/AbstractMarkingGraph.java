@@ -11,9 +11,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 
 
 
-public abstract class AbstractMarkingGraph<M extends AbstractMarking<S>, S extends Object, T extends AbstractMarkingGraphState<M,S>> extends AbstractLabeledTransitionSystem<Event,T, M> {
+public abstract class AbstractMarkingGraph<M extends AbstractMarking<O>, O extends Object, S extends AbstractMarkingGraphState<M,O>, R extends AbstractLabeledTransitionRelation<S,Event,M>> extends AbstractLabeledTransitionSystem<Event,S,R,M> {
 
-	private T initialState = null;
+	private S initialState = null;
 	
 	public AbstractMarkingGraph() {
 		super();
@@ -39,11 +39,11 @@ public abstract class AbstractMarkingGraph<M extends AbstractMarking<S>, S exten
 		super(name, states, events);
 	}
 	
-	public T getInitialState() {
+	public S getInitialState() {
 		return initialState;
 	}
 
-	public void setInitialState(T initialState) {
+	public void setInitialState(S initialState) {
 		this.initialState = initialState;
 	}
 	
@@ -51,7 +51,7 @@ public abstract class AbstractMarkingGraph<M extends AbstractMarking<S>, S exten
 	public String toString(){
 		StringBuilder relations = new StringBuilder();
 		boolean firstEntry = true;
-		for(AbstractLabeledTransitionRelation<T,Event,M> relation: getRelations()){
+		for(R relation: getRelations()){
 			if(!firstEntry){
 				relations.append("            ");
 			}
@@ -62,16 +62,16 @@ public abstract class AbstractMarkingGraph<M extends AbstractMarking<S>, S exten
 		return String.format(toStringFormat, getVertices(), startStates.keySet(), endStates.keySet(), events.keySet(), relations.toString());
 	}
 	
-	private Collection<M> getElements(Collection<T> vertices){
+	private Collection<M> getElements(Collection<S> vertices){
 		Collection<M> result = new HashSet<M>();
-		for(T vertex: vertices){
+		for(S vertex: vertices){
 			result.add(vertex.getElement());
 		}
 		return result;
 	}
 
 	@Override
-	protected abstract AbstractMarkingGraphRelation<M,T,S> createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws Exception;
+	protected abstract R createNewTransitionRelation(String sourceStateName, String targetStateName, String eventName) throws Exception;
 
 
 }

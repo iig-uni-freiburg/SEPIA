@@ -10,6 +10,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraphState;
 
 
@@ -35,12 +36,14 @@ public class AbstractCWNUtils {
 	public static <	P extends AbstractCWNPlace<F>,
 	  				T extends AbstractCWNTransition<F>, 
 	  				F extends AbstractCWNFlowRelation<P,T>, 
-	  				M extends AbstractCWNMarking> 
+	  				M extends AbstractCWNMarking,
+	  				X extends AbstractCWNMarkingGraphState<M>,
+	   				Y extends AbstractCWNMarkingGraphRelation<M,X>> 
 	
 	void validCompletion(AbstractCWN<P,T,F,M> cwn) throws ParameterException, PNSoundnessException{
 		Validate.notNull(cwn);			
 			
-		AbstractCWNMarkingGraph<M, AbstractCWNMarkingGraphState<M>> markingGraph = (AbstractCWNMarkingGraph) ReachabilityUtils.buildMarkingGraph(cwn);
+		AbstractCWNMarkingGraph<M,X,Y> markingGraph = (AbstractCWNMarkingGraph) ReachabilityUtils.buildMarkingGraph(cwn);
 		Set<AbstractCWNMarkingGraphState<M>> drains = new HashSet<AbstractCWNMarkingGraphState<M>>(markingGraph.getDrains());
 		for(AbstractCWNMarkingGraphState<M> drainVertex : drains){
 			if(!isEndState(drainVertex.getElement(), cwn)){

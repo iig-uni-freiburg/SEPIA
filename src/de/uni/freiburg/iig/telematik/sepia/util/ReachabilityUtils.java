@@ -9,7 +9,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -20,6 +20,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.MGTraversalResult;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.MarkingGraphUtils;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
 
 
@@ -107,11 +108,13 @@ public class ReachabilityUtils {
 	 * @return A set of all dead transitions.
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is not bounded.
 	 */
-	public static <P extends AbstractPlace<F,S>, 
-	   T extends AbstractTransition<F,S>, 
-	   F extends AbstractFlowRelation<P,T,S>, 
-	   M extends AbstractMarking<S>, 
-	   S extends Object> 
+	public static <	P extends AbstractPlace<F,S>, 
+	   				T extends AbstractTransition<F,S>, 
+	   				F extends AbstractFlowRelation<P,T,S>, 
+	   				M extends AbstractMarking<S>, 
+	   				S extends Object,
+	   				X extends AbstractMarkingGraphState<M,S>,
+	   				Y extends AbstractMarkingGraphRelation<M,X,S>> 
 
 	   Set<T> getDeadTransitions(AbstractPetriNet<P,T,F,M,S> petriNet) 
 			  throws ParameterException{
@@ -119,7 +122,7 @@ public class ReachabilityUtils {
 		Validate.notNull(petriNet);
 		
 		Set<T> netTransitions = new HashSet<T>(petriNet.getTransitions());
-		AbstractMarkingGraph<M, S, AbstractMarkingGraphState<M,S>> markingGraph = buildMarkingGraph(petriNet);
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = buildMarkingGraph(petriNet);
 		for(AbstractMarkingGraphState<M,S> reachableMarking: markingGraph.getStates()){
 			try{
 				petriNet.setMarking(reachableMarking.getElement());
@@ -151,9 +154,10 @@ public class ReachabilityUtils {
 					F extends AbstractFlowRelation<P, T, S>, 
 					M extends AbstractMarking<S>, 
 					S extends Object,
-					X extends AbstractMarkingGraphState<M,S>>
+					X extends AbstractMarkingGraphState<M,S>,
+					Y extends AbstractMarkingGraphRelation<M, X, S>>
 
-	AbstractMarkingGraph<M,S,X> buildMarkingGraph(AbstractPetriNet<P, T, F, M, S> petriNet)
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P, T, F, M, S> petriNet)
 			throws ParameterException {
 
 		Validate.notNull(petriNet);
@@ -164,7 +168,7 @@ public class ReachabilityUtils {
 		Set<M> allKnownStates = new HashSet<M>();
 
 		allKnownStates.add(petriNet.getInitialMarking());
-		AbstractMarkingGraph<M,S,X> markingGraph = petriNet.createNewMarkingGraph();
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = petriNet.createNewMarkingGraph();
 		int stateCount = 0;
 		Map<Integer, String> stateNames = new HashMap<Integer, String>();
 		M initialMarking = petriNet.getInitialMarking();
@@ -228,11 +232,9 @@ public class ReachabilityUtils {
 				}
 				
 			}
-		} catch (ParameterException e) {
-			e.printStackTrace();
 		} catch (PNException e) {
 			e.printStackTrace();
-		} catch (VertexNotFoundException e) {
+		} catch (TSException e) {
 			e.printStackTrace();
 		}
 		return markingGraph;
@@ -242,12 +244,14 @@ public class ReachabilityUtils {
 					T extends AbstractTransition<F, S>, 
 					F extends AbstractFlowRelation<P, T, S>, 
 					M extends AbstractMarking<S>, 
-					S extends Object>
+					S extends Object,
+					X extends AbstractMarkingGraphState<M,S>,
+	   				Y extends AbstractMarkingGraphRelation<M,X,S>>
 
 		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S> petriNet, boolean includeSilentTransitions)
 			throws ParameterException {
 		
-		AbstractMarkingGraph<M, S, AbstractMarkingGraphState<M, S>> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
 		return MarkingGraphUtils.getSequences(petriNet, markingGraph, includeSilentTransitions);
 	}
 	

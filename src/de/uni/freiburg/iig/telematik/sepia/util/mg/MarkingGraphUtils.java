@@ -6,6 +6,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
 
 public class MarkingGraphUtils {
@@ -15,12 +16,13 @@ public class MarkingGraphUtils {
 					F extends AbstractFlowRelation<P, T, S>, 
 					M extends AbstractMarking<S>, 
 					S extends Object, 
-					X extends AbstractMarkingGraphState<M, S>> MGTraversalResult getSequences(AbstractPetriNet<P,T,F,M,S> petriNet, AbstractMarkingGraph<M,S,X> markingGraph, boolean includeSilentTransitions){
+					X extends AbstractMarkingGraphState<M, S>,
+					Y extends AbstractMarkingGraphRelation<M, X, S>> MGTraversalResult getSequences(AbstractPetriNet<P,T,F,M,S> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
 		
 //		MarkingGraphTraverser<P,T,F,M,S,X> traverser = new MarkingGraphTraverser<P,T,F,M,S,X>(petriNet, markingGraph, includeSilentTransitions);
 //		traverser.iterate();
 //		return new MGTraversalResult(traverser.getSequences(), traverser.getCompleteSequences());
-		MGSequenceGenerator<P,T,F,M,S,X> sequenceGenerator = new MGSequenceGenerator<P,T,F,M,S,X>(petriNet, markingGraph, includeSilentTransitions);
+		MGSequenceGenerator<P,T,F,M,S,X,Y> sequenceGenerator = new MGSequenceGenerator<P,T,F,M,S,X,Y>(petriNet, markingGraph, includeSilentTransitions);
 		return sequenceGenerator.getSequences();
 	}
 

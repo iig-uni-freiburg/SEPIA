@@ -5,7 +5,7 @@ import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
 
-public class PTMarkingGraph extends AbstractMarkingGraph<PTMarking, Integer, PTMarkingGraphState> {
+public class PTMarkingGraph extends AbstractMarkingGraph<PTMarking, Integer, PTMarkingGraphState, PTMarkingGraphRelation> {
 
 	public PTMarkingGraph() {
 		super();

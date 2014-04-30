@@ -4,7 +4,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
 
-public class CWNMarkingGraph extends AbstractCWNMarkingGraph<CWNMarking, CWNMarkingGraphState> {
+public class CWNMarkingGraph extends AbstractCWNMarkingGraph<CWNMarking, CWNMarkingGraphState, CWNMarkingGraphRelation> {
 
 	public CWNMarkingGraph() {
 		super();

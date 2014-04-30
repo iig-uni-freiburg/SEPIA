@@ -4,7 +4,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 
-public class IFNetMarkingGraph extends AbstractIFNetMarkingGraph<IFNetMarking, IFNetMarkingGraphState> {
+public class IFNetMarkingGraph extends AbstractIFNetMarkingGraph<IFNetMarking, IFNetMarkingGraphState, IFNetMarkingGraphRelation> {
 
 	public IFNetMarkingGraph() {
 		super();

@@ -7,7 +7,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
 
-public abstract class AbstractCPNMarkingGraph<M extends AbstractCPNMarking, T extends AbstractCPNMarkingGraphState<M>> extends AbstractMarkingGraph<M, Multiset<String>, T> {
+public abstract class AbstractCPNMarkingGraph<M extends AbstractCPNMarking, S extends AbstractCPNMarkingGraphState<M>, R extends AbstractCPNMarkingGraphRelation<M, S>> extends AbstractMarkingGraph<M, Multiset<String>, S, R> {
 
 	public AbstractCPNMarkingGraph() {
 		super();

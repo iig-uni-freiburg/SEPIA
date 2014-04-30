@@ -9,6 +9,7 @@ import java.util.Set;
 import de.invation.code.toval.misc.ListUtils;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
+import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -16,6 +17,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
 
 public class MGSequenceGenerator<	P extends AbstractPlace<F, S>, 
@@ -23,13 +25,14 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 									F extends AbstractFlowRelation<P, T, S>, 
 									M extends AbstractMarking<S>, 
 									S extends Object, 
-									X extends AbstractMarkingGraphState<M, S>> {
+									X extends AbstractMarkingGraphState<M, S>,
+									Y extends AbstractMarkingGraphRelation<M, X, S>> {
 	
 	private AbstractPetriNet<P,T,F,M,S> petriNet = null;
-	private AbstractMarkingGraph<M,S,X> markingGraph = null;
+	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	private boolean includeSilentTransitions = false;
 	
-	public MGSequenceGenerator(AbstractPetriNet<P,T,F,M,S> petriNet, AbstractMarkingGraph<M,S,X> markingGraph, boolean includeSilentTransitions){
+	public MGSequenceGenerator(AbstractPetriNet<P,T,F,M,S> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
 		this.petriNet = petriNet;
 		this.markingGraph = markingGraph;
 		this.includeSilentTransitions = includeSilentTransitions;
@@ -213,7 +216,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 					eventNames.add(relation.getEvent().getLabel());
 				}
 			}
-		} catch (VertexNotFoundException e) {
+		} catch (StateNotFoundException e) {
 			e.printStackTrace();
 		}
 		return eventNames;

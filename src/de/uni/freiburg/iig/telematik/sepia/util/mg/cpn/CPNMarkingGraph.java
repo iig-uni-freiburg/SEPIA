@@ -4,7 +4,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 
-public class CPNMarkingGraph extends AbstractCPNMarkingGraph<CPNMarking, CPNMarkingGraphState> {
+public class CPNMarkingGraph extends AbstractCPNMarkingGraph<CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation> {
 
 	public CPNMarkingGraph() {
 		super();

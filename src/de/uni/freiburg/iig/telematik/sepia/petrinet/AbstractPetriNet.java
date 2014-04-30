@@ -24,6 +24,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
 
 
@@ -460,7 +461,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected abstract T createNewTransition(String name, String label, boolean isSilent) throws ParameterException;
 	
-	public abstract <X extends AbstractMarkingGraphState<M,S>> AbstractMarkingGraph<M,S,X> createNewMarkingGraph() throws ParameterException;
+	public abstract <X extends AbstractMarkingGraphState<M,S>, Y extends AbstractMarkingGraphRelation<M, X, S>> AbstractMarkingGraph<M,S,X,Y> createNewMarkingGraph() throws ParameterException;
 	
 	//------- Places ---------------------------------------------------------------------------------
 

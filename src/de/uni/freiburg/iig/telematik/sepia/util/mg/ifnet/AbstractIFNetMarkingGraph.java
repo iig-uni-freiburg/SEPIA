@@ -6,7 +6,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraph;
 
-public abstract class AbstractIFNetMarkingGraph<M extends AbstractIFNetMarking, T extends AbstractIFNetMarkingGraphState<M>> extends AbstractCWNMarkingGraph<M, T> {
+public abstract class AbstractIFNetMarkingGraph<M extends AbstractIFNetMarking, S extends AbstractIFNetMarkingGraphState<M>, R extends AbstractIFNetMarkingGraphRelation<M, S>> extends AbstractCWNMarkingGraph<M, S, R> {
 
 	public AbstractIFNetMarkingGraph() {
 		super();
