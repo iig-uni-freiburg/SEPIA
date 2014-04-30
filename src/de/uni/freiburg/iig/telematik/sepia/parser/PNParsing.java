@@ -29,7 +29,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
  * @author Adrian Lange
  * 
  */
-public class PNParser {
+public class PNParsing {
 	
 	/**
 	 * Parses the given file with the parser respective to the file extension.
@@ -88,7 +88,7 @@ public class PNParser {
 	
 	parse(String fileName) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return PNParser.<P,T,F,M,S,N,G>parse(prepareFile(fileName));
+		return PNParsing.<P,T,F,M,S,N,G>parse(prepareFile(fileName));
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public class PNParser {
 	
 	parse(String fileName, PNParsingFormat format) throws IOException, ParserException, ParameterException {
 		Validate.notNull(fileName);
-		return PNParser.<P,T,F,M,S,N,G>parse(prepareFile(fileName), format);
+		return PNParsing.<P,T,F,M,S,N,G>parse(prepareFile(fileName), format);
 	}
 	
 	private static File prepareFile(String fileName) throws IOException{

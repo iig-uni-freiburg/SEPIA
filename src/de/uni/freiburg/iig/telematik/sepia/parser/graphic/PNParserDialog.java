@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 
@@ -160,7 +160,7 @@ public class PNParserDialog extends JDialog {
 			        if (returnVal == JFileChooser.APPROVE_OPTION) {
 			            File file = pnChooser.getSelectedFile();
 			            getPNPathField().setText(file.getAbsolutePath());
-						getFormatBox().setSelectedItem(PNParser.guessFormat(file));
+						getFormatBox().setSelectedItem(PNParsing.guessFormat(file));
 			        }
 				}
 			});
