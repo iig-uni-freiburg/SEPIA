@@ -13,7 +13,7 @@ public class PNGenerator {
 		Validate.bigger(ressources, 0);
 		
 		PTNet ptNet = new PTNet();
-		ptNet.setName("SharedResource("+processes+","+ressources+")");
+		ptNet.setName("SharedResource_"+processes+"_"+ressources);
 		PTMarking initialMarking = new PTMarking();
 		
 		ptNet.addPlace("r");
@@ -52,7 +52,7 @@ public class PNGenerator {
 		Validate.bigger(consumer, 0);
 		
 		PTNet ptNet = new PTNet();
-		ptNet.setName("ProducerConsumer("+producer+","+consumer+")");
+		ptNet.setName("ProducerConsumer_"+producer+"_"+consumer);
 		PTMarking initialMarking = new PTMarking();
 		
 		ptNet.addPlace("r1");
@@ -89,7 +89,7 @@ public class PNGenerator {
 		Validate.bigger(bound, 0);
 		
 		PTNet ptNet = new PTNet();
-		ptNet.setName("BoundedPipeline("+processes+","+bound+")");
+		ptNet.setName("BoundedPipeline_"+processes+"_"+bound);
 		PTMarking initialMarking = new PTMarking();
 		
 		for(int i=1; i<=processes; i++){

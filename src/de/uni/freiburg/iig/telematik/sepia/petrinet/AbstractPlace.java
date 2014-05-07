@@ -60,11 +60,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 
 	/**
 	 * Creates a new place with the given name.
-	 * 
-	 * @param name
-	 *            The name for the new Place.
-	 * @throws ParameterException
-	 *             If the given name is <code>null</code>.
+	 * @param name The name for the new Place.
+	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractPlace(String name) throws ParameterException {
 		super(PNNodeType.PLACE, name);

@@ -270,7 +270,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 				for(String color: placeMarking.support()){
 					if(place.hasCapacityRestriction(color)){
 						if(place.getColorCapacity(color) < placeMarking.multiplicity(color))
-							throw new ParameterException("Place \""+place.getName()+"\" cannot contain more than " + place.getCapacity() + " tokens of color " + color);
+							throw new ParameterException("Place \""+place.getName()+"\" cannot contain more than " + place.getColorCapacity(color)+ " tokens of color " + color);
 					}
 				}
 			}
