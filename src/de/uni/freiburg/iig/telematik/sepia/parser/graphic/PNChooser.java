@@ -52,9 +52,5 @@ public class PNChooser extends JFileChooser {
 	        return type;
 	    }
 	}
-	
-	public static void main(String[] args) {
-		PNChooser c = new PNChooser();
-		c.showDialog(null, "OK");
-	}
+
 }
