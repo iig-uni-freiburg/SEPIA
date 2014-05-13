@@ -23,16 +23,20 @@ public class PNChooser extends JFileChooser {
 	public class PNFileView extends FileView {
 		
 	    public String getName(File f) {
-	        return null;
+	    	String fileName = null;
+	 	    if(f != null) {
+	 	    	fileName = PNChooser.this.getFileSystemView().getSystemDisplayName(f);
+	 	    }
+	 	    return fileName;
 	    }
 	 
 	    public String getDescription(File f) {
-	        return null;
+	    	return f.getName();
 	    }
 	 
-	    public Boolean isTraversable(File f) {
-	        return null;
-	    }
+//	    public Boolean isTraversable(File f) {
+//	        return null;
+//	    }
 	 
 	    public String getTypeDescription(File f) {
 	        String extension = FileUtils.getExtension(f);
