@@ -15,6 +15,8 @@ public class PetrifyFileFilter extends FileFilter {
 		String extension = FileUtils.getExtension(pathname);
 		if(extension == null)
 			return false;
+		if(pathname.isDirectory())
+			return true;
 		return extension.equals("pn");
 	}
 
