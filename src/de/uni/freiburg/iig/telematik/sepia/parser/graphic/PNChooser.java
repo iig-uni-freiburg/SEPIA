@@ -13,11 +13,11 @@ public class PNChooser extends JFileChooser {
 
 	public PNChooser(){
 		super();
-		setAcceptAllFileFilterUsed(false);
+//		setAcceptAllFileFilterUsed(false);
 		setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		addChoosableFileFilter(new PetrifyFileFilter());
 		addChoosableFileFilter(new PNMLFileFilter());
-//		setFileView(new PNFileView());
+		setFileView(new PNFileView());
 	}
 	
 	public class PNFileView extends FileView {
