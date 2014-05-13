@@ -17,7 +17,7 @@ public class PNChooser extends JFileChooser {
 		setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		addChoosableFileFilter(new PetrifyFileFilter());
 		addChoosableFileFilter(new PNMLFileFilter());
-		setFileView(new PNFileView());
+//		setFileView(new PNFileView());
 	}
 	
 	public class PNFileView extends FileView {
@@ -54,10 +54,7 @@ public class PNChooser extends JFileChooser {
 	}
 	
 	public static void main(String[] args) {
-//		PNChooser c = new PNChooser();
-//		c.showDialog(null, "OK");
-		
-		JFileChooser c = new JFileChooser();
-		c.showDialog(null, "ok");
+		PNChooser c = new PNChooser();
+		c.showDialog(null, "OK");
 	}
 }
