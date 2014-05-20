@@ -23,9 +23,9 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraph;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.abstr.AbstractMarkingGraphState;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 
 
 /**
@@ -874,7 +874,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		validateMarking(marking);
 //		if(this.marking != null)
 //			this.marking.clear();
-		M oldMarking = 
 		this.marking = createNewMarking();
 		for(String placeName: places.keySet()){
 			if(marking.contains(placeName)){

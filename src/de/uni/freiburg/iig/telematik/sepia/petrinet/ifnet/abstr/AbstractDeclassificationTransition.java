@@ -36,6 +36,7 @@ public abstract class AbstractDeclassificationTransition<E extends AbstractIFNet
 		return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void checkValidity() throws PNValidationException{
 		super.checkValidity();

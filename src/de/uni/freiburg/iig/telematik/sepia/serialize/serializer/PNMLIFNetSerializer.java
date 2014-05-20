@@ -71,6 +71,7 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void appendTransitionInformation(AbstractIFNetTransition transition, Element transitionElement) {
 		// Add transition type information

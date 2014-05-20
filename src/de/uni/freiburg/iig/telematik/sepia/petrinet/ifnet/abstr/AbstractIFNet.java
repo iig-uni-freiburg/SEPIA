@@ -91,6 +91,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return Collections.unmodifiableCollection(declassificationTransitions.values());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTransition(T transition) throws ParameterException {
 		super.addTransition(transition);
@@ -138,6 +139,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean addDeclassificationTransition(String transitionName, String transitionLabel) throws ParameterException{
 		if(containsTransition(transitionName)){
 			return false;
@@ -189,6 +191,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	//------- Validation methods --------------------------------------------------------------------
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void checkValidity() throws PNValidationException {
 		super.checkValidity();

@@ -2,8 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.serialize;
 
 import java.io.IOException;
 
-import javax.swing.JColorChooser;
-
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;

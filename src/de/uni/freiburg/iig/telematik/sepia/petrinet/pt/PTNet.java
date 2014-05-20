@@ -5,9 +5,9 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.pt.PTMarkingGraph;
 
 
 public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{

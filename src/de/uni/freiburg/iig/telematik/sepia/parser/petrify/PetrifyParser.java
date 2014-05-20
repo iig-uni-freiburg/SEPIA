@@ -24,6 +24,7 @@ public class PetrifyParser implements PNParserInterface{
 	private static final String PREFIX_MARKING = ".marking ";
 	private static final String PREFIX_COMMENT = "#";
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public GraphicalPTNet parse(File file) throws IOException, ParserException, ParameterException {
 		GraphicalPTNet net = new GraphicalPTNet();

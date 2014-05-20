@@ -6,12 +6,12 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraph;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.util.mg.cwn.AbstractCWNMarkingGraphState;
 
 
 
@@ -43,6 +43,7 @@ public class AbstractCWNUtils {
 	void validCompletion(AbstractCWN<P,T,F,M> cwn) throws ParameterException, PNSoundnessException{
 		Validate.notNull(cwn);			
 			
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		AbstractCWNMarkingGraph<M,X,Y> markingGraph = (AbstractCWNMarkingGraph) ReachabilityUtils.buildMarkingGraph(cwn);
 		Set<AbstractCWNMarkingGraphState<M>> drains = new HashSet<AbstractCWNMarkingGraphState<M>>(markingGraph.getDrains());
 		for(AbstractCWNMarkingGraphState<M> drainVertex : drains){

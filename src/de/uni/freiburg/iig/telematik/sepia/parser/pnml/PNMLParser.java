@@ -57,13 +57,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
  * 
  * @author Adrian Lange
  */
-public class PNMLParser <P extends AbstractPlace<F, S>,
-						 T extends AbstractTransition<F, S>,
-						 F extends AbstractFlowRelation<P, T, S>,
-						 M extends AbstractMarking<S>,
-						 S extends Object,
-						 N extends AbstractPetriNet<P, T, F, M, S>,
-						 G extends AbstractPNGraphics<P, T, F, M, S>> implements PNParserInterface {
+public class PNMLParser implements PNParserInterface {
 
 	/** Relax NG namespace */
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";
@@ -100,9 +94,15 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            Path to the file to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public 
+	public <P extends AbstractPlace<F, S>,
+	 T extends AbstractTransition<F, S>,
+	 F extends AbstractFlowRelation<P, T, S>,
+	 M extends AbstractMarking<S>,
+	 S extends Object,
+	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	AbstractGraphicalPN<P, T, F, M, S, N, G> parse(String pnmlFile) throws IOException, ParserException, ParameterException {
+	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
 		return this.parse(pnmlFile, true, true);
 	}
@@ -118,7 +118,15 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public AbstractGraphicalPN<P, T, F, M, S, N, G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+	public <P extends AbstractPlace<F, S>,
+	 T extends AbstractTransition<F, S>,
+	 F extends AbstractFlowRelation<P, T, S>,
+	 M extends AbstractMarking<S>,
+	 S extends Object,
+	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 G extends AbstractPNGraphics<P, T, F, M, S>>
+	
+	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 		File inputFile = new File(pnmlFile);
 		if (inputFile.isDirectory())
 			throw new IOException("I/O Error on opening file: File is a directory!");
@@ -137,9 +145,16 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            File to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractGraphicalPN<P, T, F, M, S, N, G> parse(File pnmlFile) throws IOException, ParserException, ParameterException {
+	public <P extends AbstractPlace<F, S>,
+	 T extends AbstractTransition<F, S>,
+	 F extends AbstractFlowRelation<P, T, S>,
+	 M extends AbstractMarking<S>,
+	 S extends Object,
+	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 G extends AbstractPNGraphics<P, T, F, M, S>>
+	
+	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile) throws IOException, ParserException, ParameterException {
 		return this.parse(pnmlFile, true, true);
 	}
 
@@ -155,7 +170,15 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	@SuppressWarnings("unchecked")
-	public AbstractGraphicalPN<P, T, F, M, S, N, G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+	public <P extends AbstractPlace<F, S>,
+	 T extends AbstractTransition<F, S>,
+	 F extends AbstractFlowRelation<P, T, S>,
+	 M extends AbstractMarking<S>,
+	 S extends Object,
+	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 G extends AbstractPNGraphics<P, T, F, M, S>>
+	
+	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 
 		Validate.notNull(pnmlFile);
 
