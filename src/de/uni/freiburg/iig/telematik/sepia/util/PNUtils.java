@@ -9,7 +9,6 @@ import java.util.Set;
 
 import de.invation.code.toval.math.MathUtils;
 import de.invation.code.toval.types.HashList;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
@@ -31,7 +30,7 @@ public class PNUtils {
 	 * @return A set of activity names.
 	 * @throws ParameterException 
 	 */
-	public static <T extends AbstractTransition<?,?>> Set<String> getNameSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions) throws ParameterException{
+	public static <T extends AbstractTransition<?,?>> Set<String> getNameSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions){
 		Validate.notNull(transitions);
 		Validate.noNullElements(transitions);
 		Set<String> cActivities = new HashSet<String>();
@@ -49,7 +48,7 @@ public class PNUtils {
 	 * @return A list of activity names.
 	 * @throws ParameterException 
 	 */
-	public static <T extends AbstractTransition<?,?>> List<String> getNameListFromTransitions(Collection<T> transitions) throws ParameterException{
+	public static <T extends AbstractTransition<?,?>> List<String> getNameListFromTransitions(Collection<T> transitions){
 		Validate.notNull(transitions);
 		Validate.noNullElements(transitions);
 		List<String> cActivities = new HashList<String>();
@@ -67,7 +66,7 @@ public class PNUtils {
 	 * @return A set of activity labels.
 	 * @throws ParameterException 
 	 */
-	public static <T extends AbstractTransition<?,?>> Set<String> getLabelSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions) throws ParameterException{
+	public static <T extends AbstractTransition<?,?>> Set<String> getLabelSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions){
 		Validate.notNull(transitions);
 		Validate.noNullElements(transitions);
 		Set<String> cActivities = new HashSet<String>();
@@ -95,9 +94,6 @@ public class PNUtils {
 			} catch (VertexNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (ParameterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 		
@@ -113,7 +109,7 @@ public class PNUtils {
 					
 	   				Set<T>
 	
-		getPredecessors(AbstractPetriNet<P,T,F,M,S> net, T transition) throws ParameterException, VertexNotFoundException{
+		getPredecessors(AbstractPetriNet<P,T,F,M,S> net, T transition) throws VertexNotFoundException{
 		Validate.notNull(net);
 		Validate.notNull(transition);
 
@@ -146,7 +142,7 @@ public class PNUtils {
 		return result;
 	}
 	
-	public static PTNet getORFragment(Set<String> alternatives) throws ParameterException{
+	public static PTNet getORFragment(Set<String> alternatives){
 		PTNet ptNet = new PTNet();
 		String[] alt = new String[alternatives.size()];
 		alternatives.toArray(alt);
