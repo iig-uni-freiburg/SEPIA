@@ -45,6 +45,7 @@ public class IFNetTestUtil {
 	// deletes red
 	// creates blue
 
+	@SuppressWarnings("unused")
 	public static IFNet createSimpleSnet() throws ParameterException {
 
 		// create the SNet
@@ -141,6 +142,7 @@ public class IFNetTestUtil {
 	}
 
 	// creates the same SNet as createSimpleSnet but with a declassification transition
+	@SuppressWarnings("unused")
 	public static IFNet createSimpleSnetWithDeclassification(boolean setAnalysisContext) throws ParameterException {
 
 		IFNet simpleSNet = createSimpleSnet();

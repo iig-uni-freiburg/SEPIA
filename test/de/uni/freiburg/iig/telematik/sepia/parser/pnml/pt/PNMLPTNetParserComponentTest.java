@@ -28,7 +28,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness
  * 
  * @author Adrian Lange
  */
-@SuppressWarnings("rawtypes")
 public class PNMLPTNetParserComponentTest {
 
 	/*

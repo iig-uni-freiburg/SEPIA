@@ -19,7 +19,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
 public class IFNetFlowRelationTest {
 
 	// An AbstractIFNetTranstion which is used in several test cases
-	AbstractIFNetTransition ifNetT = null;
+	AbstractIFNetTransition<IFNetFlowRelation> ifNetT = null;
 
 	// A IFNetPlace which is used in several test cases
 	IFNetPlace ifNetP = null;
@@ -77,7 +77,8 @@ public class IFNetFlowRelationTest {
 		assertEquals(f1.getSource().getName(), "p0");
 		assertEquals(f1.getTarget().getName(), "t0");
 		assertTrue(f1.getConstraint().equals(new Multiset<String>("black")));
-		IFNetFlowRelation f1clone = f1.clone((IFNetPlace) f1.getSource(), (AbstractIFNetTransition) f1.getTarget(), f1.getDirectionPT());
+		@SuppressWarnings("unchecked")
+		IFNetFlowRelation f1clone = f1.clone((IFNetPlace) f1.getSource(), (AbstractIFNetTransition<IFNetFlowRelation>) f1.getTarget(), f1.getDirectionPT());
 		assertEquals(f1, f1clone);
 		assertNotSame(f1, f1clone);
 		assertEquals(f1.getSource().getName(), f1clone.getSource().getName());
@@ -89,7 +90,8 @@ public class IFNetFlowRelationTest {
 		assertEquals(f2.getSource().getName(), "t0");
 		assertEquals(f2.getTarget().getName(), "p0");
 		assertTrue(f2.getConstraint().equals(new Multiset<String>("black")));
-		IFNetFlowRelation f2clone = f2.clone((IFNetPlace) f2.getTarget(), (AbstractIFNetTransition) f2.getSource(), f2.getDirectionPT());
+		@SuppressWarnings("unchecked")
+		IFNetFlowRelation f2clone = f2.clone((IFNetPlace) f2.getTarget(), (AbstractIFNetTransition<IFNetFlowRelation>) f2.getSource(), f2.getDirectionPT());
 		assertEquals(f2, f2clone);
 		assertNotSame(f2, f2clone);
 		assertEquals(f2.getSource().getName(), f2clone.getSource().getName());

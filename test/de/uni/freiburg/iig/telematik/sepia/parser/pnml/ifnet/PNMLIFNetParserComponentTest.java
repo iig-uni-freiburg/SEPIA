@@ -33,7 +33,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
  * 
  * @author Adrian Lange
  */
-@SuppressWarnings("rawtypes")
 public class PNMLIFNetParserComponentTest {
 
 	/*

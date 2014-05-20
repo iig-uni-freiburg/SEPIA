@@ -33,7 +33,9 @@ public class IFNetTest {
 
 	// The variable is filled during start up
 	private IFNet dSNet = null;
+	@SuppressWarnings("unused")
 	private DeclassificationTransition td = null;
+	@SuppressWarnings("unused")
 	private RegularIFNetTransition tr = null;
 
 	@Before
@@ -129,6 +131,7 @@ public class IFNetTest {
 	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where the classification of a color created from a declassificationtransition is high.
 	 */
+	@SuppressWarnings("unused")
 	@Test
 	public void testCheckValidityAnalysisContextDeclassificationTransCreatesHighColor() throws ParameterException {
 
@@ -373,6 +376,7 @@ public class IFNetTest {
 	/*
 	 * Test the clone() method
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void testIFNetClone() throws ParameterException {
 		/*
