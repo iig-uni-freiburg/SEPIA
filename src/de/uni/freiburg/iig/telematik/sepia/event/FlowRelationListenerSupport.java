@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 
@@ -11,12 +10,12 @@ public class FlowRelationListenerSupport<F extends AbstractFlowRelation<?,?,?>> 
 	
 	private Set<FlowRelationListener<F>> listeners = new HashSet<FlowRelationListener<F>>();
 	
-	public void addListener(FlowRelationListener<F> listener) throws ParameterException{
+	public void addListener(FlowRelationListener<F> listener) {
 		Validate.notNull(listener);
 		listeners.add(listener);
 	}
 	
-	public void removeListener(FlowRelationListener<F> listener) throws ParameterException{
+	public void removeListener(FlowRelationListener<F> listener) {
 		Validate.notNull(listener);
 		listeners.remove(listener);
 	}

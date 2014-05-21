@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
@@ -36,7 +35,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	/**
 	 * Creates a new annotation graphics object with default values.
 	 */
-	public AnnotationGraphics() throws ParameterException {
+	public AnnotationGraphics() {
 		setOffset(DEFAULT_OFFSET);
 		setFill(DEFAULT_FILL);
 		setLine(DEFAULT_LINE);
@@ -47,7 +46,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	/**
 	 * Creates a new annotation graphics object with the specified values.
 	 */
-	public AnnotationGraphics(Offset offset, Fill fill, Line line, Font font, boolean visibility) throws ParameterException {
+	public AnnotationGraphics(Offset offset, Fill fill, Line line, Font font, boolean visibility) {
 		setOffset(offset);
 		setFill(fill);
 		setLine(line);
@@ -99,7 +98,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	 * @param offset
 	 *            the offset to set
 	 */
-	public void setOffset(Offset offset) throws ParameterException {
+	public void setOffset(Offset offset) {
 		Validate.notNull(offset);
 		this.offset = offset;
 	}
@@ -108,7 +107,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	 * @param fill
 	 *            the fill to set
 	 */
-	public void setFill(Fill fill) throws ParameterException {
+	public void setFill(Fill fill) {
 		Validate.notNull(fill);
 		this.fill = fill;
 	}
@@ -117,7 +116,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	 * @param line
 	 *            the line to set
 	 */
-	public void setLine(Line line) throws ParameterException {
+	public void setLine(Line line) {
 		Validate.notNull(line);
 		this.line = line;
 	}
@@ -126,7 +125,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 	 * @param font
 	 *            the font to set
 	 */
-	public void setFont(Font font) throws ParameterException {
+	public void setFont(Font font) {
 		Validate.notNull(font);
 		this.font = font;
 	}

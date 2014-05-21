@@ -46,9 +46,8 @@ public class Line extends AbstractAttribute {
 	 *            Style of the line
 	 * @param width
 	 *            Width of the line
-	 * @throws ParameterException 
 	 */
-	public Line(String color, Shape shape, Style style, double width) throws ParameterException {
+	public Line(String color, Shape shape, Style style, double width) {
 		setColor(color);
 		setShape(shape);
 		setStyle(style);
@@ -96,9 +95,8 @@ public class Line extends AbstractAttribute {
 	 * 
 	 * @param color
 	 *            the color to set
-	 * @throws ParameterException 
 	 */
-	public void setColor(String color) throws ParameterException {
+	public void setColor(String color) {
 		if(color == null)
 			return;
 		try {

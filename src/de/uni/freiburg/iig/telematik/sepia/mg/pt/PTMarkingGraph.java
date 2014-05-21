@@ -10,12 +10,12 @@ public class PTMarkingGraph extends AbstractPTMarkingGraph<PTMarking, PTMarkingG
 		super();
 	}
 
-	public PTMarkingGraph(String name) throws ParameterException {
+	public PTMarkingGraph(String name) {
 		super(name);
 	}
 
 	@Override
-	protected Event createNewEvent(String name, String label) throws ParameterException {
+	protected Event createNewEvent(String name, String label) {
 		return new Event(name, label);
 	}
 
@@ -25,12 +25,12 @@ public class PTMarkingGraph extends AbstractPTMarkingGraph<PTMarking, PTMarkingG
 	}
 
 	@Override
-	protected PTMarkingGraphState createNewState(String name, PTMarking element) throws ParameterException {
+	protected PTMarkingGraphState createNewState(String name, PTMarking element) {
 		return new PTMarkingGraphState(name, element);
 	}
 
 	@Override
-	public PTMarkingGraphRelation createNewTransitionRelation(PTMarkingGraphState sourceState, PTMarkingGraphState targetState) throws ParameterException {
+	public PTMarkingGraphRelation createNewTransitionRelation(PTMarkingGraphState sourceState, PTMarkingGraphState targetState) {
 		return new PTMarkingGraphRelation(sourceState, targetState);
 	}
 	

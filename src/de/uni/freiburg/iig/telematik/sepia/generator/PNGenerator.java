@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.generator;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
@@ -8,7 +7,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 public class PNGenerator {
 	
-	public static PTNet sharedResource(int processes, int ressources) throws ParameterException{
+	public static PTNet sharedResource(int processes, int ressources) {
 		Validate.bigger(processes, 1);
 		Validate.bigger(ressources, 0);
 		
@@ -47,7 +46,7 @@ public class PNGenerator {
 		return ptNet;
 	}
 	
-	public static PTNet producerConsumer(int producer, int consumer) throws ParameterException{
+	public static PTNet producerConsumer(int producer, int consumer) {
 		Validate.bigger(producer, 0);
 		Validate.bigger(consumer, 0);
 		
@@ -84,7 +83,7 @@ public class PNGenerator {
 		return ptNet;
 	}
 	
-	public static PTNet boundedPipeline(int processes, int bound) throws ParameterException{
+	public static PTNet boundedPipeline(int processes, int bound) {
 		Validate.bigger(processes, 1);
 		Validate.bigger(bound, 0);
 		

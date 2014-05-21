@@ -5,7 +5,6 @@ import java.io.IOException;
 
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.ParserException.ErrorCode;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
@@ -43,8 +42,6 @@ public class PNParsing {
 	 *             If the file can't be found or read
 	 * @throws ParserException
 	 *             For exceptions caused by the parsing
-	 * @throws ParameterException
-	 *             For exceptions caused by the given parameters
 	 */
 	public static synchronized <P extends AbstractPlace<F,S>, 
 	   							T extends AbstractTransition<F,S>, 
@@ -58,7 +55,7 @@ public class PNParsing {
 	
 							AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G>
 	
-	parse(File file) throws IOException, ParserException, ParameterException {
+	parse(File file) throws IOException, ParserException {
 		validateFile(file);
 		PNParsingFormat format = guessFormat(file);
 		if(format == null)
@@ -77,8 +74,6 @@ public class PNParsing {
 	 *             If the file can't be found or read
 	 * @throws ParserException
 	 *             For exceptions caused by the parsing
-	 * @throws ParameterException
-	 *             For exceptions caused by the given parameters
 	 */
 	public static synchronized <P extends AbstractPlace<F,S>, 
 	   							T extends AbstractTransition<F,S>, 
@@ -92,7 +87,7 @@ public class PNParsing {
 	
 							AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G>
 	
-	parse(String fileName) throws IOException, ParserException, ParameterException {
+	parse(String fileName) throws IOException, ParserException {
 		Validate.notNull(fileName);
 		return PNParsing.<P,T,F,M,S,X,Y,N,G>parse(prepareFile(fileName));
 	}
@@ -107,8 +102,6 @@ public class PNParsing {
 	 *             If the file can't be found or read
 	 * @throws ParserException
 	 *             For exceptions caused by the parsing
-	 * @throws ParameterException
-	 *             For exceptions caused by the given parameters
 	 */
 	public static synchronized <P extends AbstractPlace<F,S>, 
 	   							T extends AbstractTransition<F,S>, 
@@ -122,7 +115,7 @@ public class PNParsing {
 	
 							AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G>
 	
-	parse(File file, PNParsingFormat format) throws IOException, ParserException, ParameterException {
+	parse(File file, PNParsingFormat format) throws IOException, ParserException {
 		validateFile(file);
 		Validate.notNull(format);
 		PNParserInterface parser = getParser(file, format);
@@ -139,8 +132,6 @@ public class PNParsing {
 	 *             If the file can't be found or read
 	 * @throws ParserException
 	 *             For exceptions caused by the parsing
-	 * @throws ParameterException
-	 *             For exceptions caused by the given parameters
 	 */
 	public static synchronized <P extends AbstractPlace<F,S>, 
 	   							T extends AbstractTransition<F,S>, 
@@ -154,7 +145,7 @@ public class PNParsing {
 	
 							AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G>
 	
-	parse(String fileName, PNParsingFormat format) throws IOException, ParserException, ParameterException {
+	parse(String fileName, PNParsingFormat format) throws IOException, ParserException {
 		Validate.notNull(fileName);
 		return PNParsing.<P,T,F,M,S,X,Y,N,G>parse(prepareFile(fileName), format);
 	}

@@ -1,6 +1,5 @@
  package de.uni.freiburg.iig.telematik.sepia.mg.cwn;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
 
@@ -10,12 +9,12 @@ public class CWNMarkingGraph extends AbstractCWNMarkingGraph<CWNMarking, CWNMark
 		super();
 	}
 
-	public CWNMarkingGraph(String name) throws ParameterException {
+	public CWNMarkingGraph(String name) {
 		super(name);
 	}
 
 	@Override
-	protected Event createNewEvent(String name, String label) throws ParameterException {
+	protected Event createNewEvent(String name, String label) {
 		return new Event(name, label);
 	}
 
@@ -25,12 +24,12 @@ public class CWNMarkingGraph extends AbstractCWNMarkingGraph<CWNMarking, CWNMark
 	}
 
 	@Override
-	protected CWNMarkingGraphState createNewState(String name, CWNMarking element) throws ParameterException {
+	protected CWNMarkingGraphState createNewState(String name, CWNMarking element) {
 		return new CWNMarkingGraphState(name, element);
 	}
 
 	@Override
-	public CWNMarkingGraphRelation createNewTransitionRelation(CWNMarkingGraphState sourceState, CWNMarkingGraphState targetState) throws ParameterException {
+	public CWNMarkingGraphRelation createNewTransitionRelation(CWNMarkingGraphState sourceState, CWNMarkingGraphState targetState) {
 		return new CWNMarkingGraphRelation(sourceState, targetState);
 	}
 	

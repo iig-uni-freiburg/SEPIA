@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.mg.abstr;
 
 import java.util.Collection;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
@@ -18,23 +17,23 @@ public abstract class AbstractMarkingGraph<M extends AbstractMarking<O>, O exten
 		super();
 	}
 	
-	public AbstractMarkingGraph(String name) throws ParameterException{
+	public AbstractMarkingGraph(String name) {
 		super(name);
 	}
 	
-	public AbstractMarkingGraph(Collection<String> states) throws ParameterException{
+	public AbstractMarkingGraph(Collection<String> states) {
 		super(states);
 	}
 	
-	public AbstractMarkingGraph(String name, Collection<String> states) throws ParameterException{
+	public AbstractMarkingGraph(String name, Collection<String> states) {
 		super(name, states);
 	}
 	
-	public AbstractMarkingGraph(Collection<String> states, Collection<String> events) throws ParameterException{
+	public AbstractMarkingGraph(Collection<String> states, Collection<String> events) {
 		super(states, events);
 	}
 	
-	public AbstractMarkingGraph(String name, Collection<String> states, Collection<String> events) throws ParameterException{
+	public AbstractMarkingGraph(String name, Collection<String> states, Collection<String> events) {
 		super(name, states, events);
 	}
 	

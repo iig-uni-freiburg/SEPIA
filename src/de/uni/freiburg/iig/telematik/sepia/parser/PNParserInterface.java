@@ -37,5 +37,5 @@ public interface PNParserInterface {
 	    	N extends AbstractPetriNet<P, T, F, M, S, X, Y>,
 	    	G extends AbstractPNGraphics<P, T, F, M, S>>
 	
-			AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> parse(File file) throws IOException, ParserException, ParameterException;
+			AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> parse(File file) throws IOException, ParserException;
 }

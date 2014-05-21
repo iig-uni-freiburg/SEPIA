@@ -5,19 +5,19 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRel
 
 public class CPNFlowRelation extends AbstractCPNFlowRelation<CPNPlace, CPNTransition> {
 
-	public CPNFlowRelation(CPNPlace p, CPNTransition t, boolean addDefaultConstraint) throws ParameterException {
+	public CPNFlowRelation(CPNPlace p, CPNTransition t, boolean addDefaultConstraint) {
 		super(p, t, addDefaultConstraint);
 	}
 
-	public CPNFlowRelation(CPNPlace p, CPNTransition t) throws ParameterException {
+	public CPNFlowRelation(CPNPlace p, CPNTransition t) {
 		super(p, t);
 	}
 
-	public CPNFlowRelation(CPNTransition t, CPNPlace p, boolean addDefaultConstraint) throws ParameterException {
+	public CPNFlowRelation(CPNTransition t, CPNPlace p, boolean addDefaultConstraint) {
 		super(t, p, addDefaultConstraint);
 	}
 
-	public CPNFlowRelation(CPNTransition t, CPNPlace p) throws ParameterException {
+	public CPNFlowRelation(CPNTransition t, CPNPlace p) {
 		super(t, p);
 	}
 

@@ -19,7 +19,7 @@ public class PlaceFiringRules {
 	/**
 	 * Adds a specified amount of color tokens to the incoming color tokens.
 	 */
-	public void addIncomingColorTokens(String color, int amount) throws ParameterException {
+	public void addIncomingColorTokens(String color, int amount) {
 		Validate.notNegative(amount);
 
 		if (incomingColorTokens.containsKey(color)) {
@@ -33,7 +33,7 @@ public class PlaceFiringRules {
 	/**
 	 * Adds a specified amount of color tokens to the outgoing color tokens.
 	 */
-	public void addOutgoingColorTokens(String color, int amount) throws ParameterException {
+	public void addOutgoingColorTokens(String color, int amount) {
 		Validate.notNegative(amount);
 
 		if (outgoingColorTokens.containsKey(color)) {

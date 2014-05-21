@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 
 import java.util.HashSet;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
@@ -11,12 +10,12 @@ public class TransitionListenerSupport<T extends AbstractTransition<?,?>> {
 	
 	protected HashSet<TransitionListener<T>> listeners = new HashSet<TransitionListener<T>>();
 	
-	public void addTransitionListener(TransitionListener<T> l) throws ParameterException {
+	public void addTransitionListener(TransitionListener<T> l) {
 		Validate.notNull(l);
 		listeners.add(l);
 	}
 	
-	public void removeTransitionListener(TransitionListener<T> l) throws ParameterException {
+	public void removeTransitionListener(TransitionListener<T> l) {
 		Validate.notNull(l);
 		listeners.remove(l);
 	}

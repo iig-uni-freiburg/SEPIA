@@ -37,8 +37,7 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		super();
 	}
 
-	public AbstractCWN(Set<String> places, Set<String> transitions, M initialMarking) 
-			throws ParameterException {
+	public AbstractCWN(Set<String> places, Set<String> transitions, M initialMarking) {
 		super(places, transitions, initialMarking);
 	}	
 	
@@ -182,7 +181,7 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 	}
 	
 	@Override
-	public M fireCheck(String transitionName) throws ParameterException, PNException {
+	public M fireCheck(String transitionName) throws PNException {
 		validateFireTransition(transitionName);
 		M newMarking = cloneMarking();
 		T transition = getTransition(transitionName);

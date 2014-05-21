@@ -34,7 +34,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 public class PNMLPTNetParser extends AbstractPNMLPTNetParser<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTMarkingGraphState, PTMarkingGraphRelation, PTNet, PTGraphics> {
 
 	@Override
-	public GraphicalPTNet parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalPTNet parse(Document pnmlDocument) throws ParserException {
 
 		net = new PTNet();
 		graphics = new PTGraphics();

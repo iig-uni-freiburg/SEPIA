@@ -14,19 +14,19 @@ public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? 
 		super();
 	}
 	
-	public AbstractCPNTransition(String name, boolean isEmpty) throws ParameterException {
+	public AbstractCPNTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);
 	}
 
-	public AbstractCPNTransition(String name, String label, boolean isEmpty) throws ParameterException {
+	public AbstractCPNTransition(String name, String label, boolean isEmpty) {
 		super(name, label, isEmpty);
 	}
 
-	public AbstractCPNTransition(String name, String label) throws ParameterException {
+	public AbstractCPNTransition(String name, String label) {
 		super(name, label);
 	}
 
-	public AbstractCPNTransition(String name) throws ParameterException {
+	public AbstractCPNTransition(String name) {
 		super(name);
 	}
 	

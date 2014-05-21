@@ -9,19 +9,19 @@ public class CWNTransition extends AbstractCWNTransition<CWNFlowRelation> {
 		super();
 	}
 
-	public CWNTransition(String name, boolean isEmpty) throws ParameterException {
+	public CWNTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);
 	}
 
-	public CWNTransition(String name, String label, boolean isEmpty) throws ParameterException {
+	public CWNTransition(String name, String label, boolean isEmpty) {
 		super(name, label, isEmpty);
 	}
 
-	public CWNTransition(String name, String label) throws ParameterException { 
+	public CWNTransition(String name, String label) { 
 		super(name, label);
 	}
 
-	public CWNTransition(String name) throws ParameterException {
+	public CWNTransition(String name) {
 		super(name);
 	}
 

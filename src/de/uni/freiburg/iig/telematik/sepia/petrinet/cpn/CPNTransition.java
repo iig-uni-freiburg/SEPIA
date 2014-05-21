@@ -9,19 +9,19 @@ public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 		super();
 	}
 
-	public CPNTransition(String name, boolean isEmpty) throws ParameterException {
+	public CPNTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);
 	}
 
-	public CPNTransition(String name, String label, boolean isEmpty) throws ParameterException {
+	public CPNTransition(String name, String label, boolean isEmpty) {
 		super(name, label, isEmpty);
 	}
 
-	public CPNTransition(String name, String label) throws ParameterException {
+	public CPNTransition(String name, String label) {
 		super(name, label);
 	}
 
-	public CPNTransition(String name) throws ParameterException {
+	public CPNTransition(String name) {
 		super(name);
 	}
 
@@ -34,7 +34,4 @@ public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	public CPNTransition clone() {
 		return (CPNTransition) super.clone();
 	}
-	
-	
-	
 }

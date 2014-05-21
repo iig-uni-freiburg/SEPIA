@@ -12,7 +12,7 @@ public abstract class AbstractCPNMarking extends AbstractMarking<Multiset<String
 	}	
 	
 	@Override
-	public void set(String place, Multiset<String> state) throws ParameterException {
+	public void set(String place, Multiset<String> state) {
 		Validate.notNull(place);
 		Validate.notNull(state);
 		if(state.isEmpty()){
@@ -31,5 +31,4 @@ public abstract class AbstractCPNMarking extends AbstractMarking<Multiset<String
 		}
 		return builder.toString();
 	}
-
 }

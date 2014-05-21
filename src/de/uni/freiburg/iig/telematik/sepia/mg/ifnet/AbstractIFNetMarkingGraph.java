@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.mg.ifnet;
 
 import java.util.Collection;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMarking;
 
@@ -12,24 +11,23 @@ public abstract class AbstractIFNetMarkingGraph<M extends AbstractIFNetMarking, 
 		super();
 	}
 
-	public AbstractIFNetMarkingGraph(Collection<String> states, Collection<String> events) throws ParameterException {
+	public AbstractIFNetMarkingGraph(Collection<String> states, Collection<String> events) {
 		super(states, events);
 	}
 
-	public AbstractIFNetMarkingGraph(Collection<String> states) throws ParameterException {
+	public AbstractIFNetMarkingGraph(Collection<String> states) {
 		super(states);
 	}
 
-	public AbstractIFNetMarkingGraph(String name, Collection<String> states, Collection<String> events) throws ParameterException {
+	public AbstractIFNetMarkingGraph(String name, Collection<String> states, Collection<String> events) {
 		super(name, states, events);
 	}
 
-	public AbstractIFNetMarkingGraph(String name, Collection<String> states) throws ParameterException {
+	public AbstractIFNetMarkingGraph(String name, Collection<String> states) {
 		super(name, states);
 	}
 
-	public AbstractIFNetMarkingGraph(String name) throws ParameterException {
+	public AbstractIFNetMarkingGraph(String name) {
 		super(name);
 	}
-
 }

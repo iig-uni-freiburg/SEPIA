@@ -17,7 +17,7 @@ public class FiringRule {
 		return !requiredTokens.isEmpty();
 	}
 	
-	public void addRequirement(String placeName, Map<String, Integer> requirement) throws ParameterException{
+	public void addRequirement(String placeName, Map<String, Integer> requirement) {
 		Validate.notNull(placeName);
 		Validate.notNull(requirement);
 		Validate.noNullElements(requirement.keySet());
@@ -30,7 +30,7 @@ public class FiringRule {
 	}
 	
 	
-	public void addRequirement(String placeName, String color, Integer tokens) throws ParameterException{
+	public void addRequirement(String placeName, String color, Integer tokens) {
 		Validate.notNull(placeName);
 		Validate.notNull(color);
 		Validate.notNull(tokens);
@@ -47,7 +47,7 @@ public class FiringRule {
 		return !producedTokens.isEmpty();
 	}
 	
-	public void addProduction(String placeName, Map<String, Integer> production) throws ParameterException{
+	public void addProduction(String placeName, Map<String, Integer> production) {
 		Validate.notNull(placeName);
 		Validate.notNull(production);
 		Validate.noNullElements(production.keySet());
@@ -60,7 +60,7 @@ public class FiringRule {
 		producedTokens.put(placeName, production);
 	}
 	
-	public void addProduction(String placeName, String color, Integer tokens) throws ParameterException{
+	public void addProduction(String placeName, String color, Integer tokens) {
 		Validate.notNull(placeName);
 		Validate.notNull(color);
 		Validate.notNull(tokens);

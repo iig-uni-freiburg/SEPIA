@@ -20,7 +20,7 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	}
 
 	public CPN(Set<String> places, Set<String> transitions,
-			CPNMarking initialMarking) throws ParameterException {
+			CPNMarking initialMarking) {
 		super(places, transitions, initialMarking);
 	}
 
@@ -30,32 +30,32 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	}
 
 	@Override
-	protected CPNTransition createNewTransition(String name, String label, boolean isSilent) throws ParameterException {
+	protected CPNTransition createNewTransition(String name, String label, boolean isSilent) {
 		return new CPNTransition(name, label, isSilent);
 	}
 
 	@Override
-	protected CPNPlace createNewPlace(String name, String label) throws ParameterException {
+	protected CPNPlace createNewPlace(String name, String label) {
 		return new CPNPlace(name, label);
 	}
 
 	@Override
-	protected CPNFlowRelation createNewFlowRelation(CPNPlace place, CPNTransition transition) throws ParameterException {
+	protected CPNFlowRelation createNewFlowRelation(CPNPlace place, CPNTransition transition) {
 		return new CPNFlowRelation(place, transition, false);
 	}
 
 	@Override
-	protected CPNFlowRelation createNewFlowRelation(CPNTransition transition, CPNPlace place) throws ParameterException {
+	protected CPNFlowRelation createNewFlowRelation(CPNTransition transition, CPNPlace place) {
 		return new CPNFlowRelation(transition, place, false);
 	}
 	
 	@Override
-	public CPNMarkingGraph createNewMarkingGraph() throws ParameterException {
+	public CPNMarkingGraph createNewMarkingGraph() {
 		return new CPNMarkingGraph();
 	}
 
 	@Override
-	public CPNMarking fireCheck(String transitionName) throws ParameterException, PNException {
+	public CPNMarking fireCheck(String transitionName) throws PNException {
 		validateFireTransition(transitionName);
 		CPNMarking newMarking = cloneMarking();
 		CPNTransition transition = getTransition(transitionName);

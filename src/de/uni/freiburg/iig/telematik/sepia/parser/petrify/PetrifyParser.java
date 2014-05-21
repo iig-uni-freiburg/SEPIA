@@ -26,7 +26,7 @@ public class PetrifyParser implements PNParserInterface{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public GraphicalPTNet parse(File file) throws IOException, ParserException, ParameterException {
+	public GraphicalPTNet parse(File file) throws IOException, ParserException {
 		GraphicalPTNet net = new GraphicalPTNet();
 		FileReader reader = new FileReader(file.getAbsolutePath());
 		String nextLine = null;
@@ -55,7 +55,7 @@ public class PetrifyParser implements PNParserInterface{
 		return net;
 	}
 
-	private void addFlowRelation(PTNet net, String lineContent) throws ParameterException {
+	private void addFlowRelation(PTNet net, String lineContent) {
 		String sourceName = lineContent.substring(0, lineContent.indexOf(" "));
 		String targetName = null;
 		int weight = 1;
@@ -76,13 +76,13 @@ public class PetrifyParser implements PNParserInterface{
 		}
 	}
 
-	private void ensurePlace(PTNet net, String placeName) throws ParameterException {
+	private void ensurePlace(PTNet net, String placeName) {
 		if(!net.containsPlace(placeName)){
 			net.addPlace(placeName);
 		}
 	}
 
-	private void setMarking(PTNet net, String lineContent) throws ParameterException {
+	private void setMarking(PTNet net, String lineContent) {
 		PTMarking marking = new PTMarking();
 		String placeName = null;
 		String multiplicityString = null;
@@ -104,7 +104,7 @@ public class PetrifyParser implements PNParserInterface{
 		net.setInitialMarking(marking);
 	}
 
-	private void setCapacities(PTNet net, String lineContent) throws ParameterException {
+	private void setCapacities(PTNet net, String lineContent) {
 		String placeName = null;
 		String capacityString = null;
 		for(String token: getTokens(lineContent)){
@@ -117,7 +117,7 @@ public class PetrifyParser implements PNParserInterface{
 		}
 	}
 
-	private void insertTransitions(PTNet net, String lineContent) throws ParameterException {
+	private void insertTransitions(PTNet net, String lineContent) {
 		for(String token: getTokens(lineContent)){
 			net.addTransition(token);
 		}

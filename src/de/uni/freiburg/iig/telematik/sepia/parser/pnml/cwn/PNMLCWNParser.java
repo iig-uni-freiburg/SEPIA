@@ -34,7 +34,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
 public class PNMLCWNParser extends AbstractPNMLCWNParser<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, CWNMarkingGraphState, CWNMarkingGraphRelation, CWN, CWNGraphics> {
 
 	@Override
-	public GraphicalCWN parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalCWN parse(Document pnmlDocument) throws ParserException {
 
 		net = new CWN();
 		graphics = new CWNGraphics();

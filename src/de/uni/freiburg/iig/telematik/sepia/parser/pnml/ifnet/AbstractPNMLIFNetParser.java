@@ -55,7 +55,7 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 extends AbstractPNMLCWNParser<P, T, F, M, X, Y, N, G> {
 
 	@Override
-	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
+	public void parseDocument(Document pnmlDocument) throws ParserException {
 
 		super.parseDocument(pnmlDocument);
 
@@ -92,7 +92,7 @@ extends AbstractPNMLCWNParser<P, T, F, M, X, Y, N, G> {
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalIFNet}.
 	 */
 	@Override
-	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
+	protected void readTransitions(NodeList transitionNodes) throws ParserException {
 		// read and add each transition
 		for (int t = 0; t < transitionNodes.getLength(); t++) {
 			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
@@ -184,7 +184,7 @@ extends AbstractPNMLCWNParser<P, T, F, M, X, Y, N, G> {
 	/**
 	 * Reads the access functions of a transition in an IF-net and returns a Map<tokenColorName, Map<accessmode, boolean>>.
 	 */
-	public Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) throws ParameterException {
+	public Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) {
 		Validate.notNull(accessFunctionsElement);
 
 		Map<String, Collection<AccessMode>> accessFunctions = new HashMap<String, Collection<AccessMode>>();
@@ -246,7 +246,7 @@ extends AbstractPNMLCWNParser<P, T, F, M, X, Y, N, G> {
 	/**
 	 * Reads the type of a transition of an IF-net. If there's no transition type, it returns the type "regular".
 	 */
-	public String readTransitionType(Element transitionElement) throws ParameterException {
+	public String readTransitionType(Element transitionElement) {
 		Validate.notNull(transitionElement);
 
 		NodeList transitionTypeNodes = transitionElement.getElementsByTagName("transitiontype");

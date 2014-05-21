@@ -57,7 +57,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	private Map<String, Map<String, PlaceFiringRules>> transitionFiringRules = new HashMap<String, Map<String, PlaceFiringRules>>();
 
 	@Override
-	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
+	public void parseDocument(Document pnmlDocument) throws ParserException {
 
 		NodeList tokencolorsNodes = pnmlDocument.getElementsByTagName("tokencolors");
 		for (int i = 0; i < tokencolorsNodes.getLength(); i++) {
@@ -76,7 +76,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link Abstract}.
 	 */
 	@Override
-	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
+	protected void readArcs(NodeList arcNodes) throws ParserException {
 		// read and add each arc/flow relation
 		for (int a = 0; a < arcNodes.getLength(); a++) {
 			if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
@@ -214,7 +214,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractCPNGraphics}.
 	 */
 	@Override
-	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
+	protected void readPlaces(NodeList placeNodes) throws ParserException {
 		// add each place
 		M marking = net.getMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
@@ -315,7 +315,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 		net.setInitialMarking(marking);
 	}
 
-	protected void addFiringRulesToNet() throws ParameterException {
+	protected void addFiringRulesToNet() {
 		for (Map.Entry<String, Map<String, PlaceFiringRules>> placeFiringRules : transitionFiringRules.entrySet()) {
 			FiringRule firingRule = new FiringRule();
 	
@@ -334,7 +334,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	/**
 	 * Reads an initial color marking tag and returns its values as {@link Map}.
 	 */
-	public Map<String, Integer> readColorInscription(Node colorInscriptionNode) throws ParameterException {
+	public Map<String, Integer> readColorInscription(Node colorInscriptionNode) {
 		Validate.notNull(colorInscriptionNode);
 
 		Element colorInscriptionElement = (Element) colorInscriptionNode;
@@ -362,7 +362,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	/**
 	 * Reads an initial color marking tag and returns its values as {@link Map}.
 	 */
-	public Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) throws ParameterException {
+	public Map<String, Integer> readInitialColorMarking(Node initialColorMarkingNode) {
 		Validate.notNull(initialColorMarkingNode);
 
 		Element initialColorMarkingElement = (Element) initialColorMarkingNode;
@@ -390,7 +390,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	/**
 	 * Gets the place color capacities element of a CPN, CWN, or IFNet and returns a {@link Map} containing all capacity values for the specific token color name.
 	 */
-	public Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws ParameterException, PNMLParserException {
+	public Map<String, Integer> readPlaceColorCapacities(Element placeCapacitiesElement) throws PNMLParserException {
 		Validate.notNull(placeCapacitiesElement);
 
 		Map<String, Integer> placeCapacities = new HashMap<String, Integer>();
@@ -434,7 +434,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	/**
 	 * Gets the tokencolors element of a CPN, CWN, or IFNet and returns a {@link Map} containing all color values for the specific token color names.
 	 */
-	public Map<String, Color> readTokenColors(Element tokenColorsElement) throws ParameterException, PNMLParserException {
+	public Map<String, Color> readTokenColors(Element tokenColorsElement) throws PNMLParserException {
 		Validate.notNull(tokenColorsElement);
 
 		Map<String, Color> tokenColors = new HashMap<String, Color>();

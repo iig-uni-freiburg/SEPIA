@@ -9,21 +9,21 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 											  T extends AbstractCPNTransition<? extends AbstractCPNFlowRelation<P,T>>> 
 												extends AbstractFlowRelation<P, T, Multiset<String>>{
 	
-	public AbstractCPNFlowRelation(P place, T transition, boolean addDefaultConstraint) throws ParameterException {
+	public AbstractCPNFlowRelation(P place, T transition, boolean addDefaultConstraint) {
 		super(place, transition);
 		initialize(addDefaultConstraint);
 	}
 	
-	public AbstractCPNFlowRelation(T transition, P place, boolean addDefaultConstraint) throws ParameterException {
+	public AbstractCPNFlowRelation(T transition, P place, boolean addDefaultConstraint) {
 		super(transition, place);
 		initialize(addDefaultConstraint);
 	}
 	
-	public AbstractCPNFlowRelation(P place, T transition) throws ParameterException {
+	public AbstractCPNFlowRelation(P place, T transition) {
 		this(place, transition, true);
 	}
 	
-	public AbstractCPNFlowRelation(T transition, P place) throws ParameterException {
+	public AbstractCPNFlowRelation(T transition, P place) {
 		this(transition, place, true);
 	}
 	
@@ -45,7 +45,7 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 		return defaultConstraint;
 	}
 
-	public void addConstraint(String color, Integer number) throws ParameterException{
+	public void addConstraint(String color, Integer number) {
 		Validate.notNull(color);
 		Validate.notNull(number);
 		Validate.bigger(number, 0);
@@ -53,7 +53,7 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 		relationListenerSupport.notifyCapacityChanged(this);
 	}
 	
-	public int getConstraint(String color) throws ParameterException{
+	public int getConstraint(String color) {
 		return getConstraint().multiplicity(color);
 	}
 	
@@ -67,8 +67,7 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 	}
 	
 	@Override
-	protected void validateConstraint(Multiset<String> constraint) throws ParameterException {
+	protected void validateConstraint(Multiset<String> constraint) {
 		Validate.notNull(constraint);
 	}
-	
 }

@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn;
 import org.w3c.dom.Document;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphRelation;
@@ -34,7 +33,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 public class PNMLCPNParser extends AbstractPNMLCPNParser<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation, CPN, CPNGraphics> {
 
 	@Override
-	public GraphicalCPN parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalCPN parse(Document pnmlDocument) throws ParserException {
 
 		net = new CPN();
 		graphics = new CPNGraphics();

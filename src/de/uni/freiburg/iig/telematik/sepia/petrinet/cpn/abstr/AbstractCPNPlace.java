@@ -27,11 +27,11 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		state = new Multiset<String>();
 	}
 	
-	public AbstractCPNPlace(String name) throws ParameterException {
+	public AbstractCPNPlace(String name) {
 		this(name, name);
 	}
 	
-	public AbstractCPNPlace(String name, String label) throws ParameterException {
+	public AbstractCPNPlace(String name, String label) {
 		super(name, label);
 		state = new Multiset<String>();
 	}
@@ -46,7 +46,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		return numTokens;
 	}
 	
-	public void setColorCapacity(String color, int value) throws ParameterException{
+	public void setColorCapacity(String color, int value) {
 		Validate.notNull(color);
 		Validate.bigger(value, 0);
 		
@@ -68,7 +68,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 			placeListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
 	}
 	
-	public void removeColorCapacity(String color) throws ParameterException{
+	public void removeColorCapacity(String color) {
 		Validate.notNull(color);
 		int oldCapacity = capacity;
 		if(!colorCapacity.containsKey(color))
@@ -82,7 +82,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 			placeListenerSupport.notifyCapacityChanged(new CapacityEvent<AbstractPlace<E,Multiset<String>>>(this, capacity));
 	}
 	
-	public int getColorCapacity(String color) throws ParameterException{
+	public int getColorCapacity(String color) {
 		Validate.notNull(color);
 		if(getCapacity() > 0){
 			//There are color capacities.
@@ -100,7 +100,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		return colorCapacity.keySet();
 	}
 	
-	public boolean hasCapacityRestriction(String color) throws ParameterException{
+	public boolean hasCapacityRestriction(String color) {
 		return getColorCapacity(color) > -1;
 	}
 	
@@ -109,7 +109,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	 * The overall capacity of a place is the sum of all color capacities.
 	 */
 	@Override
-	public void setCapacity(int capacity) throws ParameterException {
+	public void setCapacity(int capacity) {
 		throw new UnsupportedOperationException("Use setColorCapacity() instead.");
 	}
 
@@ -122,7 +122,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	}
 
 	@Override
-	protected void addTokens(Multiset<String> tokens) throws ParameterException {
+	protected void addTokens(Multiset<String> tokens) {
 		Validate.notNull(tokens);
 		for(String color: tokens.support()){
 			addTokens(color, tokens.multiplicity(color));
@@ -130,19 +130,19 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	}
 	
 	@Override
-	protected void removeTokens(Multiset<String> tokens) throws ParameterException {
+	protected void removeTokens(Multiset<String> tokens) {
 		Validate.notNull(tokens);
 		for(String color: tokens.support()){
 			removeTokens(color, tokens.multiplicity(color));
 		}
 	}
 	
-	protected void addTokens(String color, int number)  throws ParameterException{
+	protected void addTokens(String color, int number) {
 		Validate.notNull(color);
 		setTokens(color, state.multiplicity(color) + number);
 	}
 	
-	protected void setTokens(String color, int number) throws ParameterException{
+	protected void setTokens(String color, int number) {
 		Validate.notNull(color);
 		Validate.notNegative(number);
 		if(capacity > -1)
@@ -160,14 +160,14 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		checkTokenDifference(color, oldMultiplicity, number);
 	}
 	
-	private int getTokenCountWithout(String color) throws ParameterException{
+	private int getTokenCountWithout(String color) {
 		Validate.notNull(color);
 		if(!state.contains(color))
 			return numTokens;
 		return numTokens - state.multiplicity(color);
 	}
 	
-	protected void removeTokens(String color, int number) throws ParameterException {
+	protected void removeTokens(String color, int number) {
 		Validate.notNegative(number);
 		Validate.notNull(color);
 		if(!state.contains(color))
@@ -178,7 +178,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		setTokens(color, state.multiplicity(color)-number);
 	}
 	
-	protected void removeTokens(String color) throws ParameterException {
+	protected void removeTokens(String color) {
 		Validate.notNull(color);
 		if(!state.contains(color))
 			return;
@@ -197,7 +197,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	}
 	
 	@Override
-	public boolean canConsume(Multiset<String> state) throws ParameterException {
+	public boolean canConsume(Multiset<String> state) {
 		validateState(state);
 		for(String color: state.support()){
 			if(hasCapacityRestriction(color)){
@@ -219,7 +219,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 		tokenListenerSupport.notifyTokensAdded(o);
 	}
 	
-	protected int getTokens(String color) throws ParameterException {
+	protected int getTokens(String color) {
 		Validate.notNull(color);
 		return getState().multiplicity(color);
 	}
@@ -248,7 +248,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	}
 	
 	@Override
-	protected void validateState(Multiset<String> state) throws ParameterException {
+	protected void validateState(Multiset<String> state) {
 		super.validateState(state);
 		if(capacity > -1)
 			Validate.smallerEqual(state.size(), capacity, "Place cannot hold more than "+capacity+" tokens");
@@ -291,7 +291,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	//------- clone ----------------------------------------------------------------------------------
 	
 	@Override
-	protected void cloneCapacity(AbstractPlace<E, Multiset<String>> clone) throws ParameterException {
+	protected void cloneCapacity(AbstractPlace<E, Multiset<String>> clone) {
 		for(String color: colorCapacity.keySet()){
 			((AbstractCPNPlace<E>) clone).setColorCapacity(color, colorCapacity.get(color));
 		}

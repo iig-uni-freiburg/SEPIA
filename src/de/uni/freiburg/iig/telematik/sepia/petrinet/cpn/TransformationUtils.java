@@ -20,7 +20,7 @@ public class TransformationUtils {
 				   X extends AbstractPTMarkingGraphState<M>,
 				   Y extends AbstractPTMarkingGraphRelation<M,X>> 
 	
-	CPN transform(AbstractPTNet<P,T,F,M,X,Y> ptNet) throws ParameterException{
+	CPN transform(AbstractPTNet<P,T,F,M,X,Y> ptNet) {
 		Validate.notNull(ptNet);
 		
 		CPN cpn = new CPN();

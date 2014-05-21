@@ -20,7 +20,6 @@ import org.xml.sax.SAXException;
 
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
@@ -75,7 +74,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	/**
 	 * Returns the net type name by its URI.
 	 */
-	private NetType getPNMLType(String pntdURI) throws ParameterException, PNMLParserException {
+	private NetType getPNMLType(String pntdURI) throws PNMLParserException {
 		Validate.notNull(pntdURI);
 		return NetType.getNetType(pntdURI);
 	}
@@ -104,7 +103,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            Path to the file to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile) throws IOException, ParserException, ParameterException {
+	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile) throws IOException, ParserException {
 
 		return this.parse(pnmlFile, true, true);
 	}
@@ -120,7 +119,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException {
 		File inputFile = new File(pnmlFile);
 		if (inputFile.isDirectory())
 			throw new IOException("I/O Error on opening file: File is a directory!");
@@ -141,7 +140,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(File pnmlFile) throws IOException, ParserException, ParameterException {
+	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(File pnmlFile) throws IOException, ParserException {
 		return this.parse(pnmlFile, true, true);
 	}
 
@@ -157,7 +156,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
 	@SuppressWarnings("unchecked")
-	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException {
 
 		Validate.notNull(pnmlFile);
 
@@ -212,7 +211,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            PNML file to read
 	 * @return Readable, well-formed and normalized PNML document
 	 */
-	public static Document readRNGFile(File pnmlFile) throws ParameterException, IOException, XMLParserException {
+	public static Document readRNGFile(File pnmlFile) throws IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
 
 		// Check if pnmlFile exists and is readable

@@ -36,7 +36,7 @@ public class PNMLCWNParserTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readColorInscription(org.w3c.dom.Node)}.
 	 */
 	@Test
-	public void testReadColorInscription() throws ParameterException {
+	public void testReadColorInscription() {
 		Document arc = (Document) PNMLCWNParserTestUtils.createArc(true, true, true, true, true, true, true, true, 2, true, true, true, true, true, true, true);
 		NodeList colorInscriptionNodes = arc.getElementsByTagName("inscription");
 		if (colorInscriptionNodes.getLength() == 1) {
@@ -64,7 +64,7 @@ public class PNMLCWNParserTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readInitialColorMarking(org.w3c.dom.Node)}.
 	 */
 	@Test
-	public void testReadInitialColorMarking() throws ParameterException {
+	public void testReadInitialColorMarking() {
 		Document place = (Document) PNMLCWNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList initialMarkingNodes = place.getElementsByTagName("initialMarking");
 		if (initialMarkingNodes.getLength() == 1) {
@@ -90,7 +90,7 @@ public class PNMLCWNParserTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readPlaceColorCapacities(org.w3c.dom.Element)}.
 	 */
 	@Test
-	public void testReadPlaceColorCapacities() throws PNMLParserException, ParameterException {
+	public void testReadPlaceColorCapacities() throws PNMLParserException {
 		Document place = (Document) PNMLCWNParserTestUtils.createPlace(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		NodeList capacityList = place.getElementsByTagName("capacities");
 		for (int i = 0; i < capacityList.getLength(); i++) {
@@ -111,7 +111,7 @@ public class PNMLCWNParserTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCWNParser#readTokenColors(org.w3c.dom.Element)}.
 	 */
 	@Test
-	public void testReadTokenColors() throws PNMLParserException, ParameterException {
+	public void testReadTokenColors() throws PNMLParserException {
 		Document tokencolors = (Document) PNMLCWNParserTestUtils.createTokenColors(true, true, true);
 		Map<String, Color> colors = parser.readTokenColors(tokencolors.getDocumentElement());
 		assertEquals(3, colors.size());

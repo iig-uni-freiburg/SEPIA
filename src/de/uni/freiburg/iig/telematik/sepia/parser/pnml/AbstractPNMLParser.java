@@ -73,12 +73,12 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 *            DOM document to parse
 	 * @return Petri net with graphical information
 	 */
-	public abstract AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> parse(Document pnmlDocument) throws ParameterException, ParserException;
+	public abstract AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> parse(Document pnmlDocument) throws ParserException;
 
 	/**
 	 * Parses a PNML document into an existing instance of an {@link AbstractGraphicalPN}. Use {@link #parse(Document)} to return an {@link AbstractGraphicalPN}.
 	 */
-	public void parseDocument(Document pnmlDocument) throws ParameterException, ParserException {
+	public void parseDocument(Document pnmlDocument) throws ParserException {
 		// Check if the net is defined on a single page
 		NodeList pageNodes = pnmlDocument.getElementsByTagName("page");
 		if (pageNodes.getLength() > 1)
@@ -102,17 +102,17 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
-	protected abstract void readArcs(NodeList arcNodes) throws ParameterException, ParserException;
+	protected abstract void readArcs(NodeList arcNodes) throws ParserException;
 
 	/**
 	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
-	protected abstract void readPlaces(NodeList placeNodes) throws ParameterException, ParserException;
+	protected abstract void readPlaces(NodeList placeNodes) throws ParserException;
 
 	/**
 	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
-	protected void readTransitions(NodeList transitionNodes) throws ParameterException, ParserException {
+	protected void readTransitions(NodeList transitionNodes) throws ParserException {
 		// read and add each transition
 		for (int t = 0; t < transitionNodes.getLength(); t++) {
 			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
@@ -151,7 +151,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of an annotation element and returns a {@link AnnotationGraphics} object.
 	 */
-	public AnnotationGraphics readAnnotationGraphicsElement(Element annotationGraphicsElement) throws ParameterException, ParserException {
+	public AnnotationGraphics readAnnotationGraphicsElement(Element annotationGraphicsElement) throws ParserException {
 		Validate.notNull(annotationGraphicsElement);
 
 		String elementType = annotationGraphicsElement.getNodeName();
@@ -196,7 +196,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the visibility information of an annotation element and returns a boolean value.
 	 */
-	public boolean readAnnotationVisibility(Node annotationNode) throws ParameterException {
+	public boolean readAnnotationVisibility(Node annotationNode) {
 		Validate.notNull(annotationNode);
 
 		if (annotationNode.getNodeType() != Node.ELEMENT_NODE)
@@ -228,7 +228,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of an arc element and returns a {@link ArcGraphics} object.
 	 */
-	public ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParameterException, ParserException {
+	public ArcGraphics readArcGraphicsElement(Element arcGraphicsElement) throws ParserException {
 		Validate.notNull(arcGraphicsElement);
 
 		String elementType = arcGraphicsElement.getNodeName();
@@ -266,7 +266,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a dimension tag and returns it as {@link Dimension}. If validated, a dimension tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
-	public Dimension readDimension(Element dimensionNode) throws ParameterException {
+	public Dimension readDimension(Element dimensionNode) {
 		Validate.notNull(dimensionNode);
 
 		Dimension dimension = new Dimension();
@@ -296,7 +296,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a fill tag and returns it as {@link Fill}.
 	 */
-	public Fill readFill(Element fillNode) throws ParameterException {
+	public Fill readFill(Element fillNode) {
 		Validate.notNull(fillNode);
 
 		Fill fill = new Fill();
@@ -344,7 +344,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a font tag and returns it as {@link Font}.
 	 */
-	public Font readFont(Element fontNode) throws ParameterException {
+	public Font readFont(Element fontNode) {
 		Validate.notNull(fontNode);
 
 		Font font = new Font();
@@ -408,7 +408,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphics tag of the given element.
 	 */
-	public AbstractObjectGraphics readGraphics(Element element) throws ParameterException, ParserException {
+	public AbstractObjectGraphics readGraphics(Element element) throws ParserException {
 		Validate.notNull(element);
 
 		// get node element type
@@ -427,7 +427,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads an initial marking tag and returns its value as {@link Integer}.
 	 */
-	public int readInitialMarking(Node initialMarkingNode) throws XMLParserException, ParameterException {
+	public int readInitialMarking(Node initialMarkingNode) throws XMLParserException {
 		Validate.notNull(initialMarkingNode);
 
 		String markingStr = readText(initialMarkingNode);
@@ -442,7 +442,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a line tag and returns it as {@link Line}.
 	 */
-	public Line readLine(Element lineNode) throws ParameterException {
+	public Line readLine(Element lineNode) {
 		Validate.notNull(lineNode);
 
 		Line line = new Line();
@@ -508,7 +508,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the graphical information of a node element line a place or a transition and returns a {@link NodeGraphics} object.
 	 */
-	public NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParameterException, ParserException {
+	public NodeGraphics readNodeGraphicsElement(Element nodeGraphicsElement) throws ParserException {
 		Validate.notNull(nodeGraphicsElement);
 
 		String elementType = nodeGraphicsElement.getNodeName();
@@ -550,7 +550,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads an offset tag and returns it as {@link Offset}. If validated, an offset tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
-	public Offset readOffset(Element offsetNode) throws ParameterException {
+	public Offset readOffset(Element offsetNode) {
 		Validate.notNull(offsetNode);
 
 		Offset offset = new Offset();
@@ -580,7 +580,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a position tag and returns it as {@link Position}. If validated, a position tag must contain a x and a y value. If one of them is missed, its value will be set to 0.
 	 */
-	public Position readPosition(Element positionNode) throws ParameterException {
+	public Position readPosition(Element positionNode) {
 		Validate.notNull(positionNode);
 
 		Position position = new Position();
@@ -610,7 +610,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads a silent tag and returns it as {@link Boolean}. If it's not found, the method returns <code>false</code>.
 	 */
-	public boolean readSilent(Element transitionElement) throws ParameterException {
+	public boolean readSilent(Element transitionElement) {
 		Validate.notNull(transitionElement);
 		
 		NodeList silentList = transitionElement.getElementsByTagName("silent");
@@ -630,7 +630,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Reads the content of text tags and returns them as string.
 	 */
-	public String readText(Node textNode) throws XMLParserException, ParameterException {
+	public String readText(Node textNode) throws XMLParserException {
 		Validate.notNull(textNode);
 
 		if (textNode.getNodeType() != Node.ELEMENT_NODE)
@@ -653,7 +653,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	/**
 	 * Gets a tokenposition node and reads its x and y attributes. Returns a {@link Position}.
 	 */
-	public Position readTokenPosition(Element tokenPositionNode) throws ParameterException {
+	public Position readTokenPosition(Element tokenPositionNode) {
 		Validate.notNull(tokenPositionNode);
 
 		Position tokenPosition = new Position();
@@ -680,13 +680,13 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		return tokenPosition;
 	}
 
-	public void setGraphics(G graphics) throws ParameterException {
+	public void setGraphics(G graphics) {
 		Validate.notNull(graphics);
 
 		this.graphics = graphics;
 	}
 
-	public void setNet(N net) throws ParameterException {
+	public void setNet(N net) {
 		Validate.notNull(graphics);
 
 		this.net = net;

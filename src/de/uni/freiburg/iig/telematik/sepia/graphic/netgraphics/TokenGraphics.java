@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 
@@ -23,7 +22,7 @@ public class TokenGraphics extends AbstractObjectGraphics {
 		tokenposition = DEFAULT_TOKENPOSITION;
 	}
 
-	public TokenGraphics(Position tokenposition) throws ParameterException {
+	public TokenGraphics(Position tokenposition) {
 		setTokenposition(tokenposition);
 	}
 
@@ -31,7 +30,7 @@ public class TokenGraphics extends AbstractObjectGraphics {
 		return tokenposition;
 	}
 
-	public void setTokenposition(Position tokenposition) throws ParameterException {
+	public void setTokenposition(Position tokenposition) {
 		Validate.notNull(tokenposition);
 		this.tokenposition = tokenposition;
 	}

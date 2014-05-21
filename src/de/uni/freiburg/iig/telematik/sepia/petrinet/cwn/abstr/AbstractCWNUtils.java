@@ -30,7 +30,6 @@ public class AbstractCWNUtils {
 	 * @param cwn The basic CWN for operation
 	 * @return <code>true</code> if the given CWN fulfills the property;<br>
 	 * <code>false</code> otherwise. 
-	 * @throws ParameterException If the CWN parameter is <code>null<code> or the net is not bounded.
 	 * @throws PNSoundnessException 
 	 */
 	public static <	P extends AbstractCWNPlace<F>,

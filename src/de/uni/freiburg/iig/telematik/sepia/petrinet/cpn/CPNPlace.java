@@ -9,11 +9,11 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 		super();
 	}
 
-	public CPNPlace(String name) throws ParameterException {
+	public CPNPlace(String name) {
 		super(name);
 	}
 
-	public CPNPlace(String name, String label) throws ParameterException {
+	public CPNPlace(String name, String label) {
 		super(name, label);
 	}
 

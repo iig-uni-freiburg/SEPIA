@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
@@ -33,7 +32,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	/**
 	 * Create new node graphic object with default values.
 	 */
-	public NodeGraphics() throws ParameterException {
+	public NodeGraphics() {
 		setPosition(DEFAULT_POSITION);
 		setDimension(DEFAULT_DIMENSION);
 		setFill(DEFAULT_FILL);
@@ -43,7 +42,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	/**
 	 * Create new node graphic object with the specified values.
 	 */
-	public NodeGraphics(Position position, Dimension dimension, Fill fill, Line line) throws ParameterException {
+	public NodeGraphics(Position position, Dimension dimension, Fill fill, Line line) {
 		setPosition(position);
 		setDimension(dimension);
 		setFill(fill);
@@ -82,7 +81,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	 * @param position
 	 *            the position to set
 	 */
-	public void setPosition(Position position) throws ParameterException {
+	public void setPosition(Position position) {
 		Validate.notNull(position);
 		this.position = position;
 	}
@@ -91,7 +90,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	 * @param dimension
 	 *            the dimension to set
 	 */
-	public void setDimension(Dimension dimension) throws ParameterException {
+	public void setDimension(Dimension dimension) {
 		Validate.notNull(dimension);
 		this.dimension = dimension;
 	}
@@ -100,7 +99,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	 * @param fill
 	 *            the fill to set
 	 */
-	public void setFill(Fill fill) throws ParameterException {
+	public void setFill(Fill fill) {
 		Validate.notNull(fill);
 		this.fill = fill;
 	}
@@ -109,7 +108,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 	 * @param line
 	 *            the line to set
 	 */
-	public void setLine(Line line) throws ParameterException {
+	public void setLine(Line line) {
 		Validate.notNull(line);
 		this.line = line;
 	}

@@ -49,7 +49,7 @@ public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	@Override
-	protected void readArcs(NodeList arcNodes) throws ParameterException, ParserException {
+	protected void readArcs(NodeList arcNodes) throws ParserException {
 		// read and add each arc/flow relation
 		for (int a = 0; a < arcNodes.getLength(); a++) {
 			if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
@@ -103,7 +103,7 @@ public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
 	 * Reads all places given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.
 	 */
 	@Override
-	protected void readPlaces(NodeList placeNodes) throws ParameterException, ParserException {
+	protected void readPlaces(NodeList placeNodes) throws ParserException {
 		// add each place
 		M marking = net.getMarking();
 		for (int p = 0; p < placeNodes.getLength(); p++) {
@@ -179,7 +179,7 @@ public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
 	/**
 	 * Gets the place capacity element of a PN and returns an {@link Integer} value.
 	 */
-	public Integer readPlaceCapacity(Element placeCapacityElement) throws ParameterException, PNMLParserException {
+	public Integer readPlaceCapacity(Element placeCapacityElement) throws PNMLParserException {
 		Validate.notNull(placeCapacityElement);
 
 		int capacity = Integer.parseInt(placeCapacityElement.getTextContent());

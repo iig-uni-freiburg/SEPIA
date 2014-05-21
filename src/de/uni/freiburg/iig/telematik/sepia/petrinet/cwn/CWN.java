@@ -19,8 +19,7 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 		super();
 	}
 
-	public CWN(Set<String> places, Set<String> transitions, CWNMarking initialMarking) 
-			throws ParameterException {
+	public CWN(Set<String> places, Set<String> transitions, CWNMarking initialMarking) {
 		super(places, transitions, initialMarking);
 	}	
 	
@@ -32,31 +31,27 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 	}
 	
 	@Override
-	public CWNMarkingGraph createNewMarkingGraph() throws ParameterException {
+	public CWNMarkingGraph createNewMarkingGraph() {
 		return new CWNMarkingGraph();
 	}
 
 	@Override
-	protected CWNTransition createNewTransition(String name, String label, boolean isSilent) 
-			throws ParameterException {
+	protected CWNTransition createNewTransition(String name, String label, boolean isSilent) {
 		return new CWNTransition(name, label, isSilent);
 	}
 
 	@Override
-	protected CWNPlace createNewPlace(String name, String label) 
-			throws ParameterException {
+	protected CWNPlace createNewPlace(String name, String label) {
 		return new CWNPlace(name, label);
 	}
 
 	@Override
-	protected CWNFlowRelation createNewFlowRelation(CWNPlace place, CWNTransition transition) 
-			throws ParameterException {
+	protected CWNFlowRelation createNewFlowRelation(CWNPlace place, CWNTransition transition) {
 		return new CWNFlowRelation(place, transition);
 	}
 
 	@Override
-	protected CWNFlowRelation createNewFlowRelation(CWNTransition transition, CWNPlace place) 
-			throws ParameterException {
+	protected CWNFlowRelation createNewFlowRelation(CWNTransition transition, CWNPlace place) {
 		return new CWNFlowRelation(transition, place);
 	}
 	

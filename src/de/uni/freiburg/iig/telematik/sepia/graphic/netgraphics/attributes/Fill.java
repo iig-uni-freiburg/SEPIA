@@ -48,9 +48,8 @@ public class Fill extends AbstractAttribute {
 	 *            Rotation of the gradient or <code>null</code> if it should be ignored.
 	 * @param image
 	 *            Filling image URI or <code>null</code> if it should be ignored.
-	 * @throws ParameterException 
 	 */
-	public Fill(String color, String gradientColor, GradientRotation gradientRotation, URI image) throws ParameterException {
+	public Fill(String color, String gradientColor, GradientRotation gradientRotation, URI image) {
 		setColor(color);
 		setGradientColor(gradientColor);
 		setGradientRotation(gradientRotation);
@@ -98,9 +97,8 @@ public class Fill extends AbstractAttribute {
 	 * 
 	 * @param color
 	 *            the color to set
-	 * @throws ParameterException 
 	 */
-	public void setColor(String color) throws ParameterException {
+	public void setColor(String color) {
 		if(color == null)
 			return;
 		try {
@@ -116,9 +114,8 @@ public class Fill extends AbstractAttribute {
 	 * 
 	 * @param gradientColor
 	 *            the gradientColor to set
-	 * @throws ParameterException 
 	 */
-	public void setGradientColor(String gradientColor) throws ParameterException {
+	public void setGradientColor(String gradientColor) {
 		if(gradientColor == null)
 			return;
 		try {

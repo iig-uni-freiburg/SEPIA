@@ -86,7 +86,7 @@
 				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
 		</jar>
-		<jar jarfile="${target.dir}/${jar.sources.file.name}.jar" includes="**/*.java" basedir="${src.dir}">
+		<jar jarfile="${target.dir}/${jar.sources.file.name}.jar" includes="**/*.java,*.txt" basedir="${src.dir}">
 			<manifest>
 				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
@@ -116,10 +116,12 @@
 			<fileset dir="${classes.target.dir}" />
 			<fileset dir="${TOVAL.location}/bin" />
 			<fileset dir="${JAGAL.location}/bin" />
-			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/isorelax/isorelax.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/msv/msv-core-2013.6.1.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/relaxngDatatype/relaxngDatatype-20020414.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/xsdlib/xsdlib-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/hamcrest/hamcrest-core-1.3.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/isorelax/isorelax.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/msv/msv-core-2013.6.1.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/relaxngDatatype/relaxngDatatype-20020414.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/xsdlib/xsdlib-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/xsom/xsom-20110101-SNAPSHOT.jar" />
 		</jar>
 	</target>
 
@@ -129,6 +131,9 @@
 			<src path="${src.dir}" />
 			<classpath refid="SEPIA.classpath" />
 		</javac>
+		<copy includeemptydirs="false" todir="${classes.target.dir}">
+			<fileset file="${basedir}/LICENSE.txt" />
+		</copy>
 		<echo>Compile tests...</echo>
 		<javac destdir="${tests.target.dir}" includeantruntime="false">
 			<src path="${test.dir}" />

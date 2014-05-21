@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics;
 
 import java.util.Vector;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
@@ -29,7 +28,7 @@ public class ArcGraphics extends AbstractObjectGraphics {
 	/**
 	 * Create edge graphics object with default values.
 	 */
-	public ArcGraphics() throws ParameterException {
+	public ArcGraphics() {
 		setPositions(DEFAULT_POSITIONS);
 		setLine(DEFAULT_LINE);
 	}
@@ -37,7 +36,7 @@ public class ArcGraphics extends AbstractObjectGraphics {
 	/**
 	 * Create edge graphics object with the specified values.
 	 */
-	public ArcGraphics(Vector<Position> positions, Line line) throws ParameterException {
+	public ArcGraphics(Vector<Position> positions, Line line) {
 		setPositions(positions);
 		setLine(line);
 	}
@@ -60,7 +59,7 @@ public class ArcGraphics extends AbstractObjectGraphics {
 	 * @param positions
 	 *            the positions to set
 	 */
-	public void setPositions(Vector<Position> positions) throws ParameterException {
+	public void setPositions(Vector<Position> positions) {
 		Validate.notNull(positions);
 		this.positions = positions;
 	}
@@ -69,7 +68,7 @@ public class ArcGraphics extends AbstractObjectGraphics {
 	 * @param line
 	 *            the line to set
 	 */
-	public void setLine(Line line) throws ParameterException {
+	public void setLine(Line line) {
 		Validate.notNull(line);
 		this.line = line;
 	}

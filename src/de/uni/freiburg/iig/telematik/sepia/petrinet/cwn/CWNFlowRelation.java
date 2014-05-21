@@ -5,11 +5,11 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRel
 
 public class CWNFlowRelation extends AbstractCWNFlowRelation<CWNPlace, CWNTransition> {
 
-	public CWNFlowRelation(CWNPlace place, CWNTransition transition) throws ParameterException {
+	public CWNFlowRelation(CWNPlace place, CWNTransition transition) {
 		super(place, transition);
 	}
 
-	public CWNFlowRelation(CWNTransition transition, CWNPlace place) throws ParameterException {
+	public CWNFlowRelation(CWNTransition transition, CWNPlace place) {
 		super(transition, place);
 	}
 	

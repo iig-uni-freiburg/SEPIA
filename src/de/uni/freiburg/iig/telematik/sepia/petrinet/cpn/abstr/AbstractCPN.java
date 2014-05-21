@@ -61,10 +61,8 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @param places Names of Petri net places to add.
 	 * @param transitions Names of Petri net transition to add.
 	 * @param initialMarking The initial marking of the Petri net.
-	 * @throws ParameterException If some parameters are <code>null</code> or contain <code>null</code>-values.
 	 */
-	public AbstractCPN(Set<String> places, Set<String> transitions, M initialMarking) 
-			   throws ParameterException {
+	public AbstractCPN(Set<String> places, Set<String> transitions, M initialMarking) {
 		super(places, transitions);
 		setInitialMarking(initialMarking);
 	}
@@ -143,7 +141,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 //	}
 	
 	@Override
-	protected void updateMarking(P p) throws ParameterException {
+	protected void updateMarking(P p) {
 		Validate.notNull(p);
 		if(!places.containsKey(p.getName()))
 			return;
@@ -180,7 +178,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @see super{@link #addFlowRelationPT(String, String)}
 	 */
 	@Override
-	public F addFlowRelationPT(String placeName, String transitionName) throws ParameterException {
+	public F addFlowRelationPT(String placeName, String transitionName) {
 		return super.addFlowRelationPT(placeName, transitionName);
 	}
 	
@@ -194,9 +192,8 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @param addDefaultConstraint Indicates if a default constraint is added to the relation.
 	 * @return The new relation that was added to the Petri net<br>
 	 * or <code>null</code> if the net already contains the relation.
-	 * @throws ParameterException If some parameters are <code>null</code> or the net does not contain the given places/transitions.
 	 */
-	public F addFlowRelationPT(String placeName, String transitionName, boolean addDefaultConstraint) throws ParameterException {
+	public F addFlowRelationPT(String placeName, String transitionName, boolean addDefaultConstraint) {
 		F newRelation = super.addFlowRelationPT(placeName, transitionName);
 		if(addDefaultConstraint && (newRelation != null))
 			newRelation.addConstraint("black", 1);
@@ -244,7 +241,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @see super{@link #addFlowRelationPT(String, String)}
 	 */
 	@Override
-	public F addFlowRelationTP(String transitionName, String placeName) throws ParameterException {
+	public F addFlowRelationTP(String transitionName, String placeName) {
 		return super.addFlowRelationTP(transitionName, placeName);
 	}
 
@@ -258,9 +255,8 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @param addDefaultConstraint Indicates if a default constraint is added to the relation.
 	 * @return The new relation that was added to the Petri net<br>
 	 * or <code>null</code> if the net already contains the relation.
-	 * @throws ParameterException If some parameters are <code>null</code> or the net does not contain the given places/transitions.
 	 */
-	public F addFlowRelationTP(String transitionName, String placeName, boolean addDefaultConstraint) throws ParameterException {
+	public F addFlowRelationTP(String transitionName, String placeName, boolean addDefaultConstraint) {
 		F newRelation = super.addFlowRelationTP(transitionName, placeName);
 		if(addDefaultConstraint && (newRelation != null))
 			newRelation.addConstraint("black", 1);
@@ -268,7 +264,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	}
 	
 	@Override
-	protected void validateMarking(M marking) throws ParameterException {
+	protected void validateMarking(M marking) {
 		super.validateMarking(marking);
 		for(P place: getPlaces()){
 			Multiset<String> placeMarking = marking.get(place.getName());
@@ -330,7 +326,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	 * @throws ParameterException If some parameters are <code>null</code>, the transition is unknown<br>
 	 * or the firing rule contains unknown places.
 	 */
-	public void addFiringRule(String transitionName, FiringRule rule) throws ParameterException{
+	public void addFiringRule(String transitionName, FiringRule rule) {
 		Validate.notNull(transitionName);
 		if(!containsTransition(transitionName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown transition: "+transitionName);

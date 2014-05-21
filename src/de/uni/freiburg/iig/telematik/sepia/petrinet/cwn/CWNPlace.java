@@ -9,11 +9,11 @@ public class CWNPlace extends AbstractCWNPlace<CWNFlowRelation> {
 		super();
 	}
 
-	public CWNPlace(String name, String label) throws ParameterException {
+	public CWNPlace(String name, String label) {
 		super(name, label);
 	}
 
-	public CWNPlace(String name) throws ParameterException {
+	public CWNPlace(String name) {
 		super(name);
 	}
 

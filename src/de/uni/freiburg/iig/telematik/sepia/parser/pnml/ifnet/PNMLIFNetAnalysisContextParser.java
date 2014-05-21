@@ -38,7 +38,7 @@ public class PNMLIFNetAnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(File analysisContextFile) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(File analysisContextFile) throws ParserException, IOException {
 		return parse(analysisContextFile, true);
 	}
 
@@ -47,7 +47,7 @@ public class PNMLIFNetAnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(String analysisContextFilePath) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(String analysisContextFilePath) throws ParserException, IOException {
 		return parse(new File(analysisContextFilePath));
 	}
 
@@ -56,7 +56,7 @@ public class PNMLIFNetAnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(File analysisContextFile, boolean validate) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(File analysisContextFile, boolean validate) throws ParserException, IOException {
 		Validate.notNull(analysisContextFile);
 
 		if (validate)
@@ -130,7 +130,7 @@ public class PNMLIFNetAnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(String analysisContextFilePath, boolean validate) throws ParserException, ParameterException, IOException {
+	public static AnalysisContext parse(String analysisContextFilePath, boolean validate) throws ParserException, IOException {
 		return parse(new File(analysisContextFilePath), validate);
 	}
 
@@ -152,7 +152,7 @@ public class PNMLIFNetAnalysisContextParser {
 	 * &lt;/labelingListTypeName&gt;
 	 * </pre>
 	 */
-	protected static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) throws ParameterException {
+	protected static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) {
 		Validate.notNull(doc);
 		Validate.notEmpty(labelingListTypeName);
 		Validate.notEmpty(labelingTypeName);

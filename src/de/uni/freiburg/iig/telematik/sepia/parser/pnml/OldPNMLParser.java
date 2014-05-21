@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
 
 import de.invation.code.toval.validate.InconsistencyException;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
@@ -23,7 +22,7 @@ public class OldPNMLParser {
 	private static String nodeID;
 	
 	@SuppressWarnings("incomplete-switch")
-	public static PTNet parsePNML(String path, boolean replaceSpacesInTransitionLabels) throws XMLStreamException, ParameterException {
+	public static PTNet parsePNML(String path, boolean replaceSpacesInTransitionLabels) throws XMLStreamException {
 		PTMarking marking = new PTMarking();
 		petriNet = new PTNet();
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -110,7 +109,7 @@ public class OldPNMLParser {
 		return null;
 	}
 	
-	private static void addArc(XMLStreamReader reader) throws InconsistencyException, ParameterException {
+	private static void addArc(XMLStreamReader reader) throws InconsistencyException {
 		String id = null, source = null, target = null;
 		if(reader.getAttributeCount() > 2){
 			for(int i=0; i<reader.getAttributeCount(); i++){
