@@ -18,29 +18,29 @@ public class AnalysisContext {
 	
 	public AnalysisContext(){}
 	
-	public AnalysisContext(Labeling labeling) throws ParameterException{
+	public AnalysisContext(Labeling labeling) {
 		Validate.notNull(labeling);
 		this.labeling = labeling;
 	} 
 	
-	public AnalysisContext(IFNet ifNet, Collection<String> subjects) throws ParameterException{
+	public AnalysisContext(IFNet ifNet, Collection<String> subjects) {
 		this(new Labeling(ifNet, subjects));
 	}
 	
-	public AnalysisContext(IFNet ifNet, Collection<String> subjects, SecurityLevel defaultSecurityLevel) throws ParameterException{
+	public AnalysisContext(IFNet ifNet, Collection<String> subjects, SecurityLevel defaultSecurityLevel) {
 		this(new Labeling(ifNet, subjects, defaultSecurityLevel));
 	}
 	
 	public AnalysisContext(Collection<String> activities,
 						   Collection<String> attributes,
 						   Collection<String> subjects, 
-						   SecurityLevel defaultSecurityLevel) throws ParameterException{
+						   SecurityLevel defaultSecurityLevel) {
 		this(new Labeling(activities, attributes, subjects, defaultSecurityLevel));
 	}
 	
 	public AnalysisContext(Collection<String> activities,
 			   Collection<String> attributes,
-			   Collection<String> subjects) throws ParameterException{
+			   Collection<String> subjects) {
 		this(new Labeling(activities, attributes, subjects));
 	}
 	
@@ -60,14 +60,14 @@ public class AnalysisContext {
 		return labeling;
 	}
 	
-	public void setLabeling(Labeling labeling) throws ParameterException{
+	public void setLabeling(Labeling labeling) {
 		Validate.notNull(labeling);
 		if(!labeling.getSubjects().containsAll(subjectDescriptors.values()))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Labeling must contain all subjects assigned to transitions.");
 		this.labeling = labeling;
 	}
 	  
-	public void setSubjectDescriptor(String activity, String subject) throws ParameterException{
+	public void setSubjectDescriptor(String activity, String subject) {
 		labeling.validateActivity(activity);
 		labeling.validateSubject(subject);
 		
@@ -77,9 +77,8 @@ public class AnalysisContext {
 		subjectDescriptors.put(activity, subject);
 	}
 	
-	public String getSubjectDescriptor(String activity) throws ParameterException{
+	public String getSubjectDescriptor(String activity) {
 		labeling.validateActivity(activity);
 		return subjectDescriptors.get(activity);
 	}
-
 }

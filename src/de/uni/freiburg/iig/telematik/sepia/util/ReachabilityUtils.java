@@ -164,8 +164,7 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet)
-			throws ParameterException {
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
 
 		Validate.notNull(petriNet);
 		if (petriNet.isBounded() != Boundedness.BOUNDED)
@@ -255,8 +254,7 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 	   				Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions)
-			throws ParameterException {
+		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions) {
 		
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
 		return MarkingGraphUtils.getSequences(petriNet, markingGraph, includeSilentTransitions);

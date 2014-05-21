@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 
 public class PTPlace extends AbstractPTPlace<PTFlowRelation>{
@@ -9,11 +8,11 @@ public class PTPlace extends AbstractPTPlace<PTFlowRelation>{
 		super();
 	}
 	
-	public PTPlace(String name, String label) throws ParameterException {
+	public PTPlace(String name, String label) {
 		super(name, label);
 	}
 
-	public PTPlace(String name) throws ParameterException {
+	public PTPlace(String name) {
 		super(name);
 	}
 	

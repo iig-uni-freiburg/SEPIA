@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.transform;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
@@ -21,8 +20,7 @@ public class AndToXorTransformer<P extends AbstractPlace<F,S>,
 	protected T andSplit = null;
 	protected T andJoin = null;
 
-	public AndToXorTransformer(AbstractPetriNet<P, T, F, M, S, X, Y> net, T andSplit, T andJoin) 
-			throws ParameterException {
+	public AndToXorTransformer(AbstractPetriNet<P, T, F, M, S, X, Y> net, T andSplit, T andJoin) {
 		super(net);
 		Validate.notNull(andSplit);
 		Validate.notNull(andJoin);
@@ -37,5 +35,4 @@ public class AndToXorTransformer<P extends AbstractPlace<F,S>,
 		
 		return result;
 	}
-
 }

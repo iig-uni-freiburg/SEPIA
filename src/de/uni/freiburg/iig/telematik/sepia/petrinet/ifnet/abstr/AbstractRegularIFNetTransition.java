@@ -29,19 +29,19 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		super(TransitionType.REGULAR);
 	}
 
-	public AbstractRegularIFNetTransition(String name, boolean isSilent) throws ParameterException {
+	public AbstractRegularIFNetTransition(String name, boolean isSilent) {
 		super(TransitionType.REGULAR, name, isSilent);
 	}
 
-	public AbstractRegularIFNetTransition(String name, String label, boolean isSilent) throws ParameterException {
+	public AbstractRegularIFNetTransition(String name, String label, boolean isSilent) {
 		super(TransitionType.REGULAR, name, label, isSilent);
 	}
 
-	public AbstractRegularIFNetTransition(String name, String label) throws ParameterException {
+	public AbstractRegularIFNetTransition(String name, String label) {
 		super(TransitionType.REGULAR, name, label);
 	}
 
-	public AbstractRegularIFNetTransition(String name) throws ParameterException {
+	public AbstractRegularIFNetTransition(String name) {
 		super(TransitionType.REGULAR, name);
 	}
 	
@@ -50,7 +50,7 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 	}
 
 	@SuppressWarnings("unchecked")
-	public void setGuardDataContainer(GuardDataContainer dataContainer) throws ParameterException {
+	public void setGuardDataContainer(GuardDataContainer dataContainer) {
 		Validate.notNull(dataContainer);
 
 		// Check if data container provides values for all processed data elements (colors)
@@ -107,7 +107,7 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		}
 	}
 
-	public void setAccessMode(String tokenColor, Collection<AccessMode> colorAccessModes) throws ParameterException {
+	public void setAccessMode(String tokenColor, Collection<AccessMode> colorAccessModes) {
 		Validate.notNull(tokenColor);
 		if (tokenColor.equals(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot set access mode for control flow token color.");
@@ -117,13 +117,13 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		accessModes.put(tokenColor, new HashSet<AccessMode>(colorAccessModes));
 	}
 
-	public void setAccessMode(String tokenColor, AccessMode... accessModes) throws ParameterException {
+	public void setAccessMode(String tokenColor, AccessMode... accessModes) {
 		Validate.notNull(accessModes);
 		setAccessMode(tokenColor, Arrays.asList(accessModes));
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean addGuard(AbstractConstraint<?> guard) throws ParameterException {
+	public boolean addGuard(AbstractConstraint<?> guard) {
 		if (dataContainer == null)
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot add guard. Please set guard data container first.");
 		if (!getProcessedColors().contains(guard.getElement()))
@@ -135,7 +135,7 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return guards.add(guard);
 	}
 
-	public boolean removeGuard(AbstractConstraint<?> guard) throws ParameterException {
+	public boolean removeGuard(AbstractConstraint<?> guard) {
 		return guards.remove(guard);
 	}
 
@@ -147,19 +147,19 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return Collections.unmodifiableMap(accessModes);
 	}
 
-	public Set<AccessMode> getAccessModes(String color) throws ParameterException {
+	public Set<AccessMode> getAccessModes(String color) {
 		Validate.notNull(color);
 		if (!accessModes.containsKey(color))
 			return new HashSet<AccessMode>();
 		return new HashSet<AccessMode>(accessModes.get(color));
 	}
 
-	public boolean addAccessMode(String color, AccessMode... accessModes) throws ParameterException {
+	public boolean addAccessMode(String color, AccessMode... accessModes) {
 		Validate.notNull(accessModes);
 		return addAccessMode(color, Arrays.asList(accessModes));
 	}
 
-	public boolean addAccessMode(String color, Collection<AccessMode> accessModes) throws ParameterException {
+	public boolean addAccessMode(String color, Collection<AccessMode> accessModes) {
 		Validate.notNull(color);
 		Validate.notNull(accessModes);
 		Validate.notEmpty(accessModes);
@@ -170,11 +170,11 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return this.accessModes.get(color).addAll(accessModes);
 	}
 
-	public boolean removeAccessMode(String color, AccessMode... accessModes) throws ParameterException {
+	public boolean removeAccessMode(String color, AccessMode... accessModes) {
 		return removeAccessMode(color, Arrays.asList(accessModes));
 	}
 
-	public boolean removeAccessMode(String color, Collection<AccessMode> accessModes) throws ParameterException {
+	public boolean removeAccessMode(String color, Collection<AccessMode> accessModes) {
 		Validate.notNull(color);
 		Validate.notNull(accessModes);
 		Validate.noNullElements(accessModes);
@@ -185,7 +185,7 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return this.accessModes.get(color).removeAll(accessModes);
 	}
 
-	public boolean removeAccessModes(String color) throws ParameterException {
+	public boolean removeAccessModes(String color) {
 		Validate.notNull(color);
 		if (!accessModes.containsKey(color))
 			return false;
@@ -197,12 +197,12 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return false;
 	}
 
-	public Set<String> getProcessedAttributes(AccessMode... accessModes) throws ParameterException {
+	public Set<String> getProcessedAttributes(AccessMode... accessModes) {
 		Validate.notNull(accessModes);
 		return getProcessedAttributes(Arrays.asList(accessModes));
 	}
 
-	public Set<String> getProcessedAttributes(Collection<AccessMode> accessModes) throws ParameterException {
+	public Set<String> getProcessedAttributes(Collection<AccessMode> accessModes) {
 		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
 		for (String processedColor : getProcessedAttributes()) {
@@ -213,12 +213,12 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return result;
 	}
 
-	public Set<String> getConsumedAttributes(AccessMode... accessModes) throws ParameterException {
+	public Set<String> getConsumedAttributes(AccessMode... accessModes) {
 		Validate.notNull(accessModes);
 		return getConsumedAttributes(Arrays.asList(accessModes));
 	}
 
-	public Set<String> getConsumedAttributes(Collection<AccessMode> accessModes) throws ParameterException {
+	public Set<String> getConsumedAttributes(Collection<AccessMode> accessModes) {
 		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
 		for (String consumedColor : getConsumedAttributes()) {
@@ -229,12 +229,12 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return result;
 	}
 
-	public Set<String> getProducedAttributes(AccessMode... accessModes) throws ParameterException {
+	public Set<String> getProducedAttributes(AccessMode... accessModes) {
 		Validate.notNull(accessModes);
 		return getProducedAttributes(Arrays.asList(accessModes));
 	}
 
-	public Set<String> getProducedAttributes(Collection<AccessMode> accessModes) throws ParameterException {
+	public Set<String> getProducedAttributes(Collection<AccessMode> accessModes) {
 		Validate.notNull(accessModes);
 		Set<String> result = new HashSet<String>();
 		for (String producedColor : getProducedAttributes()) {

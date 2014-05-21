@@ -666,7 +666,7 @@ public class RegularIFNetTransitionTest {
 		TestGuardDataContainer tgdc = new TestGuardDataContainer(sNet.getTokenColors());
 		t.setGuardDataContainer(tgdc);
 
-		RegularIFNetTransition tClone = (RegularIFNetTransition) t.clone();
+		RegularIFNetTransition tClone = t.clone();
 		assertEquals(t, tClone);
 		assertNotSame(t, tClone);
 		assertTrue(tClone.isSilent());

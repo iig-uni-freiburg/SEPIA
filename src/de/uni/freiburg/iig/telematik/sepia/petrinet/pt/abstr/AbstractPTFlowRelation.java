@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 
@@ -10,25 +9,25 @@ public abstract class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends
 	
 	public static final int DEFAULT_WEIGHT = 1;
 	
-	public AbstractPTFlowRelation(P place, T transition, int weight) throws ParameterException {
+	public AbstractPTFlowRelation(P place, T transition, int weight) {
 		super(place, transition);
 		setWeight(weight);
 	}
 	
-	public AbstractPTFlowRelation(T transition, P place, int weight) throws ParameterException {
+	public AbstractPTFlowRelation(T transition, P place, int weight) {
 		super(transition, place);
 		setWeight(weight);
 	}
 
-	public AbstractPTFlowRelation(P place, T transition) throws ParameterException {
+	public AbstractPTFlowRelation(P place, T transition) {
 		this(place, transition, DEFAULT_WEIGHT);
 	}
 
-	public AbstractPTFlowRelation(T transition, P place) throws ParameterException {
+	public AbstractPTFlowRelation(T transition, P place) {
 		this(transition, place, DEFAULT_WEIGHT);
 	}
 	
-	public void setWeight(int weight) throws ParameterException {
+	public void setWeight(int weight) {
 		setConstraint(weight);
 	}
 	
@@ -37,7 +36,7 @@ public abstract class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends
 	}
 	
 	@Override
-	protected void validateConstraint(Integer constraint) throws ParameterException {
+	protected void validateConstraint(Integer constraint) {
 		Validate.notNull(constraint);
 		Validate.bigger(constraint, 0);
 	}

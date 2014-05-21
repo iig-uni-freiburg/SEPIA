@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.traversal;
 import java.util.List;
 
 import de.invation.code.toval.validate.InconsistencyException;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -14,7 +13,7 @@ public abstract class PNTraverser<T extends AbstractTransition<?,?>> {
 	
 	protected AbstractPetriNet<?,T,?,?,?,?,?> net;
 	
-	public PNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) throws ParameterException{
+	public PNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) {
 		Validate.notNull(net);
 		this.net = net;
 	}
@@ -37,6 +36,6 @@ public abstract class PNTraverser<T extends AbstractTransition<?,?>> {
 	 * @return The next enabled transition to fire.
 	 * @throws InconsistencyException If the flow control is not in valid state.
 	 */
-	public abstract T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException, ParameterException;
+	public abstract T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException;
 	
 }

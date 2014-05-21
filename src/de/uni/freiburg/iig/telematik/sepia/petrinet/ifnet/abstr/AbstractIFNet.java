@@ -72,7 +72,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 
 	public AbstractIFNet(Set<String> places,  
 			    		 Set<String> transitions, 
-			    		 M initialMarking) throws ParameterException {
+			    		 M initialMarking) {
 		super(places, transitions, initialMarking);
 	}
 	
@@ -99,7 +99,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void addTransition(T transition) throws ParameterException {
+	protected void addTransition(T transition) {
 		super.addTransition(transition);
 		
 		if(transition instanceof AbstractRegularIFNetTransition) {				
@@ -111,7 +111,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	}
 	 
 	@Override
-	public boolean removeTransition(String transitionName) throws ParameterException{
+	public boolean removeTransition(String transitionName) {
 		if(super.removeTransition(transitionName)){
 			regularTransitions.remove(transitionName);
 			declassificationTransitions.remove(transitionName);
@@ -131,7 +131,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
-	public boolean addDeclassificationTransition(String transitionName) throws ParameterException{
+	public boolean addDeclassificationTransition(String transitionName) {
 		return addDeclassificationTransition(transitionName, transitionName);
 	}
 	
@@ -146,7 +146,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean addDeclassificationTransition(String transitionName, String transitionLabel) throws ParameterException{
+	public boolean addDeclassificationTransition(String transitionName, String transitionLabel) {
 		if(containsTransition(transitionName)){
 			return false;
 		}
@@ -168,7 +168,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return analysisContext;
 	}
 	
-	public void setAnalysisContext(AnalysisContext analysisContext) throws ParameterException{
+	public void setAnalysisContext(AnalysisContext analysisContext) {
 		Validate.notNull(analysisContext);
 		if(!analysisContext.getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions(), false)))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all Petri net transitions as activities.");
@@ -190,9 +190,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	//------- Creation methods ----------------------------------------------------------------------
 	
-	protected abstract R createNewRegularTransition(String name, String label, boolean isSilent) throws ParameterException;
+	protected abstract R createNewRegularTransition(String name, String label, boolean isSilent);
 	
-	protected abstract D createNewDeclassificationTransition(String name, String label, boolean isSilent) throws ParameterException;
+	protected abstract D createNewDeclassificationTransition(String name, String label, boolean isSilent);
 	
 	
 	//------- Validation methods --------------------------------------------------------------------

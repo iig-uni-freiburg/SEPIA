@@ -61,20 +61,20 @@ public class Labeling {
 	
 	public Labeling(){};
 	
-	public Labeling(IFNet ifNet, Collection<String> subjects) throws ParameterException{
+	public Labeling(IFNet ifNet, Collection<String> subjects) {
 		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions(), false), ifNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
 	}
 	
 	public Labeling(IFNet ifNet, 
 					Collection<String> subjects, 
-				    SecurityLevel defaultSecurityLevel) throws ParameterException{
+				    SecurityLevel defaultSecurityLevel) {
 		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions(), false), ifNet.getTokenColors(), subjects, defaultSecurityLevel);
 	}
 	
 	public Labeling(Collection<String> activities,
 					Collection<String> attributes,
 					Collection<String> subjects, 
-					SecurityLevel defaultSecurityLevel) throws ParameterException{
+					SecurityLevel defaultSecurityLevel) {
 				
 		
 		initialize(activities, attributes, subjects, defaultSecurityLevel);
@@ -82,14 +82,14 @@ public class Labeling {
 	
 	public Labeling(Collection<String> activities,
 			   		Collection<String> attributes,
-			   		Collection<String> subjects) throws ParameterException{
+			   		Collection<String> subjects) {
 		this(activities, attributes, subjects, DEFAULT_SECURITY_LEVEL);
 	}
 	
 	private void initialize(Collection<String> activities,
 			   				Collection<String> attributes,
 			   				Collection<String> subjects, 
-			   				SecurityLevel defaultSecurityLevel) throws ParameterException{
+			   				SecurityLevel defaultSecurityLevel) {
 		
 		this.defaultSecurityLevel = defaultSecurityLevel;
 		addActivities(activities);
@@ -101,11 +101,11 @@ public class Labeling {
 		return Collections.unmodifiableSet(activities);
 	}
 	
-	public boolean addActivities(String... activities) throws ParameterException{
+	public boolean addActivities(String... activities) {
 		return addActivities(Arrays.asList(activities));
 	}
 	
-	public boolean addActivities(Collection<String> activities) throws ParameterException{
+	public boolean addActivities(Collection<String> activities) {
 		Validate.notNull(activities);
 		Validate.noNullElements(activities);
 		
@@ -122,11 +122,11 @@ public class Labeling {
 		return modified;
 	}
 	
-	public boolean removeActivities(String... activities) throws ParameterException{
+	public boolean removeActivities(String... activities) {
 		return removeActivities(Arrays.asList(activities));
 	}
 	
-	public boolean removeActivities(Collection<String> activities) throws ParameterException{
+	public boolean removeActivities(Collection<String> activities) {
 		Validate.notNull(activities);
 		Validate.noNullElements(activities);
 				
@@ -147,11 +147,11 @@ public class Labeling {
 		return Collections.unmodifiableSet(subjects);
 	}
 	
-	public boolean addSubjects(String... subjects) throws ParameterException{
+	public boolean addSubjects(String... subjects) {
 		return addSubjects(Arrays.asList(subjects));
 	}
 	
-	public boolean addSubjects(Collection<String> subjects) throws ParameterException{
+	public boolean addSubjects(Collection<String> subjects) {
 		Validate.notNull(subjects);
 		Validate.noNullElements(subjects);
 		
@@ -168,11 +168,11 @@ public class Labeling {
 		return modified;
 	}
 	
-	public boolean removeSubjects(String... subjects) throws ParameterException{
+	public boolean removeSubjects(String... subjects) {
 		return removeSubjects(Arrays.asList(subjects));
 	}
 	
-	public boolean removeSubjects(Collection<String> subjects) throws ParameterException{
+	public boolean removeSubjects(Collection<String> subjects) {
 		Validate.notNull(subjects);
 		Validate.noNullElements(subjects);
 		
@@ -192,11 +192,11 @@ public class Labeling {
 		return Collections.unmodifiableSet(attributes);
 	}
 	
-	public boolean addAttributes(String... attributes) throws ParameterException{
+	public boolean addAttributes(String... attributes) {
 		return addAttributes(Arrays.asList(attributes));
 	}
 	
-	public boolean addAttributes(Collection<String> attributes) throws ParameterException{
+	public boolean addAttributes(Collection<String> attributes) {
 		Validate.notNull(attributes);
 		Validate.noNullElements(attributes);
 		
@@ -217,11 +217,11 @@ public class Labeling {
 		return modified;
 	}
 	
-	public boolean removeAttribute(String... attributes) throws ParameterException{
+	public boolean removeAttribute(String... attributes) {
 		return removeAttributes(Arrays.asList(attributes));
 	}
 	
-	public boolean removeAttributes(Collection<String> attributes) throws ParameterException{
+	public boolean removeAttributes(Collection<String> attributes) {
 		Validate.notNull(attributes);
 		Validate.noNullElements(attributes);
 		
@@ -237,7 +237,7 @@ public class Labeling {
 		return false;
 	}
 	
-	public void setActivityClassification(String activity, SecurityLevel securityLevel) throws ParameterException{
+	public void setActivityClassification(String activity, SecurityLevel securityLevel) {
 		validateActivity(activity);
 		Validate.notNull(securityLevel);
 		
@@ -250,7 +250,7 @@ public class Labeling {
 		return activiyClassification.get(activity);
 	}
 	
-	public void setAttributeClassification(String attribute, SecurityLevel securityLevel) throws ParameterException{
+	public void setAttributeClassification(String attribute, SecurityLevel securityLevel) {
 		validateAttribute(attribute);
 		Validate.notNull(securityLevel);
 		
@@ -263,7 +263,7 @@ public class Labeling {
 		return attributeClassification.get(attribute);
 	}
 
-	public void setSubjectClearance(String subject, SecurityLevel securityLevel) throws ParameterException{
+	public void setSubjectClearance(String subject, SecurityLevel securityLevel) {
 		validateSubject(subject);
 		Validate.notNull(securityLevel);
 
@@ -279,19 +279,19 @@ public class Labeling {
 	 
 	//------- Parameter validation -----------------------------------------------------------------------------------
 	
-	protected void validateActivity(String activity) throws ParameterException{
+	protected void validateActivity(String activity) {
 		Validate.notNull(activity);
 		if(!activities.contains(activity))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown process activity: " + activity);
 	}
 	
-	protected void validateAttribute(String attribute) throws ParameterException{
+	protected void validateAttribute(String attribute) {
 		Validate.notNull(attribute);
 		if(!attributes.contains(attribute))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown data element: " + attribute);
 	}
 	
-	protected void validateSubject(String subject) throws ParameterException{
+	protected void validateSubject(String subject) {
 		Validate.notNull(subject);
 		if(!subjects.contains(subject))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown subject descriptor: " + subject);
@@ -341,5 +341,4 @@ public class Labeling {
 		}
 		return builder.toString();
 	}
-
 }

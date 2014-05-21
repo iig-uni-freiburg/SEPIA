@@ -50,7 +50,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition with a wrong number of intput places is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityWrongAmountOfInPlaces() throws ParameterException {
+	public void testCheckValidityWrongAmountOfInPlaces() {
 
 		// add an input place to the declassification transiotn td
 		dSNet.addPlace("pTDIN");
@@ -69,7 +69,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition with a wrong number of output places is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityWrongAmountOfOutPlaces() throws ParameterException {
+	public void testCheckValidityWrongAmountOfOutPlaces() {
 
 		// add an input place to the declassification transiotn td
 		dSNet.addPlace("pTDOUT");
@@ -88,7 +88,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition which does not consume at least one colored token is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityNotEffective() throws ParameterException {
+	public void testCheckValidityNotEffective() {
 
 		// get the flow relation connected to td
 		IFNetFlowRelation dtInRelation = null;
@@ -115,7 +115,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition which has common colors consumed and produced is recognized as such.
 	 */
 	@Test
-	public void testCheckValiditySameColorInAndOut() throws ParameterException {
+	public void testCheckValiditySameColorInAndOut() {
 
 		// get the flow relation connected to td
 		IFNetFlowRelation dtInRelation = null;
@@ -144,7 +144,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition which produces a color also CREATed by a regular transition is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityProducedColorCreatedByRegularTransition() throws ParameterException {
+	public void testCheckValidityProducedColorCreatedByRegularTransition() {
 
 		// get the flow relation connected to td
 		IFNetFlowRelation dtOutRelation = null;
@@ -178,7 +178,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an valid declassifcation transition which produces a color also processed (but notCREATed) by a regular transition is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityProducedColorProcessedByRegularTransition() throws ParameterException {
+	public void testCheckValidityProducedColorProcessedByRegularTransition() {
 
 		// get the flow relation connected to td
 		IFNetFlowRelation dtOutRelation = null;
@@ -208,7 +208,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition which produces a color also produced by another declassification transition is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityProducedColorCreatedByOtherDeclassTransition() throws ParameterException {
+	public void testCheckValidityProducedColorCreatedByOtherDeclassTransition() {
 
 		// get the flow relations connected to td
 		IFNetFlowRelation dtInRelation = null;
@@ -246,7 +246,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an valid declassifcation transition which produces a color not produced by another declassification transition is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityProducedColorNotCreatedByOtherDeclassTransition() throws ParameterException {
+	public void testCheckValidityProducedColorNotCreatedByOtherDeclassTransition() {
 
 		// Add a further declassification transition to the net
 		dSNet.addDeclassificationTransition("td2");
@@ -280,7 +280,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition where the number of consumed token colors does not match the number of produced token colors is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityProducedConsumedColorsDoNotMatch() throws ParameterException {
+	public void testCheckValidityProducedConsumedColorsDoNotMatch() {
 
 		// get the flow relations connected to td
 		IFNetFlowRelation dtInRelation = null;
@@ -319,7 +319,7 @@ public class DeclassificationTransitionTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition#checkValidity()}.<br/> Check whether an invalid declassifcation transition where the number of tokens of a consumed token colors does not match the number of tokens of produced token colors is recognized as such.
 	 */
 	@Test
-	public void testCheckValidityProducedConsumedColorsAmountDoesNotMatch() throws ParameterException {
+	public void testCheckValidityProducedConsumedColorsAmountDoesNotMatch() {
 
 		// get the flow relations connected to td
 		IFNetFlowRelation dtInRelation = null;
@@ -416,12 +416,12 @@ public class DeclassificationTransitionTest {
 	 * Test the clone() method
 	 */
 	@Test
-	public void testDeclassificationTransitionClone() throws ParameterException {
+	public void testDeclassificationTransitionClone() {
 		IFNet sNet = IFNetTestUtil.createSimpleSnetWithDeclassificationNoAC();
 		DeclassificationTransition t = (DeclassificationTransition) sNet.getTransition("td");
 		t.setSilent(true);
 
-		DeclassificationTransition tClone = (DeclassificationTransition) t.clone();
+		DeclassificationTransition tClone = t.clone();
 		assertEquals(t, tClone);
 		assertNotSame(t, tClone);
 		assertTrue(tClone.isSilent());

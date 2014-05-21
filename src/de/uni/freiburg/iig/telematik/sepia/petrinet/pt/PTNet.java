@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.pt;
 
 import java.util.Set;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraph;
@@ -18,13 +17,12 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 		super();
 	}
 
-	public PTNet(Set<String> places, Set<String> transitions, PTMarking initialMarking)
-			throws ParameterException {
+	public PTNet(Set<String> places, Set<String> transitions, PTMarking initialMarking) {
 		super(places, transitions, initialMarking);
 	}
 	
 	@Override
-	public PTMarking fireCheck(String transitionName) throws ParameterException, PNException {
+	public PTMarking fireCheck(String transitionName) throws PNException {
 		PTMarking newMarking = cloneMarking();
 		PTTransition transition = getTransition(transitionName);
 		for(PTFlowRelation relation: transition.getIncomingRelations()){
@@ -45,27 +43,27 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	}
 
 	@Override
-	protected PTTransition createNewTransition(String name, String label, boolean isSilent) throws ParameterException{
+	protected PTTransition createNewTransition(String name, String label, boolean isSilent) {
 		return new PTTransition(name, label, isSilent);
 	}
 
 	@Override
-	protected PTPlace createNewPlace(String name, String label) throws ParameterException{
+	protected PTPlace createNewPlace(String name, String label) {
 		return new PTPlace(name, label);
 	}
 
 	@Override
-	protected PTFlowRelation createNewFlowRelation(PTPlace place, PTTransition transition) throws ParameterException{
+	protected PTFlowRelation createNewFlowRelation(PTPlace place, PTTransition transition) {
 		return new PTFlowRelation(place, transition);
 	}
 
 	@Override
-	protected PTFlowRelation createNewFlowRelation(PTTransition transition, PTPlace place) throws ParameterException{
+	protected PTFlowRelation createNewFlowRelation(PTTransition transition, PTPlace place) {
 		return new PTFlowRelation(transition, place);
 	}
 	
 	@Override
-	public PTMarkingGraph createNewMarkingGraph() throws ParameterException {
+	public PTMarkingGraph createNewMarkingGraph() {
 		return new PTMarkingGraph();
 	}
 
@@ -86,5 +84,4 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	public PTMarkingGraph buildMarkingGraph() throws PNException{
 		return (PTMarkingGraph) super.buildMarkingGraph();
 	}
-	
 }

@@ -22,7 +22,8 @@ public class PNChooser extends JFileChooser {
 	
 	public class PNFileView extends FileView {
 		
-	    public String getName(File f) {
+	    @Override
+		public String getName(File f) {
 	    	String fileName = null;
 	 	    if(f != null) {
 	 	    	fileName = PNChooser.this.getFileSystemView().getSystemDisplayName(f);
@@ -30,7 +31,8 @@ public class PNChooser extends JFileChooser {
 	 	    return fileName;
 	    }
 	 
-	    public String getDescription(File f) {
+	    @Override
+		public String getDescription(File f) {
 	    	return f.getName();
 	    }
 	 
@@ -38,7 +40,8 @@ public class PNChooser extends JFileChooser {
 //	        return null;
 //	    }
 	 
-	    public String getTypeDescription(File f) {
+	    @Override
+		public String getTypeDescription(File f) {
 	        String extension = FileUtils.getExtension(f);
 	        String type = null;
 	 

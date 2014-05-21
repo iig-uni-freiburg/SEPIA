@@ -57,7 +57,7 @@ public class PTTransitionTest {
 		// CPNTransition with non-default values
 		PTTransition t1 = setUpStandadEnabledTransition();
 
-		PTTransition t1clone = (PTTransition) t1.clone();
+		PTTransition t1clone = t1.clone();
 		assertEquals(t1, t1clone);
 		assertNotSame(t1, t1clone);
 		assertEquals(t1.getName(), t1clone.getName());
@@ -72,7 +72,7 @@ public class PTTransitionTest {
 		PTTransition t2 = new PTTransition("name_trans1");
 		assertFalse(t2.isSilent());
 
-		PTTransition t2clone = (PTTransition) t2.clone();
+		PTTransition t2clone = t2.clone();
 		assertEquals(t2, t2clone);
 		assertNotSame(t2, t2clone);
 		assertEquals(t2.getName(), t2clone.getName());

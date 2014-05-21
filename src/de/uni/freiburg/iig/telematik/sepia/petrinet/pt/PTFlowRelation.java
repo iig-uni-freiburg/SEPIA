@@ -5,21 +5,21 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelat
 
 public class PTFlowRelation extends AbstractPTFlowRelation<PTPlace, PTTransition> {
 	
-	public PTFlowRelation(PTPlace p, PTTransition t, int weight) throws ParameterException {
+	public PTFlowRelation(PTPlace p, PTTransition t, int weight) {
 		super(p, t);
 		setWeight(weight);
 	}
 
-	public PTFlowRelation(PTPlace p, PTTransition t) throws ParameterException {
+	public PTFlowRelation(PTPlace p, PTTransition t) {
 		super(p, t);
 	}
 
-	public PTFlowRelation(PTTransition transition, PTPlace place, int weight) throws ParameterException {
+	public PTFlowRelation(PTTransition transition, PTPlace place, int weight) {
 		super(transition, place);
 		setWeight(weight);
 	}
 
-	public PTFlowRelation(PTTransition t, PTPlace p) throws ParameterException {
+	public PTFlowRelation(PTTransition t, PTPlace p) {
 		super(t, p);
 	}
 

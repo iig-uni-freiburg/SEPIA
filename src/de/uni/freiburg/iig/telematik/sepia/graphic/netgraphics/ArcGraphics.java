@@ -78,6 +78,7 @@ public class ArcGraphics extends AbstractObjectGraphics {
 		return positions.size() > 0 || line.hasContent();
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 

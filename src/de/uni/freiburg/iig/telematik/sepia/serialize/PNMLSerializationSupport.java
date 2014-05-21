@@ -27,13 +27,13 @@ public class PNMLSerializationSupport extends XMLSerializationSupport{
 	protected Element netElement = null;
 	protected Element pageElement = null;
 	
-	public PNMLSerializationSupport(String netName, NetType netType) throws ParameterException {
+	public PNMLSerializationSupport(String netName, NetType netType) {
 		super("pnml");
 		getRootElement().setAttribute("xmlns", "http://www.pnml.org/version-2009/grammar/pnml");
 		addNetAndPageElements(netName, netType);
 	}
 	
-	protected void addNetAndPageElements(String netName, NetType netType) throws ParameterException{
+	protected void addNetAndPageElements(String netName, NetType netType) {
 		netElement = createElement("net");
 		netElement.setAttribute("id", netName);
 		try {

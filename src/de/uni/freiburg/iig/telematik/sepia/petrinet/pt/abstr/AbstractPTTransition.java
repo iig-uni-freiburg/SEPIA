@@ -10,19 +10,19 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 		super();
 	}
 
-	public AbstractPTTransition(String name) throws ParameterException {
+	public AbstractPTTransition(String name) {
 		super(name);
 	}
 	
-	public AbstractPTTransition(String name, String label) throws ParameterException {
+	public AbstractPTTransition(String name, String label) {
 		super(name, label);
 	}
 	
-	public AbstractPTTransition(String name, boolean isSilent) throws ParameterException{
+	public AbstractPTTransition(String name, boolean isSilent) {
 		super(name, isSilent);
 	}
 	
-	public AbstractPTTransition(String name, String label, boolean isSilent) throws ParameterException{
+	public AbstractPTTransition(String name, String label, boolean isSilent) {
 		super(name, label, isSilent);
 	}
 
@@ -78,7 +78,4 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 		}
 		return result;
 	}
-
-
-	
 }

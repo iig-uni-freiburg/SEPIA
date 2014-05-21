@@ -132,7 +132,7 @@ public class CPNTransitionTest {
 		assertTrue(t1.processesColor("red"));
 		assertFalse(t1.processesColor("pink"));
 
-		CPNTransition t1clone = (CPNTransition) t1.clone();
+		CPNTransition t1clone = t1.clone();
 		assertEquals(t1, t1clone);
 		assertNotSame(t1, t1clone);
 		assertTrue(t1clone.isSilent());
@@ -152,7 +152,7 @@ public class CPNTransitionTest {
 		assertFalse(t2.isSilent());
 		assertFalse(t2.processesColor("black"));
 
-		CPNTransition t2clone = (CPNTransition) t2.clone();
+		CPNTransition t2clone = t2.clone();
 		assertEquals(t2, t2clone);
 		assertNotSame(t2, t2clone);
 		assertFalse(t2clone.isSilent());

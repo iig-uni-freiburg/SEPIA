@@ -190,6 +190,7 @@ public abstract class AbstractPNGraphics<P extends AbstractPlace<F, S>,
 		this.transitionGraphics = transitionGraphics;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append("Graphics:\n");

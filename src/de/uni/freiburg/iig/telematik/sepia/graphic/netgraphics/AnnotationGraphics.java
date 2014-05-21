@@ -138,6 +138,7 @@ public class AnnotationGraphics extends AbstractObjectGraphics {
 		this.visibility = visibility;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 

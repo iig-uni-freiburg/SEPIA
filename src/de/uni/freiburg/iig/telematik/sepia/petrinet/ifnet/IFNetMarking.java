@@ -19,7 +19,4 @@ public class IFNetMarking extends AbstractIFNetMarking {
 		}catch(ParameterException e){}
 		return newMarking;
 	}
-	
-	
-
 }

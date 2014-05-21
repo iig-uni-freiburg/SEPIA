@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.transform;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
@@ -20,11 +19,10 @@ public abstract class PNTransformer<P extends AbstractPlace<F,S>,
 	
 	protected AbstractPetriNet<P,T,F,M,S,X,Y> net = null;
 	
-	public PNTransformer(AbstractPetriNet<P,T,F,M,S,X,Y> net) throws ParameterException{
+	public PNTransformer(AbstractPetriNet<P,T,F,M,S,X,Y> net) {
 		Validate.notNull(net);
 		this.net = net;
 	}
 	
 	public abstract AbstractPetriNet<P,T,F,M,S,X,Y> applyTransformation();
-
 }

@@ -30,16 +30,16 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
    							   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 						  	   G extends AbstractPNGraphics<P,T,F,M,S>>  extends PNSerializer_XML<P, T, F, M, S, X, Y, N, G> {
 
-	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> petriNet) throws ParameterException {
+	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> petriNet) {
 		super(petriNet);
 	}
 
-	public PNSerializer_PNML(N petriNet) throws ParameterException {
+	public PNSerializer_PNML(N petriNet) {
 		super(petriNet);
 	}
 	
 	@Override
-	protected void initialize() throws ParameterException{
+	protected void initialize() {
 		support = new PNMLSerializationSupport(getPetriNet().getName(), getPetriNet().getNetType());
 	}
 	

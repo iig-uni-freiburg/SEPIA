@@ -10,19 +10,19 @@ public class RegularIFNetTransition extends AbstractRegularIFNetTransition<IFNet
 		super();
 	}
 
-	public RegularIFNetTransition(String name, boolean isEmpty) throws ParameterException {
+	public RegularIFNetTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);
 	}
 
-	public RegularIFNetTransition(String name, String label, boolean isEmpty) throws ParameterException {
+	public RegularIFNetTransition(String name, String label, boolean isEmpty) {
 		super(name, label, isEmpty);
 	}
 
-	public RegularIFNetTransition(String name, String label) throws ParameterException {
+	public RegularIFNetTransition(String name, String label) {
 		super(name, label);
 	}
 
-	public RegularIFNetTransition(String name) throws ParameterException {
+	public RegularIFNetTransition(String name) {
 		super(name);
 	}
 
@@ -49,5 +49,4 @@ public class RegularIFNetTransition extends AbstractRegularIFNetTransition<IFNet
 	protected RegularIFNetTransition newInstance() {
 		return new RegularIFNetTransition();
 	}
-
 }

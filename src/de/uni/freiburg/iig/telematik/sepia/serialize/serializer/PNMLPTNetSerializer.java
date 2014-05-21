@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
 import org.w3c.dom.Element;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
@@ -25,11 +24,11 @@ public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>,
 								N extends AbstractPTNet<P,T,F,M,X,Y>,
 							  	G extends AbstractPTGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Integer, X, Y, N , G> {
 
-	public PNMLPTNetSerializer(AbstractGraphicalPTNet<P,T,F,M,X,Y,N,G> petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(AbstractGraphicalPTNet<P,T,F,M,X,Y,N,G> petriNet) {
 		super(petriNet);
 	}
 
-	public PNMLPTNetSerializer(N petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(N petriNet) {
 		super(petriNet);
 	}
 	
@@ -59,5 +58,4 @@ public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>,
 	public NetType acceptedNetType() {
 		return NetType.PTNet;
 	}
-
 }

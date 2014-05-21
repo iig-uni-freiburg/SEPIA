@@ -32,7 +32,7 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	 * @param name The name for the new place.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public AbstractPTPlace(String name) throws ParameterException {
+	public AbstractPTPlace(String name) {
 		super(name);
 		state = 0;
 	}
@@ -44,13 +44,13 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	 * @param label The label for the new place.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
-	public AbstractPTPlace(String name, String label) throws ParameterException {
+	public AbstractPTPlace(String name, String label) {
 		super(name, label);
 		state = 0;
 	}
 
 	@Override
-	public void setCapacity(int capacity) throws ParameterException {
+	public void setCapacity(int capacity) {
 		Validate.bigger(capacity, 0);
 		if(getState() > capacity)
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "Place already contains more tokens than the new capacity for this color.");
@@ -59,13 +59,13 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	}
 
 	@Override
-	protected void addTokens(Integer tokens) throws ParameterException {
+	protected void addTokens(Integer tokens) {
 		Validate.notNull(tokens);
 		setState(state + tokens);
 	}
 
 	@Override
-	protected void removeTokens(Integer tokens) throws ParameterException {
+	protected void removeTokens(Integer tokens) {
 		Validate.notNull(tokens);
 		setState(state - tokens);
 	}
@@ -93,13 +93,13 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	}
 
 	@Override
-	public boolean canConsume(Integer state) throws ParameterException {
+	public boolean canConsume(Integer state) {
 		validateState(state);
 		return state + this.state <= capacity || capacity < 0;
 	}
 
 	@Override
-	protected void validateState(Integer state) throws ParameterException {
+	protected void validateState(Integer state) {
 		super.validateState(state);
 		Validate.notNegative(state);
 		if(capacity > -1)
@@ -111,5 +111,4 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	public Integer getState() {
 		return new Integer(state);
 	}
-
 }

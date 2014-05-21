@@ -118,6 +118,7 @@ public class NodeGraphics extends AbstractObjectGraphics {
 		return position.hasContent() || dimension.hasContent() || line.hasContent() || fill.hasContent();
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 

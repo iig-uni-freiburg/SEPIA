@@ -21,12 +21,12 @@ public class RandomPNTraverser<T extends AbstractTransition<?,?>> extends PNTrav
 	
 	RandomChooser<T> randomChooser = new RandomChooser<T>();
 
-	public RandomPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) throws ParameterException {
+	public RandomPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) {
 		super(net);
 	}
 
 	@Override
-	public T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException, ParameterException{
+	public T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException {
 		if(!isValid())
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot provide transitions in invalid state.");
 		Validate.notNull(enabledTransitions);
@@ -45,6 +45,4 @@ public class RandomPNTraverser<T extends AbstractTransition<?,?>> extends PNTrav
 	public boolean isValid() {
 		return randomChooser.isValid();
 	}
-
-
 }

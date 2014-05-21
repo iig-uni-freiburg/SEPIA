@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn;
 import java.util.Set;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.cwn.CWNMarkingGraph;

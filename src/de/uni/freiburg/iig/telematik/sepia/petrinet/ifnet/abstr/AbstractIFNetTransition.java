@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr;
 
 import java.util.Set;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNTransition;
 
@@ -19,22 +18,22 @@ public abstract class AbstractIFNetTransition<E extends AbstractIFNetFlowRelatio
 		this.type = type;
 	}
 
-	public AbstractIFNetTransition(TransitionType type, String name, boolean isEmpty) throws ParameterException {
+	public AbstractIFNetTransition(TransitionType type, String name, boolean isEmpty) {
 		super(name, isEmpty);
 		this.type = type;
 	}
 
-	public AbstractIFNetTransition(TransitionType type, String name, String label, boolean isEmpty) throws ParameterException {
+	public AbstractIFNetTransition(TransitionType type, String name, String label, boolean isEmpty) {
 		super(name, label, isEmpty);
 		this.type = type;
 	}
 
-	public AbstractIFNetTransition(TransitionType type, String name, String label) throws ParameterException {
+	public AbstractIFNetTransition(TransitionType type, String name, String label) {
 		super(name, label);
 		this.type = type;
 	}
 
-	public AbstractIFNetTransition(TransitionType type, String name) throws ParameterException {
+	public AbstractIFNetTransition(TransitionType type, String name) {
 		super(name);
 		this.type = type;
 	}

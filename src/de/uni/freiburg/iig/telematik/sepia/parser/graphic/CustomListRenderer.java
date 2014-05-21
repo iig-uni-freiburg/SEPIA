@@ -18,6 +18,7 @@ import javax.swing.ListCellRenderer;
 			this.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		}
 
+		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
 			setText(value.toString());

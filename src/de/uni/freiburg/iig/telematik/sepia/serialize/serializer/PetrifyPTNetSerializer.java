@@ -34,11 +34,11 @@ public class PetrifyPTNetSerializer<P extends AbstractPTPlace<F>,
 	private final String BOUNDED_PLACE_FORMAT = " %s=%s";
 	private final String MARKING_FORMAT = " %s=%s";
 	
-	public PetrifyPTNetSerializer(AbstractGraphicalPTNet<P, T, F, M, X, Y, N, G> petriNet) throws ParameterException {
+	public PetrifyPTNetSerializer(AbstractGraphicalPTNet<P, T, F, M, X, Y, N, G> petriNet) {
 		super(petriNet);
 	}
 	
-	public PetrifyPTNetSerializer(N petriNet) throws ParameterException {
+	public PetrifyPTNetSerializer(N petriNet) {
 		super(petriNet);
 	}
 
@@ -105,7 +105,7 @@ public class PetrifyPTNetSerializer<P extends AbstractPTPlace<F>,
 	
 	
 	@Override
-	public void serialize(String path, String fileName) throws SerializationException, ParameterException, IOException {
+	public void serialize(String path, String fileName) throws SerializationException, IOException {
 		
 		FileFormat format = new PNFF_Petrify();
 		File file = new File(String.format("%s%s.%s", path, fileName, format.getFileExtension()));

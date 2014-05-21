@@ -33,22 +33,13 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLPTNetSeriali
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PetrifyPTNetSerializer;
 
 public class PNSerialization {
-	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <P extends AbstractPlace<F,S>, 
-	   			   T extends AbstractTransition<F,S>, 
-	   			   F extends AbstractFlowRelation<P,T,S>, 
-	   			   M extends AbstractMarking<S>, 
-	   			   S extends Object,
-	   			   X extends AbstractMarkingGraphState<M, S>,
-	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	PNSerializer<P,T,F,M,S,X,Y,N,G> 
+	PNSerializer<P, T, F, M, S, X, Y, N, G>
 
-	getSerializer(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format) throws ParameterException, SerializationException {
+	getSerializer(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> net, PNSerializationFormat format) throws SerializationException {
 
 		// ugly unbounded wildcards as work-around for bug JDK-6932571
 		Object serializer = null;
@@ -75,110 +66,93 @@ public class PNSerialization {
 		}
 
 		if (serializer != null)
-			return (PNSerializer<P,T,F,M,S,X,Y,N,G>) serializer;
+			return (PNSerializer<P, T, F, M, S, X, Y, N, G>) serializer;
 		else
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes"})
-	public static <P extends AbstractPlace<F,S>, 
-	   			   T extends AbstractTransition<F,S>, 
-	   			   F extends AbstractFlowRelation<P,T,S>, 
-	   			   M extends AbstractMarking<S>, 
-	   			   S extends Object,
-	   			   X extends AbstractMarkingGraphState<M, S>,
-	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	PNSerializer<P,T,F,M,S,X,Y,N,G> 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	getSerializer(N net, PNSerializationFormat format) throws ParameterException, SerializationException{
+	PNSerializer<P, T, F, M, S, X, Y, N, G>
+
+	getSerializer(N net, PNSerializationFormat format) throws SerializationException {
 
 		// ugly unbounded wildcard as work-around for bug JDK-6932571
 		Object netObject = net;
 
-		switch(format){
+		switch (format) {
 		case PNML:
-			if(netObject instanceof AbstractIFNet){
+			if (netObject instanceof AbstractIFNet) {
 				return new PNMLIFNetSerializer((AbstractIFNet) net);
 			}
-			if(netObject instanceof AbstractCPN){
+			if (netObject instanceof AbstractCPN) {
 				// CWNs fall into this category.
 				return new PNMLCPNSerializer((AbstractCPN) net);
 			}
-			if(netObject instanceof AbstractPTNet){
+			if (netObject instanceof AbstractPTNet) {
 				return new PNMLPTNetSerializer((AbstractPTNet) net);
-				
+
 			}
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		case PETRIFY:
-			if(net instanceof AbstractPTNet)
+			if (net instanceof AbstractPTNet)
 				return new PetrifyPTNetSerializer((AbstractPTNet) net);
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 		default:
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_FORMAT, format);
-			
+
 		}
 	}
-	
-//	public static <P extends AbstractPlace<F,S>, 
-//	   			   T extends AbstractTransition<F,S>, 
-//	   			   F extends AbstractFlowRelation<P,T,S>, 
-//	   			   M extends AbstractMarking<S>, 
-//	   			   S extends Object> 
-//	
-//		   PNSerializer<P,T,F,M,S> 
-//	
-//		   getSerializer(NetType netType, SerializationFormat format) throws ParameterException{
-//		
-//		switch(netType){
-//		case PTNet: 
-//			switch(format){
-//			case PNML: 
-//				return new PTSerializer_PNML();
-//			case SOLE_CARMONA:
-//				return null;
-//			default:
-//				return null;
-//			}
-//		case CPN:
-//			switch(format){
-//			case PNML: 
-//				return new PTSerializer_PNML_Old();
-//			case SOLE_CARMONA:
-//				throw new ParameterException(ErrorCode.INCOMPATIBILITY, String.format(incompatibilityFormat, SerializationFormat.SOLE_CARMONA, NetType.CPN));
-//			default:
-//				return null;
-//			}
-//		case CWN:
-//			break;
-//		case IFNet:
-//			break;
-//		default:
-//			return null;
-//		}
-//		return null;
-//	}
-	
-	public static <P extends AbstractPlace<F,S>, 
-	   T extends AbstractTransition<F,S>, 
-	   F extends AbstractFlowRelation<P,T,S>, 
-	   M extends AbstractMarking<S>, 
-	   S extends Object,
-	   X extends AbstractMarkingGraphState<M, S>,
-	   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	String 
+	// public static <P extends AbstractPlace<F,S>,
+	// T extends AbstractTransition<F,S>,
+	// F extends AbstractFlowRelation<P,T,S>,
+	// M extends AbstractMarking<S>,
+	// S extends Object>
+	//
+	// PNSerializer<P,T,F,M,S>
+	//
+	// getSerializer(NetType netType, SerializationFormat format) throws ParameterException{
+	//
+	// switch(netType){
+	// case PTNet:
+	// switch(format){
+	// case PNML:
+	// return new PTSerializer_PNML();
+	// case SOLE_CARMONA:
+	// return null;
+	// default:
+	// return null;
+	// }
+	// case CPN:
+	// switch(format){
+	// case PNML:
+	// return new PTSerializer_PNML_Old();
+	// case SOLE_CARMONA:
+	// throw new ParameterException(ErrorCode.INCOMPATIBILITY, String.format(incompatibilityFormat, SerializationFormat.SOLE_CARMONA, NetType.CPN));
+	// default:
+	// return null;
+	// }
+	// case CWN:
+	// break;
+	// case IFNet:
+	// break;
+	// default:
+	// return null;
+	// }
+	// return null;
+	// }
 
-	serialize(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format) 
-			throws SerializationException, ParameterException{
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
+
+	String
+
+	serialize(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> net, PNSerializationFormat format) throws SerializationException {
 
 		Validate.notNull(net);
 		Validate.notNull(format);
-		
+
 		StringBuilder builder = new StringBuilder();
 		builder.append(format.getFileFormat().getFileHeader());
 		builder.append(getSerializer(net, format).serialize());
@@ -186,67 +160,40 @@ public class PNSerialization {
 
 		return builder.toString();
 	}
-	
-	public static <P extends AbstractPlace<F,S>, 
-	   T extends AbstractTransition<F,S>, 
-	   F extends AbstractFlowRelation<P,T,S>, 
-	   M extends AbstractMarking<S>, 
-	   S extends Object,
-	   X extends AbstractMarkingGraphState<M, S>,
-	   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	void 
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	serialize(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format, String path, String fileName) 
-			throws SerializationException, ParameterException, IOException{
+	void
+
+	serialize(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> net, PNSerializationFormat format, String path, String fileName) throws SerializationException, IOException {
 
 		Validate.notNull(net);
 		Validate.notNull(format);
-		
-		PNSerializer<P,T,F,M,S,X,Y,N,G> serializer = getSerializer(net, format);
+
+		PNSerializer<P, T, F, M, S, X, Y, N, G> serializer = getSerializer(net, format);
 		serializer.serialize(path, fileName);
 	}
-	
-	public static <P extends AbstractPlace<F,S>, 
-				   T extends AbstractTransition<F,S>, 
-				   F extends AbstractFlowRelation<P,T,S>, 
-				   M extends AbstractMarking<S>, 
-				   S extends Object,
-				   X extends AbstractMarkingGraphState<M, S>,
-	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
-				   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	void 
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	serialize(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format, String fileName) 
-			throws SerializationException, ParameterException, IOException{
+	void
+
+	serialize(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> net, PNSerializationFormat format, String fileName) throws SerializationException, IOException {
 
 		Validate.notNull(fileName);
 		File file = new File(fileName);
 		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
 	}
-	
-	public static <P extends AbstractPlace<F,S>, 
-	   T extends AbstractTransition<F,S>, 
-	   F extends AbstractFlowRelation<P,T,S>, 
-	   M extends AbstractMarking<S>, 
-	   S extends Object,
-	   X extends AbstractMarkingGraphState<M, S>,
-	   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	String 
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	serialize(N net, PNSerializationFormat format) 
-			throws SerializationException, ParameterException{
+	String
+
+	serialize(N net, PNSerializationFormat format) throws SerializationException {
 
 		Validate.notNull(net);
 		Validate.notNull(format);
-		
+
 		StringBuilder builder = new StringBuilder();
 		builder.append(format.getFileFormat().getFileHeader());
 		builder.append(getSerializer(net, format).serialize());
@@ -254,28 +201,19 @@ public class PNSerialization {
 
 		return builder.toString();
 	}
-	
-	public static <P extends AbstractPlace<F,S>, 
-	   			   T extends AbstractTransition<F,S>, 
-	   			   F extends AbstractFlowRelation<P,T,S>, 
-	   			   M extends AbstractMarking<S>, 
-	   			   S extends Object,
-	   			   X extends AbstractMarkingGraphState<M, S>,
-	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
-	
-	void 
-	
-	serialize(N net, PNSerializationFormat format, String path, String fileName)
-			throws SerializationException, ParameterException, IOException{
-		
+
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
+
+	void
+
+	serialize(N net, PNSerializationFormat format, String path, String fileName) throws SerializationException, IOException {
+
 		Validate.notNull(net);
 		Validate.notNull(format);
 		Validate.notNull(path);
 		Validate.fileName(fileName);
-		
-		//Check if path and file name are valid
+
+		// Check if path and file name are valid
 		File cPath = new File(path);
 		if (!cPath.exists())
 			cPath.mkdirs();
@@ -283,32 +221,20 @@ public class PNSerialization {
 			throw new IOException(path + " is not a valid path!");
 		if (fileName.isEmpty())
 			throw new ParameterException(ErrorCode.EMPTY);
-		
-		PNSerializer<P,T,F,M,S,X,Y,N,G> serializer = getSerializer(net, format);
+
+		PNSerializer<P, T, F, M, S, X, Y, N, G> serializer = getSerializer(net, format);
 
 		serializer.serialize(path, fileName);
 	}
-	
-	public static <P extends AbstractPlace<F, S>, 
-				   T extends AbstractTransition<F, S>, 
-				   F extends AbstractFlowRelation<P, T, S>, 
-				   M extends AbstractMarking<S>, 
-				   S extends Object,
-				   X extends AbstractMarkingGraphState<M, S>,
-	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
-	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-			  	   G extends AbstractPNGraphics<P,T,F,M,S>>
+
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
 
 	void
 
-	serialize(N net, PNSerializationFormat format, String fileName) 
-			throws SerializationException, ParameterException, IOException {
+	serialize(N net, PNSerializationFormat format, String fileName) throws SerializationException, IOException {
 
 		Validate.notNull(fileName);
 		File file = new File(fileName);
 		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
 	}
-	
-
-
 }

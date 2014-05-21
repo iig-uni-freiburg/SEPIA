@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.w3c.dom.Element;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 
@@ -20,7 +19,7 @@ public class ACSerializer {
 		support = new XMLSerializationSupport("labeling");
 	}
 	
-	private void addContent() throws ParameterException{
+	private void addContent() {
 		// Add activity classifications
 		Element classificationsElement = support.createElement("classifications");
 		for(String activity: labeling.getActivities()){
@@ -62,17 +61,16 @@ public class ACSerializer {
 		support.getRootElement().appendChild(subjectDescriptorsElement);
 	}
 	
-	public String serialize() throws SerializationException, ParameterException{
+	public String serialize() throws SerializationException {
 		addContent();
 		return support.serialize();
 	}
 	
-	public void serialize(String path, String fileName) throws ParameterException, SerializationException, IOException {
+	public void serialize(String path, String fileName) throws SerializationException, IOException {
 		support.serialize(path, fileName, getFileExtension());
 	}
 	
 	protected String getFileExtension(){
 		return "xml";
 	}
-
 }

@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 import java.util.Set;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraph;
@@ -27,7 +26,7 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 		super();
 	}
 
-	public IFNet(Set<String> places, Set<String> transitions, IFNetMarking initialMarking) throws ParameterException {
+	public IFNet(Set<String> places, Set<String> transitions, IFNetMarking initialMarking) {
 		super(places, transitions, initialMarking);
 	}
 
@@ -42,44 +41,38 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 	}	
 	
 	@Override
-	public IFNetMarkingGraph createNewMarkingGraph() throws ParameterException {
+	public IFNetMarkingGraph createNewMarkingGraph() {
 		return new IFNetMarkingGraph();
 	}
 
 	@Override
-	protected IFNetPlace createNewPlace(String name, String label) 
-			throws ParameterException {
+	protected IFNetPlace createNewPlace(String name, String label) {
 		return new IFNetPlace(name, label);
 	}
 	
 	@Override
-	protected RegularIFNetTransition createNewRegularTransition(String name, String label, boolean isSilent) 
-			throws ParameterException {
+	protected RegularIFNetTransition createNewRegularTransition(String name, String label, boolean isSilent) {
 		return new RegularIFNetTransition(name, label, isSilent);
 	}
 
 	@Override
-	protected DeclassificationTransition createNewDeclassificationTransition(String name, String label, boolean isSilent) 
-			throws ParameterException {
+	protected DeclassificationTransition createNewDeclassificationTransition(String name, String label, boolean isSilent) {
 		return new DeclassificationTransition(name, label, isSilent);
 	}
 
 	@Override
-	protected AbstractIFNetTransition<IFNetFlowRelation> createNewTransition(String name, String label, boolean isSilent) 
-			throws ParameterException {
+	protected AbstractIFNetTransition<IFNetFlowRelation> createNewTransition(String name, String label, boolean isSilent) {
 		return createNewRegularTransition(name, label, isSilent);
 	}
 
 
 	@Override
-	protected IFNetFlowRelation createNewFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) 
-			throws ParameterException {
+	protected IFNetFlowRelation createNewFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) {
 		return new IFNetFlowRelation(place, transition);
 	}
 
 	@Override
-	protected IFNetFlowRelation createNewFlowRelation(AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetPlace place) 
-			throws ParameterException {
+	protected IFNetFlowRelation createNewFlowRelation(AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetPlace place) {
 		return new IFNetFlowRelation(transition, place);
 	}
 

@@ -12,7 +12,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
@@ -112,7 +111,7 @@ extends AbstractPNMLCWNParser<P, T, F, M, X, Y, N, G> {
 						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
 				}
 
-				N ifnet = (N) net;
+				N ifnet = net;
 
 				// get transition type
 				String transitionType = readTransitionType(transition);

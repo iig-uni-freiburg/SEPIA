@@ -37,7 +37,7 @@ public class CPNPlaceTest {
 
 	/* Add tokens to a place and check the place contains the tokens */
 	@Test
-	public void testCPNPlaceAddTokens() throws ParameterException {
+	public void testCPNPlaceAddTokens() {
 		// Create Place
 		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
 		boolean yes = p1.hasEmptyState();
@@ -91,7 +91,7 @@ public class CPNPlaceTest {
 
 	/* Set some color capacities and see whether the place knows about them */
 	@Test
-	public void testCPNPlaceSetCapacities() throws ParameterException {
+	public void testCPNPlaceSetCapacities() {
 		// Create Place
 		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
 
@@ -115,7 +115,7 @@ public class CPNPlaceTest {
 
 	/* Remove some capacities */
 	@Test
-	public void testCPNPlaceRemoveCapacities() throws ParameterException {
+	public void testCPNPlaceRemoveCapacities() {
 		// Create Place
 		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
 
@@ -148,7 +148,7 @@ public class CPNPlaceTest {
 
 	/* check setting a place to an empty state */
 	@Test
-	public void testSetEmptyState() throws ParameterException {
+	public void testSetEmptyState() {
 		// Create place
 		CPNPlace p1 = new CPNPlace("name_p1");
 		Multiset<String> placeMarking = new Multiset<String>();
@@ -168,7 +168,7 @@ public class CPNPlaceTest {
 
 	/* check the capacity of unused colors is zero */
 	@Test
-	public void testCPNPlaceEmptyCapacities() throws ParameterException {
+	public void testCPNPlaceEmptyCapacities() {
 		// Create Place
 		CPNPlace p1 = new CPNPlace("name_p1", "label_p1");
 
@@ -181,7 +181,7 @@ public class CPNPlaceTest {
 
 	/* Test what happens if the capacity is set to a value lower than the tokens actually contained in the place */
 	@Test
-	public void testCPNPlaceSetLowCapacity() throws ParameterException {
+	public void testCPNPlaceSetLowCapacity() {
 		// Create place
 		CPNPlace p1 = new CPNPlace("name_p1");
 
@@ -209,7 +209,7 @@ public class CPNPlaceTest {
 
 	/* Try to add more tokens than the capacity allows */
 	@Test
-	public void testCPNPlaceAddToManyTokens() throws ParameterException {
+	public void testCPNPlaceAddToManyTokens() {
 		// Create place
 		CPNPlace p1 = new CPNPlace("name_p1");
 		Multiset<String> placeMarking = new Multiset<String>();
@@ -235,7 +235,7 @@ public class CPNPlaceTest {
 
 	/* test method canConsume */
 	@Test
-	public void testcanConsume() throws ParameterException {
+	public void testcanConsume() {
 		// Create place
 		CPNPlace p1 = new CPNPlace("name_p1");
 		Multiset<String> placeMarking = new Multiset<String>();
@@ -260,7 +260,7 @@ public class CPNPlaceTest {
 	 * Test the clone() method
 	 */
 	@Test
-	public void testCPNPlaceClone() throws ParameterException {
+	public void testCPNPlaceClone() {
 		// Create place with color capacities
 		CPNPlace placeWithColorCapacities1 = new CPNPlace("name_p1_with_capacities");
 

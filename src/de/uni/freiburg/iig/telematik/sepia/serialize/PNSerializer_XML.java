@@ -2,7 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.serialize;
 
 import java.io.IOException;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
@@ -23,17 +22,17 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 	   								   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 	   							  	   G extends AbstractPNGraphics<P,T,F,M,S>>  extends PNSerializer<P, T, F, M, S, X, Y, N, G> {
 	
-	public PNSerializer_XML(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> petriNet) throws ParameterException {
+	public PNSerializer_XML(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> petriNet) {
 		super(petriNet);
 		initialize();
 	}
 
-	public PNSerializer_XML(N petriNet) throws ParameterException {
+	public PNSerializer_XML(N petriNet) {
 		super(petriNet);
 		initialize();
 	}
 	
-	protected void initialize() throws ParameterException{
+	protected void initialize() {
 		support = new XMLSerializationSupport(getRootElementName());
 	}
 	
@@ -48,7 +47,7 @@ public abstract class PNSerializer_XML<P extends AbstractPlace<F,S>,
 	}
 	
 	@Override
-	public void serialize(String path, String fileName) throws ParameterException, SerializationException, IOException {
+	public void serialize(String path, String fileName) throws SerializationException, IOException {
 		addContent();
 		support.serialize(path, fileName, getFileExtension());
 	}

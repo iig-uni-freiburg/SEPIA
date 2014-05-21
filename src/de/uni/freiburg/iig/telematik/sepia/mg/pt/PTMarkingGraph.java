@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.mg.pt;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 

@@ -157,6 +157,7 @@ public class SilentTransitionPanel extends JPanel {
 		}
 
 
+		@Override
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		public Class getColumnClass(int c) {
 			if(c == 2)

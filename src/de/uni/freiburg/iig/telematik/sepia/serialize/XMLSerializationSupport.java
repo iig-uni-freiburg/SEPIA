@@ -17,8 +17,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.invation.code.toval.validate.ParameterException;
-
 public class XMLSerializationSupport implements SerializationSupport{
 	
 	protected Document document = null;
@@ -51,11 +49,13 @@ public class XMLSerializationSupport implements SerializationSupport{
 		return rootElement;
 	}
 	
+	@Override
 	public String serialize() throws SerializationException {
 		return document.getTextContent();
 	}
 	
-	public void serialize(String path, String fileName, String extension) throws ParameterException, SerializationException, IOException {
+	@Override
+	public void serialize(String path, String fileName, String extension) throws SerializationException, IOException {
 		try {
 			File fileOutput = new File(path+fileName+"."+extension);
 			StreamResult streamResult = new StreamResult(fileOutput);

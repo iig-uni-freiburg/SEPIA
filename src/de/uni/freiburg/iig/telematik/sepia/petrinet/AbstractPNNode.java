@@ -71,7 +71,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param name The name for the Petri net node.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public AbstractPNNode(PNNodeType type, String name) throws ParameterException {
+	public AbstractPNNode(PNNodeType type, String name) {
 		this(type, name, name);
 		this.type = type;
 	}
@@ -82,7 +82,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param label The label for the Petri net node.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
-	public AbstractPNNode(PNNodeType type, String name, String label) throws ParameterException {
+	public AbstractPNNode(PNNodeType type, String name, String label) {
 		Validate.notNull(name);
 		Validate.notNull(label);
 		this.name = name;
@@ -107,7 +107,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param name New name for the Petri net node.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public abstract void setName(String name) throws ParameterException;
+	public abstract void setName(String name);
 	
 	/**
 	 * Returns the label of the Petri net node.
@@ -122,7 +122,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param label New label for the Petri net node.
 	 * @throws ParameterException If the given label is <code>null</code>.
 	 */
-	public void setLabel(String label) throws ParameterException{
+	public void setLabel(String label) {
 		Validate.notNull(label);
 		this.label = label;
 	}
@@ -200,7 +200,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
-	protected boolean addIncomingRelation(E relation) throws ParameterException {
+	protected boolean addIncomingRelation(E relation) {
 		Validate.notNull(relation);
 		return incomingRelations.add(relation);
 	}
@@ -214,7 +214,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
-	protected boolean addOutgoingRelation(E relation) throws ParameterException {
+	protected boolean addOutgoingRelation(E relation) {
 		Validate.notNull(relation);
 		return outgoingRelations.add(relation);
 	}
@@ -227,7 +227,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
-	protected boolean removeRelation(E relation) throws ParameterException {
+	protected boolean removeRelation(E relation) {
 		Validate.notNull(relation);
 		if(removeIncomingRelation(relation))
 			return true;
@@ -241,7 +241,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
-	protected boolean removeIncomingRelation(E relation) throws ParameterException {
+	protected boolean removeIncomingRelation(E relation) {
 		Validate.notNull(relation);
 		return incomingRelations.remove(relation);
 	}
@@ -253,7 +253,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
-	protected boolean removeOutgoingRelation(E relation) throws ParameterException {
+	protected boolean removeOutgoingRelation(E relation) {
 		Validate.notNull(relation);
 		return outgoingRelations.remove(relation);
 	}
@@ -266,7 +266,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>null</code> if there is no such incoming relation.
 	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
-	public <N extends AbstractPNNode<E>> E getRelationFrom(N node) throws ParameterException{
+	public <N extends AbstractPNNode<E>> E getRelationFrom(N node) {
 		Validate.notNull(node);
 		for(E incomingRelation: incomingRelations){
 			if(incomingRelation.getSource().equals(node)){
@@ -284,7 +284,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>null</code> if there is no such outgoing relation.
 	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
-	public <N extends AbstractPNNode<E>> E getRelationTo(N node) throws ParameterException{
+	public <N extends AbstractPNNode<E>> E getRelationTo(N node) {
 		Validate.notNull(node);
 		for(E outgoingRelation: outgoingRelations){
 			if(outgoingRelation.getTarget().equals(node)){
@@ -301,7 +301,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
-	public <N extends AbstractPNNode<E>> boolean containsRelationTo(N node) throws ParameterException{
+	public <N extends AbstractPNNode<E>> boolean containsRelationTo(N node) {
 		return getRelationTo(node) != null;
 	}
 	
@@ -312,7 +312,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * <code>false</code> otherwise.
 	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
-	public <N extends AbstractPNNode<E>> boolean containsRelationFrom(N node) throws ParameterException{
+	public <N extends AbstractPNNode<E>> boolean containsRelationFrom(N node) {
 		return getRelationFrom(node) != null;
 	}
 	
@@ -373,7 +373,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	@Override
 	public AbstractPNNode<E> clone() {
-		AbstractPNNode<E> result = (AbstractPNNode<E>) newInstance();
+		AbstractPNNode<E> result = newInstance();
 		try {
 			result.setName(getName());
 			result.setLabel(getLabel());
@@ -382,5 +382,4 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		}
 		return result;
 	}
-	
 }

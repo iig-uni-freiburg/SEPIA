@@ -52,6 +52,7 @@ public class AbstractIFNetGraphics<P extends AbstractIFNetPlace<F>,
 		this.tokenLabelsPosition = tokenLabelsPosition;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append(super.toString());

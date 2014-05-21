@@ -32,6 +32,7 @@ public class SerializationException extends ParserException {
 		super(message);
 	}
 
+	@Override
 	public Object getObject() {
 		return object;
 	}

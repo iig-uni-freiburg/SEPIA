@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetPlace;
 
 public class IFNetPlace extends AbstractIFNetPlace<IFNetFlowRelation> {
@@ -9,11 +8,11 @@ public class IFNetPlace extends AbstractIFNetPlace<IFNetFlowRelation> {
 		super();
 	}
 
-	public IFNetPlace(String name, String label) throws ParameterException {
+	public IFNetPlace(String name, String label) {
 		super(name, label);
 	}
 
-	public IFNetPlace(String name) throws ParameterException {
+	public IFNetPlace(String name) {
 		super(name);
 	}
 

@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 
@@ -11,13 +10,13 @@ public abstract class AbstractPTMarking extends AbstractMarking<Integer> {
 	}
 	
 	@Override
-	protected void validateState(Integer state) throws ParameterException {
+	protected void validateState(Integer state) {
 		super.validateState(state);
 		Validate.notNegative(state);
 	}
 
 	@Override
-	public void set(String place, Integer state) throws ParameterException {
+	public void set(String place, Integer state) {
 		Validate.notNull(place);
 		Validate.notNull(state);
 		if(state <= 0){
@@ -36,5 +35,4 @@ public abstract class AbstractPTMarking extends AbstractMarking<Integer> {
 		}
 		return builder.toString();
 	}
-	
 }

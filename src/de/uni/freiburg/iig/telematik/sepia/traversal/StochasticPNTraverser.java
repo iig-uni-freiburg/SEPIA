@@ -6,11 +6,9 @@ import java.util.List;
 import de.invation.code.toval.misc.valuegeneration.StochasticValueGenerator;
 import de.invation.code.toval.misc.valuegeneration.ValueGenerationException;
 import de.invation.code.toval.validate.InconsistencyException;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-
 
 /**
  * This flow control chooses the next transition to fire 
@@ -25,21 +23,21 @@ public class StochasticPNTraverser<T extends AbstractTransition<?,?>> extends Ra
 	private HashMap<T, StochasticValueGenerator<T>> flowProbabilities = new HashMap<T, StochasticValueGenerator<T>>();
 	private int toleranceDenominator;
 	
-	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) throws ParameterException {
+	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) {
 		this(net, DEFAULT_TOLERANCE_DENOMINATOR);
 	}
 
-	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net, int toleranceDenominator) throws ParameterException {
+	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net, int toleranceDenominator) {
 		super(net);
 		Validate.biggerEqual(toleranceDenominator, 1, "Denominator must be >=1.");
 		this.toleranceDenominator = toleranceDenominator;
 	}
 	
-	public void addFlowProbability(String fromTransitionID, String toTransitionID, double probability) throws ParameterException{
+	public void addFlowProbability(String fromTransitionID, String toTransitionID, double probability) {
 		addFlowProbability(net.getTransition(fromTransitionID), net.getTransition(toTransitionID), probability);
 	}
 	
-	public void addFlowProbability(T fromTransition, T toTransition, double probability) throws ParameterException{
+	public void addFlowProbability(T fromTransition, T toTransition, double probability) {
 		Validate.notNull(fromTransition);
 		Validate.notNull(toTransition);
 		Validate.inclusiveBetween(0.0, 1.0, probability);
@@ -52,7 +50,7 @@ public class StochasticPNTraverser<T extends AbstractTransition<?,?>> extends Ra
 	}
 
 	@Override
-	public T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException, ParameterException{
+	public T chooseNextTransition(List<T> enabledTransitions) throws InconsistencyException {
 		if(!flowProbabilities.containsKey(net.getLastFiredTransition()))
 			return super.chooseNextTransition(enabledTransitions);
 		if(!isValid())
@@ -81,11 +79,11 @@ public class StochasticPNTraverser<T extends AbstractTransition<?,?>> extends Ra
 	 * <code>false</code> otherwise.
 	 * @see StochasticValueGenerator#isValid()
 	 */
+	@Override
 	public boolean isValid(){
 		for(StochasticValueGenerator<T> chooser: flowProbabilities.values())
 			if(!chooser.isValid())
 				return false;
 		return true;
 	}
-
 }

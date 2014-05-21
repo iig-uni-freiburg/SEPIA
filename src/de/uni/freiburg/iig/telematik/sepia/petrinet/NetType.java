@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
@@ -20,7 +19,7 @@ public enum NetType {
 	public static final String CWNURI = "http://ifnml.process-security.de/grammar/v1.0/cwnet";
 	public static final String IFNetURI = "http://ifnml.process-security.de/grammar/v1.0/ifnet";
 
-	public static NetType getNetType(String uri) throws ParameterException {
+	public static NetType getNetType(String uri) {
 		Validate.notNull(uri);
 
 		if (uri.equals(OfficialPTNetURI))
@@ -37,7 +36,7 @@ public enum NetType {
 		return Unknown;
 	}
 	
-	public static String getURL(NetType type) throws ParameterException{
+	public static String getURL(NetType type) {
 		Validate.notNull(type);
 		switch (type){
 			case PTNet: return PTNetURI;
@@ -48,7 +47,7 @@ public enum NetType {
 		}
 	}
 
-	public static URL getVerificationURL(NetType type) throws ParameterException{
+	public static URL getVerificationURL(NetType type) {
 		Validate.notNull(type);
 		try {
 			switch (type){
@@ -64,7 +63,7 @@ public enum NetType {
 		return null;
 	}
 	
-	public static Class<?> getClassType(NetType type) throws ParameterException{
+	public static Class<?> getClassType(NetType type) {
 		Validate.notNull(type);
 		switch (type){
 			case PTNet: return AbstractPTNet.class;
@@ -74,5 +73,4 @@ public enum NetType {
 			default:	return null;
 		}
 	}
-	
 }

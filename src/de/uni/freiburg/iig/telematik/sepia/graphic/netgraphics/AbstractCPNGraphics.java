@@ -36,6 +36,7 @@ public abstract class AbstractCPNGraphics<P extends AbstractCPNPlace<F>,
 		this.colors = colors;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append(super.toString());

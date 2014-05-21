@@ -40,6 +40,7 @@ public class TokenGraphics extends AbstractObjectGraphics {
 		return tokenposition.hasContent();
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 

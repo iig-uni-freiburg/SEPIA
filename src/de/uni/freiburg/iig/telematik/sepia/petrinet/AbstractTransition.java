@@ -59,7 +59,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param name The name for the new Transition.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public AbstractTransition(String name) throws ParameterException {
+	public AbstractTransition(String name) {
 		super(PNNodeType.TRANSITION, name);
 	}
 	
@@ -69,7 +69,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param label The label for the new transition.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
-	public AbstractTransition(String name, String label) throws ParameterException {
+	public AbstractTransition(String name, String label) {
 		super(PNNodeType.TRANSITION, name, label);
 	}
 	
@@ -79,7 +79,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param isSilent The silent-state for the new transition.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public AbstractTransition(String name, boolean isSilent) throws ParameterException{
+	public AbstractTransition(String name, boolean isSilent) {
 		this(name);
 		this.isSilent = isSilent;
 	}
@@ -91,7 +91,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param isSilent The silent-state for the new transition.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
-	public AbstractTransition(String name, String label, boolean isSilent) throws ParameterException{
+	public AbstractTransition(String name, String label, boolean isSilent) {
 		this(name, label);
 		this.isSilent = isSilent;
 	}
@@ -100,7 +100,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	//------- Basic properties -----------------------------------------------------------------------
 	
 	@Override
-	protected boolean addIncomingRelation(E relation) throws ParameterException {
+	protected boolean addIncomingRelation(E relation) {
 		if(super.addIncomingRelation(relation)){
 			checkState();
 			return true;
@@ -109,7 +109,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	}
 
 	@Override
-	protected boolean addOutgoingRelation(E relation) throws ParameterException {
+	protected boolean addOutgoingRelation(E relation) {
 		if(super.addOutgoingRelation(relation)){
 			checkState();
 			return true;
@@ -144,7 +144,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	}
 	
 	@Override
-	public void setName(String name) throws ParameterException{
+	public void setName(String name) {
 		Validate.notNull(name);
 		if(!listenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
@@ -251,7 +251,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param listener The transition listener to add.
 	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
-	public void addTransitionListener(TransitionListener<AbstractTransition<E,S>> listener) throws ParameterException {
+	public void addTransitionListener(TransitionListener<AbstractTransition<E,S>> listener) {
 		listenerSupport.addTransitionListener(listener);
 	}
 	
@@ -260,7 +260,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param l The transition listener to remove.
 	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
-	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l) throws ParameterException {
+	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l) {
 		listenerSupport.removeTransitionListener(l);
 	}
 	

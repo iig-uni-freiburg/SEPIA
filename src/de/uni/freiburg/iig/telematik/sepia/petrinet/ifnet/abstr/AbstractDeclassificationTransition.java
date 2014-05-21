@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import de.invation.code.toval.misc.SetUtils;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 
 public abstract class AbstractDeclassificationTransition<E extends AbstractIFNetFlowRelation<? extends AbstractIFNetPlace<E>, 
@@ -14,19 +13,19 @@ public abstract class AbstractDeclassificationTransition<E extends AbstractIFNet
 		super(TransitionType.REGULAR);
 	}
 	
-	public AbstractDeclassificationTransition(String name, String label, boolean isSilent) throws ParameterException {
+	public AbstractDeclassificationTransition(String name, String label, boolean isSilent) {
 		super(TransitionType.REGULAR, name, label, isSilent);
 	}
 
-	public AbstractDeclassificationTransition(String name, boolean isSilent) throws ParameterException {
+	public AbstractDeclassificationTransition(String name, boolean isSilent) {
 		this(name, name, isSilent);
 	}
 
-	public AbstractDeclassificationTransition(String name, String label) throws ParameterException {
+	public AbstractDeclassificationTransition(String name, String label) {
 		this(name, label, false);
 	}
 
-	public AbstractDeclassificationTransition(String name) throws ParameterException {
+	public AbstractDeclassificationTransition(String name) {
 		this(name, name, false);
 	}
 	

@@ -30,19 +30,19 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 	protected G graphics = null;
 	protected SerializationSupport support = null;
 	
-	public PNSerializer(N petriNet) throws ParameterException{
+	public PNSerializer(N petriNet) {
 		validatePetriNet(petriNet);
 		this.petriNet = petriNet;
 	}
 	
-	public PNSerializer(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> petriNet) throws ParameterException{
+	public PNSerializer(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> petriNet) {
 		Validate.notNull(petriNet);
 		validatePetriNet(petriNet.getPetriNet());
 		this.petriNet = petriNet.getPetriNet();
 		this.graphics = petriNet.getPetriNetGraphics();
 	}
 	
-	private void validatePetriNet(N petriNet) throws ParameterException{
+	private void validatePetriNet(N petriNet) {
 		Validate.notNull(petriNet);
 		Class<?> requiredClassType = NetType.getClassType(acceptedNetType());
 		if(!(requiredClassType.isAssignableFrom(petriNet.getClass()))){
@@ -70,6 +70,6 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 	
 	public abstract String serialize() throws SerializationException;
 	
-	public abstract void serialize(String path, String fileName) throws ParameterException, SerializationException, IOException;
+	public abstract void serialize(String path, String fileName) throws SerializationException, IOException;
 			
 }

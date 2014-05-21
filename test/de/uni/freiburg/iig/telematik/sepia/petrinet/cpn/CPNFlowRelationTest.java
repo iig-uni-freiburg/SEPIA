@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
@@ -38,7 +37,7 @@ public class CPNFlowRelationTest {
 	 * Test the constructors
 	 */
 	@Test
-	public void testCPNFlowRelationConstructors() throws ParameterException {
+	public void testCPNFlowRelationConstructors() {
 
 		// Constructor 1
 		CPNFlowRelation f = new CPNFlowRelation(cpnP, cpnT);
@@ -69,7 +68,7 @@ public class CPNFlowRelationTest {
 	 * Test methods dealing with constraints
 	 */
 	@Test
-	public void testCPNFlowRelationConstraints() throws ParameterException {
+	public void testCPNFlowRelationConstraints() {
 
 		// Create a cpn flow relation
 		CPNFlowRelation f = new CPNFlowRelation(cpnP, cpnT);
@@ -82,7 +81,7 @@ public class CPNFlowRelationTest {
 	 * Test the clone() method
 	 */
 	@Test
-	public void testCPNFlowRelationClone() throws ParameterException {
+	public void testCPNFlowRelationClone() {
 		// Test PT transition
 		CPNFlowRelation f1 = new CPNFlowRelation(cpnP, cpnT);
 		assertEquals(f1.getSource().getName(), "p0");

@@ -6,11 +6,11 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
 
 public class IFNetFlowRelation extends AbstractIFNetFlowRelation<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>> {
 
-	public IFNetFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) throws ParameterException {
+	public IFNetFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) {
 		super(place, transition);
 	}
 
-	public IFNetFlowRelation(AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetPlace place) throws ParameterException {
+	public IFNetFlowRelation(AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetPlace place) {
 		super(transition, place);
 	}
 

@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 
 /**

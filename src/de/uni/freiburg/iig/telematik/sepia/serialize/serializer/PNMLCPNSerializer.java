@@ -28,11 +28,11 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 							   N extends AbstractCPN<P,T,F,M,X,Y>,
 							   G extends AbstractCPNGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, X, Y, N, G> {
 
-	public PNMLCPNSerializer(AbstractGraphicalCPN<P, T, F, M, X, Y, N, G> petriNet) throws ParameterException {
+	public PNMLCPNSerializer(AbstractGraphicalCPN<P, T, F, M, X, Y, N, G> petriNet) {
 		super(petriNet);
 	}
 
-	public PNMLCPNSerializer(N petriNet) throws ParameterException {
+	public PNMLCPNSerializer(N petriNet) {
 		super(petriNet);
 	}
 
@@ -158,6 +158,4 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	public NetType acceptedNetType() {
 		return NetType.CPN;
 	}
-	
-
 }

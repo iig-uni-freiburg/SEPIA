@@ -3,7 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt;
 import org.w3c.dom.Document;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphRelation;

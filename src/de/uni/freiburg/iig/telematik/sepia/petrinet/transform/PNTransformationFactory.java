@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.transform;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -21,9 +20,7 @@ public class PNTransformationFactory {
 	   			
 	   				PNTransformer<P,T,F,M,S,X,Y> 
 	
-				   getAndToXorTransformer(AbstractPetriNet<P,T,F,M,S,X,Y> net, T andSplit, T andJoin) 
-						   
-				   throws ParameterException{
+				   getAndToXorTransformer(AbstractPetriNet<P,T,F,M,S,X,Y> net, T andSplit, T andJoin) {
 		
 		return new AndToXorTransformer<P, T, F, M, S, X, Y>(net, andSplit, andJoin);
 	}
@@ -38,11 +35,8 @@ public class PNTransformationFactory {
 	
 					PNTransformer<P,T,F,M,S,X,Y> 
 
-	   			   getXorToAndTransformer(AbstractPetriNet<P,T,F,M,S,X,Y> net, P xorSplit, P xorJoin) 
-			   
-	   		       throws ParameterException{
+	   			   getXorToAndTransformer(AbstractPetriNet<P,T,F,M,S,X,Y> net, P xorSplit, P xorJoin) {
 
 		return new XorToAndTransformer<P, T, F, M, S, X, Y>(net, xorSplit, xorJoin);
 	}
-	
 }

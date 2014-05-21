@@ -61,9 +61,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Creates a new place with the given name.
 	 * @param name The name for the new Place.
-	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
-	public AbstractPlace(String name) throws ParameterException {
+	public AbstractPlace(String name) {
 		super(PNNodeType.PLACE, name);
 	}
 
@@ -74,10 +73,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *            The name for the new place.
 	 * @param label
 	 *            The label for the new place.
-	 * @throws ParameterException
-	 *             If some parameters are <code>null</code>.
 	 */
-	public AbstractPlace(String name, String label) throws ParameterException {
+	public AbstractPlace(String name, String label) {
 		super(PNNodeType.PLACE, name, label);
 	}
 
@@ -100,10 +97,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * 
 	 * @param capacity
 	 *            The desired capacity.
-	 * @throws ParameterException
-	 *             If the capacity is smaller or equal 0.
 	 */
-	public void setCapacity(int capacity) throws ParameterException {
+	public void setCapacity(int capacity) {
 		Validate.bigger(capacity, 0);
 		int oldCapacity = this.capacity;
 		this.capacity = capacity;
@@ -138,10 +133,8 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *            The place in question.
 	 * @return <code>true</code> if the two places have the same relations;<br>
 	 *         <code>false</code> otherwise.
-	 * @throws ParameterException
-	 *             If the other place is <code>null</code>.
 	 */
-	public boolean hasEqualRelations(AbstractPlace<E, S> otherPlace) throws ParameterException {
+	public boolean hasEqualRelations(AbstractPlace<E, S> otherPlace) {
 		Validate.notNull(otherPlace);
 		List<E> incomingRelations = otherPlace.getIncomingRelations();
 		List<E> outgoingRelations = otherPlace.getOutgoingRelations();
@@ -160,7 +153,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	}
 	
 	@Override
-	public void setName(String name) throws ParameterException{
+	public void setName(String name) {
 		Validate.notNull(name);
 		if(!placeListenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
@@ -190,11 +183,9 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *            The desired state of the place.
 	 * @return <code>true</code> if the actual place state was changed to the given state;<br>
 	 *         <code>false</code> if the place is already in the given state.
-	 * @throws ParameterException
-	 *             If the given state is <code>null</code>.
 	 * @see #initiateStateChecks()
 	 */
-	public boolean setState(S state) throws ParameterException {
+	public boolean setState(S state) {
 		validateState(state);
 		if (this.state.equals(state))
 			return false;
@@ -218,7 +209,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *             If the given parameter is <code>null</code> or invalid,<br>
 	 *             or if the tokens cannot be added to the place, e.g. due to capacity restrictions.
 	 */
-	protected abstract void addTokens(S tokens) throws ParameterException;
+	protected abstract void addTokens(S tokens);
 
 	/**
 	 * Removes all given tokens from the place.<br>
@@ -230,7 +221,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *             If the given parameter is <code>null</code> or invalid,<br>
 	 *             or if the tokens cannot be removed from the place.
 	 */
-	protected abstract void removeTokens(S tokens) throws ParameterException;
+	protected abstract void removeTokens(S tokens);
 
 	/**
 	 * Checks, if the place can consume the given state, i.e.<br>
@@ -244,7 +235,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             if the given state is <code>null</code>.
 	 */
-	public abstract boolean canConsume(S state) throws ParameterException;
+	public abstract boolean canConsume(S state);
 
 	/**
 	 * Checks if the place state is empty, i.e. the place contains no tokens.<br>
@@ -313,7 +304,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the given state is <code>null</code>.
 	 */
-	protected void validateState(S state) throws ParameterException {
+	protected void validateState(S state) {
 		Validate.notNull(state);
 	}
 
@@ -327,7 +318,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
 	 */
-	public void addTokenListener(TokenListener<AbstractPlace<E,S>> l) throws ParameterException {
+	public void addTokenListener(TokenListener<AbstractPlace<E,S>> l) {
 		tokenListenerSupport.addTokenListener(l);
 	}
 
@@ -339,7 +330,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
 	 */
-	public void removeTokenListener(TokenListener<AbstractPlace<E, S>> l) throws ParameterException {
+	public void removeTokenListener(TokenListener<AbstractPlace<E, S>> l) {
 		tokenListenerSupport.removeTokenListener(l);
 	}
 
@@ -348,7 +339,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @param l The capacity listener to add.
 	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
-	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l) throws ParameterException {
+	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l) {
 		placeListenerSupport.addCapacityListener(l);
 	}
 
@@ -357,7 +348,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @param l The capacity listener to remove.
 	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
-	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l) throws ParameterException {
+	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l) {
 		placeListenerSupport.removeCapacityListener(l);
 	}
 
@@ -410,7 +401,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 		return result;
 	}
 
-	protected void cloneCapacity(AbstractPlace<E, S> clone) throws ParameterException {
+	protected void cloneCapacity(AbstractPlace<E, S> clone) {
 		if (getCapacity() > 0)
 			clone.setCapacity(getCapacity());
 	}

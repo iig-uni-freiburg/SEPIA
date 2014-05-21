@@ -112,7 +112,7 @@ public class AnalysisContextTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext#AnalysisContext(de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.Labeling)}. Test whether the labeling is set properly.
 	 */
 	@Test
-	public void testAnalysisContextLabeling() throws ParameterException {
+	public void testAnalysisContextLabeling() {
 
 		// Create a labeling first
 		Labeling l = new Labeling();
@@ -130,7 +130,7 @@ public class AnalysisContextTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext#AnalysisContext(de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet, java.util.Collection)}. Test whether the labeling is setup properly.
 	 */
 	@Test
-	public void testAnalysisContextSNetCollectionOfString() throws ParameterException {
+	public void testAnalysisContextSNetCollectionOfString() {
 
 		// Create the AnalysisCOntext
 		AnalysisContext ac = new AnalysisContext(sNet, subjects);
@@ -200,7 +200,7 @@ public class AnalysisContextTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext#setLabeling(de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.Labeling)}. Test whether the right exceptions are raise if the new labeling is not compatible to the AnalysisCOntext.
 	 */
 	@Test
-	public void testSetLabeling() throws ParameterException {
+	public void testSetLabeling() {
 
 		// Create three labelings first
 		// The labeling used to construct the ac

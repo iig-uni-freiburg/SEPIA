@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 
 
@@ -78,9 +77,8 @@ public abstract class AbstractMarking<S extends Object> {
 	 * Returns the state of the given place within the marking.
 	 * @param place The place whose state is requested.
 	 * @return The state of the given place in the marking.
-	 * @throws ParameterException If the given place is <code>null</code>.
 	 */
-	public S get(String place) throws ParameterException{
+	public S get(String place) {
 		validatePlace(place);
 		return placeStates.get(place);
 	}
@@ -89,9 +87,8 @@ public abstract class AbstractMarking<S extends Object> {
 	 * Sets the state of the given place in the marking.
 	 * @param place The place whose state is set.
 	 * @param state The state for the given place.
-	 * @throws ParameterExceptionIf some parameters are <code>null</code>.
 	 */
-	public void set(String place, S state) throws ParameterException{
+	public void set(String place, S state) {
 		validatePlace(place);
 		validateState(state);
 		placeStates.put(place, state);
@@ -103,18 +100,16 @@ public abstract class AbstractMarking<S extends Object> {
 	/**
 	 * Validates a place for which a state has to be set.
 	 * @param place The place whose state is set.
-	 * @throws ParameterException If the place reference is <code>null</code>.
 	 */
-	protected void validatePlace(String place) throws ParameterException{
+	protected void validatePlace(String place) {
 		Validate.notNull(place);
 	}
 	
 	/**
 	 * Validates a state which has to be set for a place.
 	 * @param state The state which has to be set.
-	 * @throws ParameterException If the state reference is <code>null</code>.
 	 */
-	protected void validateState(S state) throws ParameterException{
+	protected void validateState(S state) {
 		Validate.notNull(state);
 	}
 	

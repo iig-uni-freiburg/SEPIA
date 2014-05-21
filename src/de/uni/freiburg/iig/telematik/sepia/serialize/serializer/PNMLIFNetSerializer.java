@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.w3c.dom.Element;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
@@ -34,11 +33,11 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 								  N extends AbstractIFNet<P,T,F,M,R,D,X,Y>,
   							  	  G extends AbstractIFNetGraphics<P,T,F,M>> extends PNMLCPNSerializer<P, T, F, M, X, Y, N, G> {
 
-	public PNMLIFNetSerializer(AbstractGraphicalIFNet<P, T, F, M, R, D, X, Y, N, G> ifNet) throws ParameterException {
+	public PNMLIFNetSerializer(AbstractGraphicalIFNet<P, T, F, M, R, D, X, Y, N, G> ifNet) {
 		super(ifNet);
 	}
 
-	public PNMLIFNetSerializer(N ifNet) throws ParameterException {
+	public PNMLIFNetSerializer(N ifNet) {
 		super(ifNet);
 	}
 	
@@ -142,8 +141,5 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 				transitionElement.appendChild(accessFunctionsElement);
 			}
 		}
-		
 	}
-	
-
 }

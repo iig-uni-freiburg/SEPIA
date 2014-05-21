@@ -30,7 +30,6 @@ public class PNUtils {
 	 * by choosing the ID of the given transactions as activity names.
 	 * @param transitions A collection of transitions.
 	 * @return A set of activity names.
-	 * @throws ParameterException 
 	 */
 	public static <T extends AbstractTransition<?,?>> Set<String> getNameSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions){
 		Validate.notNull(transitions);
@@ -48,7 +47,6 @@ public class PNUtils {
 	 * by choosing the ID of the given transactions as activity names.
 	 * @param transitions A collection of transitions.
 	 * @return A list of activity names.
-	 * @throws ParameterException 
 	 */
 	public static <T extends AbstractTransition<?,?>> List<String> getNameListFromTransitions(Collection<T> transitions){
 		Validate.notNull(transitions);
@@ -66,7 +64,6 @@ public class PNUtils {
 	 * by choosing the label of the given transactions as activity names.
 	 * @param transitions A collection of transitions.
 	 * @return A set of activity labels.
-	 * @throws ParameterException 
 	 */
 	public static <T extends AbstractTransition<?,?>> Set<String> getLabelSetFromTransitions(Collection<T> transitions, boolean includeSilentTransitions){
 		Validate.notNull(transitions);

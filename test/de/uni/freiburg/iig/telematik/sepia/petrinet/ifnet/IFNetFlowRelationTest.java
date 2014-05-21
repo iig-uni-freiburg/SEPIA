@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
@@ -39,7 +38,7 @@ public class IFNetFlowRelationTest {
 	 * Test the constructors
 	 */
 	@Test
-	public void testIFNetFlowRelationConstructors() throws ParameterException {
+	public void testIFNetFlowRelationConstructors() {
 
 		// Constructor 1
 		IFNetFlowRelation f = new IFNetFlowRelation(ifNetP, ifNetT);
@@ -58,7 +57,7 @@ public class IFNetFlowRelationTest {
 	 * Test methods dealing with constraints
 	 */
 	@Test
-	public void testIFNetFlowRelationConstraints() throws ParameterException {
+	public void testIFNetFlowRelationConstraints() {
 
 		// Create a IFNet flow relation
 		IFNetFlowRelation f = new IFNetFlowRelation(ifNetP, ifNetT);
@@ -71,7 +70,7 @@ public class IFNetFlowRelationTest {
 	 * Test the clone() method
 	 */
 	@Test
-	public void testIFNetFlowRelationClone() throws ParameterException {
+	public void testIFNetFlowRelationClone() {
 		// Test PT transition
 		IFNetFlowRelation f1 = new IFNetFlowRelation(ifNetP, ifNetT);
 		assertEquals(f1.getSource().getName(), "p0");
