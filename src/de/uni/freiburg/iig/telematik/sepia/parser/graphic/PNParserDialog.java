@@ -37,7 +37,7 @@ public class PNParserDialog extends JDialog {
 
 	private JComboBox formatBox = null;
 	private JTextField pnPathField = null;
-	private AbstractGraphicalPN<?,?,?,?,?,?,?> petriNet = null;
+	private AbstractGraphicalPN petriNet = null;
 	private JButton browseButton = null;
 	private JButton okButton = null;
 	private JButton parseButton = null;

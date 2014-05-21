@@ -135,7 +135,7 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(PTnetResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -167,7 +167,7 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(PTnetResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -217,7 +217,7 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDPTnetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(PTnetNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -337,7 +337,7 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypePTnetNotRequiringTypeWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> net = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> net = null;
 		try {
 			net = new PNMLParser().parse(PTnetWithUnknownTypeResource.getFile(), false, false);
 		} catch (ParserException e) {
@@ -849,7 +849,7 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedPTnetWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(PTnetBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -870,7 +870,7 @@ public class PNMLPTNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedPTnetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(PTnetBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {

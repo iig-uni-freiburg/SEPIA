@@ -11,6 +11,9 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -22,9 +25,11 @@ import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 								  T extends AbstractCWNTransition<F>, 
 								  F extends AbstractCWNFlowRelation<P,T>, 
-								  M extends AbstractCWNMarking> 
+								  M extends AbstractCWNMarking,
+								  X extends AbstractCWNMarkingGraphState<M>,
+								  Y extends AbstractCWNMarkingGraphRelation<M,X>> 
 
-									extends AbstractCPN<P,T,F,M>{
+									extends AbstractCPN<P,T,F,M,X,Y>{
 	
 	public static final String CONTROL_FLOW_TOKEN_COLOR = "black";
 
@@ -153,7 +158,12 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 			AbstractCWNUtils.validCompletion(this);
 
 			// Requirement 2: No dead transitions
-			Set<T> deadTransitions = ReachabilityUtils.getDeadTransitions(this);
+			Set<T> deadTransitions = null;
+			try {
+				deadTransitions = ReachabilityUtils.getDeadTransitions(this);
+			} catch (PNException e) {
+				throw new PNSoundnessException("PN-Exception during soundness check: Cannot extract dead transitions.<br>Reason: " + e.getMessage());
+			}
 			if (!deadTransitions.isEmpty())
 				throw new PNSoundnessException("CWN has dead transitions: " + deadTransitions);
 		} catch (ParameterException e) {
@@ -161,7 +171,15 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 		}
 	}
 	
-
+	@Override
+	public AbstractCWNMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
+		return (AbstractCWNMarkingGraph<M, X, Y>) super.getMarkingGraph();
+	}
+	
+	@Override
+	public AbstractCWNMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
+		return (AbstractCWNMarkingGraph<M, X, Y>) super.buildMarkingGraph();
+	}
 	
 	@Override
 	public M fireCheck(String transitionName) throws ParameterException, PNException {

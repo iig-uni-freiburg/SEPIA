@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCWNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRelation;
@@ -19,8 +21,10 @@ public abstract class AbstractPNMLCWNParser<P extends AbstractCWNPlace<F>,
 											T extends AbstractCWNTransition<F>,
 											F extends AbstractCWNFlowRelation<P, T>,
 											M extends AbstractCWNMarking,
-											N extends AbstractCWN<P, T, F, M>,
+											X extends AbstractCWNMarkingGraphState<M>,
+								   			Y extends AbstractCWNMarkingGraphRelation<M, X>,
+											N extends AbstractCWN<P, T, F, M, X, Y>,
 											G extends AbstractCWNGraphics<P, T, F, M>>
 
-	extends AbstractPNMLCPNParser<P, T, F, M, N, G> {
+	extends AbstractPNMLCPNParser<P, T, F, M, X, Y, N, G> {
 }

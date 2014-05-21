@@ -6,6 +6,8 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CWNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.CWNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.CWNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNMarking;
@@ -29,7 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.CWNTransition;
  * 
  * @author Adrian Lange
  */
-public class PNMLCWNParser extends AbstractPNMLCWNParser<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, CWN, CWNGraphics> {
+public class PNMLCWNParser extends AbstractPNMLCWNParser<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, CWNMarkingGraphState, CWNMarkingGraphRelation, CWN, CWNGraphics> {
 
 	@Override
 	public GraphicalCWN parse(Document pnmlDocument) throws ParameterException, ParserException {

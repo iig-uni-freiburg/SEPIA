@@ -12,6 +12,8 @@ import de.invation.code.toval.types.HashList;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPNNode;
@@ -81,11 +83,13 @@ public class PNUtils {
 				   T extends AbstractTransition<F,S>, 
 				   F extends AbstractFlowRelation<P,T,S>, 
 				   M extends AbstractMarking<S>, 
-				   S extends Object>
+				   S extends Object,
+				   X extends AbstractMarkingGraphState<M, S>,
+				   Y extends AbstractMarkingGraphRelation<M, X, S>>
 
 				   Map<T, Set<T>>
 	
-		getAllPredecessors(AbstractPetriNet<P,T,F,M,S> net){
+		getAllPredecessors(AbstractPetriNet<P,T,F,M,S,X,Y> net){
 		
 		Map<T, Set<T>> predecessors = new HashMap<T, Set<T>>();
 		for(T transition: net.getTransitions()){
@@ -105,11 +109,13 @@ public class PNUtils {
 	   				T extends AbstractTransition<F,S>, 
 	   				F extends AbstractFlowRelation<P,T,S>, 
 	   				M extends AbstractMarking<S>, 
-	   				S extends Object>
+	   				S extends Object,
+	   				X extends AbstractMarkingGraphState<M, S>,
+					Y extends AbstractMarkingGraphRelation<M, X, S>>
 					
 	   				Set<T>
 	
-		getPredecessors(AbstractPetriNet<P,T,F,M,S> net, T transition) throws VertexNotFoundException{
+		getPredecessors(AbstractPetriNet<P,T,F,M,S,X,Y> net, T transition) throws VertexNotFoundException{
 		Validate.notNull(net);
 		Validate.notNull(transition);
 

@@ -6,11 +6,15 @@ import java.util.Set;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -32,8 +36,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 								  T extends AbstractCPNTransition<F>, 
 								  F extends AbstractCPNFlowRelation<P,T>, 
-								  M extends AbstractCPNMarking> 
-									extends AbstractPetriNet<P,T,F,M, Multiset<String>>{
+								  M extends AbstractCPNMarking,
+								  X extends AbstractCPNMarkingGraphState<M>,
+								  Y extends AbstractCPNMarkingGraphRelation<M,X>> 
+									extends AbstractPetriNet<P,T,F,M,Multiset<String>,X,Y>{
 	
 	public static final String DEFAULT_TOKEN_COLOR = "black";
 	/**
@@ -358,6 +364,16 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 				relationToPlace.addConstraint(color, colorRequirement.get(color));
 			}
 		}
+	}
+	
+	@Override
+	public AbstractCPNMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
+		return (AbstractCPNMarkingGraph<M, X, Y>) super.getMarkingGraph();
+	}
+	
+	@Override
+	public AbstractCPNMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
+		return (AbstractCPNMarkingGraph<M, X, Y>) super.buildMarkingGraph();
 	}
 	
 	//------- ToString

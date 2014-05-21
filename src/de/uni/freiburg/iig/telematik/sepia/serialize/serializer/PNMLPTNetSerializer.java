@@ -6,6 +6,8 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPTGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
@@ -18,10 +20,12 @@ public class PNMLPTNetSerializer<P extends AbstractPTPlace<F>,
 								T extends AbstractPTTransition<F>, 
 								F extends AbstractPTFlowRelation<P,T>, 
 								M extends AbstractPTMarking,
-								N extends AbstractPTNet<P,T,F,M>,
-							  	G extends AbstractPTGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Integer, N , G> {
+								X extends AbstractPTMarkingGraphState<M>,
+					   			Y extends AbstractPTMarkingGraphRelation<M, X>,
+								N extends AbstractPTNet<P,T,F,M,X,Y>,
+							  	G extends AbstractPTGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Integer, X, Y, N , G> {
 
-	public PNMLPTNetSerializer(AbstractGraphicalPTNet<P,T,F,M,N,G> petriNet) throws ParameterException {
+	public PNMLPTNetSerializer(AbstractGraphicalPTNet<P,T,F,M,X,Y,N,G> petriNet) throws ParameterException {
 		super(petriNet);
 	}
 

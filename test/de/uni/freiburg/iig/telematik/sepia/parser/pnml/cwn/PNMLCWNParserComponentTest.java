@@ -140,7 +140,7 @@ public class PNMLCWNParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validCWNWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CWNResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -174,7 +174,7 @@ public class PNMLCWNParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validCWNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CWNResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -226,7 +226,7 @@ public class PNMLCWNParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDCWNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CWNNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -848,7 +848,7 @@ public class PNMLCWNParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedCWNWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CWNBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -869,7 +869,7 @@ public class PNMLCWNParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedCWNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CWNBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -908,7 +908,7 @@ public class PNMLCWNParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteTokencolorsCWNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CWNIncompleteTokencolorsResource.getFile(), true, false);
 		} catch (ParameterException e) {

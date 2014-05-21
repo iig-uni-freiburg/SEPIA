@@ -16,6 +16,8 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -39,12 +41,14 @@ public class PNSerialization {
 	   			   F extends AbstractFlowRelation<P,T,S>, 
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object,
-	   			   N extends AbstractPetriNet<P,T,F,M,S>,
+	   			   X extends AbstractMarkingGraphState<M, S>,
+	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	PNSerializer<P,T,F,M,S,N,G> 
+	PNSerializer<P,T,F,M,S,X,Y,N,G> 
 
-	getSerializer(AbstractGraphicalPN<P,T,F,M,S,N,G> net, PNSerializationFormat format) throws ParameterException, SerializationException {
+	getSerializer(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format) throws ParameterException, SerializationException {
 
 		// ugly unbounded wildcards as work-around for bug JDK-6932571
 		Object serializer = null;
@@ -71,7 +75,7 @@ public class PNSerialization {
 		}
 
 		if (serializer != null)
-			return (PNSerializer<P,T,F,M,S,N,G>) serializer;
+			return (PNSerializer<P,T,F,M,S,X,Y,N,G>) serializer;
 		else
 			throw new SerializationException(de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException.ErrorCode.UNSUPPORTED_NET_TYPE, net.getClass());
 	}
@@ -82,10 +86,12 @@ public class PNSerialization {
 	   			   F extends AbstractFlowRelation<P,T,S>, 
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object,
-	   			   N extends AbstractPetriNet<P,T,F,M,S>,
+	   			   X extends AbstractMarkingGraphState<M, S>,
+	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
-	PNSerializer<P,T,F,M,S,N,G> 
+	PNSerializer<P,T,F,M,S,X,Y,N,G> 
 
 	getSerializer(N net, PNSerializationFormat format) throws ParameterException, SerializationException{
 
@@ -160,12 +166,14 @@ public class PNSerialization {
 	   F extends AbstractFlowRelation<P,T,S>, 
 	   M extends AbstractMarking<S>, 
 	   S extends Object,
-	   N extends AbstractPetriNet<P,T,F,M,S>,
+	   X extends AbstractMarkingGraphState<M, S>,
+	   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
   	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
 	String 
 
-	serialize(AbstractGraphicalPN<P,T,F,M,S,N,G> net, PNSerializationFormat format) 
+	serialize(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format) 
 			throws SerializationException, ParameterException{
 
 		Validate.notNull(net);
@@ -184,18 +192,20 @@ public class PNSerialization {
 	   F extends AbstractFlowRelation<P,T,S>, 
 	   M extends AbstractMarking<S>, 
 	   S extends Object,
-	   N extends AbstractPetriNet<P,T,F,M,S>,
+	   X extends AbstractMarkingGraphState<M, S>,
+	   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
   	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
 	void 
 
-	serialize(AbstractGraphicalPN<P,T,F,M,S,N,G> net, PNSerializationFormat format, String path, String fileName) 
+	serialize(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format, String path, String fileName) 
 			throws SerializationException, ParameterException, IOException{
 
 		Validate.notNull(net);
 		Validate.notNull(format);
 		
-		PNSerializer<P,T,F,M,S,N,G> serializer = getSerializer(net, format);
+		PNSerializer<P,T,F,M,S,X,Y,N,G> serializer = getSerializer(net, format);
 		serializer.serialize(path, fileName);
 	}
 	
@@ -204,12 +214,14 @@ public class PNSerialization {
 				   F extends AbstractFlowRelation<P,T,S>, 
 				   M extends AbstractMarking<S>, 
 				   S extends Object,
-				   N extends AbstractPetriNet<P,T,F,M,S>,
+				   X extends AbstractMarkingGraphState<M, S>,
+	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
+				   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
 	void 
 
-	serialize(AbstractGraphicalPN<P,T,F,M,S,N,G> net, PNSerializationFormat format, String fileName) 
+	serialize(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> net, PNSerializationFormat format, String fileName) 
 			throws SerializationException, ParameterException, IOException{
 
 		Validate.notNull(fileName);
@@ -222,7 +234,9 @@ public class PNSerialization {
 	   F extends AbstractFlowRelation<P,T,S>, 
 	   M extends AbstractMarking<S>, 
 	   S extends Object,
-	   N extends AbstractPetriNet<P,T,F,M,S>,
+	   X extends AbstractMarkingGraphState<M, S>,
+	   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
   	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 
 	String 
@@ -246,7 +260,9 @@ public class PNSerialization {
 	   			   F extends AbstractFlowRelation<P,T,S>, 
 	   			   M extends AbstractMarking<S>, 
 	   			   S extends Object,
-	   			   N extends AbstractPetriNet<P,T,F,M,S>,
+	   			   X extends AbstractMarkingGraphState<M, S>,
+	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 			  	   G extends AbstractPNGraphics<P,T,F,M,S>> 
 	
 	void 
@@ -268,7 +284,7 @@ public class PNSerialization {
 		if (fileName.isEmpty())
 			throw new ParameterException(ErrorCode.EMPTY);
 		
-		PNSerializer<P,T,F,M,S,N,G> serializer = getSerializer(net, format);
+		PNSerializer<P,T,F,M,S,X,Y,N,G> serializer = getSerializer(net, format);
 
 		serializer.serialize(path, fileName);
 	}
@@ -278,7 +294,9 @@ public class PNSerialization {
 				   F extends AbstractFlowRelation<P, T, S>, 
 				   M extends AbstractMarking<S>, 
 				   S extends Object,
-	   			   N extends AbstractPetriNet<P,T,F,M,S>,
+				   X extends AbstractMarkingGraphState<M, S>,
+	   			   Y extends AbstractMarkingGraphRelation<M, X, S>,
+	   			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
 			  	   G extends AbstractPNGraphics<P,T,F,M,S>>
 
 	void

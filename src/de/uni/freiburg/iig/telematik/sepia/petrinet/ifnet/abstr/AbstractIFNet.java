@@ -13,8 +13,12 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
@@ -39,9 +43,11 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 						   			F extends AbstractIFNetFlowRelation<P,T>, 
 						   			M extends AbstractIFNetMarking,
 						   			R extends AbstractRegularIFNetTransition<F>,
-						   			D extends AbstractDeclassificationTransition<F>> 
+						   			D extends AbstractDeclassificationTransition<F>,
+						   			X extends AbstractIFNetMarkingGraphState<M>,
+									Y extends AbstractIFNetMarkingGraphRelation<M, X>> 
  
-							 		  extends AbstractCWN<P,T,F,M>{
+							 		  extends AbstractCWN<P,T,F,M,X,Y>{
 	
 	protected Map<String, R> regularTransitions;
 	protected Map<String, D> declassificationTransitions;
@@ -285,6 +291,16 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 				throw new PNValidationException("All declassification transitions must have classification HIGH.");
 		}
 		
+	}
+	
+	@Override
+	public AbstractIFNetMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
+		return (AbstractIFNetMarkingGraph<M, X, Y>) super.getMarkingGraph();
+	}
+	
+	@Override
+	public AbstractIFNetMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
+		return (AbstractIFNetMarkingGraph<M, X, Y>) super.buildMarkingGraph();
 	}
 
 }

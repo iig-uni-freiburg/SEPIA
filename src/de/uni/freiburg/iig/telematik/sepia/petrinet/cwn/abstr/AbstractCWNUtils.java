@@ -5,13 +5,13 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
-import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
 
 
@@ -40,11 +40,15 @@ public class AbstractCWNUtils {
 	  				X extends AbstractCWNMarkingGraphState<M>,
 	   				Y extends AbstractCWNMarkingGraphRelation<M,X>> 
 	
-	void validCompletion(AbstractCWN<P,T,F,M> cwn) throws ParameterException, PNSoundnessException{
+	void validCompletion(AbstractCWN<P,T,F,M,X,Y> cwn) throws PNSoundnessException{
 		Validate.notNull(cwn);			
-			
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		AbstractCWNMarkingGraph<M,X,Y> markingGraph = (AbstractCWNMarkingGraph) ReachabilityUtils.buildMarkingGraph(cwn);
+	
+		AbstractCWNMarkingGraph<M, X, Y> markingGraph = null;
+		try {
+			markingGraph = cwn.getMarkingGraph();
+		} catch (PNException e) {
+			throw new PNSoundnessException("PN-Exception during soundness check: Cannot build marking graph.<br>Reason: " + e.getMessage());
+		}
 		Set<AbstractCWNMarkingGraphState<M>> drains = new HashSet<AbstractCWNMarkingGraphState<M>>(markingGraph.getDrains());
 		for(AbstractCWNMarkingGraphState<M> drainVertex : drains){
 			if(!isEndState(drainVertex.getElement(), cwn)){

@@ -6,11 +6,13 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 
-public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{
+public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTMarkingGraphState, PTMarkingGraphRelation>{
 	
 	public PTNet() {
 		super();
@@ -62,9 +64,6 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 		return new PTFlowRelation(transition, place);
 	}
 	
-	
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public PTMarkingGraph createNewMarkingGraph() throws ParameterException {
 		return new PTMarkingGraph();
@@ -78,29 +77,14 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	@Override
 	public void capacityChanged(CapacityEvent<? extends AbstractPlace<PTFlowRelation, Integer>> o) {}
 	
-	public static void main(String[] args) throws Exception {
-		PTNet net = new PTNet();
-		net.addPlace("p1");
-		net.addPlace("p2");
-		net.addPlace("p3");
-		net.addTransition("t1");
-		net.addTransition("t2");
-		net.addFlowRelationPT("p1", "t1");
-		net.addFlowRelationTP("t1", "p2");
-		net.addFlowRelationPT("p2", "t2");
-		net.addFlowRelationTP("t2", "p3");
-		PTMarking marking = new PTMarking();
-		marking.set("p1", 1);
-		net.setInitialMarking(marking);
-		
-		
-		System.out.println(net);
-		System.out.println(net.getEnabledTransitions());
-		System.out.println(net.getMarking());
-		System.out.println(net.fireCheck("t1"));
-		
-//		System.out.println(ReachabilityUtils.buildMarkingGraph(net));
-		
-//		System.out.println(ReachabilityUtils.containsDeadTransitions(net));
+	@Override
+	public PTMarkingGraph getMarkingGraph() throws PNException{
+		return (PTMarkingGraph) super.getMarkingGraph();
 	}
+	
+	@Override
+	public PTMarkingGraph buildMarkingGraph() throws PNException{
+		return (PTMarkingGraph) super.buildMarkingGraph();
+	}
+	
 }

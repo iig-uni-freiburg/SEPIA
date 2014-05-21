@@ -6,6 +6,10 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -23,7 +27,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
  * 
  * @author Thomas Stocker
  */									
-public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends AbstractPTTransition<F>, F extends AbstractPTFlowRelation<P,T>, M extends AbstractPTMarking> extends AbstractPetriNet<P, T, F, M, Integer> {
+public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, 
+									T extends AbstractPTTransition<F>, 
+									F extends AbstractPTFlowRelation<P,T>, 
+									M extends AbstractPTMarking,
+									X extends AbstractPTMarkingGraphState<M>,
+									Y extends AbstractPTMarkingGraphRelation<M,X>> 
+
+									  extends AbstractPetriNet<P,T,F,M,Integer,X,Y> {
 
 	/**
 	 * String format for plain output.
@@ -135,6 +146,16 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, T extends Abst
 	@Override
 	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, Integer>> e) {
 		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public AbstractPTMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
+		return (AbstractPTMarkingGraph<M, X, Y>) super.getMarkingGraph();
+	}
+	
+	@Override
+	public AbstractPTMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
+		return (AbstractPTMarkingGraph<M, X, Y>) super.buildMarkingGraph();
 	}
 	
 	//------- ToString

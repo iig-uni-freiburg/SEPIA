@@ -7,11 +7,13 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 
 
-public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking> {
+public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation> {
 	
 	public CPN() {
 		super();
@@ -47,7 +49,6 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 		return new CPNFlowRelation(transition, place, false);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public CPNMarkingGraph createNewMarkingGraph() throws ParameterException {
 		return new CPNMarkingGraph();
@@ -124,5 +125,15 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 
 	@Override
 	public void capacityChanged(CapacityEvent<? extends AbstractPlace<CPNFlowRelation, Multiset<String>>> o) {}
+
+	@Override
+	public CPNMarkingGraph getMarkingGraph() throws PNException {
+		return (CPNMarkingGraph) super.getMarkingGraph();
+	}
+
+	@Override
+	public CPNMarkingGraph buildMarkingGraph() throws PNException {
+		return (CPNMarkingGraph) super.buildMarkingGraph();
+	}
 
 }

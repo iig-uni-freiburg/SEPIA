@@ -47,6 +47,8 @@ public class ReachabilityUtils {
 	 * @param transitionName The name of the transition of interest.
 	 * @return <code>true</code> if the transition is dead;<br>
 	 * <code>false</code> otherwise.
+	 * @throws TSException 
+	 * @throws PNException 
 	 * @throws ParameterException If some parameters are <code>null</code>, the Petri net
 	 * does not contain a transition with the given name or the given net is not bounded.
 	 * 
@@ -56,10 +58,11 @@ public class ReachabilityUtils {
 	   			   T extends AbstractTransition<F,S>, 
 	   			   F extends AbstractFlowRelation<P,T,S>, 
 	   			   M extends AbstractMarking<S>, 
-	   			   S extends Object> 
+	   			   S extends Object,
+	   			   X extends AbstractMarkingGraphState<M,S>,
+	   			   Y extends AbstractMarkingGraphRelation<M,X,S>> 
 	
-				   boolean isDead(AbstractPetriNet<P,T,F,M,S> petriNet, String transitionName) 
-						   throws ParameterException{
+				   boolean isDead(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, String transitionName) throws PNException, TSException{
 		
 		Validate.notNull(petriNet);
 		Validate.notNull(transitionName);
@@ -80,6 +83,8 @@ public class ReachabilityUtils {
 	 * @param petriNet The basic Patri net for operation.
 	 * @return <code>true</code> if the Petri net contains dead transitions;<br>
 	 * <code>false</code> otherwise.
+	 * @throws TSException 
+	 * @throws PNException 
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is not bounded.
 	 * 
 	 * @see #getDeadTransitions(AbstractPetriNet)
@@ -88,10 +93,11 @@ public class ReachabilityUtils {
 	   T extends AbstractTransition<F,S>, 
 	   F extends AbstractFlowRelation<P,T,S>, 
 	   M extends AbstractMarking<S>, 
-	   S extends Object> 
+	   S extends Object,
+	   X extends AbstractMarkingGraphState<M,S>,
+	   Y extends AbstractMarkingGraphRelation<M,X,S>> 
 
-	   boolean containsDeadTransitions(AbstractPetriNet<P,T,F,M,S> petriNet) 
-			   throws ParameterException{
+	   boolean containsDeadTransitions(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws PNException, TSException {
 		
 		return !getDeadTransitions(petriNet).isEmpty();
 	}
@@ -106,6 +112,8 @@ public class ReachabilityUtils {
 	 * 
 	 * @param petriNet The basic Petri net for operation
 	 * @return A set of all dead transitions.
+	 * @throws TSException 
+	 * @throws PNException 
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is not bounded.
 	 */
 	public static <	P extends AbstractPlace<F,S>, 
@@ -116,13 +124,12 @@ public class ReachabilityUtils {
 	   				X extends AbstractMarkingGraphState<M,S>,
 	   				Y extends AbstractMarkingGraphRelation<M,X,S>> 
 
-	   Set<T> getDeadTransitions(AbstractPetriNet<P,T,F,M,S> petriNet) 
-			  throws ParameterException{
+	   Set<T> getDeadTransitions(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws PNException{
 
 		Validate.notNull(petriNet);
 		
 		Set<T> netTransitions = new HashSet<T>(petriNet.getTransitions());
-		AbstractMarkingGraph<M,S,X,Y> markingGraph = buildMarkingGraph(petriNet);
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = petriNet.buildMarkingGraph();
 		for(AbstractMarkingGraphState<M,S> reachableMarking: markingGraph.getStates()){
 			try{
 				petriNet.setMarking(reachableMarking.getElement());
@@ -149,15 +156,15 @@ public class ReachabilityUtils {
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is nor bounded.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <	P extends AbstractPlace<F, S>, 
-					T extends AbstractTransition<F, S>, 
-					F extends AbstractFlowRelation<P, T, S>, 
+	public static <	P extends AbstractPlace<F,S>, 
+					T extends AbstractTransition<F,S>, 
+					F extends AbstractFlowRelation<P,T,S>, 
 					M extends AbstractMarking<S>, 
 					S extends Object,
 					X extends AbstractMarkingGraphState<M,S>,
-					Y extends AbstractMarkingGraphRelation<M, X, S>>
+					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P, T, F, M, S> petriNet)
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet)
 			throws ParameterException {
 
 		Validate.notNull(petriNet);
@@ -248,7 +255,7 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 	   				Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S> petriNet, boolean includeSilentTransitions)
+		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions)
 			throws ParameterException {
 		
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);

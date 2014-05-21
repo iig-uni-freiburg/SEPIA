@@ -17,7 +17,7 @@ public class MarkingGraphUtils {
 					M extends AbstractMarking<S>, 
 					S extends Object, 
 					X extends AbstractMarkingGraphState<M, S>,
-					Y extends AbstractMarkingGraphRelation<M, X, S>> MGTraversalResult getSequences(AbstractPetriNet<P,T,F,M,S> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
+					Y extends AbstractMarkingGraphRelation<M, X, S>> MGTraversalResult getSequences(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
 		
 //		MarkingGraphTraverser<P,T,F,M,S,X> traverser = new MarkingGraphTraverser<P,T,F,M,S,X>(petriNet, markingGraph, includeSilentTransitions);
 //		traverser.iterate();

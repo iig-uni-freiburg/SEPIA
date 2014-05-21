@@ -5,13 +5,23 @@ import java.util.Set;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 
 
-public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition> {
+public class IFNet extends AbstractIFNet<IFNetPlace, 
+										 AbstractIFNetTransition<IFNetFlowRelation>, 
+										 IFNetFlowRelation, 
+										 IFNetMarking, 
+										 RegularIFNetTransition, 
+										 DeclassificationTransition, 
+										 IFNetMarkingGraphState, 
+										 IFNetMarkingGraphRelation> {
 
 	public IFNet() {
 		super();
@@ -31,7 +41,6 @@ public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFN
 		return new IFNetMarking();
 	}	
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public IFNetMarkingGraph createNewMarkingGraph() throws ParameterException {
 		return new IFNetMarkingGraph();
@@ -77,4 +86,13 @@ public class IFNet extends AbstractIFNet<IFNetPlace, AbstractIFNetTransition<IFN
 	@Override
 	public void capacityChanged(CapacityEvent<? extends AbstractPlace<IFNetFlowRelation, Multiset<String>>> o) {}
 	
+	@Override
+	public IFNetMarkingGraph getMarkingGraph() throws PNException{
+		return (IFNetMarkingGraph) super.getMarkingGraph();
+	}
+	
+	@Override
+	public IFNetMarkingGraph buildMarkingGraph() throws PNException{
+		return (IFNetMarkingGraph) super.buildMarkingGraph();
+	}
 }

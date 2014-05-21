@@ -25,11 +25,11 @@ public class StochasticPNTraverser<T extends AbstractTransition<?,?>> extends Ra
 	private HashMap<T, StochasticValueGenerator<T>> flowProbabilities = new HashMap<T, StochasticValueGenerator<T>>();
 	private int toleranceDenominator;
 	
-	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?> net) throws ParameterException {
+	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) throws ParameterException {
 		this(net, DEFAULT_TOLERANCE_DENOMINATOR);
 	}
 
-	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?> net, int toleranceDenominator) throws ParameterException {
+	public StochasticPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net, int toleranceDenominator) throws ParameterException {
 		super(net);
 		Validate.biggerEqual(toleranceDenominator, 1, "Denominator must be >=1.");
 		this.toleranceDenominator = toleranceDenominator;

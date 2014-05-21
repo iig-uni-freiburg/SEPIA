@@ -5,13 +5,16 @@ import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
 
-public abstract class AbstractCPNMarkingGraphRelation<M extends AbstractCPNMarking, T extends AbstractCPNMarkingGraphState<M>> extends AbstractMarkingGraphRelation<M, T, Multiset<String>> {
+public abstract class AbstractCPNMarkingGraphRelation<M extends AbstractCPNMarking, 
+													  X extends AbstractCPNMarkingGraphState<M>> 
 
-	public AbstractCPNMarkingGraphRelation(T source, T target, Event event) {
+														extends AbstractMarkingGraphRelation<M,X,Multiset<String>> {
+
+	public AbstractCPNMarkingGraphRelation(X source, X target, Event event) {
 		super(source, target, event);
 	}
 
-	public AbstractCPNMarkingGraphRelation(T source, T target) {
+	public AbstractCPNMarkingGraphRelation(X source, X target) {
 		super(source, target);
 	}
 

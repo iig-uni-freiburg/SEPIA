@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
@@ -15,7 +17,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalIFNet extends AbstractGraphicalIFNet<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition, IFNet, IFNetGraphics> {
+public class GraphicalIFNet extends AbstractGraphicalIFNet<	IFNetPlace, 
+															AbstractIFNetTransition<IFNetFlowRelation>, 
+															IFNetFlowRelation, 
+															IFNetMarking, 
+															RegularIFNetTransition, 
+															DeclassificationTransition, 
+															IFNetMarkingGraphState, 
+															IFNetMarkingGraphRelation, 
+															IFNet, 
+															IFNetGraphics> {
 
 	public GraphicalIFNet() {
 		this(new IFNet(), new IFNetGraphics());

@@ -2,10 +2,9 @@ package de.uni.freiburg.iig.telematik.sepia.mg.pt;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 
-public class PTMarkingGraph extends AbstractMarkingGraph<PTMarking, Integer, PTMarkingGraphState, PTMarkingGraphRelation> {
+public class PTMarkingGraph extends AbstractPTMarkingGraph<PTMarking, PTMarkingGraphState, PTMarkingGraphRelation> {
 
 	public PTMarkingGraph() {
 		super();

@@ -22,6 +22,8 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphic
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
@@ -43,10 +45,12 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 											T extends AbstractCPNTransition<F>,
 											F extends AbstractCPNFlowRelation<P, T>,
 											M extends AbstractCPNMarking,
-											N extends AbstractCPN<P, T, F, M>,
+											X extends AbstractCPNMarkingGraphState<M>,
+								   			Y extends AbstractCPNMarkingGraphRelation<M, X>,
+											N extends AbstractCPN<P, T, F, M, X, Y>,
 											G extends AbstractCPNGraphics<P, T, F, M>>
 
-	extends AbstractPNMLParser<P, T, F, M, Multiset<String>, N, G> {
+	extends AbstractPNMLParser<P, T, F, M, Multiset<String>, X, Y, N, G> {
 
 	private Map<String, Color> tokencolors = null;
 

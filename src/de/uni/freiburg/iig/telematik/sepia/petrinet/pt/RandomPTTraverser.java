@@ -6,7 +6,7 @@ import de.uni.freiburg.iig.telematik.sepia.traversal.RandomPNTraverser;
 
 public class RandomPTTraverser extends RandomPNTraverser<PTTransition> {
 
-	public RandomPTTraverser(AbstractPetriNet<?, PTTransition, ?, ?, ?> net)
+	public RandomPTTraverser(AbstractPetriNet<?, PTTransition, ?, ?, ?, ?, ?> net)
 			throws ParameterException {
 		super(net);
 	}

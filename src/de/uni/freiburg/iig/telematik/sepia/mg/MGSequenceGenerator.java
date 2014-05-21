@@ -28,11 +28,11 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 									X extends AbstractMarkingGraphState<M, S>,
 									Y extends AbstractMarkingGraphRelation<M, X, S>> {
 	
-	private AbstractPetriNet<P,T,F,M,S> petriNet = null;
+	private AbstractPetriNet<P,T,F,M,S,X,Y> petriNet = null;
 	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	private boolean includeSilentTransitions = false;
 	
-	public MGSequenceGenerator(AbstractPetriNet<P,T,F,M,S> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
+	public MGSequenceGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
 		this.petriNet = petriNet;
 		this.markingGraph = markingGraph;
 		this.includeSilentTransitions = includeSilentTransitions;

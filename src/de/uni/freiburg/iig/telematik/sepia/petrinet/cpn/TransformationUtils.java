@@ -3,6 +3,8 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
@@ -11,7 +13,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransitio
 
 public class TransformationUtils {
 	
-	public static <P extends AbstractPTPlace<F>, T extends AbstractPTTransition<F>, F extends AbstractPTFlowRelation<P,T>, M extends AbstractPTMarking> CPN transform(AbstractPTNet<P,T,F,M> ptNet) throws ParameterException{
+	public static <P extends AbstractPTPlace<F>, 
+				   T extends AbstractPTTransition<F>, 
+				   F extends AbstractPTFlowRelation<P,T>, 
+				   M extends AbstractPTMarking,
+				   X extends AbstractPTMarkingGraphState<M>,
+				   Y extends AbstractPTMarkingGraphRelation<M,X>> 
+	
+	CPN transform(AbstractPTNet<P,T,F,M,X,Y> ptNet) throws ParameterException{
 		Validate.notNull(ptNet);
 		
 		CPN cpn = new CPN();

@@ -3,15 +3,16 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet;
 import org.w3c.dom.Document;
 
 import de.invation.code.toval.parser.ParserException;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 
 /**
@@ -31,10 +32,19 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
  * 
  * @author Adrian Lange
  */
-public class PNMLIFNetParser extends AbstractPNMLIFNetParser<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>, IFNetFlowRelation, IFNetMarking, RegularIFNetTransition, DeclassificationTransition, IFNet, IFNetGraphics> {
+public class PNMLIFNetParser extends AbstractPNMLIFNetParser<IFNetPlace, 
+															 AbstractIFNetTransition<IFNetFlowRelation>, 
+															 IFNetFlowRelation, 
+															 IFNetMarking, 
+															 RegularIFNetTransition, 
+															 DeclassificationTransition, 
+															 IFNetMarkingGraphState,
+															 IFNetMarkingGraphRelation,
+															 IFNet, 
+															 IFNetGraphics> {
 
 	@Override
-	public GraphicalIFNet parse(Document pnmlDocument) throws ParameterException, ParserException {
+	public GraphicalIFNet parse(Document pnmlDocument) throws ParserException {
 
 		net = new IFNet();
 		graphics = new IFNetGraphics();

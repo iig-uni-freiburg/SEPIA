@@ -21,7 +21,7 @@ public class RandomPNTraverser<T extends AbstractTransition<?,?>> extends PNTrav
 	
 	RandomChooser<T> randomChooser = new RandomChooser<T>();
 
-	public RandomPNTraverser(AbstractPetriNet<?,T,?,?,?> net) throws ParameterException {
+	public RandomPNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) throws ParameterException {
 		super(net);
 	}
 

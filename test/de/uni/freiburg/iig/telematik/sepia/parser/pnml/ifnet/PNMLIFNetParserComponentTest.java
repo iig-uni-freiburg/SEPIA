@@ -163,7 +163,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validIFNetWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -197,7 +197,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -249,7 +249,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -779,7 +779,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteAccessModesIFNetWithValidation() throws ParameterException {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetIncompleteAccessModesResource.getFile(), true, true);
 		} catch (ParameterException e) {
@@ -807,7 +807,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteAccessModesIFNetWithoutValidation() throws ParameterException {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetIncompleteAccessModesResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -1047,7 +1047,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedIFNetWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -1068,7 +1068,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -1107,7 +1107,7 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteTokencolorsIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetIncompleteTokencolorsResource.getFile(), true, false);
 		} catch (ParameterException e) {

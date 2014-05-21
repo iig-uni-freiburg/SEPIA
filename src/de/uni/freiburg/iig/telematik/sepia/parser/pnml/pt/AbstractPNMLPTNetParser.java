@@ -16,6 +16,8 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphic
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
@@ -36,10 +38,12 @@ public abstract class AbstractPNMLPTNetParser<P extends AbstractPTPlace<F>,
 											  T extends AbstractPTTransition<F>,
 											  F extends AbstractPTFlowRelation<P, T>,
 											  M extends AbstractPTMarking,
-											  N extends AbstractPTNet<P, T, F, M>,
+											  X extends AbstractPTMarkingGraphState<M>,
+									   		  Y extends AbstractPTMarkingGraphRelation<M, X>,
+											  N extends AbstractPTNet<P, T, F, M, X, Y>,
 											  G extends AbstractPTGraphics<P, T, F, M>>
 
-	extends AbstractPNMLParser<P, T, F, M, Integer, N, G> {
+	extends AbstractPNMLParser<P, T, F, M, Integer, X, Y, N, G> {
 
 	/**
 	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link AbstractGraphicalPN}.

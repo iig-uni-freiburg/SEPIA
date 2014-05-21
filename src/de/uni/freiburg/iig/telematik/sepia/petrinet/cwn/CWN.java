@@ -5,12 +5,15 @@ import java.util.Set;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.cwn.CWNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.CWNMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.cwn.CWNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 
 
-public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking> {
+public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, CWNMarkingGraphState, CWNMarkingGraphRelation> {
 
 	public CWN() {
 		super();
@@ -28,7 +31,6 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 		return new CWNMarking();
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public CWNMarkingGraph createNewMarkingGraph() throws ParameterException {
 		return new CWNMarkingGraph();
@@ -100,4 +102,13 @@ public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, C
 	@Override
 	public void capacityChanged(CapacityEvent<? extends AbstractPlace<CWNFlowRelation, Multiset<String>>> o) {}
 
+	@Override
+	public CWNMarkingGraph getMarkingGraph() throws PNException {
+		return (CWNMarkingGraph) super.getMarkingGraph();
+	}
+
+	@Override
+	public CWNMarkingGraph buildMarkingGraph() throws PNException {
+		return (CWNMarkingGraph) super.buildMarkingGraph();
+	}
 }

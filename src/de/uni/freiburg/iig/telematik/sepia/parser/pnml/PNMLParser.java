@@ -24,6 +24,8 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.PNMLCWNParser;
@@ -99,12 +101,14 @@ public class PNMLParser implements PNParserInterface {
 	 F extends AbstractFlowRelation<P, T, S>,
 	 M extends AbstractMarking<S>,
 	 S extends Object,
-	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 X extends AbstractMarkingGraphState<M, S>,
+	 Y extends AbstractMarkingGraphRelation<M, X, S>,
+	 N extends AbstractPetriNet<P, T, F, M, S, X, Y>,
 	 G extends AbstractPNGraphics<P, T, F, M, S>>
 
-	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile) throws IOException, ParserException, ParameterException {
+	AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
-		return this.<P,T,F,M,S,N,G>parse(pnmlFile, true, true);
+		return this.<P,T,F,M,S,X,Y,N,G>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -123,10 +127,12 @@ public class PNMLParser implements PNParserInterface {
 	 F extends AbstractFlowRelation<P, T, S>,
 	 M extends AbstractMarking<S>,
 	 S extends Object,
-	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 X extends AbstractMarkingGraphState<M, S>,
+	 Y extends AbstractMarkingGraphRelation<M, X, S>,
+	 N extends AbstractPetriNet<P, T, F, M, S, X, Y>,
 	 G extends AbstractPNGraphics<P, T, F, M, S>>
 	
-	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+	AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 		File inputFile = new File(pnmlFile);
 		if (inputFile.isDirectory())
 			throw new IOException("I/O Error on opening file: File is a directory!");
@@ -135,7 +141,7 @@ public class PNMLParser implements PNParserInterface {
 		if (!inputFile.canRead())
 			throw new IOException("I/O Error on opening file: Unable to read file!");
 
-		return this.<P,T,F,M,S,N,G>parse(inputFile, requireNetType, verifySchema);
+		return this.<P,T,F,M,S,X,Y,N,G>parse(inputFile, requireNetType, verifySchema);
 	}
 
 	/**
@@ -151,11 +157,13 @@ public class PNMLParser implements PNParserInterface {
 	 F extends AbstractFlowRelation<P, T, S>,
 	 M extends AbstractMarking<S>,
 	 S extends Object,
-	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 X extends AbstractMarkingGraphState<M, S>,
+	 Y extends AbstractMarkingGraphRelation<M, X, S>,
+	 N extends AbstractPetriNet<P, T, F, M, S, X, Y>,
 	 G extends AbstractPNGraphics<P, T, F, M, S>>
 	
-	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile) throws IOException, ParserException, ParameterException {
-		return this.<P,T,F,M,S,N,G>parse(pnmlFile, true, true);
+	AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(File pnmlFile) throws IOException, ParserException, ParameterException {
+		return this.<P,T,F,M,S,X,Y,N,G>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -175,10 +183,12 @@ public class PNMLParser implements PNParserInterface {
 	 F extends AbstractFlowRelation<P, T, S>,
 	 M extends AbstractMarking<S>,
 	 S extends Object,
-	 N extends AbstractPetriNet<P, T, F, M, S>,
+	 X extends AbstractMarkingGraphState<M, S>,
+	 Y extends AbstractMarkingGraphRelation<M, X, S>,
+	 N extends AbstractPetriNet<P, T, F, M, S, X, Y>,
 	 G extends AbstractPNGraphics<P, T, F, M, S>>
 	
-	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
+	AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException, ParameterException {
 
 		Validate.notNull(pnmlFile);
 
@@ -221,7 +231,7 @@ public class PNMLParser implements PNParserInterface {
 		}
 
 		if (graphicalPN != null)
-			return (AbstractGraphicalPN<P, T, F, M, S, N, G>) graphicalPN;
+			return (AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G>) graphicalPN;
 		else
 			throw new ParserException("Couldn't determine a proper PNML parser.");
 	}

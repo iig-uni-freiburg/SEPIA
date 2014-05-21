@@ -2,6 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
+import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
@@ -23,8 +25,10 @@ public class AbstractGraphicalIFNet<P extends AbstractIFNetPlace<F>,
 									M extends AbstractIFNetMarking,
 									R extends AbstractRegularIFNetTransition<F>,
 									D extends AbstractDeclassificationTransition<F>,
-									N extends AbstractIFNet<P,T,F,M,R,D>,
-	   							  	G extends AbstractIFNetGraphics<P,T,F,M>> extends AbstractGraphicalCWN<P,T,F,M,N,G> {
+									X extends AbstractIFNetMarkingGraphState<M>,
+									Y extends AbstractIFNetMarkingGraphRelation<M, X>,
+									N extends AbstractIFNet<P,T,F,M,R,D,X,Y>,
+	   							  	G extends AbstractIFNetGraphics<P,T,F,M>> extends AbstractGraphicalCWN<P,T,F,M,X,Y,N,G> {
 
 	public AbstractGraphicalIFNet(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
