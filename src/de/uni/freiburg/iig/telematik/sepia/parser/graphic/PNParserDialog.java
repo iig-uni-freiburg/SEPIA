@@ -37,6 +37,7 @@ public class PNParserDialog extends JDialog {
 
 	private JComboBox formatBox = null;
 	private JTextField pnPathField = null;
+	@SuppressWarnings("rawtypes")
 	private AbstractGraphicalPN petriNet = null;
 	private JButton browseButton = null;
 	private JButton okButton = null;
@@ -183,6 +184,7 @@ public class PNParserDialog extends JDialog {
 						//TODO
 						break;
 					case PNML:
+						@SuppressWarnings("rawtypes")
 						PNMLParser parser = new PNMLParser();
 						getPNFileName();
 						try {
