@@ -104,7 +104,7 @@ public class PNMLParser implements PNParserInterface {
 
 	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile) throws IOException, ParserException, ParameterException {
 
-		return this.parse(pnmlFile, true, true);
+		return this.<P,T,F,M,S,N,G>parse(pnmlFile, true, true);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class PNMLParser implements PNParserInterface {
 		if (!inputFile.canRead())
 			throw new IOException("I/O Error on opening file: Unable to read file!");
 
-		return this.parse(inputFile, requireNetType, verifySchema);
+		return this.<P,T,F,M,S,N,G>parse(inputFile, requireNetType, verifySchema);
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class PNMLParser implements PNParserInterface {
 	 G extends AbstractPNGraphics<P, T, F, M, S>>
 	
 	AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile) throws IOException, ParserException, ParameterException {
-		return this.parse(pnmlFile, true, true);
+		return this.<P,T,F,M,S,N,G>parse(pnmlFile, true, true);
 	}
 
 	/**
