@@ -4,6 +4,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 
 public class PTPlace extends AbstractPTPlace<PTFlowRelation>{
 	
+	private static final long serialVersionUID = 5289560548969177264L;
+
 	protected PTPlace(){
 		super();
 	}

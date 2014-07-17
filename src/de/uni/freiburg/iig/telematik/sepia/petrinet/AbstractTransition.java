@@ -1,8 +1,10 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
+import java.io.Serializable;
+
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListenerSupport;
@@ -30,8 +32,12 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
  *
  * @param <E> The type of flow relations connected to the transition.
  */
-public abstract class AbstractTransition<E extends AbstractFlowRelation<? extends AbstractPlace<E,S>, ? extends AbstractTransition<E, S>, S>, S extends Object> extends AbstractPNNode<E>{
+public abstract class AbstractTransition<	E extends AbstractFlowRelation<? extends AbstractPlace<E,S>, 
+											? extends AbstractTransition<E, S>, S>, S extends Object> 
+											  extends AbstractPNNode<E> implements Serializable{
 
+	private static final long serialVersionUID = 6881631518539919772L;
+	
 	/**
 	 * Support class for {@link TransitionListener} handling.
 	 */
@@ -57,9 +63,9 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	/**
 	 * Creates a new transition with the given name.
 	 * @param name The name for the new Transition.
-	 * @throws ParameterException If the given name is <code>null</code>.
+	 * @If the given name is <code>null</code>.
 	 */
-	public AbstractTransition(String name) {
+	public AbstractTransition(String name){
 		super(PNNodeType.TRANSITION, name);
 	}
 	
@@ -67,9 +73,9 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * Creates a new transition with the given name and label.
 	 * @param name The name for the new transition.
 	 * @param label The label for the new transition.
-	 * @throws ParameterException If some parameters are <code>null</code>.
+	 * @If some parameters are <code>null</code>.
 	 */
-	public AbstractTransition(String name, String label) {
+	public AbstractTransition(String name, String label){
 		super(PNNodeType.TRANSITION, name, label);
 	}
 	
@@ -77,9 +83,9 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * Creates a new transition with the given name and silent-state.
 	 * @param name The name for the new transition.
 	 * @param isSilent The silent-state for the new transition.
-	 * @throws ParameterException If the given name is <code>null</code>.
+	 * @If the given name is <code>null</code>.
 	 */
-	public AbstractTransition(String name, boolean isSilent) {
+	public AbstractTransition(String name, boolean isSilent){
 		this(name);
 		this.isSilent = isSilent;
 	}
@@ -89,9 +95,9 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	 * @param name The name for the new transition.
 	 * @param label The label for the new transition.
 	 * @param isSilent The silent-state for the new transition.
-	 * @throws ParameterException If some parameters are <code>null</code>.
+	 * @If some parameters are <code>null</code>.
 	 */
-	public AbstractTransition(String name, String label, boolean isSilent) {
+	public AbstractTransition(String name, String label, boolean isSilent){
 		this(name, label);
 		this.isSilent = isSilent;
 	}
@@ -100,7 +106,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	//------- Basic properties -----------------------------------------------------------------------
 	
 	@Override
-	protected boolean addIncomingRelation(E relation) {
+	protected boolean addIncomingRelation(E relation){
 		if(super.addIncomingRelation(relation)){
 			checkState();
 			return true;
@@ -109,7 +115,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	}
 
 	@Override
-	protected boolean addOutgoingRelation(E relation) {
+	protected boolean addOutgoingRelation(E relation){
 		if(super.addOutgoingRelation(relation)){
 			checkState();
 			return true;
@@ -144,7 +150,7 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	}
 	
 	@Override
-	public void setName(String name) {
+	public void setName(String name){
 		Validate.notNull(name);
 		if(!listenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
@@ -223,24 +229,19 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 			throw new PNException("Cannot fire transition "+this+": not enabled");
 		try{
 			checkValidity();
-		} catch(Exception e){
+		} catch(PNValidationException e){
 			throw new PNException("Cannot fire transition "+this+": not in valid state ["+e.getMessage()+"]");
 		}
 		
-		try {
-			for(E r: incomingRelations){
-				r.getPlace().removeTokens(r.getConstraint());
-			}
-			for(E r: outgoingRelations){
-				r.getPlace().addTokens(r.getConstraint());
-			}
-			listenerSupport.notifyFiring(new TransitionEvent<AbstractTransition<E,S>>(this));
-		} catch(ParameterException e){
-			//Cannot happen.
-			//Weights are always positive (enforced by FlowRelation)
-			//Listeners are never null (enforced by addListener methods)
-			e.printStackTrace();
+
+		for (E r : incomingRelations) {
+			r.getPlace().removeTokens(r.getConstraint());
 		}
+		for (E r : outgoingRelations) {
+			r.getPlace().addTokens(r.getConstraint());
+		}
+		listenerSupport.notifyFiring(new TransitionEvent<AbstractTransition<E, S>>(this));
+
 	}
 	
 	
@@ -249,18 +250,18 @@ public abstract class AbstractTransition<E extends AbstractFlowRelation<? extend
 	/**
 	 * Adds a transition listener.
 	 * @param listener The transition listener to add.
-	 * @throws ParameterException If the listener reference is <code>null</code>.
+	 * @If the listener reference is <code>null</code>.
 	 */
-	public void addTransitionListener(TransitionListener<AbstractTransition<E,S>> listener) {
+	public void addTransitionListener(TransitionListener<AbstractTransition<E,S>> listener){
 		listenerSupport.addTransitionListener(listener);
 	}
 	
 	/**
 	 * Removes a transition listener.
 	 * @param l The transition listener to remove.
-	 * @throws ParameterException If the listener reference is <code>null</code>.
+	 * @If the listener reference is <code>null</code>.
 	 */
-	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l) {
+	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l){
 		listenerSupport.removeTransitionListener(l);
 	}
 	

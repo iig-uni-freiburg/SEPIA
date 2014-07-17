@@ -13,7 +13,7 @@ public abstract class PNTraverser<T extends AbstractTransition<?,?>> {
 	
 	protected AbstractPetriNet<?,T,?,?,?,?,?> net;
 	
-	public PNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net) {
+	public PNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net){
 		Validate.notNull(net);
 		this.net = net;
 	}

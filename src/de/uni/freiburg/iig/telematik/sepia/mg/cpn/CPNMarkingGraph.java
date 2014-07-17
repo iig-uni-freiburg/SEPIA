@@ -5,6 +5,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 
 public class CPNMarkingGraph extends AbstractCPNMarkingGraph<CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation> {
 
+	private static final long serialVersionUID = 6659179547649096076L;
+
 	public CPNMarkingGraph() {
 		super();
 	}

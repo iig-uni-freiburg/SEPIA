@@ -21,6 +21,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.GuardDataCont
 public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlowRelation<? extends AbstractIFNetPlace<E>, ? extends AbstractIFNetTransition<E>>>  
 													 extends AbstractIFNetTransition<E>{
 	
+
+	private static final long serialVersionUID = -4566586679792008749L;
+	
 	protected Map<String, Set<AccessMode>> accessModes = new HashMap<String, Set<AccessMode>>();
 	protected GuardDataContainer dataContainer = null;
 	protected Set<AbstractConstraint<?>> guards = new HashSet<AbstractConstraint<?>>();

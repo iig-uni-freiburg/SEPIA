@@ -41,7 +41,7 @@ public class IFNetTest {
 	@Before
 	public void setUp() throws Exception {
 
-		dSNet = IFNetTestUtil.createSimpleSnetWithDeclassification();
+		dSNet = IFNetTestUtil.createSimpleIFNetWithDeclassification();
 		td = dSNet.getDeclassificationTransitions().iterator().next();
 		tr = (RegularIFNetTransition) dSNet.getTransition("t0");
 	}
@@ -106,7 +106,7 @@ public class IFNetTest {
 		/*
 		 * an IFNet without an AnalysisContext is currently not seen as invalid
 		 */
-		IFNet net = IFNetTestUtil.createSimpleSnetWithDeclassificationNoAC();
+		IFNet net = IFNetTestUtil.createSimpleIFNetWithDeclassificationNoAC();
 		try {
 			net.checkValidity();
 		} catch (PNValidationException e) {
@@ -382,7 +382,7 @@ public class IFNetTest {
 		/*
 		 * Test equal IFNets
 		 */
-		IFNet ifnet1 = IFNetTestUtil.createSimpleSnet();
+		IFNet ifnet1 = IFNetTestUtil.createSimpleIFNet();
 		IFNet ifnet1clone = (IFNet) ifnet1.clone();
 		assertNotSame(ifnet1, ifnet1clone);
 		// Can't just test equality because of the different order of same lists.

@@ -3,11 +3,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 import java.util.Arrays;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
@@ -45,60 +40,59 @@ public class IFNetTestUtil {
 	// deletes red
 	// creates blue
 
-	@SuppressWarnings("unused")
-	public static IFNet createSimpleSnet() throws ParameterException {
+	public static IFNet createSimpleIFNet() {
 
 		// create the SNet
-		IFNet sNet = new IFNet();
+		IFNet ifNet = new IFNet();
 
 		// add places with marking and capacity
-		sNet.addPlace("pIn");
-		sNet.getPlace("pIn").setColorCapacity("black", 1);
+		ifNet.addPlace("pIn");
+		ifNet.getPlace("pIn").setColorCapacity("black", 1);
 
-		sNet.addPlace("p0");
-		sNet.getPlace("p0").setColorCapacity("black", 1);
-		sNet.getPlace("p0").setColorCapacity("green", 1);
+		ifNet.addPlace("p0");
+		ifNet.getPlace("p0").setColorCapacity("black", 1);
+		ifNet.getPlace("p0").setColorCapacity("green", 1);
 
-		sNet.addPlace("p1");
-		sNet.getPlace("p1").setColorCapacity("black", 1);
-		sNet.getPlace("p1").setColorCapacity("red", 1);
+		ifNet.addPlace("p1");
+		ifNet.getPlace("p1").setColorCapacity("black", 1);
+		ifNet.getPlace("p1").setColorCapacity("red", 1);
 
-		sNet.addPlace("p2");
-		sNet.getPlace("p2").setColorCapacity("black", 1);
-		sNet.getPlace("p2").setColorCapacity("green", 1);
+		ifNet.addPlace("p2");
+		ifNet.getPlace("p2").setColorCapacity("black", 1);
+		ifNet.getPlace("p2").setColorCapacity("green", 1);
 
-		sNet.addPlace("p3");
-		sNet.getPlace("p3").setColorCapacity("black", 1);
-		sNet.getPlace("p3").setColorCapacity("blue", 1);
+		ifNet.addPlace("p3");
+		ifNet.getPlace("p3").setColorCapacity("black", 1);
+		ifNet.getPlace("p3").setColorCapacity("blue", 1);
 
-		sNet.addPlace("pOut");
-		sNet.getPlace("pOut").setColorCapacity("black", 1);
+		ifNet.addPlace("pOut");
+		ifNet.getPlace("pOut").setColorCapacity("black", 1);
 
 		Multiset<String> pInMarking = new Multiset<String>();
 		pInMarking.add("black");
 
 		IFNetMarking sm = new IFNetMarking();
 		sm.set("pIn", pInMarking);
-		sNet.setInitialMarking(sm);
+		ifNet.setInitialMarking(sm);
 
 		// add the transitions
-		sNet.addTransition("tIn");
-		sNet.addTransition("t0");
-		sNet.addTransition("tOut");
+		ifNet.addTransition("tIn");
+		ifNet.addTransition("t0");
+		ifNet.addTransition("tOut");
 
 		// add flowrelations
-		IFNetFlowRelation f1 = sNet.addFlowRelationPT("p0", "t0");
-		IFNetFlowRelation f2 = sNet.addFlowRelationPT("p1", "t0");
-		IFNetFlowRelation f3 = sNet.addFlowRelationTP("t0", "p2");
-		IFNetFlowRelation f4 = sNet.addFlowRelationTP("t0", "p3");
+		IFNetFlowRelation f1 = ifNet.addFlowRelationPT("p0", "t0");
+		IFNetFlowRelation f2 = ifNet.addFlowRelationPT("p1", "t0");
+		IFNetFlowRelation f3 = ifNet.addFlowRelationTP("t0", "p2");
+		IFNetFlowRelation f4 = ifNet.addFlowRelationTP("t0", "p3");
 
-		IFNetFlowRelation f5 = sNet.addFlowRelationPT("pIn", "tIn");
-		IFNetFlowRelation f6 = sNet.addFlowRelationTP("tIn", "p0");
-		IFNetFlowRelation f7 = sNet.addFlowRelationTP("tIn", "p1");
+		IFNetFlowRelation f5 = ifNet.addFlowRelationPT("pIn", "tIn");
+		IFNetFlowRelation f6 = ifNet.addFlowRelationTP("tIn", "p0");
+		IFNetFlowRelation f7 = ifNet.addFlowRelationTP("tIn", "p1");
 
-		IFNetFlowRelation f8 = sNet.addFlowRelationPT("p2", "tOut");
-		IFNetFlowRelation f9 = sNet.addFlowRelationPT("p3", "tOut");
-		IFNetFlowRelation f10 = sNet.addFlowRelationTP("tOut", "pOut");
+		IFNetFlowRelation f8 = ifNet.addFlowRelationPT("p2", "tOut");
+		IFNetFlowRelation f9 = ifNet.addFlowRelationPT("p3", "tOut");
+		IFNetFlowRelation f10 = ifNet.addFlowRelationTP("tOut", "pOut");
 
 		// configure flow relations
 		f1.addConstraint("green", 1);
@@ -115,37 +109,37 @@ public class IFNetTestUtil {
 		// f10.addConstraint("black", 1);
 
 		// configure read write
-		RegularIFNetTransition rst = (RegularIFNetTransition) sNet.getTransition("t0");
+		RegularIFNetTransition rst = (RegularIFNetTransition) ifNet.getTransition("t0");
 		rst.addAccessMode("green", AccessMode.READ);
 		rst.addAccessMode("red", AccessMode.DELETE);
 		rst.addAccessMode("blue", AccessMode.CREATE);
 
 		// create labeling
-		Labeling l = new Labeling(sNet, Arrays.asList("S1", "S2", "S3"));
-		sNet.getAnalysisContext().setLabeling(l);
+		Labeling l = new Labeling(ifNet, Arrays.asList("S1", "S2", "S3"));
+		ifNet.getAnalysisContext().setLabeling(l);
 
 		// add subject descriptors
-		sNet.getAnalysisContext().setSubjectDescriptor("tIn", "S1");
-		sNet.getAnalysisContext().setSubjectDescriptor("t0", "S2");
-		sNet.getAnalysisContext().setSubjectDescriptor("tOut", "S3");
+		ifNet.getAnalysisContext().setSubjectDescriptor("tIn", "S1");
+		ifNet.getAnalysisContext().setSubjectDescriptor("t0", "S2");
+		ifNet.getAnalysisContext().setSubjectDescriptor("tOut", "S3");
 
-		return sNet;
+		return ifNet;
 	}
 
-	public static IFNet createSimpleSnetWithDeclassificationNoAC() throws ParameterException {
-		return createSimpleSnetWithDeclassification(false);
+	public static IFNet createSimpleIFNetWithDeclassificationNoAC() {
+		return createSimpleIFNetWithDeclassification(false);
 	}
 
 	// creates the same SNet as createSimpleSnet but with a declassification transition
-	public static IFNet createSimpleSnetWithDeclassification() throws ParameterException {
-		return createSimpleSnetWithDeclassification(true);
+	public static IFNet createSimpleIFNetWithDeclassification() {
+		return createSimpleIFNetWithDeclassification(true);
 	}
 
 	// creates the same SNet as createSimpleSnet but with a declassification transition
 	@SuppressWarnings("unused")
-	public static IFNet createSimpleSnetWithDeclassification(boolean setAnalysisContext) throws ParameterException {
+	public static IFNet createSimpleIFNetWithDeclassification(boolean setAnalysisContext) {
 
-		IFNet simpleSNet = createSimpleSnet();
+		IFNet simpleSNet = createSimpleIFNet();
 
 		// create additional transitions
 		simpleSNet.addDeclassificationTransition("td");

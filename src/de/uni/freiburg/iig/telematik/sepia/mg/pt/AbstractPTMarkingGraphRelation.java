@@ -6,6 +6,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 
 public abstract class AbstractPTMarkingGraphRelation<M extends AbstractPTMarking, T extends AbstractPTMarkingGraphState<M>> extends AbstractMarkingGraphRelation<M,T,Integer> {
 
+	private static final long serialVersionUID = -2935362128969182038L;
+
 	public AbstractPTMarkingGraphRelation(T source, T target, Event event) {
 		super(source, target, event);
 	}

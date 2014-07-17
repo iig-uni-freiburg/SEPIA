@@ -8,6 +8,8 @@ public abstract class AbstractCWNPlace<E extends AbstractCWNFlowRelation<? exten
 
 										 extends AbstractCPNPlace<E> {
 	
+	private static final long serialVersionUID = -4780639560015316941L;
+
 	protected AbstractCWNPlace(){
 		super();
 	}

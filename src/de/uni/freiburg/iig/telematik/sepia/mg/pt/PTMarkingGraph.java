@@ -4,6 +4,8 @@ import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 
 public class PTMarkingGraph extends AbstractPTMarkingGraph<PTMarking, PTMarkingGraphState, PTMarkingGraphRelation> {
+	
+	private static final long serialVersionUID = -863349359704189513L;
 
 	public PTMarkingGraph() {
 		super();

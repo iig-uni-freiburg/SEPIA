@@ -4,6 +4,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNPlace;
 
 public class CWNPlace extends AbstractCWNPlace<CWNFlowRelation> {
 	
+	private static final long serialVersionUID = 7217642956510578681L;
+
 	protected CWNPlace(){
 		super();
 	}

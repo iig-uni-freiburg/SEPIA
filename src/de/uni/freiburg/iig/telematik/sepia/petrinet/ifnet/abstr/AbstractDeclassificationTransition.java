@@ -9,6 +9,8 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 public abstract class AbstractDeclassificationTransition<E extends AbstractIFNetFlowRelation<? extends AbstractIFNetPlace<E>, 
 			 									? extends AbstractIFNetTransition<E>>>  extends AbstractIFNetTransition<E>{
 	
+	private static final long serialVersionUID = 6265290456894007048L;
+
 	protected AbstractDeclassificationTransition(){
 		super(TransitionType.REGULAR);
 	}

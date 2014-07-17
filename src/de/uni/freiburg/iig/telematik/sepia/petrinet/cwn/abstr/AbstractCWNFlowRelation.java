@@ -9,6 +9,8 @@ public abstract class AbstractCWNFlowRelation<P extends AbstractCWNPlace<? exten
 
 												extends AbstractCPNFlowRelation<P, T>{
 
+	private static final long serialVersionUID = 3828969644373181482L;
+
 	public AbstractCWNFlowRelation(P place, T transition) throws ParameterException {
 		super(place, transition, true);
 	}

@@ -14,6 +14,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
 
 public class CWN extends AbstractCWN<CWNPlace, CWNTransition, CWNFlowRelation, CWNMarking, CWNMarkingGraphState, CWNMarkingGraphRelation> {
 
+	private static final long serialVersionUID = 7533076212837736671L;
+
 	public CWN() {
 		super();
 	}

@@ -5,6 +5,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 
 public class IFNetMarkingGraphRelation extends AbstractIFNetMarkingGraphRelation<IFNetMarking, IFNetMarkingGraphState>{
 
+	private static final long serialVersionUID = 2458666547226028328L;
+
 	public IFNetMarkingGraphRelation(IFNetMarkingGraphState source, IFNetMarkingGraphState target, Event event) {
 		super(source, target, event);
 	}

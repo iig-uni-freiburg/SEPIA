@@ -21,6 +21,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
  */
 public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends AbstractPTPlace<E>, ? extends AbstractPTTransition<E>>> extends AbstractPlace<E, Integer>{
 	
+	private static final long serialVersionUID = -6000454236117805465L;
+
+
 	protected AbstractPTPlace(){
 		super();
 		state = 0;

@@ -5,6 +5,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassi
 
 public class DeclassificationTransition extends AbstractDeclassificationTransition<IFNetFlowRelation>{
 	
+	private static final long serialVersionUID = 7856785255356077316L;
+
 	protected DeclassificationTransition(){
 		super();
 	}

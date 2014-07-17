@@ -48,6 +48,8 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 									Y extends AbstractIFNetMarkingGraphRelation<M, X>> 
  
 							 		  extends AbstractCWN<P,T,F,M,X,Y>{
+
+	private static final long serialVersionUID = 7710837900551942698L;
 	
 	protected Map<String, R> regularTransitions;
 	protected Map<String, D> declassificationTransitions;

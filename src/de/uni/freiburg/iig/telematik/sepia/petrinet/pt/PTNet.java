@@ -13,6 +13,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTMarkingGraphState, PTMarkingGraphRelation>{
 	
+	private static final long serialVersionUID = 7377840837566864887L;
+
 	public PTNet() {
 		super();
 	}

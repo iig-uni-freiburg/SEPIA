@@ -52,6 +52,10 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 			}
 		}
 		
+		if(!includeSilentTransitions){
+			removeSilentTransitions(sequences);	
+			removeSilentTransitions(completeSequences);	
+		}
 		return new MGTraversalResult(sequences, completeSequences);
 	}
 	
@@ -81,10 +85,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 	}
 	
 	private Set<List<String>> getActivitySequences(List<X> stateList) {
-		Set<List<String>> sequences = getActivitySequencesRec(new HashSet<List<String>>(), stateList, 0);
-		if(!includeSilentTransitions)
-			removeSilentTransitions(sequences);
-		return sequences;
+		return getActivitySequencesRec(new HashSet<List<String>>(), stateList, 0);
 	}
 	
 	private List<List<X>> getContinuationsRec(X actualState){

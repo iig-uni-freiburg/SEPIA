@@ -16,6 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
 public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractPlace<E, Multiset<String>>{
 	
+	private static final long serialVersionUID = 2267803889794265483L;
 	private int numTokens = 0;
 	/**
 	 * Capacity for individual colors.

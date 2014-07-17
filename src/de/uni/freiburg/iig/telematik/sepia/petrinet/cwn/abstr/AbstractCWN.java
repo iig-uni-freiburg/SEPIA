@@ -31,6 +31,8 @@ public abstract class AbstractCWN<P extends AbstractCWNPlace<F>,
 
 									extends AbstractCPN<P,T,F,M,X,Y>{
 	
+	private static final long serialVersionUID = -5237663583361523953L;
+	
 	public static final String CONTROL_FLOW_TOKEN_COLOR = "black";
 
 	public AbstractCWN() {

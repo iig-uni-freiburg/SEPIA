@@ -1,12 +1,15 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
 
-public class PlaceListenerSupport<P extends AbstractPlace<?,?>> {
+public class PlaceListenerSupport<P extends AbstractPlace<?,?>> implements Serializable{
+	
+	private static final long serialVersionUID = 6957535934703292103L;
 	
 	protected HashSet<PlaceListener<P>> listeners = new HashSet<PlaceListener<P>>();
 	

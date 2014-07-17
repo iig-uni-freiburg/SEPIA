@@ -106,7 +106,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckValidityValid() throws ParameterException {
 
 		// Get a simple standard SNet
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 
 		RegularIFNetTransition rt = (RegularIFNetTransition) sNet.getTransition("t0");
 		try {
@@ -123,7 +123,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckValidityCreateDelete() throws ParameterException {
 
 		// Get a simple standard SNet and one of its transtitions
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition rt = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// Set "create" and "delete" mode for one color
@@ -146,7 +146,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckValidityCreate() throws ParameterException {
 
 		// Get a simple standard SNet and one of its transitions
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition rt = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// Set "create" to a consumed color
@@ -185,7 +185,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckValidityDelete() throws ParameterException {
 
 		// Get a simple standard SNet and one of its transitions
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition rt = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// Set "delete" to a produced color
@@ -223,7 +223,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckValidityProcess() throws ParameterException {
 
 		// Get a simple standard SNet and one of its transitions
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition rt = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// Set "read" to a consumed but not produced color
@@ -245,7 +245,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckState() throws ParameterException {
 
 		// Get a simple standard SNet and one of its transitions
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition disabledTrans = (RegularIFNetTransition) sNet.getTransition("t0");
 		RegularIFNetTransition enabledTrans = (RegularIFNetTransition) sNet.getTransition("tIn");
 
@@ -263,7 +263,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckStateNotEnoughOutputSpace() throws ParameterException {
 
 		// Get a simple standard SNet ...
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("tIn");
 
 		// check the state is enabled initially
@@ -292,7 +292,7 @@ public class RegularIFNetTransitionTest {
 	public void testCheckStateGuard() throws ParameterException {
 
 		// Get a simple standard SNet and two of its transitions
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("tIn");
 
 		// create aGuardDataContainer
@@ -321,7 +321,7 @@ public class RegularIFNetTransitionTest {
 	public void testIsDeclassificator() throws ParameterException {
 
 		// Get a simple standard SNet ...
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("tIn");
 		assertFalse("A regular transtion seems to be a Declassificator", trans.isDeclassificator());
 	}
@@ -333,7 +333,7 @@ public class RegularIFNetTransitionTest {
 	public void testSetGuardDataContainer() throws ParameterException {
 
 		// create the simple standard SNet
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// Create an instance of TestGuardDataContainer
@@ -350,7 +350,7 @@ public class RegularIFNetTransitionTest {
 	public void testSetGuardDataContainerInvalid() throws ParameterException {
 
 		// create the simple standard SNet
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// Create an invald instance of TestGuardDataContainer
@@ -371,7 +371,7 @@ public class RegularIFNetTransitionTest {
 		// create the simple standard SNet
 		IFNet sNet = null;
 		try {
-			sNet = IFNetTestUtil.createSimpleSnet();
+			sNet = IFNetTestUtil.createSimpleIFNet();
 		} catch (ParameterException e) {
 			fail("Cannot create SNet");
 		}
@@ -415,7 +415,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testSetAccessModeStringCollectionOfAccessMode() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("tIn");
 
 		// set access mode
@@ -439,7 +439,7 @@ public class RegularIFNetTransitionTest {
 	public void testAddGuard() {
 		IFNet sNet = null;
 		try {
-			sNet = IFNetTestUtil.createSimpleSnet();
+			sNet = IFNetTestUtil.createSimpleIFNet();
 		} catch (ParameterException e) {
 			fail("Cannot create SNet");
 		}
@@ -498,7 +498,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testRemoveGuard() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("tIn");
 
 		// Get the gurads and check there are no guards initially
@@ -522,7 +522,7 @@ public class RegularIFNetTransitionTest {
 	@Test
 	public void testGetAccessModes() throws ParameterException {
 
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 		Map<String, Set<AccessMode>> modes = trans.getAccessModes();
 
@@ -542,7 +542,7 @@ public class RegularIFNetTransitionTest {
 	@Test
 	public void testGetAccessModesString() throws ParameterException {
 
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// contained
@@ -562,7 +562,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testAddAccessModeStringAccessModeArray() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		HashSet<AccessMode> createMode = new HashSet<AccessMode>();
@@ -586,7 +586,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testRemoveAccessModeStringAccessModeArray() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// remove a non existent access mode
@@ -610,7 +610,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testGetProcessedColorsAccessModeArray() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// get the colors which are processed by t0 with read access
@@ -627,7 +627,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testGetConsumedColorsAccessModeArray() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// get the colors which are processed by t0 with read access
@@ -643,7 +643,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testGetProducedColorsAccessModeArray() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition trans = (RegularIFNetTransition) sNet.getTransition("t0");
 
 		// get the colors which are processed by t0 with read access
@@ -659,7 +659,7 @@ public class RegularIFNetTransitionTest {
 	 */
 	@Test
 	public void testRegularIFNetTransitionClone() throws ParameterException {
-		IFNet sNet = IFNetTestUtil.createSimpleSnet();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNet();
 		RegularIFNetTransition t = (RegularIFNetTransition) sNet.getTransition("t0");
 		t.setSilent(true);
 		// Create an instance of TestGuardDataContainer

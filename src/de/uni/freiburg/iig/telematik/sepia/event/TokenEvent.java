@@ -5,8 +5,9 @@ import java.util.EventObject;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
 
-@SuppressWarnings("serial")
 public class TokenEvent<P extends AbstractPlace<?,?>> extends EventObject {
+	
+	private static final long serialVersionUID = -5436036405684466929L;
 	
 	public int numberOfTokens = 0;
 	public String color = null;

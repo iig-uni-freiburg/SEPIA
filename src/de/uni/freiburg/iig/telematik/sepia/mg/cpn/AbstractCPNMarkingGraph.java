@@ -11,6 +11,8 @@ public abstract class AbstractCPNMarkingGraph<M extends AbstractCPNMarking,
 											  Y extends AbstractCPNMarkingGraphRelation<M,X>> 
 
 												extends AbstractMarkingGraph<M,Multiset<String>,X,Y> {
+	
+	private static final long serialVersionUID = -33599899300156648L;
 
 	public AbstractCPNMarkingGraph() {
 		super();

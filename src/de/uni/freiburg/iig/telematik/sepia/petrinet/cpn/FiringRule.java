@@ -1,12 +1,15 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.invation.code.toval.validate.Validate;
 
 
-public class FiringRule {
+public class FiringRule implements Serializable{
+	
+	private static final long serialVersionUID = -7137530591652113124L;
 	
 	private Map<String,Map<String, Integer>> requiredTokens = new HashMap<String,Map<String, Integer>>();
 	private Map<String,Map<String, Integer>> producedTokens = new HashMap<String,Map<String, Integer>>();

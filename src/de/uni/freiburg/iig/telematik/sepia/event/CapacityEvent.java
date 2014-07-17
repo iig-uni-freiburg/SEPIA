@@ -4,9 +4,9 @@ import java.util.EventObject;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
-
-@SuppressWarnings("serial")
 public class CapacityEvent<P extends AbstractPlace<?,?>> extends EventObject {
+	
+	private static final long serialVersionUID = 1392243966263846678L;
 	
 	public int capacity = 0;
 	

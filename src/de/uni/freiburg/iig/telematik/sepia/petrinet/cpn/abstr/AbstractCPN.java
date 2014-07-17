@@ -41,6 +41,7 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 								  Y extends AbstractCPNMarkingGraphRelation<M,X>> 
 									extends AbstractPetriNet<P,T,F,M,Multiset<String>,X,Y>{
 	
+	private static final long serialVersionUID = -6786656892963004407L;
 	public static final String DEFAULT_TOKEN_COLOR = "black";
 	/**
 	 * String format for plain output.

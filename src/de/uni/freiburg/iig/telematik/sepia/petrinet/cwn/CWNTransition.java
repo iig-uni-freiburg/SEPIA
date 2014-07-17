@@ -3,7 +3,9 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cwn;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNTransition;
 
 public class CWNTransition extends AbstractCWNTransition<CWNFlowRelation> {
-	
+
+	private static final long serialVersionUID = -5688531024492833275L;
+
 	protected CWNTransition(){
 		super();
 	}

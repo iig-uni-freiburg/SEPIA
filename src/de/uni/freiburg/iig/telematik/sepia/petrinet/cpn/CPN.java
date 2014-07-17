@@ -14,6 +14,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 
 public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation> {
 	
+	private static final long serialVersionUID = -5549362122826931975L;
+
 	public CPN() {
 		super();
 	}

@@ -1,12 +1,15 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 
-public class TransitionListenerSupport<T extends AbstractTransition<?,?>> {
+public class TransitionListenerSupport<T extends AbstractTransition<?,?>> implements Serializable{
+	
+	private static final long serialVersionUID = -6155890470158946909L;
 	
 	protected HashSet<TransitionListener<T>> listeners = new HashSet<TransitionListener<T>>();
 	

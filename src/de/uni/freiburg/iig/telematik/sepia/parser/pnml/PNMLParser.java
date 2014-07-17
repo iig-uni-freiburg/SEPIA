@@ -119,8 +119,8 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
 	 */
-	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException {
-		File inputFile = new File(pnmlFile);
+	public AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException{
+	File inputFile = new File(pnmlFile);
 		if (inputFile.isDirectory())
 			throw new IOException("I/O Error on opening file: File is a directory!");
 		if (!inputFile.exists())

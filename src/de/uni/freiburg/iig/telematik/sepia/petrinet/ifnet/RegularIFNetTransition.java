@@ -6,6 +6,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractRegularI
 
 public class RegularIFNetTransition extends AbstractRegularIFNetTransition<IFNetFlowRelation> {
 
+	private static final long serialVersionUID = 8765864248775516722L;
+
 	protected RegularIFNetTransition() {
 		super();
 	}

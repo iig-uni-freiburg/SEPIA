@@ -5,7 +5,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelat
 
 public class PTFlowRelation extends AbstractPTFlowRelation<PTPlace, PTTransition> {
 	
-	public PTFlowRelation(PTPlace p, PTTransition t, int weight) {
+	private static final long serialVersionUID = -3304816705522086793L;
+
+	public PTFlowRelation(PTPlace p, PTTransition t, int weight) throws ParameterException {
 		super(p, t);
 		setWeight(weight);
 	}

@@ -9,6 +9,9 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 											  T extends AbstractCPNTransition<? extends AbstractCPNFlowRelation<P,T>>> 
 												extends AbstractFlowRelation<P, T, Multiset<String>>{
 	
+
+	private static final long serialVersionUID = -8307588526926192566L;
+
 	public AbstractCPNFlowRelation(P place, T transition, boolean addDefaultConstraint) {
 		super(place, transition);
 		initialize(addDefaultConstraint);

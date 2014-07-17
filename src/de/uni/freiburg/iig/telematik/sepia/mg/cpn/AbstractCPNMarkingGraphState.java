@@ -6,6 +6,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking
 
 public abstract class AbstractCPNMarkingGraphState<M extends AbstractCPNMarking> extends AbstractMarkingGraphState<M, Multiset<String>>{
 
+	private static final long serialVersionUID = 8768103138913591438L;
+
 	public AbstractCPNMarkingGraphState(String name, M element) {
 		super(name, element);
 	}

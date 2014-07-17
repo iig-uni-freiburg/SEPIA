@@ -7,6 +7,9 @@ public abstract class AbstractIFNetFlowRelation<P extends AbstractIFNetPlace<? e
 
 												  extends AbstractCWNFlowRelation<P, T>{
 
+
+	private static final long serialVersionUID = -85597409112336075L;
+
 	public AbstractIFNetFlowRelation(P place, T transition) {
 		super(place, transition);
 	}

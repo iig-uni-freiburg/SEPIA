@@ -6,6 +6,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTra
 
 public class IFNetFlowRelation extends AbstractIFNetFlowRelation<IFNetPlace, AbstractIFNetTransition<IFNetFlowRelation>> {
 
+	private static final long serialVersionUID = 8266335039396091886L;
+
 	public IFNetFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) {
 		super(place, transition);
 	}

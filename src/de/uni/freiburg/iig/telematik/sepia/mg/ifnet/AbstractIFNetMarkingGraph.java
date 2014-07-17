@@ -7,6 +7,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMar
 
 public abstract class AbstractIFNetMarkingGraph<M extends AbstractIFNetMarking, S extends AbstractIFNetMarkingGraphState<M>, R extends AbstractIFNetMarkingGraphRelation<M, S>> extends AbstractCWNMarkingGraph<M, S, R> {
 
+	private static final long serialVersionUID = 7815350302838795970L;
+
 	public AbstractIFNetMarkingGraph() {
 		super();
 	}

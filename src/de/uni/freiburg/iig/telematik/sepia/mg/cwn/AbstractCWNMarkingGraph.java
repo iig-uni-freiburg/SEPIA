@@ -7,6 +7,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNMarking
 
 public abstract class AbstractCWNMarkingGraph<M extends AbstractCWNMarking, S extends AbstractCWNMarkingGraphState<M>, R extends AbstractCWNMarkingGraphRelation<M, S>> extends AbstractCPNMarkingGraph<M, S, R> {
 
+	private static final long serialVersionUID = -3000793765683261387L;
+
 	public AbstractCWNMarkingGraph() {
 		super();
 	}

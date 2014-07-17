@@ -11,6 +11,8 @@ public abstract class AbstractIFNetTransition<E extends AbstractIFNetFlowRelatio
 
 												extends AbstractCWNTransition<E> {
 	
+	private static final long serialVersionUID = 478252467742688294L;
+	
 	private TransitionType type = null;
 	
 	protected AbstractIFNetTransition(TransitionType type){

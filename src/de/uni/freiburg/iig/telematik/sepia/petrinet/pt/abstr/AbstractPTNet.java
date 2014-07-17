@@ -36,6 +36,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 
 									  extends AbstractPetriNet<P,T,F,M,Integer,X,Y> {
 
+	private static final long serialVersionUID = -1544464197896650398L;
 	/**
 	 * String format for plain output.
 	 * @see #toString()

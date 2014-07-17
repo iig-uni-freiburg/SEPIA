@@ -11,6 +11,7 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.mg.BoundednessException;
 import de.uni.freiburg.iig.telematik.sepia.mg.MGTraversalResult;
 import de.uni.freiburg.iig.telematik.sepia.mg.MarkingGraphUtils;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
@@ -35,6 +36,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 public class ReachabilityUtils {
 	
 	private static final String rgGraphNodeFormat = "s%s";
+	private static final int MAX_RG_CALCULATION_STEPS = Integer.MAX_VALUE;
 	
 	/**
 	 * Checks if the transition within the given net with the given name is dead,<br>
@@ -164,7 +166,7 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException {
 
 		Validate.notNull(petriNet);
 		if (petriNet.isBounded() != Boundedness.BOUNDED)
@@ -176,33 +178,34 @@ public class ReachabilityUtils {
 		allKnownStates.add(petriNet.getInitialMarking());
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = petriNet.createNewMarkingGraph();
 		int stateCount = 0;
-		Map<Integer, String> stateNames = new HashMap<Integer, String>();
+		Map<String, String> stateNames = new HashMap<String, String>();
 		M initialMarking = petriNet.getInitialMarking();
 		queue.offer(initialMarking);
 		String stateName = String.format(rgGraphNodeFormat, stateCount++);
 		markingGraph.addState(stateName, (M) initialMarking.clone());
 		markingGraph.setInitialState(markingGraph.getState(stateName));
 		markingGraph.addStartState(stateName);
-		stateNames.put(initialMarking.hashCode(), stateName);
+		stateNames.put(initialMarking.toString(), stateName);
 		allKnownStates.add((M) initialMarking.clone());
 		
+		int calculationSteps = 0;
 		try {
 			while (!queue.isEmpty()) {
+				calculationSteps++;
+				if((calculationSteps >= MAX_RG_CALCULATION_STEPS))
+					throw new BoundednessException("Reached maximum calculation steps for building marking graph.");
 				M nextMarking = queue.poll();
-//				System.out.println("Next marking: " + nextMarking);
 				petriNet.setMarking(nextMarking);
 //				M marking = (M) nextMarking.clone();
-				String nextStateName = stateNames.get(nextMarking.hashCode());
-//				System.out.println(nextStateName + " " + nextMarking);
+				String nextStateName = stateNames.get(nextMarking.toString());
+//				System.out.println("Next marking (" + nextStateName + "): " + nextMarking);
 
 				if(petriNet.hasEnabledTransitions()){
 					String newStateName = null;
 					for (T enabledTransition : petriNet.getEnabledTransitions()) {
 
-//						System.out.println("enabled: " + enabledTransition.getName());
+//						System.out.println("   enabled: " + enabledTransition.getName());
 						M newMarking = petriNet.fireCheck(enabledTransition.getName());
-						int newMarkingHash = newMarking.hashCode();
-//						System.out.println("new marking: " + newMarking);
 						
 						// Check if this marking is already known
 						M equalMarking = null;
@@ -213,24 +216,24 @@ public class ReachabilityUtils {
 							}
 						}
 
-						// System.out.println("new marking: " + newMarking);
+//						System.out.println("   new marking: " + newMarking);
 						if(equalMarking == null) {
 							// This is a new marking
-//							System.out.println("New marking");
+//							System.out.println("   -> New marking");
 							queue.offer(newMarking);
 							allKnownStates.add((M) newMarking.clone());
 							newStateName = String.format(rgGraphNodeFormat, stateCount++);
 							markingGraph.addState(newStateName, (M) newMarking.clone());
-							stateNames.put(newMarkingHash, newStateName);
+							stateNames.put(newMarking.toString(), newStateName);
 						} else {
 							// This marking is already known
-//							System.out.println("Known marking");
-							newStateName = stateNames.get(newMarkingHash);
+//							System.out.println("   -> Known marking");
+							newStateName = stateNames.get(newMarking.toString());
 						}
 						if (!markingGraph.containsEvent(enabledTransition.getName())) {
 							markingGraph.addEvent(enabledTransition.getName(), enabledTransition.getLabel());
 						}
-//						 System.out.println("add relation: " + nextStateName + " to " + newStateName + " via " + enabledTransition.getName());
+//						System.out.println("   add relation: " + nextStateName + " to " + newStateName + " via " + enabledTransition.getName());
 						markingGraph.addRelation(nextStateName, newStateName, enabledTransition.getName());
 					}
 				} else {
@@ -254,7 +257,8 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 	   				Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions) {
+		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions)
+			throws BoundednessException {
 		
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
 		return MarkingGraphUtils.getSequences(petriNet, markingGraph, includeSilentTransitions);

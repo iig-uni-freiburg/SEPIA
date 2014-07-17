@@ -10,6 +10,8 @@ public abstract class AbstractCPNMarkingGraphRelation<M extends AbstractCPNMarki
 
 														extends AbstractMarkingGraphRelation<M,X,Multiset<String>> {
 
+	private static final long serialVersionUID = 6539045651923277426L;
+
 	public AbstractCPNMarkingGraphRelation(X source, X target, Event event) {
 		super(source, target, event);
 	}

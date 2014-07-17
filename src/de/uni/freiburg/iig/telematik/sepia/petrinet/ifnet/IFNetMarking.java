@@ -5,6 +5,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMar
 
 public class IFNetMarking extends AbstractIFNetMarking {
 
+	private static final long serialVersionUID = 3016094393793534037L;
+
 	public IFNetMarking() {
 		super();
 	}

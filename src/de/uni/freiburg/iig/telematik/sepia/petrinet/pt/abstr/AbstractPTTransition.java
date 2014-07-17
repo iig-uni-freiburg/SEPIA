@@ -6,6 +6,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? extends AbstractPTPlace<E>, ? extends AbstractPTTransition<E>>> extends AbstractTransition<E,Integer>{
 	
+	private static final long serialVersionUID = 1253534975141710023L;
+
 	protected AbstractPTTransition(){
 		super();
 	}

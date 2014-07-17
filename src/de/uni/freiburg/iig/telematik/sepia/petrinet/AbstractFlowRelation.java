@@ -1,5 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
+import java.io.Serializable;
+
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
@@ -21,7 +23,9 @@ import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListenerSupport;
  */
 public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends AbstractFlowRelation<P,T,S>,S>, 
 										   T extends AbstractTransition<? extends AbstractFlowRelation<P,T,S>, S>,
-									       S extends Object> {
+									       S extends Object> implements Serializable{
+	
+	private static final long serialVersionUID = -3305028252141027555L;
 	
 	protected final String nameFormatPT = "arcPT_%s%s";
 	protected final String nameFormatTP = "arcTP_%s%s";
@@ -55,9 +59,10 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * Creates a new flow relation leading from the given place to the given transition.
 	 * @param place Place where the flow relation starts.
 	 * @param transition Transition where the flow relation ends.
+	 * @If some parameters are <code>null</code>.
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
-	public AbstractFlowRelation(P place, T transition) {
+	public AbstractFlowRelation(P place, T transition){
 		this(place, transition, true);
 	}
 	
@@ -65,13 +70,14 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * Creates a new flow relation leading from the given transition to the given place.
 	 * @param transition Transition where the flow relation starts.
 	 * @param place Place where the flow relation ends.
+	 * @If some parameters are <code>null</code>.
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
-	public AbstractFlowRelation(T transition, P place) {
+	public AbstractFlowRelation(T transition, P place){
 		this(place, transition, false);
 	}
 	
-	protected AbstractFlowRelation(P place, T transition, boolean directionPT) {
+	protected AbstractFlowRelation(P place, T transition, boolean directionPT){
 		this.directionPT = directionPT;
 		setValues(transition, place);
 	}
@@ -80,7 +86,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	//------- Basic properties -----------------------------------------------------------------------
 	
 
-	public void setConstraint(S constraint) {
+	public void setConstraint(S constraint){
 		validateConstraint(constraint);
 		this.constraint = constraint;
 		relationListenerSupport.notifyCapacityChanged(this);
@@ -127,8 +133,9 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * It uses {@link #setName(AbstractPlace, AbstractTransition)} to assign the flow relation a unique name.
 	 * @param transition The transition for the flow relation.
 	 * @param place The place for the flow relation.
+	 * @If some parameters are <code>null</code>.
 	 */
-	private void setValues(T transition, P place) {
+	private void setValues(T transition, P place){
 		Validate.notNull(place);
 		Validate.notNull(transition);
 		this.place = place;
@@ -142,8 +149,9 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * the caller is responsible to guarantee unique flow relation names.<br>
 	 * Name collisions can cause unintended or erroneous Petri net behavior.
 	 * @param name The name for the flow relation.
+	 * @If some parameters are <code>null</code>.
 	 */
-	public void setName(String name) {
+	public void setName(String name){
 		Validate.notNull(name);
 		if(!relationListenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a relation with this name.\n Cancel renaming to avoid name clash.");
@@ -254,16 +262,18 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 		/**
 		 * Adds a flow relation listener.
 		 * @param listener The flow relation listener to add.
+		 * @If the listener reference is <code>null</code>.
 		 */
-		public void addRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener) {
+		public void addRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener){
 			relationListenerSupport.addListener(listener);
 		}
 		
 		/**
 		 * Removes a flow relation listener.
 		 * @param listener The flow relation listener to remove.
+		 * @If the listener reference is <code>null</code>.
 		 */
-		public void removeRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener) {
+		public void removeRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener){
 			relationListenerSupport.removeListener(listener);
 		}
 	

@@ -22,6 +22,8 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 										 IFNetMarkingGraphState, 
 										 IFNetMarkingGraphRelation> {
 
+	private static final long serialVersionUID = -2155147434115176455L;
+
 	public IFNet() {
 		super();
 	}

@@ -9,6 +9,8 @@ public abstract class AbstractCWNTransition<E extends AbstractCWNFlowRelation<? 
 
 											  extends AbstractCPNTransition<E> {
 
+	private static final long serialVersionUID = -7588362779618386287L;
+
 	protected AbstractCWNTransition(){
 		super();
 	}

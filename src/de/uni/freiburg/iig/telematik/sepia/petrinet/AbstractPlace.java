@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
+import java.io.Serializable;
 import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
@@ -32,8 +33,13 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
  * @param <S>
  *            Type for token number and type.
  */
-public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends AbstractPlace<E, S>, ? extends AbstractTransition<E, S>, S>, S extends Object> extends AbstractPNNode<E> {
+public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends AbstractPlace<E, S>, 
+									? extends AbstractTransition<E, S>, S>, 
+									S extends Object> 
+									extends AbstractPNNode<E> implements Serializable{
 
+	private static final long serialVersionUID = -4942014250666222432L;
+	
 	/**
 	 * Support class for {@link TokenListener} handling.
 	 */
@@ -61,8 +67,9 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Creates a new place with the given name.
 	 * @param name The name for the new Place.
+	 * @If the given name is <code>null</code>.
 	 */
-	public AbstractPlace(String name) {
+	public AbstractPlace(String name){
 		super(PNNodeType.PLACE, name);
 	}
 
@@ -74,7 +81,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @param label
 	 *            The label for the new place.
 	 */
-	public AbstractPlace(String name, String label) {
+	public AbstractPlace(String name, String label){
 		super(PNNodeType.PLACE, name, label);
 	}
 
@@ -98,7 +105,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @param capacity
 	 *            The desired capacity.
 	 */
-	public void setCapacity(int capacity) {
+	public void setCapacity(int capacity){
 		Validate.bigger(capacity, 0);
 		int oldCapacity = this.capacity;
 		this.capacity = capacity;
@@ -134,7 +141,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @return <code>true</code> if the two places have the same relations;<br>
 	 *         <code>false</code> otherwise.
 	 */
-	public boolean hasEqualRelations(AbstractPlace<E, S> otherPlace) {
+	public boolean hasEqualRelations(AbstractPlace<E, S> otherPlace){
 		Validate.notNull(otherPlace);
 		List<E> incomingRelations = otherPlace.getIncomingRelations();
 		List<E> outgoingRelations = otherPlace.getOutgoingRelations();
@@ -153,7 +160,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	}
 	
 	@Override
-	public void setName(String name) {
+	public void setName(String name){
 		Validate.notNull(name);
 		if(!placeListenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
@@ -185,7 +192,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *         <code>false</code> if the place is already in the given state.
 	 * @see #initiateStateChecks()
 	 */
-	public boolean setState(S state) {
+	public boolean setState(S state){
 		validateState(state);
 		if (this.state.equals(state))
 			return false;
@@ -304,7 +311,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the given state is <code>null</code>.
 	 */
-	protected void validateState(S state) {
+	protected void validateState(S state){
 		Validate.notNull(state);
 	}
 
@@ -318,7 +325,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
 	 */
-	public void addTokenListener(TokenListener<AbstractPlace<E,S>> l) {
+	public void addTokenListener(TokenListener<AbstractPlace<E,S>> l){
 		tokenListenerSupport.addTokenListener(l);
 	}
 
@@ -330,25 +337,25 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @throws ParameterException
 	 *             If the listener reference is <code>null</code>.
 	 */
-	public void removeTokenListener(TokenListener<AbstractPlace<E, S>> l) {
+	public void removeTokenListener(TokenListener<AbstractPlace<E, S>> l){
 		tokenListenerSupport.removeTokenListener(l);
 	}
 
 	/**
 	 * Adds a capacity listener.
 	 * @param l The capacity listener to add.
-	 * @throws ParameterException If the listener reference is <code>null</code>.
+	 * @If the listener reference is <code>null</code>.
 	 */
-	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l) {
+	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l){
 		placeListenerSupport.addCapacityListener(l);
 	}
 
 	/**
 	 * Removes a capacity listener.
 	 * @param l The capacity listener to remove.
-	 * @throws ParameterException If the listener reference is <code>null</code>.
+	 * @If the listener reference is <code>null</code>.
 	 */
-	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l) {
+	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l){
 		placeListenerSupport.removeCapacityListener(l);
 	}
 
@@ -392,16 +399,12 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	public AbstractPlace<E, S> clone() {
 		@SuppressWarnings("unchecked")
 		AbstractPlace<E, S> result = (AbstractPlace<E, S>) super.clone();
-		try {
-			cloneCapacity(result);
-			result.setState(getState());
-		} catch (ParameterException e) {
-			e.printStackTrace();
-		}
+		cloneCapacity(result);
+		result.setState(getState());
 		return result;
 	}
 
-	protected void cloneCapacity(AbstractPlace<E, S> clone) {
+	protected void cloneCapacity(AbstractPlace<E, S> clone){
 		if (getCapacity() > 0)
 			clone.setCapacity(getCapacity());
 	}

@@ -30,7 +30,7 @@ public class DeclassificationTransitionTest {
 	@Before
 	public void setUp() throws Exception {
 
-		dSNet = IFNetTestUtil.createSimpleSnetWithDeclassification();
+		dSNet = IFNetTestUtil.createSimpleIFNetWithDeclassification();
 		td = dSNet.getDeclassificationTransitions().iterator().next();
 	}
 
@@ -417,7 +417,7 @@ public class DeclassificationTransitionTest {
 	 */
 	@Test
 	public void testDeclassificationTransitionClone() {
-		IFNet sNet = IFNetTestUtil.createSimpleSnetWithDeclassificationNoAC();
+		IFNet sNet = IFNetTestUtil.createSimpleIFNetWithDeclassificationNoAC();
 		DeclassificationTransition t = (DeclassificationTransition) sNet.getTransition("td");
 		t.setSilent(true);
 

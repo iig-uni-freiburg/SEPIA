@@ -10,6 +10,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractTransition<E, Multiset<String>> {
 
+	private static final long serialVersionUID = -4810541031431890045L;
+
 	protected AbstractCPNTransition(){
 		super();
 	}

@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -70,8 +71,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 			    			TokenListener<AbstractPlace<F,S>>,
 							Traversable<AbstractPNNode<F>>,
 							FlowRelationListener<AbstractFlowRelation<P,T,S>>,
-							PlaceListener<AbstractPlace<F,S>>{
+							PlaceListener<AbstractPlace<F,S>>, 
+							Serializable{
 	
+	private static final long serialVersionUID = 7324151598039390349L;
 	private static final String rgGraphNodeFormat = "s%s";
 	/**
 	 * Name of the Petri net.
@@ -153,6 +156,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The next enabled transition is chosen randomly.
 	 * @param places Names of Petri net places to add.
 	 * @param transitions Names of Petri net transition to add.
+<<<<<<< .mine
+	 * @If some parameters are <code>null</code> or contain <code>null</code>-values.
+=======
+>>>>>>> .r194
 	 */
 	public AbstractPetriNet(Set<String> places, Set<String> transitions) {
 		this();			
@@ -182,6 +189,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	/**
 	 * Sets the name of the Petri net to the given name.
 	 * @param name New name for the Petri net.
+<<<<<<< .mine
+	 * @If the given name is <code>null</code>.
+=======
+>>>>>>> .r194
 	 */
 	public void setName(String name) {
 		Validate.notNull(name);
@@ -192,10 +203,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 //	 * Sets the flow control for the Petri net.<br>
 //	 * The flow control decides which transition to fire, if there is more than one enabled transition.
 //	 * @param flowControl The flow control to use.
-//	 * @throws ParameterException If the flow control parameter is <code>null</code>.
+//	 * @If the flow control parameter is <code>null</code>.
 //	 * @throws InconsistencyException If the given flow control is in invalid state.
 //	 */
-//	public void setFlowControl(FlowControl<P,T,F> flowControl) throws ParameterException, InconsistencyException{
+//	public void setFlowControl(FlowControl<P,T,F> flowControl), InconsistencyException{
 //		Validate.notNull(flowControl);
 //		if(!flowControl.isValid())
 //			throw new InconsistencyException("FlowControl is not valid");
@@ -312,6 +323,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionNames Names for the Petri net transitions.
 	 * @return <code>true</code> if at least one transition was successfully added;<br>
 	 * <code>false</code> otherwise.
+<<<<<<< .mine
+	 * @If the set of transition names is <code>null</code>
+	 * or some transition names are <code>null</code>.
+=======
+>>>>>>> .r194
 	 * @see #addTransition(String)
 	 */
 	public boolean addTransitions(Collection<String> transitionNames) {
@@ -332,6 +348,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name for the Petri net transition.
 	 * @return <code>true</code> if the transition was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
+<<<<<<< .mine
+	 * @If the transition name is <code>null</code>.
+=======
+>>>>>>> .r194
 	 */
 	public boolean addTransition(String transitionName) {
 		return addTransition(transitionName, transitionName);
@@ -345,8 +365,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionLabel the label for the Petri net transition.
 	 * @return <code>true</code> if the transition was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
 	 */
-	public boolean addTransition(String transitionName, String transitionLabel) {
+	public boolean addTransition(String transitionName, String transitionLabel){
 		return addTransition(transitionName, transitionLabel, false);
 	}
 	
@@ -358,8 +379,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param isSilent The silent state of the transition.
 	 * @return <code>true</code> if the transition was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
 	 */
-	public boolean addTransition(String transitionName, boolean isSilent) {
+	public boolean addTransition(String transitionName, boolean isSilent){
 		return addTransition(transitionName, transitionName, isSilent);
 	}
 	
@@ -372,6 +394,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param isSilent The silent state of the transition.
 	 * @return <code>true</code> if the transition was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
 	 */
 	public boolean addTransition(String transitionName, String transitionLabel, boolean isSilent) {
 		if(containsTransition(transitionName))
@@ -385,18 +408,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * This method is called from {@link #addTransition(String)} which checks if there already exists
 	 * a transition with equal name before making the call.
 	 * @param transition The Petri net transition to add.
+	 * @If the given transition is <code>null</code>.
 	 */
 	protected void addTransition(T transition) {
 		Validate.notNull(transition);
 		transitions.put(transition.getName(), transition);
-				
-		try {
-			transition.addTransitionListener(this);							
-			enabledTransitions.add(transition);
-		} catch (ParameterException e) {
-			// Cannot happen, since "this" is not null
-			e.printStackTrace();
-		}
+		transition.addTransitionListener(this);							
+		enabledTransitions.add(transition);
 	}
 	
 	/**
@@ -404,8 +422,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transition The transition to check.
 	 * @return <code>true</code> if the net contains the transition;<br>
 	 * <code>false</code> otherwise.
+	 * @If the given transition is <code>null</code>.
 	 */
-	protected boolean containsTransition(T transition) {
+	protected boolean containsTransition(T transition){
 		return containsTransition(transition.getName());
 	}
 	
@@ -425,15 +444,16 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name of the place to remove
 	 * @return <code>true</code> if the transition was successfully removed from the net;<br>
 	 * <code>false</code> otherwise.
+	 * @If the given transition name is <code>null</code>.
 	 */
-	public boolean removeTransition(String transitionName) {
+	public boolean removeTransition(String transitionName){
 		if(!containsTransition(transitionName))
 			return false;
 		removeTransition(transitions.get(transitionName));
 		return true;
 	}
 	
-	protected void removeTransition(T transition) {
+	protected void removeTransition(T transition){
 		for(F relation: transition.getIncomingRelations()){
 			removeFlowRelation(relation);
 		}
@@ -506,9 +526,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param placeNames Names for the Petri net places to add.
 	 * @return <code>true</code> if at least one place was successfully added;<br>
 	 * <code>false</code> otherwise.
+	 * @If the set of place names is <code>null</code>
+	 * or some place names are <code>null</code>.
 	 * @see #addPlace(String)
 	 */
-	public boolean addPlaces(Set<String> placeNames) {
+	public boolean addPlaces(Set<String> placeNames){
 		Validate.notNull(placeNames);
 		boolean updated = false;
 		for(String placeName: placeNames){
@@ -527,7 +549,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the place was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
 	 */
-	public boolean addPlace(String placeName) {
+	public boolean addPlace(String placeName){
 		return addPlace(placeName, placeName);
 	}
 	
@@ -541,7 +563,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the place was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
 	 */
-	public boolean addPlace(String placeName, String placeLabel) {
+	public boolean addPlace(String placeName, String placeLabel){
 		if(containsPlace(placeName))
 			return false;
 		addPlace(createNewPlace(placeName, placeLabel));
@@ -553,17 +575,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * This method is called from {@link #addPlace(String)} which checks if there already exists
 	 * a place with equal name before making the call.
 	 * @param place The Petri net place to add.
+	 * @If the given place is <code>null</code>.
 	 */
-	protected void addPlace(P place) {
+	protected void addPlace(P place){
 		Validate.notNull(place);
 		places.put(place.getName(), place);
-		try {
-			place.addTokenListener(this);
-			place.addPlaceListener(this);
-		} catch (ParameterException e) {
-			// Cannot happen, since "this" is not null
-			e.printStackTrace();
-		}
+		place.addTokenListener(this);
+		place.addPlaceListener(this);
 	}
 	
 	/**
@@ -572,7 +590,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the net contains the transition;<br>
 	 * <code>false</code> otherwise.
 	 */
-	protected boolean containsPlace(P place) {
+	protected boolean containsPlace(P place){
 		return containsPlace(place.getName());
 	}
 	
@@ -602,14 +620,14 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the place was successfully removed from the net;<br>
 	 * <code>false</code> otherwise.
 	 */
-	public boolean removePlace(String placeName) {
+	public boolean removePlace(String placeName){
 		if(!containsPlace(placeName))
 			return false;
 		removePlace(places.get(placeName));
 		return true;
 	}
 	
-	protected void removePlace(P place) {
+	protected void removePlace(P place){
 		for(F relation: place.getIncomingRelations()){
 			removeFlowRelation(relation);
 		}
@@ -651,7 +669,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the flow relation was successfully added;<br>
 	 * <code>false</code> otherwise.
 	 */
-	public F addFlowRelationPT(String placeName, String transitionName) {
+	public F addFlowRelationPT(String placeName, String transitionName){
 		if(!containsPlace(placeName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+placeName+"\"");
 		if(!containsTransition(transitionName))
@@ -670,7 +688,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the flow relation was successfully added;<br>
 	 * <code>false</code> otherwise.
 	 */
-	public F addFlowRelationTP(String transitionName, String placeName) {
+	public F addFlowRelationTP(String transitionName, String placeName){
 		if(!containsPlace(placeName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+placeName+"\"");
 		if(!containsTransition(transitionName))
@@ -691,7 +709,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @see #checkSD(AbstractPlace)
 	 * @see #checkSD(AbstractTransition)
 	 */
-	protected boolean addFlowRelation(F relation) {
+	protected boolean addFlowRelation(F relation){
 		Validate.notNull(relation);
 		if(containsRelation(relation))
 			return false;
@@ -706,12 +724,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		relations.put(relation.getName(), relation);
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
-		try{
-			relation.addRelationListener(this);
-		} catch(ParameterException e){
-			// Cannot happen, since this is not null
-			e.printStackTrace();
-		}
+		relation.addRelationListener(this);
 		return true;
 	}
 	
@@ -761,7 +774,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the net contains the relation;<br>
 	 * <code>false</code> otherwise.
 	 */
-	protected boolean containsRelation(F relation) {
+	protected boolean containsRelation(F relation){
 		return relations.values().contains(relation);
 	}
 	
@@ -789,7 +802,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The caller is responsible for parameter validity.
 	 * @param relation The relation to remove.
 	 */
-	protected void removeFlowRelation(F relation) {
+	protected void removeFlowRelation(F relation){
 		relation.getPlace().removeRelation(relation);
 		relation.getTransition().removeRelation(relation);
 		relations.remove(relation.getName());
@@ -798,7 +811,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		checkSD(relation.getTransition());
 	}
 	
-	public boolean removeFlowRelation(String relationName) {
+	public boolean removeFlowRelation(String relationName){
 		if(!containsFlowRelation(relationName))
 			return false;
 		removeFlowRelation(relations.get(relationName));
@@ -819,7 +832,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param marking The marking used as initial marking (state) of the net.
 	 */
 	@SuppressWarnings("unchecked")
-	public void setInitialMarking(M marking) {
+	public void setInitialMarking(M marking){
 		validateMarking(marking);
 //		if(initialMarking != null)
 //			initialMarking.clear();
@@ -847,7 +860,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * its state is set to empty, i.e. all tokens are removed.
 	 * @param marking The desired net marking.
 	 */
-	public void setMarking(M marking) {
+	public void setMarking(M marking){
 		validateMarking(marking);
 //		if(this.marking != null)
 //			this.marking.clear();
@@ -879,7 +892,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * in the sense of tokens in net places has to be updated.
 	 * @param place Place whose token number has changed.
 	 */
-	protected void updateMarking(P place) {
+	protected void updateMarking(P place){
 		Validate.notNull(place);
 		if(!places.containsKey(place.getName()))
 			return;
@@ -898,6 +911,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name of the transition to fire.
 	 * @return <code>true</code> if the transition could be fired;<br>
 	 * <code>false</code> otherwise.
+<<<<<<< .mine
+	 * @If the given transition name is <code>null</code><br>
+	 * or the net does not contain a transition with the given name.
+=======
+>>>>>>> .r194
 	 * @throws PNException If the net transition with the given name is not enabled.
 	 */
 	public T fire(String transitionName) throws PNException {
@@ -915,6 +933,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name of the transition to fire.
 	 * @return <code>true</code> if the transition could be fired;<br>
 	 * <code>false</code> otherwise.
+<<<<<<< .mine
+	 * @If the given transition name is <code>null</code><br>
+	 * or the net does not contain a transition with the given name.
+=======
+>>>>>>> .r194
 	 * @throws PNException If the net transition with the given name is not enabled.
 	 */
 	public abstract M fireCheck(String transitionName) throws PNException;
@@ -935,11 +958,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	@SuppressWarnings("unchecked")
 	public void reset() {
-		try {
-			setMarking((M) initialMarking.clone());
-		} catch (ParameterException e) {
-			e.printStackTrace();
-		}
+		setMarking((M) initialMarking.clone());
 	}
 	
 	public boolean isCapacityBounded(){
@@ -968,7 +987,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * It checks if it is <code>null</code> and if the Petri net contains a transition with this name.
 	 * @param transitionName The name of the transition in question.
 	 */
-	protected void validateTransition(String transitionName) {
+	protected void validateTransition(String transitionName){
 		Validate.notNull(transitionName);
 		if(!transitions.containsKey(transitionName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown transition: " + transitionName);
@@ -979,6 +998,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * It checks if the given name is <code>null</code>, if the Petri net contains a transition with this name<br>
 	 * and if this transition is enabled.
 	 * @param transitionName The name of the transition in question.
+<<<<<<< .mine
+	 * @If the transition name is <code>null</code><br>
+	 * or the net does not contain a transition with this name.
+=======
+>>>>>>> .r194
 	 * @throws PNException If the net transition with the given name is not enabled.
 	 */
 	protected void validateFireTransition(String transitionName) throws PNException{
@@ -993,7 +1017,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * It checks if the Petri net contains all places for which the marking holds states.
 	 * @param marking The marking in question.
 	 */
-	protected void validateMarking(M marking) {
+	protected void validateMarking(M marking){
 		Validate.notNull(marking);
 		if(!places.keySet().containsAll(marking.places()))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Places in initial marking must be places of the net.");
@@ -1111,13 +1135,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void tokensAdded(TokenEvent<? extends AbstractPlace<F,S>> o) {
-		try {
-			updateMarking((P) o.getSource());
-		} catch (ParameterException e) {
-			// Cannot happen
-			// TokenEvent ensures that source is of right type and not null 
-			e.printStackTrace();
-		}
+		updateMarking((P) o.getSource());
 	}
 
 	/**
@@ -1128,13 +1146,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	@SuppressWarnings("unchecked")
 	@Override
 	public void tokensRemoved(TokenEvent<? extends AbstractPlace<F,S>> o) {
-		try {
-			updateMarking((P) o.getSource());
-		} catch (ParameterException e) {
-			// Cannot happen
-		    // TokenEvent ensures that source is of right type and not null 
-			e.printStackTrace();
-		}
+		updateMarking((P) o.getSource());
 	}
 	
 
@@ -1214,7 +1226,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		AbstractPetriNet<P,T,F,M,S,X,Y> result = newInstance();
 		Map<T,T> clonedTransitions = new HashMap<T,T>();
 		Map<P,P> clonedPlaces = new HashMap<P,P>();
-		try{
+
 			for(T ownTransition: getTransitions()){
 				clonedTransitions.put(ownTransition, (T) ownTransition.clone());
 				result.addTransition(clonedTransitions.get(ownTransition));
@@ -1229,9 +1241,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 														     ownRelation.getDirectionPT()));
 			}
 			result.setInitialMarking((M) getInitialMarking().clone());
-		}catch(ParameterException e){
-			e.printStackTrace();
-		}
+
 		return result;
 	}
 	
@@ -1324,6 +1334,10 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		this.markingGraph = markingGraph;
 		reset();
 		return markingGraph;
+	}
+	
+	public PNComplexity getComplexity(){
+		return new PNComplexity(getPlaceCount(), getTransitionCount(), getFlowRelationCount());
 	}
 	
 	public enum Boundedness {BOUNDED, UNBOUNDED, UNKNOWN}

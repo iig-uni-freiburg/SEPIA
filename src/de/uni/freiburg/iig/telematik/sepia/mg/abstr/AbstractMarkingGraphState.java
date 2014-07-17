@@ -6,6 +6,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 
 public abstract class AbstractMarkingGraphState<M extends AbstractMarking<O>, O extends Object> extends AbstractLTSState<Event, M>{
 
+	private static final long serialVersionUID = -8967433624218295335L;
+
 	protected AbstractMarkingGraphState(String name) {
 		super(name);
 	}

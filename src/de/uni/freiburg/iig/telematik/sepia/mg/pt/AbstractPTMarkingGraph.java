@@ -11,6 +11,8 @@ public abstract class AbstractPTMarkingGraph<M extends AbstractPTMarking,
 
 											   extends AbstractMarkingGraph<M,Integer,S,R> {
 
+	private static final long serialVersionUID = 5037378617375529917L;
+
 	public AbstractPTMarkingGraph() {
 		super();
 	}

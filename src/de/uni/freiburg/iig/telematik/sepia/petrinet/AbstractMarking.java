@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,8 +17,9 @@ import de.invation.code.toval.validate.Validate;
  *
  * @param <S> Token representation type for places.
  */
-public abstract class AbstractMarking<S extends Object> {
+public abstract class AbstractMarking<S extends Object> implements Serializable{
 	
+	private static final long serialVersionUID = -8258625737221734181L;
 	/**
 	 * Map for place states, indexed with place-names.<br>
 	 * Each place state is defined with a token representation of type M.
@@ -78,7 +80,7 @@ public abstract class AbstractMarking<S extends Object> {
 	 * @param place The place whose state is requested.
 	 * @return The state of the given place in the marking.
 	 */
-	public S get(String place) {
+	public S get(String place){
 		validatePlace(place);
 		return placeStates.get(place);
 	}
@@ -88,7 +90,7 @@ public abstract class AbstractMarking<S extends Object> {
 	 * @param place The place whose state is set.
 	 * @param state The state for the given place.
 	 */
-	public void set(String place, S state) {
+	public void set(String place, S state){
 		validatePlace(place);
 		validateState(state);
 		placeStates.put(place, state);
@@ -101,7 +103,7 @@ public abstract class AbstractMarking<S extends Object> {
 	 * Validates a place for which a state has to be set.
 	 * @param place The place whose state is set.
 	 */
-	protected void validatePlace(String place) {
+	protected void validatePlace(String place){
 		Validate.notNull(place);
 	}
 	
@@ -109,7 +111,7 @@ public abstract class AbstractMarking<S extends Object> {
 	 * Validates a state which has to be set for a place.
 	 * @param state The state which has to be set.
 	 */
-	protected void validateState(S state) {
+	protected void validateState(S state){
 		Validate.notNull(state);
 	}
 	
@@ -125,10 +127,9 @@ public abstract class AbstractMarking<S extends Object> {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final int prime = 37;
 		int result = 1;
-		result = prime * result
-				+ ((placeStates == null) ? 0 : placeStates.hashCode());
+		result = prime * result + ((placeStates == null) ? 0 : placeStates.hashCode());
 		return result;
 	}
 

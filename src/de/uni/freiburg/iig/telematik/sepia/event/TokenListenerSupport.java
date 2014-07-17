@@ -1,12 +1,14 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 
+public class TokenListenerSupport<P extends AbstractPlace<?,?>> implements Serializable{
 
-public class TokenListenerSupport<P extends AbstractPlace<?,?>> {
+	private static final long serialVersionUID = -9115760450580421633L;
 	
 	protected HashSet<TokenListener<P>> tokenListeners = new HashSet<TokenListener<P>>();
 	

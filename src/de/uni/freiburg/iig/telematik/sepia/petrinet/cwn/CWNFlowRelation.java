@@ -5,6 +5,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRel
 
 public class CWNFlowRelation extends AbstractCWNFlowRelation<CWNPlace, CWNTransition> {
 
+
+	private static final long serialVersionUID = 7316690310722715483L;
+
 	public CWNFlowRelation(CWNPlace place, CWNTransition transition) {
 		super(place, transition);
 	}

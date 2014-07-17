@@ -10,6 +10,8 @@ public abstract class AbstractMarkingGraphRelation<	M extends AbstractMarking<O>
 
 													extends AbstractLabeledTransitionRelation<S, Event, M>{
 
+	private static final long serialVersionUID = -7588912597515288691L;
+
 	public AbstractMarkingGraphRelation(S source, S target, Event event) {
 		super(source, target, event);
 	}

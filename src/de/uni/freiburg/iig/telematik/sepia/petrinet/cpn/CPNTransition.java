@@ -4,6 +4,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransit
 
 public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	
+	private static final long serialVersionUID = 5527205170645751350L;
+
 	protected CPNTransition(){
 		super();
 	}

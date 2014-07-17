@@ -7,6 +7,8 @@ public abstract class AbstractIFNetPlace<E extends AbstractIFNetFlowRelation<? e
 
 										   extends AbstractCWNPlace<E> {
 	
+	private static final long serialVersionUID = -7056298552150837686L;
+
 	protected AbstractIFNetPlace(){
 		super();
 	}
