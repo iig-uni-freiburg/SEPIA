@@ -93,7 +93,9 @@ public class PNMLIFNetAnalysisContextParser {
 				labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
 
 			AnalysisContext analysisContext = new AnalysisContext(labeling);
-
+			String name = analysisContextDocument.getDocumentElement().getAttribute("id");
+			analysisContext.setName(name);
+			
 			// read activity descriptors
 			NodeList subjectDescriptorsList = analysisContextDocument.getElementsByTagName("subjectdescriptors");
 			if (subjectDescriptorsList.getLength() > 0) {

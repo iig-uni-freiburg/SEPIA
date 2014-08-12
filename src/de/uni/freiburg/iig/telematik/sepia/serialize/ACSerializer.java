@@ -20,6 +20,7 @@ public class ACSerializer {
 	}
 	
 	private void addContent() {
+		support.getRootElement().setAttribute("id", analysisContext.getName());
 		// Add activity classifications
 		Element classificationsElement = support.createElement("classifications");
 		for(String activity: labeling.getActivities()){

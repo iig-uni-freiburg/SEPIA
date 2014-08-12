@@ -13,6 +13,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 
 public class AnalysisContext {
 	
+	private String name = null;
 	private Labeling labeling = new Labeling();
 	private Map<String, String> subjectDescriptors = new HashMap<String, String>();
 	
@@ -44,6 +45,14 @@ public class AnalysisContext {
 		this(new Labeling(activities, attributes, subjects));
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Set<String> getActivities(){
 		return labeling.getActivities();
 	}
