@@ -90,9 +90,8 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	
 	@Override
 	public void setEmptyState() {
-		try {
-			setState(0);
-		} catch (ParameterException e) {}
+		setState(0);
+		initiateStateChecks();
 	}
 
 	@Override

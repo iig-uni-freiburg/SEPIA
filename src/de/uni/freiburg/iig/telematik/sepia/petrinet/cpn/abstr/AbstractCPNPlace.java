@@ -193,7 +193,8 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 //			for(String color: colors)
 //				removeTokens(color);
 //		} catch (ParameterException e) {}
-		state.clear();
+		state = new Multiset<String>();
+		numTokens = 0;
 		initiateStateChecks();
 	}
 	
