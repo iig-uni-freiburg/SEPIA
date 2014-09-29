@@ -240,8 +240,11 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 		for (E r : outgoingRelations) {
 			r.getPlace().addTokens(r.getConstraint());
 		}
+		notifyFiring();
+	}
+	
+	protected void notifyFiring(){
 		listenerSupport.notifyFiring(new TransitionEvent<AbstractTransition<E, S>>(this));
-
 	}
 	
 	
