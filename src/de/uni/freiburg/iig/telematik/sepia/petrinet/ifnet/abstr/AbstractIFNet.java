@@ -177,6 +177,10 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		this.analysisContext = analysisContext;
 	}
 	
+	public void removeAnalysisContext(){
+		this.analysisContext = null;
+	}
+	
 	//------- Interface methods ---------------------------------------------------------------------
 
 	@Override
