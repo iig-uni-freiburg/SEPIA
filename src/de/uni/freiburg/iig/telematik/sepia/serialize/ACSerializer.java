@@ -68,6 +68,7 @@ public class ACSerializer {
 	}
 	
 	public void serialize(String path, String fileName) throws SerializationException, IOException {
+		addContent();
 		support.serialize(path, fileName, getFileExtension());
 	}
 	
