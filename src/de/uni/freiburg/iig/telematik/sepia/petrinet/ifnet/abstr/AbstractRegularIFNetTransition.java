@@ -111,7 +111,7 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 
 	public void setAccessMode(String tokenColor, Collection<AccessMode> colorAccessModes) {
 		Validate.notNull(tokenColor);
-		if (tokenColor.equals(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR))
+		if (tokenColor.equals(AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot set access mode for control flow token color.");
 		Validate.notNull(colorAccessModes);
 		Validate.noNullElements(colorAccessModes);

@@ -5,7 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AllPNMLCPNParserTests;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.AllPNMLCWNParserTests;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.AllPNMLIFNetParserTests;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.AllPNMLPTNetParserTests;
 
@@ -15,6 +14,6 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.AllPNMLPTNetParserTest
  * @author Adrian Lange
  */
 @RunWith(Suite.class)
-@SuiteClasses({ AllPNMLPTNetParserTests.class, AllPNMLCPNParserTests.class, AllPNMLCWNParserTests.class, AllPNMLIFNetParserTests.class })
+@SuiteClasses({ AllPNMLPTNetParserTests.class, AllPNMLCPNParserTests.class, AllPNMLIFNetParserTests.class })
 public class AllPNMLParserTests {
 }

@@ -7,12 +7,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.PNMLCWNParserTestUtils;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParserTestUtils;
 
 /**
  * @author Adrian Lange
  */
-public class PNMLIFNetParserTestUtils extends PNMLCWNParserTestUtils {
+public class PNMLIFNetParserTestUtils extends PNMLCPNParserTestUtils {
 
 	/**
 	 * Creates a complete IF-net transition

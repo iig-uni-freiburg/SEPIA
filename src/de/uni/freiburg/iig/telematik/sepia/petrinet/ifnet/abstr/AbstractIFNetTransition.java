@@ -45,19 +45,19 @@ public abstract class AbstractIFNetTransition<E extends AbstractIFNetFlowRelatio
 	
 	public Set<String> getConsumedAttributes(){
 		Set<String> consumedColors = super.getConsumedColors();
-		consumedColors.remove(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR);
+		consumedColors.remove(AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR);
 		return consumedColors;
 	}
 	
 	public Set<String> getProducedAttributes(){
 		Set<String> producedColors = super.getProducedColors();
-		producedColors.remove(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR);
+		producedColors.remove(AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR);
 		return producedColors;
 	}
 	
 	public Set<String> getProcessedAttributes(){
 		Set<String> processedColors = super.getProcessedColors();
-		processedColors.remove(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR);
+		processedColors.remove(AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR);
 		return processedColors;
 	}
 
