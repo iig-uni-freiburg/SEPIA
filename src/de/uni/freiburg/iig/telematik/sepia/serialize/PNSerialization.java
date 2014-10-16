@@ -5,14 +5,13 @@ import java.io.IOException;
 
 import de.invation.code.toval.file.FileUtils;
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCWN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
@@ -50,7 +49,7 @@ public class PNSerialization {
 			if (netObject instanceof GraphicalIFNet) {
 				serializer = new PNMLIFNetSerializer((AbstractGraphicalIFNet) net);
 			}
-			if (netObject instanceof GraphicalCPN || netObject instanceof GraphicalCWN) {
+			if (netObject instanceof GraphicalCPN) {
 				serializer = new PNMLCPNSerializer((AbstractGraphicalCPN) net);
 			}
 			if (netObject instanceof GraphicalPTNet) {

@@ -28,7 +28,7 @@ public class AbstractGraphicalIFNet<P extends AbstractIFNetPlace<F>,
 									X extends AbstractIFNetMarkingGraphState<M>,
 									Y extends AbstractIFNetMarkingGraphRelation<M, X>,
 									N extends AbstractIFNet<P,T,F,M,R,D,X,Y>,
-	   							  	G extends AbstractIFNetGraphics<P,T,F,M>> extends AbstractGraphicalCWN<P,T,F,M,X,Y,N,G> {
+	   							  	G extends AbstractIFNetGraphics<P,T,F,M>> extends AbstractGraphicalCPN<P,T,F,M,X,Y,N,G> {
 
 	public AbstractGraphicalIFNet(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);

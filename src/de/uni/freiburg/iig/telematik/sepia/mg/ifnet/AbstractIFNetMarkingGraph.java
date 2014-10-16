@@ -2,10 +2,10 @@ package de.uni.freiburg.iig.telematik.sepia.mg.ifnet;
 
 import java.util.Collection;
 
-import de.uni.freiburg.iig.telematik.sepia.mg.cwn.AbstractCWNMarkingGraph;
+import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetMarking;
 
-public abstract class AbstractIFNetMarkingGraph<M extends AbstractIFNetMarking, S extends AbstractIFNetMarkingGraphState<M>, R extends AbstractIFNetMarkingGraphRelation<M, S>> extends AbstractCWNMarkingGraph<M, S, R> {
+public abstract class AbstractIFNetMarkingGraph<M extends AbstractIFNetMarking, S extends AbstractIFNetMarkingGraphState<M>, R extends AbstractIFNetMarkingGraphRelation<M, S>> extends AbstractCPNMarkingGraph<M, S, R> {
 
 	private static final long serialVersionUID = 7815350302838795970L;
 
