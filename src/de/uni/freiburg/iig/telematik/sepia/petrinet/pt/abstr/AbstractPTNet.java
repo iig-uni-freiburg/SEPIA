@@ -72,6 +72,14 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	
 	
 	//------- Markings
+	
+	public M getInitialMarking(){
+		return (M) super.getInitialMarking();
+	}
+	
+	public M getMarking(){
+		return (M) super.getMarking();
+	}
 
 	@Override
 	protected void updateMarking(P p) throws ParameterException {
@@ -152,11 +160,6 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	@Override
 	public AbstractPTMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
 		return (AbstractPTMarkingGraph<M, X, Y>) super.getMarkingGraph();
-	}
-	
-	@Override
-	public AbstractPTMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
-		return (AbstractPTMarkingGraph<M, X, Y>) super.buildMarkingGraph();
 	}
 	
 	//------- ToString

@@ -132,9 +132,4 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 		return (CPNMarkingGraph) super.getMarkingGraph();
 	}
 
-	@Override
-	public CPNMarkingGraph buildMarkingGraph() throws PNException {
-		return (CPNMarkingGraph) super.buildMarkingGraph();
-	}
-
 }

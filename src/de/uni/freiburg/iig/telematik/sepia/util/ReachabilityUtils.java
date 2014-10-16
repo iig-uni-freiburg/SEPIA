@@ -11,6 +11,7 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.BoundednessException;
 import de.uni.freiburg.iig.telematik.sepia.mg.MGTraversalResult;
 import de.uni.freiburg.iig.telematik.sepia.mg.MarkingGraphUtils;
@@ -85,23 +86,24 @@ public class ReachabilityUtils {
 	 * @param petriNet The basic Patri net for operation.
 	 * @return <code>true</code> if the Petri net contains dead transitions;<br>
 	 * <code>false</code> otherwise.
-	 * @throws TSException 
 	 * @throws PNException 
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is not bounded.
 	 * 
 	 * @see #getDeadTransitions(AbstractPetriNet)
 	 */
 	public static <P extends AbstractPlace<F,S>, 
-	   T extends AbstractTransition<F,S>, 
-	   F extends AbstractFlowRelation<P,T,S>, 
-	   M extends AbstractMarking<S>, 
-	   S extends Object,
-	   X extends AbstractMarkingGraphState<M,S>,
-	   Y extends AbstractMarkingGraphRelation<M,X,S>> 
+	   			   T extends AbstractTransition<F,S>, 
+	   			   F extends AbstractFlowRelation<P,T,S>, 
+	   			   M extends AbstractMarking<S>, 
+	   			   S extends Object,
+	   			   X extends AbstractMarkingGraphState<M,S>,
+	   			   Y extends AbstractMarkingGraphRelation<M,X,S>> 
 
-	   boolean containsDeadTransitions(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws PNException, TSException {
-		
-		return !getDeadTransitions(petriNet).isEmpty();
+	boolean hasDeadTransitions(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet) throws PNException {
+		Set<T> deadTransitions = getDeadTransitions(petriNet);
+		if (!deadTransitions.isEmpty())
+			return false;
+		return true;
 	}
 	
 	/**
@@ -131,19 +133,31 @@ public class ReachabilityUtils {
 		Validate.notNull(petriNet);
 		
 		Set<T> netTransitions = new HashSet<T>(petriNet.getTransitions());
-		AbstractMarkingGraph<M,S,X,Y> markingGraph = petriNet.buildMarkingGraph();
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = petriNet.getMarkingGraph();
 		for(AbstractMarkingGraphState<M,S> reachableMarking: markingGraph.getStates()){
-			try{
-				petriNet.setMarking(reachableMarking.getElement());
-				netTransitions.removeAll(petriNet.getEnabledTransitions());
-			} catch(ParameterException e){
-				e.printStackTrace();
-			}
+			petriNet.setMarking(reachableMarking.getElement());
+			netTransitions.removeAll(petriNet.getEnabledTransitions());
 			if(netTransitions.isEmpty()){
 				break;
 			}
 		}
 		return netTransitions;
+	}
+	
+	public static <P extends AbstractPlace<F, S>, 
+				   T extends AbstractTransition<F, S>, 
+				   F extends AbstractFlowRelation<P, T, S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object, 
+				   X extends AbstractMarkingGraphState<M, S>, 
+				   Y extends AbstractMarkingGraphRelation<M, X, S>, 
+				   N extends AbstractPetriNet<P, T, F, M, S, X, Y>>
+
+	void checkDeadTransitions(N petriNet) throws PNValidationException, PNException {
+
+		Set<T> deadTransitions = getDeadTransitions(petriNet);
+		if (!deadTransitions.isEmpty())
+			throw new PNValidationException("CWN has dead transitions: " + deadTransitions);
 	}
 	
 	/**
@@ -169,7 +183,7 @@ public class ReachabilityUtils {
 	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException {
 
 		Validate.notNull(petriNet);
-		if (petriNet.isBounded() != Boundedness.BOUNDED)
+		if (petriNet.isBounded())
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
 
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);

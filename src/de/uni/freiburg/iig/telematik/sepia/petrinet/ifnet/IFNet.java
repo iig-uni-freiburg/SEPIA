@@ -85,9 +85,4 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 	public IFNetMarkingGraph getMarkingGraph() throws PNException{
 		return (IFNetMarkingGraph) super.getMarkingGraph();
 	}
-	
-	@Override
-	public IFNetMarkingGraph buildMarkingGraph() throws PNException{
-		return (IFNetMarkingGraph) super.buildMarkingGraph();
-	}
 }

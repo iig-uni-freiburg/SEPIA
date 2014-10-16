@@ -28,7 +28,6 @@ public abstract class AbstractMarking<S extends Object> implements Serializable{
 	
 	
 	//------- Basic properties -----------------------------------------------------------------------
-
 	
 	/**
 	 * Returns all places for which the marking contains a state.

@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
@@ -28,6 +27,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
+import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 
 
 /**
@@ -969,15 +969,15 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		return true;
 	}
 	
-	public Boundedness isBounded(){
+	public Boundedness getBoundedness(){
 		if(isCapacityBounded()){
 			boundedness = Boundedness.BOUNDED;
 		}
 		return boundedness;
 	}
 	
-	public void setBoundedness(Boundedness boundedness){
-		this.boundedness = boundedness;
+	public boolean isBounded(){
+		return getBoundedness() == Boundedness.BOUNDED;
 	}
 	
 	//------- Validation methods --------------------------------------------------------------------
@@ -1249,93 +1249,93 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() throws PNException{
 		if(markingGraph == null){
-			return buildMarkingGraph();
+			markingGraph = ReachabilityUtils.buildMarkingGraph(this);
 		}
 		return markingGraph;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph() throws PNException{
-
-		if (isBounded() != Boundedness.BOUNDED)
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
-
-		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
-		Set<M> allKnownStates = new HashSet<M>();
-
-		allKnownStates.add(getInitialMarking());
-		AbstractMarkingGraph<M, S, X, Y> markingGraph = createNewMarkingGraph();
-		int stateCount = 0;
-		Map<Integer, String> stateNames = new HashMap<Integer, String>();
-		M initialMarking = getInitialMarking();
-		queue.offer(initialMarking);
-		String stateName = String.format(rgGraphNodeFormat, stateCount++);
-		markingGraph.addState(stateName, (M) initialMarking.clone());
-		markingGraph.setInitialState(markingGraph.getState(stateName));
-		markingGraph.addStartState(stateName);
-		stateNames.put(initialMarking.hashCode(), stateName);
-		allKnownStates.add((M) initialMarking.clone());
-
-		while (!queue.isEmpty()) {
-			M nextMarking = queue.poll();
-			// System.out.println("Next marking: " + nextMarking);
-			setMarking(nextMarking);
-			// M marking = (M) nextMarking.clone();
-			String nextStateName = stateNames.get(nextMarking.hashCode());
-			// System.out.println(nextStateName + " " + nextMarking);
-
-			if (hasEnabledTransitions()) {
-				String newStateName = null;
-				for (T enabledTransition : getEnabledTransitions()) {
-
-					// System.out.println("enabled: " + enabledTransition.getName());
-					M newMarking = fireCheck(enabledTransition.getName());
-					int newMarkingHash = newMarking.hashCode();
-					// System.out.println("new marking: " + newMarking);
-
-					// Check if this marking is already known
-					M equalMarking = null;
-					for (M storedMarking : allKnownStates) {
-						if (storedMarking.equals(newMarking)) {
-							equalMarking = storedMarking;
-							break;
-						}
-					}
-
-					// System.out.println("new marking: " + newMarking);
-					if (equalMarking == null) {
-						// This is a new marking
-						// System.out.println("New marking");
-						queue.offer(newMarking);
-						allKnownStates.add((M) newMarking.clone());
-						newStateName = String.format(rgGraphNodeFormat, stateCount++);
-						markingGraph.addState(newStateName, (M) newMarking.clone());
-						stateNames.put(newMarkingHash, newStateName);
-					} else {
-						// This marking is already known
-						// System.out.println("Known marking");
-						newStateName = stateNames.get(newMarkingHash);
-					}
-					if (!markingGraph.containsEvent(enabledTransition.getName())) {
-						markingGraph.addEvent(enabledTransition.getName(), enabledTransition.getLabel());
-					}
-					// System.out.println("add relation: " + nextStateName + " to " + newStateName + " via " + enabledTransition.getName());
-					try {
-						markingGraph.addRelation(nextStateName, newStateName, enabledTransition.getName());
-					} catch (Exception e) {
-						throw new PNException("TS-Exception while building marking graph.<br>Reason: " + e.getMessage());
-					}
-				}
-			} else {
-				markingGraph.addEndState(nextStateName);
-			}
-
-		}
-		this.markingGraph = markingGraph;
-		reset();
-		return markingGraph;
-	}
-	
+//	@SuppressWarnings("unchecked")
+//	public AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph() throws PNException{
+//
+//		if (!isBounded())
+//			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
+//
+//		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
+//		Set<M> allKnownStates = new HashSet<M>();
+//
+//		allKnownStates.add(getInitialMarking());
+//		AbstractMarkingGraph<M, S, X, Y> markingGraph = createNewMarkingGraph();
+//		int stateCount = 0;
+//		Map<Integer, String> stateNames = new HashMap<Integer, String>();
+//		M initialMarking = getInitialMarking();
+//		queue.offer(initialMarking);
+//		String stateName = String.format(rgGraphNodeFormat, stateCount++);
+//		markingGraph.addState(stateName, (M) initialMarking.clone());
+//		markingGraph.setInitialState(markingGraph.getState(stateName));
+//		markingGraph.addStartState(stateName);
+//		stateNames.put(initialMarking.hashCode(), stateName);
+//		allKnownStates.add((M) initialMarking.clone());
+//
+//		while (!queue.isEmpty()) {
+//			M nextMarking = queue.poll();
+//			// System.out.println("Next marking: " + nextMarking);
+//			setMarking(nextMarking);
+//			// M marking = (M) nextMarking.clone();
+//			String nextStateName = stateNames.get(nextMarking.hashCode());
+//			// System.out.println(nextStateName + " " + nextMarking);
+//
+//			if (hasEnabledTransitions()) {
+//				String newStateName = null;
+//				for (T enabledTransition : getEnabledTransitions()) {
+//
+//					// System.out.println("enabled: " + enabledTransition.getName());
+//					M newMarking = fireCheck(enabledTransition.getName());
+//					int newMarkingHash = newMarking.hashCode();
+//					// System.out.println("new marking: " + newMarking);
+//
+//					// Check if this marking is already known
+//					M equalMarking = null;
+//					for (M storedMarking : allKnownStates) {
+//						if (storedMarking.equals(newMarking)) {
+//							equalMarking = storedMarking;
+//							break;
+//						}
+//					}
+//
+//					// System.out.println("new marking: " + newMarking);
+//					if (equalMarking == null) {
+//						// This is a new marking
+//						// System.out.println("New marking");
+//						queue.offer(newMarking);
+//						allKnownStates.add((M) newMarking.clone());
+//						newStateName = String.format(rgGraphNodeFormat, stateCount++);
+//						markingGraph.addState(newStateName, (M) newMarking.clone());
+//						stateNames.put(newMarkingHash, newStateName);
+//					} else {
+//						// This marking is already known
+//						// System.out.println("Known marking");
+//						newStateName = stateNames.get(newMarkingHash);
+//					}
+//					if (!markingGraph.containsEvent(enabledTransition.getName())) {
+//						markingGraph.addEvent(enabledTransition.getName(), enabledTransition.getLabel());
+//					}
+//					// System.out.println("add relation: " + nextStateName + " to " + newStateName + " via " + enabledTransition.getName());
+//					try {
+//						markingGraph.addRelation(nextStateName, newStateName, enabledTransition.getName());
+//					} catch (Exception e) {
+//						throw new PNException("TS-Exception while building marking graph.<br>Reason: " + e.getMessage());
+//					}
+//				}
+//			} else {
+//				markingGraph.addEndState(nextStateName);
+//			}
+//
+//		}
+//		this.markingGraph = markingGraph;
+//		reset();
+//		return markingGraph;
+//	}
+//	
 	public PNComplexity getComplexity(){
 		return new PNComplexity(getPlaceCount(), getTransitionCount(), getFlowRelationCount());
 	}

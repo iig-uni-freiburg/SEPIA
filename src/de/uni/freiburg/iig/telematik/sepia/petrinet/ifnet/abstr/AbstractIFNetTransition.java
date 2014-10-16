@@ -2,14 +2,13 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr;
 
 import java.util.Set;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 
 
 public abstract class AbstractIFNetTransition<E extends AbstractIFNetFlowRelation<? extends AbstractIFNetPlace<E>, 
 		  									  ? extends AbstractIFNetTransition<E>>> 
 
-												extends AbstractCWNTransition<E> {
+												extends AbstractCPNTransition<E> {
 	
 	private static final long serialVersionUID = 478252467742688294L;
 	

@@ -1,11 +1,12 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWNFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
+
 
 public abstract class AbstractIFNetFlowRelation<P extends AbstractIFNetPlace<? extends AbstractIFNetFlowRelation<P,T>>, 
 		  										T extends AbstractIFNetTransition<? extends AbstractIFNetFlowRelation<P,T>>> 
 
-												  extends AbstractCWNFlowRelation<P, T>{
+												  extends AbstractCPNFlowRelation<P, T>{
 
 
 	private static final long serialVersionUID = -85597409112336075L;

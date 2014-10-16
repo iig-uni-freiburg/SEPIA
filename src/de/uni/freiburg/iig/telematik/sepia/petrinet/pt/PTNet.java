@@ -82,8 +82,4 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 		return (PTMarkingGraph) super.getMarkingGraph();
 	}
 	
-	@Override
-	public PTMarkingGraph buildMarkingGraph() throws PNException{
-		return (PTMarkingGraph) super.buildMarkingGraph();
-	}
 }

@@ -21,7 +21,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRel
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cwn.abstr.AbstractCWN;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
@@ -47,9 +47,11 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 						   			X extends AbstractIFNetMarkingGraphState<M>,
 									Y extends AbstractIFNetMarkingGraphRelation<M, X>> 
  
-							 		  extends AbstractCWN<P,T,F,M,X,Y>{
+							 		  extends AbstractCPN<P,T,F,M,X,Y>{
 
 	private static final long serialVersionUID = 7710837900551942698L;
+	
+	public static final String CONTROL_FLOW_TOKEN_COLOR = "black";
 	
 	protected Map<String, R> regularTransitions;
 	protected Map<String, D> declassificationTransitions;
@@ -81,6 +83,11 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	@Override
 	public NetType getNetType() {
 		return NetType.IFNet;
+	}
+	
+	@Override
+	public String defaultTokenColor(){
+		return CONTROL_FLOW_TOKEN_COLOR;
 	}
 	
 	@Override
@@ -157,6 +164,13 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return true;
 	}
 	
+	public M getInitialMarking(){
+		return (M) super.getInitialMarking();
+	}
+	
+	public M getMarking(){
+		return (M) super.getMarking();
+	}
 	
 	//------- Functionality -------------------------------------------------------------------------
 	
@@ -286,7 +300,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 			
 			// Check if all produced colors have label LOW
 			Set<String> producedColors = transition.getProducedColors();
-			producedColors.remove(AbstractCWN.CONTROL_FLOW_TOKEN_COLOR);
+			producedColors.remove(CONTROL_FLOW_TOKEN_COLOR);
 			for(String outputColor: producedColors){
 				if(getAnalysisContext().getLabeling().getAttributeClassification(outputColor) != SecurityLevel.LOW)
 					throw new PNValidationException("Generated attributes of declassification transitions must be LOW");
@@ -302,11 +316,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	@Override
 	public AbstractIFNetMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
 		return (AbstractIFNetMarkingGraph<M, X, Y>) super.getMarkingGraph();
-	}
-	
-	@Override
-	public AbstractIFNetMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
-		return (AbstractIFNetMarkingGraph<M, X, Y>) super.buildMarkingGraph();
 	}
 
 }

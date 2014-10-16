@@ -76,7 +76,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		if(completeSequence.size() == 1){
 			result.add(completeSequence);
 		} else {
-			for(int i=1; i<completeSequence.size(); i++){
+			for(int i=0; i<completeSequence.size(); i++){
 				result.add(ListUtils.copyOfRange(completeSequence, 0, i));
 			}
 		}

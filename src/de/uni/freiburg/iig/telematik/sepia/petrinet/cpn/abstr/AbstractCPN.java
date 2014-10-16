@@ -363,14 +363,35 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 		}
 	}
 	
+	public M getInitialMarking(){
+		return (M) super.getInitialMarking();
+	}
+	
+	public M getMarking(){
+		return (M) super.getMarking();
+	}
+	
 	@Override
 	public AbstractCPNMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
 		return (AbstractCPNMarkingGraph<M, X, Y>) super.getMarkingGraph();
 	}
 	
 	@Override
-	public AbstractCPNMarkingGraph<M,X,Y> buildMarkingGraph() throws PNException{
-		return (AbstractCPNMarkingGraph<M, X, Y>) super.buildMarkingGraph();
+	public M fireCheck(String transitionName) throws PNException {
+		validateFireTransition(transitionName);
+		M newMarking = cloneMarking();
+		T transition = getTransition(transitionName);
+		for(F relation: transition.getIncomingRelations()){
+			String inputPlaceName = relation.getPlace().getName();			
+			Multiset<String> oldState = (newMarking.get(inputPlaceName) == null ? new Multiset<String>() : newMarking.get(inputPlaceName).clone());
+			newMarking.set(inputPlaceName, oldState.difference(relation.getConstraint()));
+		}
+		for(F relation: transition.getOutgoingRelations()){
+			String outputPlaceName = relation.getPlace().getName();
+			Multiset<String> oldState = (newMarking.get(outputPlaceName) == null ? new Multiset<String>() : newMarking.get(outputPlaceName).clone());
+			newMarking.set(outputPlaceName, oldState.sum(relation.getConstraint()));
+		}
+		return newMarking;
 	}
 	
 	//------- ToString
