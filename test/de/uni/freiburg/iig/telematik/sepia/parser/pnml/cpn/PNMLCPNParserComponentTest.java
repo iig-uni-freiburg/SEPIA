@@ -166,7 +166,7 @@ public class PNMLCPNParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(3, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(net.getPetriNet().isBounded().equals(Boundedness.UNKNOWN));
+		assertTrue(net.getPetriNet().getBoundedness().equals(Boundedness.UNKNOWN));
 	}
 
 	/*
@@ -200,7 +200,7 @@ public class PNMLCPNParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(3, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(net.getPetriNet().isBounded().equals(Boundedness.UNKNOWN));
+		assertTrue(net.getPetriNet().getBoundedness().equals(Boundedness.UNKNOWN));
 	}
 
 	/*
@@ -863,7 +863,7 @@ public class PNMLCPNParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalCPN);
 
-		assertTrue(abstrNet.getPetriNet().isBounded().equals(Boundedness.BOUNDED));
+		assertTrue(abstrNet.getPetriNet().getBoundedness().equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -884,7 +884,7 @@ public class PNMLCPNParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalCPN);
 
-		assertTrue(abstrNet.getPetriNet().isBounded().equals(Boundedness.BOUNDED));
+		assertTrue(abstrNet.getPetriNet().getBoundedness().equals(Boundedness.BOUNDED));
 	}
 
 	/*

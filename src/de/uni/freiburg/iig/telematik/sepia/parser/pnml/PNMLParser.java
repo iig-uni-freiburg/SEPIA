@@ -25,12 +25,11 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.PNMLCWNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -187,10 +186,6 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 		case CPN:
 			PNMLCPNParser cpnParser = new PNMLCPNParser();
 			graphicalPN = cpnParser.parse(pnmlDocument);
-			break;
-		case CWN:
-			PNMLCWNParser cwnParser = new PNMLCWNParser();
-			graphicalPN = cwnParser.parse(pnmlDocument);
 			break;
 		case IFNet:
 			PNMLIFNetParser ifnetParser = new PNMLIFNetParser();

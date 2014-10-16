@@ -22,7 +22,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRel
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cwn.AbstractPNMLCWNParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
@@ -51,7 +51,7 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 											  N extends AbstractIFNet<P, T, F, M, R, D, X, Y>, 
 											  G extends AbstractIFNetGraphics<P, T, F, M>>
 
-extends AbstractPNMLCWNParser<P, T, F, M, X, Y, N, G> {
+extends AbstractPNMLCPNParser<P, T, F, M, X, Y, N, G> {
 
 	@Override
 	public void parseDocument(Document pnmlDocument) throws ParserException {
