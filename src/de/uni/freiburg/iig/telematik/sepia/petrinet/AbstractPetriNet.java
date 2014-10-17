@@ -999,7 +999,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public void checkBoundedness() throws PNException {
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 		try {
-			markingGraph = ReachabilityUtils.buildMarkingGraph(this);
+			markingGraph = ReachabilityUtils.buildMarkingGraph(this, false);
 		} catch (BoundednessException e) {
 			boundedness = Boundedness.UNBOUNDED;
 		} catch (MarkingGraphException e) {
@@ -1300,10 +1300,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public abstract AbstractPetriNet<P,T,F,M,S,X,Y> newInstance();
 	
 	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() throws PNException{
-		if(!isBounded())
-			throw new PNException("Can only determine marking graph for bounded nets");
 		if(markingGraph == null){
-			markingGraph = ReachabilityUtils.buildMarkingGraph(this);
+			checkBoundedness();
 		}
 		return markingGraph;
 	}

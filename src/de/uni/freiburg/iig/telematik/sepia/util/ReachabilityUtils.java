@@ -182,10 +182,10 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException, MarkingGraphException {
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, boolean acceptOnlyBoundedNet) throws BoundednessException, MarkingGraphException {
 
 		Validate.notNull(petriNet);
-		if (petriNet.isBounded())
+		if(acceptOnlyBoundedNet & !petriNet.isBounded())
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
 
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
@@ -274,7 +274,7 @@ public class ReachabilityUtils {
 		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions)
 			throws BoundednessException, MarkingGraphException {
 		
-		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet, true);
 		return MarkingGraphUtils.getSequences(petriNet, markingGraph, includeSilentTransitions);
 	}
 	
