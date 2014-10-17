@@ -35,11 +35,11 @@ public abstract class TimedNetExecutor<P extends AbstractPlace<F,S>,
 	}
 	
 	public void addTimedTransitionListener(TimedTransitionListener<T> l) {
-		listenerSupport.addTimedTransitionListener(l);
+		listenerSupport.addListener(l);
 	}
 	
 	public void removeTimedTransitionListener(TimedTransitionListener<T> l) {
-		listenerSupport.removeTimedTransitionListener(l);
+		listenerSupport.removeListener(l);
 	}
 	
 	public void reset(){

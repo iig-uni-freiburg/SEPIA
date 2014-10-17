@@ -318,6 +318,10 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		return getRelationFrom(node) != null;
 	}
 	
+	public int degree(){
+		return outgoingRelations.size() + incomingRelations.size();
+	}
+	
 	public boolean isTransition(){
 		return type.equals(PNNodeType.TRANSITION);
 	}

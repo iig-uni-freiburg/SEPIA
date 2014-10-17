@@ -108,8 +108,10 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void addTransition(T transition) {
-		super.addTransition(transition);
+	protected boolean addTransition(T transition) {
+		boolean superResult = super.addTransition(transition);
+		if(!superResult)
+			return false;
 		
 		if(transition instanceof AbstractRegularIFNetTransition) {				
 			regularTransitions.put(transition.getName(), (R) transition);
@@ -117,6 +119,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 			declassificationTransitions.put(transition.getName(), (D) transition);
 		}
 		analysisContext.getLabeling().addActivities(transition.getName());
+		return true;
 	}
 	 
 	@Override

@@ -10,9 +10,10 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.TSException;
+import de.uni.freiburg.iig.telematik.sepia.exception.BoundednessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.MarkingGraphException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.BoundednessException;
 import de.uni.freiburg.iig.telematik.sepia.mg.MGTraversalResult;
 import de.uni.freiburg.iig.telematik.sepia.mg.MarkingGraphUtils;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
@@ -37,7 +38,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 public class ReachabilityUtils {
 	
 	private static final String rgGraphNodeFormat = "s%s";
-	private static final int MAX_RG_CALCULATION_STEPS = Integer.MAX_VALUE;
+	public static final int MAX_RG_CALCULATION_STEPS = Integer.MAX_VALUE;
 	
 	/**
 	 * Checks if the transition within the given net with the given name is dead,<br>
@@ -169,6 +170,7 @@ public class ReachabilityUtils {
 	 *  
 	 * @param petriNet The basic Petri net for operation.
 	 * @return The marking graph of the given Petri net.
+	 * @throws MarkingGraphException 
 	 * @throws ParameterException If the Petri net parameter is <code>null</code> or the given net is nor bounded.
 	 */
 	@SuppressWarnings("unchecked")
@@ -180,7 +182,7 @@ public class ReachabilityUtils {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException {
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException, MarkingGraphException {
 
 		Validate.notNull(petriNet);
 		if (petriNet.isBounded())
@@ -255,10 +257,8 @@ public class ReachabilityUtils {
 				}
 				
 			}
-		} catch (PNException e) {
-			e.printStackTrace();
-		} catch (TSException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new MarkingGraphException("Exception during marking graph construction.<br>Reason: " + e.getMessage());
 		}
 		return markingGraph;
 	}
@@ -272,7 +272,7 @@ public class ReachabilityUtils {
 	   				Y extends AbstractMarkingGraphRelation<M,X,S>>
 
 		MGTraversalResult getFiringSequences(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, boolean includeSilentTransitions)
-			throws BoundednessException {
+			throws BoundednessException, MarkingGraphException {
 		
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = ReachabilityUtils.buildMarkingGraph(petriNet);
 		return MarkingGraphUtils.getSequences(petriNet, markingGraph, includeSilentTransitions);

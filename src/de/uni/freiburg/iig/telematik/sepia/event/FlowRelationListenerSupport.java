@@ -1,27 +1,11 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
-import de.invation.code.toval.validate.Validate;
+import de.invation.code.toval.event.AbstractListenerSupport;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 
-public class FlowRelationListenerSupport<F extends AbstractFlowRelation<?,?,?>> implements Serializable{
+public class FlowRelationListenerSupport<F extends AbstractFlowRelation<?,?,?>> extends AbstractListenerSupport<FlowRelationListener<F>>{
 
 	private static final long serialVersionUID = -2755094984147456490L;
-	
-	private Set<FlowRelationListener<F>> listeners = new HashSet<FlowRelationListener<F>>();
-	
-	public void addListener(FlowRelationListener<F> listener) {
-		Validate.notNull(listener);
-		listeners.add(listener);
-	}
-	
-	public void removeListener(FlowRelationListener<F> listener) {
-		Validate.notNull(listener);
-		listeners.remove(listener);
-	}
 	
 	public boolean requestNameChangePermission(F relation, String newName){
 		boolean nameChangePermitted = true;

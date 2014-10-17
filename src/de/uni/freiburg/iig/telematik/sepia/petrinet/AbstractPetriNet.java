@@ -16,11 +16,18 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.traverse.Traversable;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListener;
+import de.uni.freiburg.iig.telematik.sepia.event.PlaceChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.PlaceListener;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.StructureListener;
+import de.uni.freiburg.iig.telematik.sepia.event.StructureListenerSupport;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenListener;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
+import de.uni.freiburg.iig.telematik.sepia.exception.BoundednessException;
+import de.uni.freiburg.iig.telematik.sepia.exception.MarkingGraphException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
@@ -28,7 +35,6 @@ import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
-
 
 /**
  * Abstract class for defining Petri nets and their properties.<br>
@@ -71,11 +77,12 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 			    			TokenListener<AbstractPlace<F,S>>,
 							Traversable<AbstractPNNode<F>>,
 							FlowRelationListener<AbstractFlowRelation<P,T,S>>,
-							PlaceListener<AbstractPlace<F,S>>, 
+							PlaceListener<AbstractPlace<F,S>>,
+							StructureListener<P,T,F,M,S>,
 							Serializable{
 	
 	private static final long serialVersionUID = 7324151598039390349L;
-	private static final String rgGraphNodeFormat = "s%s";
+	
 	/**
 	 * Name of the Petri net.
 	 */
@@ -132,6 +139,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	protected Boundedness boundedness = Boundedness.UNKNOWN;
 	
+	protected StructureListenerSupport<P,T,F,M,S> structureListenerSupport = new StructureListenerSupport<P,T,F,M,S>();
+	
 //	/**
 //	 * The flow control of the Petri net.<br>
 //	 * It determines the next enabled transition to fire.
@@ -149,6 +158,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		initialize();
 		initialMarking = createNewMarking();
 		marking = createNewMarking();
+		structureListenerSupport.addListener(this);
 	}
 	
 	/**
@@ -156,10 +166,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The next enabled transition is chosen randomly.
 	 * @param places Names of Petri net places to add.
 	 * @param transitions Names of Petri net transition to add.
-<<<<<<< .mine
 	 * @If some parameters are <code>null</code> or contain <code>null</code>-values.
-=======
->>>>>>> .r194
 	 */
 	public AbstractPetriNet(Set<String> places, Set<String> transitions) {
 		this();			
@@ -189,10 +196,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	/**
 	 * Sets the name of the Petri net to the given name.
 	 * @param name New name for the Petri net.
-<<<<<<< .mine
 	 * @If the given name is <code>null</code>.
-=======
->>>>>>> .r194
 	 */
 	public void setName(String name) {
 		Validate.notNull(name);
@@ -323,11 +327,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionNames Names for the Petri net transitions.
 	 * @return <code>true</code> if at least one transition was successfully added;<br>
 	 * <code>false</code> otherwise.
-<<<<<<< .mine
 	 * @If the set of transition names is <code>null</code>
 	 * or some transition names are <code>null</code>.
-=======
->>>>>>> .r194
 	 * @see #addTransition(String)
 	 */
 	public boolean addTransitions(Collection<String> transitionNames) {
@@ -348,10 +349,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name for the Petri net transition.
 	 * @return <code>true</code> if the transition was successfully added to the net;<br>
 	 * <code>false</code> otherwise.
-<<<<<<< .mine
 	 * @If the transition name is <code>null</code>.
-=======
->>>>>>> .r194
 	 */
 	public boolean addTransition(String transitionName) {
 		return addTransition(transitionName, transitionName);
@@ -399,8 +397,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public boolean addTransition(String transitionName, String transitionLabel, boolean isSilent) {
 		if(containsTransition(transitionName))
 			return false;
-		addTransition(createNewTransition(transitionName, transitionLabel, isSilent));
-		return true;
+		return addTransition(createNewTransition(transitionName, transitionLabel, isSilent));
 	}
 	
 	/**
@@ -410,11 +407,15 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transition The Petri net transition to add.
 	 * @If the given transition is <code>null</code>.
 	 */
-	protected void addTransition(T transition) {
+	protected boolean addTransition(T transition) {
 		Validate.notNull(transition);
+		if(containsTransition(transition))
+			return false;
 		transitions.put(transition.getName(), transition);
 		transition.addTransitionListener(this);							
 		enabledTransitions.add(transition);
+		structureListenerSupport.notifyTransitionAdded(transition);
+		return true;
 	}
 	
 	/**
@@ -449,11 +450,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public boolean removeTransition(String transitionName){
 		if(!containsTransition(transitionName))
 			return false;
-		removeTransition(transitions.get(transitionName));
-		return true;
+		return removeTransition(transitions.get(transitionName));
 	}
 	
-	protected void removeTransition(T transition){
+	protected boolean removeTransition(T transition){
+		if(!containsTransition(transition))
+			return false;
+		int affectedRelations = transition.degree();
 		for(F relation: transition.getIncomingRelations()){
 			removeFlowRelation(relation);
 		}
@@ -465,6 +468,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		transitions.remove(transition.getName());
 		sourceTransitions.remove(transition.getName());
 		drainTransitions.remove(transition.getName());
+		structureListenerSupport.notifyTransitionRemoved(transition, affectedRelations);
+		return true;
 	}
 	
 	/**
@@ -566,8 +571,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public boolean addPlace(String placeName, String placeLabel){
 		if(containsPlace(placeName))
 			return false;
-		addPlace(createNewPlace(placeName, placeLabel));
-		return true;
+		return addPlace(createNewPlace(placeName, placeLabel));
 	}
 	
 	/**
@@ -577,11 +581,15 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param place The Petri net place to add.
 	 * @If the given place is <code>null</code>.
 	 */
-	protected void addPlace(P place){
+	protected boolean addPlace(P place){
 		Validate.notNull(place);
+		if(containsPlace(place))
+			return false;
 		places.put(place.getName(), place);
 		place.addTokenListener(this);
 		place.addPlaceListener(this);
+		structureListenerSupport.notifyPlaceAdded(place);
+		return true;
 	}
 	
 	/**
@@ -623,11 +631,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public boolean removePlace(String placeName){
 		if(!containsPlace(placeName))
 			return false;
-		removePlace(places.get(placeName));
-		return true;
+		return removePlace(places.get(placeName));
 	}
 	
-	protected void removePlace(P place){
+	protected boolean removePlace(P place){
+		if(!containsPlace(place))
+			return false;
+		int affectedRelations = place.degree();
 		for(F relation: place.getIncomingRelations()){
 			removeFlowRelation(relation);
 		}
@@ -641,6 +651,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		drainPlaces.remove(place.getName());
 		initialMarking.remove(place.getName());
 		marking.remove(place.getName());
+		structureListenerSupport.notifyPlaceRemoved(place, affectedRelations);
+		return true;
 	}
 	
 	
@@ -725,6 +737,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
 		relation.addRelationListener(this);
+		structureListenerSupport.notifyRelationAdded(relation);
 		return true;
 	}
 	
@@ -802,20 +815,23 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The caller is responsible for parameter validity.
 	 * @param relation The relation to remove.
 	 */
-	protected void removeFlowRelation(F relation){
+	protected boolean removeFlowRelation(F relation){
+		if(!containsRelation(relation))
+			return false;
 		relation.getPlace().removeRelation(relation);
 		relation.getTransition().removeRelation(relation);
 		relations.remove(relation.getName());
 		relation.removeRelationListener(this);
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
+		structureListenerSupport.notifyRelationRemoved(relation);
+		return true;
 	}
 	
 	public boolean removeFlowRelation(String relationName){
 		if(!containsFlowRelation(relationName))
 			return false;
-		removeFlowRelation(relations.get(relationName));
-		return true;
+		return removeFlowRelation(relations.get(relationName));
 	}
 	
 	//------- Markings -------------------------------------------------------------------------------
@@ -902,20 +918,17 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 			marking.remove(place.getName());
 		}
 	}
+
 	
 	//------- Functionality ------------------------------------------------------------------------
 
-	
 	/**
 	 * Fires the net transition with the given name.
 	 * @param transitionName The name of the transition to fire.
 	 * @return <code>true</code> if the transition could be fired;<br>
 	 * <code>false</code> otherwise.
-<<<<<<< .mine
 	 * @If the given transition name is <code>null</code><br>
 	 * or the net does not contain a transition with the given name.
-=======
->>>>>>> .r194
 	 * @throws PNException If the net transition with the given name is not enabled.
 	 */
 	public T fire(String transitionName) throws PNException {
@@ -925,7 +938,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		lastFiredTransition = transition;
 		return transition;
 	}
-	
+
 	/**
 	 * Returns the marking which is the result of firing the transition with the given name.<br>
 	 * The transition is not actually fired, but its firing impact with respect to the actual net state<br>
@@ -933,11 +946,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transitionName The name of the transition to fire.
 	 * @return <code>true</code> if the transition could be fired;<br>
 	 * <code>false</code> otherwise.
-<<<<<<< .mine
 	 * @If the given transition name is <code>null</code><br>
 	 * or the net does not contain a transition with the given name.
-=======
->>>>>>> .r194
 	 * @throws PNException If the net transition with the given name is not enabled.
 	 */
 	public abstract M fireCheck(String transitionName) throws PNException;
@@ -978,6 +988,25 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	public boolean isBounded(){
 		return getBoundedness() == Boundedness.BOUNDED;
+	}
+	
+	/**
+	 * Checks if the Petri net is bounded.<br>
+	 * In case the marking graph of the net cannot be constructed with the maximum number of elements (see {@link ReachabilityUtils#MAX_RG_CALCULATION_STEPS}),<br>
+	 * it is assumed to be unbounded; otherwise bounded.<br>
+	 * @throws PNException
+	 */
+	public void checkBoundedness() throws PNException {
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
+		try {
+			markingGraph = ReachabilityUtils.buildMarkingGraph(this);
+		} catch (BoundednessException e) {
+			boundedness = Boundedness.UNBOUNDED;
+		} catch (MarkingGraphException e) {
+			throw new PNException("Cannot determine boundedness: Exception during marking graph construction.<br>Reason: " + e.getMessage());
+		}
+		this.markingGraph = markingGraph;
+		boundedness = Boundedness.BOUNDED;
 	}
 	
 	//------- Validation methods --------------------------------------------------------------------
@@ -1121,7 +1150,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * When a transition changes its state to disabled,<br>
 	 * the net removes it from the set of enabled transitions.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void transitionDisabled(TransitionEvent<? extends AbstractTransition<F, S>> e) {
 		enabledTransitions.remove(e.getSource());
@@ -1149,6 +1177,30 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		updateMarking((P) o.getSource());
 	}
 	
+	
+	@Override
+	public void structureChanged() {
+		markingGraph = null;
+		boundedness = Boundedness.UNKNOWN;
+	}
+	
+	@Override
+	public void placeAdded(PlaceChangeEvent<P> event) {}
+
+	@Override
+	public void placeRemoved(PlaceChangeEvent<P> event) {}
+
+	@Override
+	public void transitionAdded(TransitionChangeEvent<T> event) {}
+
+	@Override
+	public void transitionRemoved(TransitionChangeEvent<T> event) {}
+
+	@Override
+	public void relationAdded(RelationChangeEvent<F> event) {}
+
+	@Override
+	public void relationRemoved(RelationChangeEvent<F> event) {}
 
 	
 	//------- clone ----------------------------------------------------------------------------------
@@ -1248,6 +1300,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public abstract AbstractPetriNet<P,T,F,M,S,X,Y> newInstance();
 	
 	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() throws PNException{
+		if(!isBounded())
+			throw new PNException("Can only determine marking graph for bounded nets");
 		if(markingGraph == null){
 			markingGraph = ReachabilityUtils.buildMarkingGraph(this);
 		}

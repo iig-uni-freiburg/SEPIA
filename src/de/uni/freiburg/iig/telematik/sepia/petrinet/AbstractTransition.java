@@ -256,7 +256,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	 * @If the listener reference is <code>null</code>.
 	 */
 	public void addTransitionListener(TransitionListener<AbstractTransition<E,S>> listener){
-		listenerSupport.addTransitionListener(listener);
+		listenerSupport.addListener(listener);
 	}
 	
 	/**
@@ -265,7 +265,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	 * @If the listener reference is <code>null</code>.
 	 */
 	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l){
-		listenerSupport.removeTransitionListener(l);
+		listenerSupport.removeListener(l);
 	}
 	
 	@Override

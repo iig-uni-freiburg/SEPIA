@@ -326,7 +326,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *             If the listener reference is <code>null</code>.
 	 */
 	public void addTokenListener(TokenListener<AbstractPlace<E,S>> l){
-		tokenListenerSupport.addTokenListener(l);
+		tokenListenerSupport.addListener(l);
 	}
 
 	/**
@@ -338,7 +338,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 *             If the listener reference is <code>null</code>.
 	 */
 	public void removeTokenListener(TokenListener<AbstractPlace<E, S>> l){
-		tokenListenerSupport.removeTokenListener(l);
+		tokenListenerSupport.removeListener(l);
 	}
 
 	/**
@@ -347,7 +347,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @If the listener reference is <code>null</code>.
 	 */
 	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l){
-		placeListenerSupport.addCapacityListener(l);
+		placeListenerSupport.addListener(l);
 	}
 
 	/**
@@ -356,7 +356,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * @If the listener reference is <code>null</code>.
 	 */
 	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l){
-		placeListenerSupport.removeCapacityListener(l);
+		placeListenerSupport.removeListener(l);
 	}
 
 	@Override
