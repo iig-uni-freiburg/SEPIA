@@ -6,9 +6,11 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 
 public class PNPropertiesChecker {
 	
@@ -31,18 +33,18 @@ public class PNPropertiesChecker {
 		Collection<P> sourcePlaces = petriNet.getSourcePlaces();
 
 		if (sourcePlaces.isEmpty())
-			throw new PNValidationException("CWN has no input place.");
+			throw new PNValidationException("Net has no input place.");
 
 		if (sourcePlaces.size() > 1)
-			throw new PNValidationException("CWN has more than one input place: " + sourcePlaces);
+			throw new PNValidationException("Net has more than one input place: " + sourcePlaces);
 		input = sourcePlaces.iterator().next();
 
 		P output = null;
 		Collection<P> drainPlaces = petriNet.getDrainPlaces();
 		if (drainPlaces.isEmpty())
-			throw new PNValidationException("CWN has no output place.");
+			throw new PNValidationException("Net has no output place.");
 		if (drainPlaces.size() > 1)
-			throw new PNValidationException("CWN has more than one output place: " + drainPlaces);
+			throw new PNValidationException("Net has more than one output place: " + drainPlaces);
 		output = drainPlaces.iterator().next();
 		
 		return new InOutPlaces(input.getName(), output.getName());
@@ -87,12 +89,30 @@ public class PNPropertiesChecker {
 		petriNet.addFlowRelationTP(CONNECTOR_NAME, input.getName());
 
 		if (!TraversalUtils.isStronglyConnected(petriNet, input)) {
-			throw new PNValidationException("CWN is not strongly connected.");
+			throw new PNValidationException("Net is not strongly connected.");
 		}
 		petriNet.removeTransition(CONNECTOR_NAME);
+	}
+	
+	public static <P extends AbstractPlace<F,S>, 
+	 			   T extends AbstractTransition<F,S>, 
+	 			   F extends AbstractFlowRelation<P,T,S>,
+	 			   M extends AbstractMarking<S>,
+	 			   S extends Object,
+	 			   X extends AbstractMarkingGraphState<M,S>, 
+	 			   Y extends AbstractMarkingGraphRelation<M,X,S>,
+	 			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
 
-		if (petriNet.isBounded())
-			throw new PNValidationException("CWN is not bounded.");
+	void validateBoundedness(N petriNet) throws PNValidationException {
+		if (petriNet.getBoundedness() == Boundedness.UNKNOWN) {
+			try {
+				petriNet.checkBoundedness();
+			} catch (PNException e) {
+				throw new PNValidationException("Cannot check boundedness of net.\nReason: " + e.getMessage());
+			}
+		}
+		if (!petriNet.isBounded())
+			throw new PNValidationException("Net is not bounded.");
 	}
 	
 	

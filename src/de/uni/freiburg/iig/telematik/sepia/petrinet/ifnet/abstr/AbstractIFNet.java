@@ -229,7 +229,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		try{			
 			CWNChecker.checkCWNSoundness(this, true);
 		} catch(PNSoundnessException e){
-			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\n:" + e.getMessage());
+			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + e.getMessage());
 		}
 		
 		// Check property 4 for declassification transitions: 

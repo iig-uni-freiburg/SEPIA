@@ -133,6 +133,11 @@ public class CWNChecker {
 		 		   N extends AbstractCPN<P,T,F,M,X,Y>> 
 
 	void checkCWNSoundness(N cpn, boolean checkStructure) throws PNSoundnessException {
+		try {
+			PNPropertiesChecker.validateBoundedness(cpn);
+		} catch (PNValidationException e1) {
+			throw new PNSoundnessException("Net is not bounded.");
+		}
 		
 		InOutPlaces places = null;
 		try {
@@ -152,7 +157,7 @@ public class CWNChecker {
 		try {
 			ReachabilityUtils.checkDeadTransitions(cpn);
 		} catch (PNException e) {
-			throw new PNSoundnessException("PN-Exception during soundness check: Cannot extract dead transitions.<br>Reason: " + e.getMessage());
+			throw new PNSoundnessException("PN-Exception during soundness check: Cannot extract dead transitions.\nReason: " + e.getMessage());
 		}
 	}
 	
@@ -182,21 +187,21 @@ public class CWNChecker {
 	void checkValidCompletion(N cpn, String outputPlaceName) throws PNSoundnessException{
 		Validate.notNull(cpn);
 		Validate.notNull(outputPlaceName);
-		if(!cpn.containsTransition(outputPlaceName))
+		if(!cpn.containsPlace(outputPlaceName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "CPN does not contain a place with name \"" + outputPlaceName + "\"");
 	
 		AbstractCPNMarkingGraph<M,X,Y> markingGraph = null;
 		try {
 			markingGraph = cpn.getMarkingGraph();
 		} catch (PNException e) {
-			throw new PNSoundnessException("Cannot build marking graph.<br>Reason: " + e.getMessage());
+			throw new PNSoundnessException("Cannot build marking graph.\nReason: " + e.getMessage());
 		}
 		Set<AbstractCPNMarkingGraphState<M>> drains = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getDrains());
 		for(AbstractCPNMarkingGraphState<M> drainVertex : drains){
 			try{
 				checkEndStateProperty(cpn, drainVertex.getElement(), outputPlaceName);
 			} catch(PNValidationException e){
-				throw new PNSoundnessException("At least one drain in the marking graph of the given cwn is not a valid end state:<br>" + drainVertex.getElement() + "<br>Reason: " + e.getMessage());
+				throw new PNSoundnessException("At least one drain in the marking graph of the given cwn is not a valid end state.\nDrain: " + drainVertex.getElement() + "\nReason: " + e.getMessage());
 			}
 		}
 		Set<AbstractCPNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getVertices());
@@ -205,7 +210,7 @@ public class CWNChecker {
 			try {
 				checkEndStateProperty(cpn, otherVertex.getElement(), outputPlaceName);
 			} catch(PNValidationException e){
-				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cwn is an end state:<br>" + otherVertex.getElement() + "<br>Reason: " + e.getMessage());
+				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cwn is an end state.\nNon-Drain: " + otherVertex.getElement() + "\nReason: " + e.getMessage());
 			}
 		}
 	}
