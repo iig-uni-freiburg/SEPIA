@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 

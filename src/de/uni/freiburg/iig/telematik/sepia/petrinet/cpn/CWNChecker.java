@@ -132,7 +132,7 @@ public class CWNChecker {
 		 		   Y extends AbstractCPNMarkingGraphRelation<M,X>,
 		 		   N extends AbstractCPN<P,T,F,M,X,Y>> 
 
-	void checkCWNSoundness(N cpn, boolean checkStructure) throws PNSoundnessException {
+	void checkCWNSoundness(N cpn, boolean checkStructure, CWNPropertyFlag... flags) throws PNSoundnessException {
 		try {
 			PNPropertiesChecker.validateBoundedness(cpn);
 		} catch (PNValidationException e1) {
@@ -184,7 +184,7 @@ public class CWNChecker {
 	   				Y extends AbstractCPNMarkingGraphRelation<M,X>,
 	   				N extends AbstractCPN<P,T,F,M,X,Y>> 
 	
-	void checkValidCompletion(N cpn, String outputPlaceName) throws PNSoundnessException{
+	void checkValidCompletion(N cpn, String outputPlaceName, CWNPropertyFlag... flags) throws PNSoundnessException{
 		Validate.notNull(cpn);
 		Validate.notNull(outputPlaceName);
 		if(!cpn.containsPlace(outputPlaceName))
@@ -199,9 +199,9 @@ public class CWNChecker {
 		Set<AbstractCPNMarkingGraphState<M>> drains = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getDrains());
 		for(AbstractCPNMarkingGraphState<M> drainVertex : drains){
 			try{
-				checkEndStateProperty(cpn, drainVertex.getElement(), outputPlaceName);
+				checkEndStateProperty(cpn, drainVertex.getElement(), outputPlaceName, flags);
 			} catch(PNValidationException e){
-				throw new PNSoundnessException("At least one drain in the marking graph of the given cwn is not a valid end state.\nDrain: " + drainVertex.getElement() + "\nReason: " + e.getMessage());
+				throw new PNSoundnessException("At least one drain in the marking graph of the given cpn is not a valid end state.\nDrain: " + drainVertex.getElement() + "\nReason: " + e.getMessage());
 			}
 		}
 		Set<AbstractCPNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getVertices());
@@ -210,7 +210,7 @@ public class CWNChecker {
 			try {
 				checkEndStateProperty(cpn, otherVertex.getElement(), outputPlaceName);
 			} catch(PNValidationException e){
-				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cwn is an end state.\nNon-Drain: " + otherVertex.getElement() + "\nReason: " + e.getMessage());
+				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement() + "\nReason: " + e.getMessage());
 			}
 		}
 	}
@@ -233,7 +233,7 @@ public class CWNChecker {
 					Y extends AbstractCPNMarkingGraphRelation<M,X>,
 					N extends AbstractCPN<P,T,F,M,X,Y>> 
 
-	void checkEndStateProperty(N cpn, M traversalMarking, String outputPlaceName) throws PNValidationException{
+	void checkEndStateProperty(N cpn, M traversalMarking, String outputPlaceName, CWNPropertyFlag... flags) throws PNValidationException{
 		
 		// Check Option to complete property
 		if(!traversalMarking.contains(outputPlaceName))
@@ -246,6 +246,17 @@ public class CWNChecker {
 		if(!traversalMarking.get(outputPlaceName).support().contains(cfTokenColor))
 			throw new PNValidationException("Marking does not contain control flow token for output place \"" + outputPlaceName + "\"");
 		
+		boolean checkRemainingCFTokens = false;
+		if(flags != null){
+			for(CWNPropertyFlag flag: flags){
+				if(flag == CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS){
+					checkRemainingCFTokens = true;
+				}
+			}
+		}
+		if(!checkRemainingCFTokens)
+			return;
+		
 		// Check proper completion property
 		for(P place: cpn.getPlaces()){
 			if(place.getName().equals(outputPlaceName))
@@ -255,6 +266,11 @@ public class CWNChecker {
 					throw new PNValidationException("Remaining control flow token in place \"" + place.getName() + "\"");
 			}
 		}
+		
+	}
+	
+	public enum CWNPropertyFlag {
+		ACCEPT_REMAINING_CF_TOKENS;
 	}
 
 }
