@@ -74,8 +74,9 @@ public class CPNTransitionTest {
 		// Create a transition
 		CPNTransition cpnTrans = setUpStandadEnabledTransition();
 
+
 		// The transition consumes two red, one black and one green token
-		assertEquals(1, cpnTrans.getConsumedTokens("black"));
+		assertEquals(2, cpnTrans.getConsumedTokens("black"));
 		assertEquals(2, cpnTrans.getConsumedTokens("red"));
 		assertEquals(0, cpnTrans.getConsumedTokens("pink"));
 		assertEquals(0, cpnTrans.getConsumedTokens(null));
@@ -88,7 +89,7 @@ public class CPNTransitionTest {
 		CPNTransition cpnTrans = setUpStandadEnabledTransition();
 
 		// The transition produces a black and a yellow token
-		assertEquals(1, cpnTrans.getProducedTokens("black"));
+		assertEquals(2, cpnTrans.getProducedTokens("black"));
 		assertEquals(1, cpnTrans.getProducedTokens("yellow"));
 		assertEquals(0, cpnTrans.getProducedTokens("pink"));
 		assertEquals(0, cpnTrans.getProducedTokens(null));
@@ -138,7 +139,6 @@ public class CPNTransitionTest {
 		assertTrue(t1clone.isSilent());
 		assertEquals(t1.getName(), t1clone.getName());
 		assertEquals(t1.getLabel(), t1clone.getLabel());
-		assertEquals(t1.isEnabled(), t1clone.isEnabled());
 		assertEquals(t1.isPlace(), t1clone.isPlace());
 		assertEquals(t1.isDrain(), t1clone.isDrain());
 		assertEquals(t1.isSource(), t1clone.isSource());
@@ -187,51 +187,44 @@ public class CPNTransitionTest {
 		// create a cpn
 		CPN cpn = null;
 
-		try {
-			// Create places
-			Set<String> places = new HashSet<String>();
-			places.add("pre1");
-			places.add("pre2");
-			places.add("post1");
-			places.add("post2");
+		// Create places
+		Set<String> places = new HashSet<String>();
+		places.add("pre1");
+		places.add("pre2");
+		places.add("post1");
+		places.add("post2");
 
-			// create transitions
-			Set<String> transitions = new HashSet<String>();
-			transitions.add("t0");
+		// create transitions
+		Set<String> transitions = new HashSet<String>();
+		transitions.add("t0");
 
-			// create the the token colors used in the initial marking
-			Multiset<String> mset = new Multiset<String>();
-			mset.add("red");
-			mset.add("red");
-			mset.add("black");
-			CPNMarking marking = new CPNMarking();
-			marking.set("pre1", mset);
+		// create the the token colors used in the initial marking
+		Multiset<String> mset = new Multiset<String>();
+		mset.add("red");
+		mset.add("red");
+		mset.add("black");
+		CPNMarking marking = new CPNMarking();
+		marking.set("pre1", mset);
 
-			Multiset<String> mset2 = new Multiset<String>();
-			mset2.add("green");
-			marking.set("pre2", mset2);
+		Multiset<String> mset2 = new Multiset<String>();
+		mset2.add("green");
+		marking.set("pre2", mset2);
 
-			// create the cpn
-			cpn = new CPN(places, transitions, marking);
+		// create the cpn
+		cpn = new CPN(places, transitions, marking);
 
-			// Add the flow relation
-			CPNFlowRelation pre1ToT0 = cpn.addFlowRelationPT("pre1", "t0", false);
-			CPNFlowRelation pre2ToT0 = cpn.addFlowRelationPT("pre2", "t0", false);
+		// Add the flow relation
+		CPNFlowRelation pre1ToT0 = cpn.addFlowRelationPT("pre1", "t0");
+		CPNFlowRelation pre2ToT0 = cpn.addFlowRelationPT("pre2", "t0");
 
-			CPNFlowRelation t0ToPost1 = cpn.addFlowRelationTP("t0", "post1", false);
-			CPNFlowRelation t0ToPost2 = cpn.addFlowRelationTP("t0", "post2", false);
+		CPNFlowRelation t0ToPost1 = cpn.addFlowRelationTP("t0", "post1");
+		CPNFlowRelation t0ToPost2 = cpn.addFlowRelationTP("t0", "post2");
 
-			// configure flow relation
-			pre1ToT0.addConstraint("red", 2);
-			pre1ToT0.addConstraint("black", 1);
-			pre2ToT0.addConstraint("green", 1);
+		// configure flow relation
+		pre1ToT0.addConstraint("red", 2);
+		pre2ToT0.addConstraint("green", 1);
 
-			t0ToPost1.addConstraint("black", 1);
-			t0ToPost2.addConstraint("yellow", 1);
-
-		} catch (ParameterException e) {
-			e.printStackTrace();
-		}
+		t0ToPost2.addConstraint("yellow", 1);
 
 		return cpn.getTransition("t0");
 	}

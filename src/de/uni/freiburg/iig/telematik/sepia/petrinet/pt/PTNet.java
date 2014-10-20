@@ -55,6 +55,16 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	}
 
 	@Override
+	protected PTFlowRelation createNewFlowRelation(PTPlace place, PTTransition transition, Integer weight) {
+		return new PTFlowRelation(place, transition, weight);
+	}
+
+	@Override
+	protected PTFlowRelation createNewFlowRelation(PTTransition transition, PTPlace place, Integer weight) {
+		return new PTFlowRelation(transition, place, weight);
+	}
+	
+	@Override
 	protected PTFlowRelation createNewFlowRelation(PTPlace place, PTTransition transition) {
 		return new PTFlowRelation(place, transition);
 	}
@@ -80,6 +90,20 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	@Override
 	public PTMarkingGraph getMarkingGraph() throws PNException{
 		return (PTMarkingGraph) super.getMarkingGraph();
+	}
+	
+	public static void main(String[] args) {
+		PTNet net = new PTNet();
+		net.addPlace("p1");
+		net.addTransition("t1");
+		net.addFlowRelationPT("p1", "t1", 12);
+		System.out.println(net);
+		PTFlowRelation rel = net.addFlowRelationPT("p1", "t1", 2);
+		System.out.println(rel);
+		System.out.println(net);
+		System.out.println(net.getPlace("p1").getOutgoingRelations().size());
+		
+		
 	}
 	
 }

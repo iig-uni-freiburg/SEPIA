@@ -63,7 +63,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
 	public AbstractFlowRelation(P place, T transition){
-		this(place, transition, true);
+		this(place, transition, true, null);
 	}
 	
 	/**
@@ -74,12 +74,26 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
 	public AbstractFlowRelation(T transition, P place){
-		this(place, transition, false);
+		this(place, transition, false, null);
 	}
 	
-	protected AbstractFlowRelation(P place, T transition, boolean directionPT){
+	public AbstractFlowRelation(P place, T transition, S constraint){
+		this(place, transition, false, constraint);
+	}
+	
+	public AbstractFlowRelation(T transition, P place, S constraint){
+		this(place, transition, false, constraint);
+	}
+	
+	
+	private AbstractFlowRelation(P place, T transition, boolean directionPT, S constraint){
 		this.directionPT = directionPT;
 		setValues(transition, place);
+		if(constraint == null){
+			setConstraint(getDefaultConstraint());
+		} else {
+			setConstraint(constraint);
+		}
 	}
 	
 	
@@ -96,6 +110,8 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	public S getConstraint() {
 		return constraint;
 	}
+	
+	protected abstract S getDefaultConstraint();
 	
 	protected abstract void validateConstraint(S constraint);
 	
@@ -212,8 +228,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((constraint == null) ? 0 : constraint.hashCode());
+		result = prime * result + ((constraint == null) ? 0 : constraint.hashCode());
 		result = prime * result + (directionPT ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((place == null) ? 0 : place.hashCode());

@@ -170,36 +170,36 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 //		return super.addFlowRelationPT(name, placeName, transitionName);
 //	}
 
-	/**
-	 * Adds a flow relation to the Petri net leading from a place to a transition.<br>
-	 * When relations are added using this method, they contain no constraints,<br>
-	 * i.e. no information about how many tokens of which color are transferred over the relation.<br>
-	 * Use either {@link #addFlowRelationPT(String, String, boolean)} to generate a default constraint,
-	 * or add constraints via {@link #addFiringRule(String, FiringRule)}.
-	 * @see super{@link #addFlowRelationPT(String, String)}
-	 */
-	@Override
-	public F addFlowRelationPT(String placeName, String transitionName) {
-		return super.addFlowRelationPT(placeName, transitionName);
-	}
-	
-	/**
-	 * Adds a flow relation to the Petri net leading from a place to a transition.<br>
-	 * This method allows to specify if a default constraint is generated for the relation.<br>
-	 * A default constraint adds one control flow token to the relation (indicated with color "black").
-	 * The relations' name is set automatically, based on the names of the given place/transition.
-	 * @param placeName The name of the place where the relation starts.
-	 * @param transitionName The name of the transition where the relation ends.
-	 * @param addDefaultConstraint Indicates if a default constraint is added to the relation.
-	 * @return The new relation that was added to the Petri net<br>
-	 * or <code>null</code> if the net already contains the relation.
-	 */
-	public F addFlowRelationPT(String placeName, String transitionName, boolean addDefaultConstraint) {
-		F newRelation = super.addFlowRelationPT(placeName, transitionName);
-		if(addDefaultConstraint && (newRelation != null))
-			newRelation.addConstraint("black", 1);
-		return newRelation;
-	}
+//	/**
+//	 * Adds a flow relation to the Petri net leading from a place to a transition.<br>
+//	 * When relations are added using this method, they contain no constraints,<br>
+//	 * i.e. no information about how many tokens of which color are transferred over the relation.<br>
+//	 * Use either {@link #addFlowRelationPT(String, String, boolean)} to generate a default constraint,
+//	 * or add constraints via {@link #addFiringRule(String, FiringRule)}.
+//	 * @see super{@link #addFlowRelationPT(String, String)}
+//	 */
+//	@Override
+//	public F addFlowRelationPT(String placeName, String transitionName, Multiset<String> constraint) {
+//		return super.addFlowRelationPT(placeName, transitionName, constraint);
+//	}
+//	
+//	/**
+//	 * Adds a flow relation to the Petri net leading from a place to a transition.<br>
+//	 * This method allows to specify if a default constraint is generated for the relation.<br>
+//	 * A default constraint adds one control flow token to the relation (indicated with color "black").
+//	 * The relations' name is set automatically, based on the names of the given place/transition.
+//	 * @param placeName The name of the place where the relation starts.
+//	 * @param transitionName The name of the transition where the relation ends.
+//	 * @param addDefaultConstraint Indicates if a default constraint is added to the relation.
+//	 * @return The new relation that was added to the Petri net<br>
+//	 * or <code>null</code> if the net already contains the relation.
+//	 */
+//	public F addFlowRelationPT(String placeName, String transitionName, boolean addDefaultConstraint) {
+//		F newRelation = super.addFlowRelationPT(placeName, transitionName);
+//		if(addDefaultConstraint && (newRelation != null))
+//			newRelation.addConstraint("black", 1);
+//		return newRelation;
+//	}
 	
 //	/**
 //	 * Adds a flow relation to the Petri net leading from a place to a transition.<br>
@@ -233,36 +233,36 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 //		return super.addFlowRelationTP(name, transitionName, placeName);
 //	}
 
-	/**
-	 * Adds a flow relation to the Petri net leading from a transition to a place.<br>
-	 * When relations are added using this method, they contain no constraints,<br>
-	 * i.e. no information about how many tokens of which color are transferred over the relation.<br>
-	 * Use either {@link #addFlowRelationPT(String, String, boolean)} to generate a default constraint,
-	 * or add constraints via {@link #addFiringRule(String, FiringRule)}.
-	 * @see super{@link #addFlowRelationPT(String, String)}
-	 */
-	@Override
-	public F addFlowRelationTP(String transitionName, String placeName) {
-		return super.addFlowRelationTP(transitionName, placeName);
-	}
-
-	/**
-	 * Adds a flow relation to the Petri net leading from a transition to a place.<br>
-	 * This method allows to specify if a default constraint is generated for the relation.<br>
-	 * A default constraint adds one control flow token to the relation (indicated with color "black").
-	 * The relations' name is set automatically, based on the names of the given place/transition.
-	 * @param transitionName The name of the transition where the relation starts.
-	 * @param placeName The name of the place where the relation ends.
-	 * @param addDefaultConstraint Indicates if a default constraint is added to the relation.
-	 * @return The new relation that was added to the Petri net<br>
-	 * or <code>null</code> if the net already contains the relation.
-	 */
-	public F addFlowRelationTP(String transitionName, String placeName, boolean addDefaultConstraint) {
-		F newRelation = super.addFlowRelationTP(transitionName, placeName);
-		if(addDefaultConstraint && (newRelation != null))
-			newRelation.addConstraint("black", 1);
-		return newRelation;
-	}
+//	/**
+//	 * Adds a flow relation to the Petri net leading from a transition to a place.<br>
+//	 * When relations are added using this method, they contain no constraints,<br>
+//	 * i.e. no information about how many tokens of which color are transferred over the relation.<br>
+//	 * Use either {@link #addFlowRelationPT(String, String, boolean)} to generate a default constraint,
+//	 * or add constraints via {@link #addFiringRule(String, FiringRule)}.
+//	 * @see super{@link #addFlowRelationPT(String, String)}
+//	 */
+//	@Override
+//	public F addFlowRelationTP(String transitionName, String placeName) {
+//		return super.addFlowRelationTP(transitionName, placeName);
+//	}
+//
+//	/**
+//	 * Adds a flow relation to the Petri net leading from a transition to a place.<br>
+//	 * This method allows to specify if a default constraint is generated for the relation.<br>
+//	 * A default constraint adds one control flow token to the relation (indicated with color "black").
+//	 * The relations' name is set automatically, based on the names of the given place/transition.
+//	 * @param transitionName The name of the transition where the relation starts.
+//	 * @param placeName The name of the place where the relation ends.
+//	 * @param addDefaultConstraint Indicates if a default constraint is added to the relation.
+//	 * @return The new relation that was added to the Petri net<br>
+//	 * or <code>null</code> if the net already contains the relation.
+//	 */
+//	public F addFlowRelationTP(String transitionName, String placeName, boolean addDefaultConstraint) {
+//		F newRelation = super.addFlowRelationTP(transitionName, placeName);
+//		if(addDefaultConstraint && (newRelation != null))
+//			newRelation.addConstraint("black", 1);
+//		return newRelation;
+//	}
 	
 	@Override
 	protected void validateMarking(M marking) {

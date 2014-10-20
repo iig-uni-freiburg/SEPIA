@@ -11,24 +11,29 @@ public abstract class AbstractPTFlowRelation<P extends AbstractPTPlace<? extends
 	
 	public static final int DEFAULT_WEIGHT = 1;
 	
-	public AbstractPTFlowRelation(P place, T transition, int weight) {
-		super(place, transition);
-		setWeight(weight);
-	}
+
 	
-	public AbstractPTFlowRelation(T transition, P place, int weight) {
-		super(transition, place);
-		setWeight(weight);
+	public AbstractPTFlowRelation(P place, T transition, Integer weight) {
+		super(place, transition, weight);
 	}
 
 	public AbstractPTFlowRelation(P place, T transition) {
-		this(place, transition, DEFAULT_WEIGHT);
+		super(place, transition);
+	}
+
+	public AbstractPTFlowRelation(T transition, P place, Integer weight) {
+		super(transition, place, weight);
 	}
 
 	public AbstractPTFlowRelation(T transition, P place) {
-		this(transition, place, DEFAULT_WEIGHT);
+		super(transition, place);
 	}
-	
+
+	@Override
+	protected Integer getDefaultConstraint() {
+		return DEFAULT_WEIGHT;
+	}
+
 	public void setWeight(int weight) {
 		setConstraint(weight);
 	}

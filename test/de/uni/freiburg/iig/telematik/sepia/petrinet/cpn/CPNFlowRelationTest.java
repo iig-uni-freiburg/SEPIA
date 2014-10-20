@@ -43,25 +43,13 @@ public class CPNFlowRelationTest {
 		CPNFlowRelation f = new CPNFlowRelation(cpnP, cpnT);
 		assertEquals(f.getSource().getName(), "p0");
 		assertEquals(f.getTarget().getName(), "t0");
-		assertTrue(f.getConstraint().equals(new Multiset<String>("black")));
+		assertTrue(f.getConstraint().equals(f.getDefaultConstraint()));
 
 		// Constructor 2
 		CPNFlowRelation f2 = new CPNFlowRelation(cpnT, cpnP);
 		assertEquals(f2.getSource().getName(), "t0");
 		assertEquals(f2.getTarget().getName(), "p0");
-		assertTrue(f2.getConstraint().equals(new Multiset<String>("black")));
-
-		// Constructor 3
-		CPNFlowRelation f3 = new CPNFlowRelation(cpnP, cpnT, false);
-		assertEquals(f3.getSource().getName(), "p0");
-		assertEquals(f3.getTarget().getName(), "t0");
-		assertFalse(f3.hasConstraints());
-
-		// Constructor 4
-		CPNFlowRelation f4 = new CPNFlowRelation(cpnT, cpnP, false);
-		assertEquals(f4.getSource().getName(), "t0");
-		assertEquals(f4.getTarget().getName(), "p0");
-		assertFalse(f4.hasConstraints());
+		assertTrue(f2.getConstraint().equals(f.getDefaultConstraint()));
 	}
 
 	/*

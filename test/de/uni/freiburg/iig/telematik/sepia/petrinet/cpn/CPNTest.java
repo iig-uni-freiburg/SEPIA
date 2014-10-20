@@ -142,14 +142,6 @@ public class CPNTest {
 			fail("Cannot add transition to CPN!");
 			e.printStackTrace();
 		}
-
-		// The net should not be valid now!
-		try {
-			cpn.addFlowRelationPT("p0", "t2");
-			cpn.checkValidity();
-			fail("The Net is not valid!");
-		} catch (PNValidationException e) {
-		}
 	}
 
 	/* Check whether the standard net is sound */
@@ -197,42 +189,34 @@ public class CPNTest {
 		// PT
 		// Adding this flow relation should raise an exception since the place does not exist
 		try {
-			cpn.addFlowRelationPT("p_false", "t0", true);
+			cpn.addFlowRelationPT("p_false", "t0");
 			fail("A flow relation from a non existing place got added!");
 		} catch (ParameterException e) {
 		}
 
 		// The following flow relation is added twice.
 		// It should change nothing when the relation is added a second time
-		cpn.addFlowRelationPT("p0", "t0", true);
+		cpn.addFlowRelationPT("p0", "t0");
 		HashSet<CPNFlowRelation> relationsBeforeSecondAdd = new HashSet<CPNFlowRelation>(cpn.getFlowRelations());
-		cpn.addFlowRelationPT("p0", "t0", true);
+		cpn.addFlowRelationPT("p0", "t0");
 		HashSet<CPNFlowRelation> relationsAfterSecondAdd = new HashSet<CPNFlowRelation>(cpn.getFlowRelations());
 		assertEquals(relationsBeforeSecondAdd, relationsAfterSecondAdd);
 
 		// TP
 		// Adding this flow relation should raise an exception since the place does not exist
 		try {
-			cpn.addFlowRelationTP("t_false", "p0", true);
+			cpn.addFlowRelationTP("t_false", "p0");
 			fail("A flow relation from a non existing transition got added!");
 		} catch (ParameterException e) {
 		}
 
 		// The following flow relation is added twice.
 		// It should change nothing when the relation is added a second time
-		cpn.addFlowRelationTP("t0", "p0", true);
+		cpn.addFlowRelationTP("t0", "p0");
 		relationsBeforeSecondAdd = new HashSet<CPNFlowRelation>(cpn.getFlowRelations());
-		cpn.addFlowRelationTP("t0", "p0", true);
+		cpn.addFlowRelationTP("t0", "p0");
 		relationsAfterSecondAdd = new HashSet<CPNFlowRelation>(cpn.getFlowRelations());
 		assertEquals(relationsBeforeSecondAdd, relationsAfterSecondAdd);
-
-		// Add a flow relation without any constraints
-		cpn.addFlowRelationTP("t0", "p0");
-		try {
-			cpn.checkValidity();
-			fail("A cpn with a flow relation which does not produces or consume any token is considered valid!");
-		} catch (PNValidationException e) {
-		}
 	}
 
 	/* Test setting firing rules via transitions and not via flow relations */
@@ -291,6 +275,7 @@ public class CPNTest {
 
 		@SuppressWarnings("unused")
 		CPNFlowRelation f = cpn.addFlowRelationPT("p0", "t1");
+		f.setConstraint(new Multiset<String>());
 
 		try {
 			cpn.checkValidity();
@@ -393,13 +378,13 @@ public class CPNTest {
 			cpn = new CPN(places, transitions, marking);
 
 			// Add the flow relation
-			CPNFlowRelation f1 = cpn.addFlowRelationPT("p0", "t0", true);
-			CPNFlowRelation f2 = cpn.addFlowRelationTP("t0", "p1", true);
-			CPNFlowRelation f3 = cpn.addFlowRelationPT("p1", "t1", true);
+			CPNFlowRelation f1 = cpn.addFlowRelationPT("p0", "t0");
+			CPNFlowRelation f2 = cpn.addFlowRelationTP("t0", "p1");
+			CPNFlowRelation f3 = cpn.addFlowRelationPT("p1", "t1");
 			@SuppressWarnings("unused")
-			CPNFlowRelation f4 = cpn.addFlowRelationTP("t1", "p3", true);
-			CPNFlowRelation f5 = cpn.addFlowRelationTP("t1", "p2", true);
-			CPNFlowRelation f6 = cpn.addFlowRelationPT("p2", "t0", true);
+			CPNFlowRelation f4 = cpn.addFlowRelationTP("t1", "p3");
+			CPNFlowRelation f5 = cpn.addFlowRelationTP("t1", "p2");
+			CPNFlowRelation f6 = cpn.addFlowRelationPT("p2", "t0");
 
 			// configure flow relation
 			f1.addConstraint("red", 1);

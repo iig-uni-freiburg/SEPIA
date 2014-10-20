@@ -21,6 +21,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRel
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -226,7 +227,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		super.checkValidity();
 		
 		try{			
-			super.checkSoundness(false);
+			CWNChecker.checkCWNSoundness(this, true);
 		} catch(PNSoundnessException e){
 			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\n:" + e.getMessage());
 		}
@@ -301,7 +302,8 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		// Check security level consistency for declassification transitions
 		for(AbstractDeclassificationTransition<F> transition: getDeclassificationTransitions()){
 			
-			// Check if all produced colors have label LOW
+			// Check property 6 for declassification transitions: 
+			// -> All produced colors must have label LOW
 			Set<String> producedColors = transition.getProducedColors();
 			producedColors.remove(CONTROL_FLOW_TOKEN_COLOR);
 			for(String outputColor: producedColors){
@@ -309,7 +311,8 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 					throw new PNValidationException("Generated attributes of declassification transitions must be LOW");
 			}
 			
-			// Check if transition is classified HIGH
+			// Check property 7 for declassification transitions: 
+			// -> Transition is classified HIGH
 			if(getAnalysisContext().getLabeling().getActivityClassification(transition.getName()) != SecurityLevel.HIGH)
 				throw new PNValidationException("All declassification transitions must have classification HIGH.");
 		}

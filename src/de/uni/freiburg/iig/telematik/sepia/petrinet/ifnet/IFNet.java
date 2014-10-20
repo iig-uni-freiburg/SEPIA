@@ -68,6 +68,18 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 	}
 
 
+
+
+	@Override
+	protected IFNetFlowRelation createNewFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition, Multiset<String> constraint) {
+		return new IFNetFlowRelation(place, transition, constraint);
+	}
+
+	@Override
+	protected IFNetFlowRelation createNewFlowRelation(AbstractIFNetTransition<IFNetFlowRelation> transition, IFNetPlace place, Multiset<String> constraint) {
+		return new IFNetFlowRelation(transition, place, constraint);
+	}
+
 	@Override
 	protected IFNetFlowRelation createNewFlowRelation(IFNetPlace place, AbstractIFNetTransition<IFNetFlowRelation> transition) {
 		return new IFNetFlowRelation(place, transition);

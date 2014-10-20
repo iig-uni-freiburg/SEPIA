@@ -88,9 +88,8 @@ public class IFNetTest {
 		// remove the black token and set green instead
 		Multiset<String> constraint = new Multiset<String>();
 		constraint.add("green");
-		constraint.add("black");
 		outRel.setConstraint(constraint);
-
+		System.out.println(dSNet);
 		try {
 			dSNet.checkValidity();
 			fail("An invalid ifNet  is not detected!");

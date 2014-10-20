@@ -115,7 +115,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * Map that contains Petri net relations indexed with their names.
 	 */
 	protected Map<String, F> relations = new HashMap<String, F>();
-	
 	/**
 	 * A list that contains all enabled transitions.<br>
 	 */
@@ -678,14 +677,34 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * Adds a flow relation starting at a place and ending at a transition.
 	 * @param placeName The name of the place where toe relation starts.
 	 * @param transitionName The name of the transition where the relation ends.
+	 * @param constraint The constraint for the flow relation.
+	 * @return <code>true</code> if the flow relation was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public F addFlowRelationPT(String placeName, String transitionName, S constraint){
+		validatePlace(placeName);
+		validateTransition(transitionName);
+		if(containsRelationPT(placeName, transitionName))
+			return null;
+		F newFlowRelation = createNewFlowRelation(places.get(placeName), transitions.get(transitionName), constraint);
+		if(addFlowRelation(newFlowRelation)){
+			return newFlowRelation;
+		}
+		return null;
+	}
+	
+	/**
+	 * Adds a flow relation starting at a place and ending at a transition.
+	 * @param placeName The name of the place where toe relation starts.
+	 * @param transitionName The name of the transition where the relation ends.
 	 * @return <code>true</code> if the flow relation was successfully added;<br>
 	 * <code>false</code> otherwise.
 	 */
 	public F addFlowRelationPT(String placeName, String transitionName){
-		if(!containsPlace(placeName))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+placeName+"\"");
-		if(!containsTransition(transitionName))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a transition with name \""+transitionName+"\"");
+		validatePlace(placeName);
+		validateTransition(transitionName);
+		if(containsRelationPT(placeName, transitionName))
+			return null;
 		F newFlowRelation = createNewFlowRelation(places.get(placeName), transitions.get(transitionName));
 		if(addFlowRelation(newFlowRelation)){
 			return newFlowRelation;
@@ -700,11 +719,30 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return <code>true</code> if the flow relation was successfully added;<br>
 	 * <code>false</code> otherwise.
 	 */
+	public F addFlowRelationTP(String transitionName, String placeName, S constraint){
+		validatePlace(placeName);
+		validateTransition(transitionName);
+		if(containsRelationTP(transitionName, placeName))
+			return null;
+		F newFlowRelation = createNewFlowRelation(transitions.get(transitionName), places.get(placeName), constraint);
+		if(addFlowRelation(newFlowRelation)){
+			return newFlowRelation;
+		}
+		return null;
+	}
+	
+	/**
+	 * Adds a flow relation starting at a transition and ending at a place.
+	 * @param transitionName The name of the transition where the relation ends.
+	 * @param placeName The name of the place where toe relation starts.
+	 * @return <code>true</code> if the flow relation was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 */
 	public F addFlowRelationTP(String transitionName, String placeName){
-		if(!containsPlace(placeName))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+placeName+"\"");
-		if(!containsTransition(transitionName))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a transition with name \""+transitionName+"\"");
+		validatePlace(placeName);
+		validateTransition(transitionName);
+		if(containsRelationTP(transitionName, placeName))
+			return null;
 		F newFlowRelation = createNewFlowRelation(transitions.get(transitionName), places.get(placeName));
 		if(addFlowRelation(newFlowRelation)){
 			return newFlowRelation;
@@ -725,6 +763,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		Validate.notNull(relation);
 		if(containsRelation(relation))
 			return false;
+		
 		if(relation.getDirectionPT()){
 			relation.getPlace().addOutgoingRelation(relation);
 			relation.getTransition().addIncomingRelation(relation);
@@ -743,6 +782,26 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	public boolean containsFlowRelation(String relationName){
 		return relations.keySet().contains(relationName);
+	}
+	
+	public boolean containsRelationPT(String placeName, String transitionName){
+		validatePlace(placeName);
+		validateTransition(transitionName);
+		for(F outgoingRelation: getPlace(placeName).getOutgoingRelations()){
+			if(outgoingRelation.getTransition().getName().equals(transitionName))
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean containsRelationTP(String transitionName, String placeName){
+		validatePlace(placeName);
+		validateTransition(transitionName);
+		for(F outgoingRelation: getTransition(transitionName).getOutgoingRelations()){
+			if(outgoingRelation.getPlace().getName().equals(placeName))
+				return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -790,6 +849,24 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	protected boolean containsRelation(F relation){
 		return relations.values().contains(relation);
 	}
+	
+	/**
+	 * Creates a new relation of type <code>F</code> from the given place to the given transition.
+	 * This method is abstract because only subclasses know the type <code>F</code> of their relations.
+	 * @param place The place where the relation starts.
+	 * @param transition The transition where the relation ends.
+	 * @return A new relation of type <code>F</code>.
+	 */
+	protected abstract F createNewFlowRelation(P place, T transition, S constraint);
+	
+	/**
+	 * Creates a new relation of type <code>F</code> from the given  transition to the given place.
+	 * This method is abstract because only subclasses know the type <code>F</code> of their relations.
+	 * @param transition The transition where the relation starts
+	 * @param place The place where the relation ends.
+	 * @return A new relation of type <code>F</code>.
+	 */
+	protected abstract F createNewFlowRelation(T transition, P place, S constraint);
 	
 	/**
 	 * Creates a new relation of type <code>F</code> from the given place to the given transition.
@@ -1018,8 +1095,19 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected void validateTransition(String transitionName){
 		Validate.notNull(transitionName);
-		if(!transitions.containsKey(transitionName))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown transition: " + transitionName);
+		if(!containsTransition(transitionName))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a transition with name \""+transitionName+"\"");
+	}
+	
+	/**
+	 * This method can be used to validate place names.<br>
+	 * It checks if it is <code>null</code> and if the Petri net contains a place with this name.
+	 * @param placeName The name of the place in question.
+	 */
+	protected void validatePlace(String placeName){
+		Validate.notNull(placeName);
+		if(!containsPlace(placeName))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+placeName+"\"");
 	}
 	
 	/**

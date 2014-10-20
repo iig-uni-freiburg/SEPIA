@@ -94,47 +94,6 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	}
 	
 	//------- Flow Relations
-
-	/**
-	 * Adds a flow relation to the Petri net leading from a place to a transition.<br>
-	 * This method allows to specify an arc weight which defines the number of tokens transferred along the relation.<br>
-	 * The relations' name is set automatically, based on the names of the given place/transition.
-	 * @param placeName The name of the place where the relation starts.
-	 * @param transitionName The name of the transition where the relation ends.
-	 * @param weight The weight of the relation.
-	 * @return The new relation that was added to the Petri net<br>
-	 * or <code>null</code> if the net already contains the relation.
-	 * @throws ParameterException If some parameters are <code>null</code> or the net does not contain the given places/transitions.
-	 */
-	public F addFlowRelationPT(String placeName, String transitionName, int weight) throws ParameterException {
-		F newRelation = super.addFlowRelationPT(placeName, transitionName);
-		if(newRelation != null){
-			newRelation.setWeight(weight);
-		}
-		return newRelation;
-	}
-	
-	/**
-	 * Adds a flow relation to the Petri net leading from a transition to a place.<br>
-	 * This method allows to specify an arc weight which defines the number of tokens transferred along the relation.<br>
-	 * The relations' name is set automatically, based on the names of the given place/transition.
-	 * @param name The name of the relation.
-	 * @param transitionName The name of the transition where the relation starts.
-	 * @param placeName The name of the place where the relation ends.
-	 * @param weight The weight of the relation.
-	 * @return The new relation that was added to the Petri net<br>
-	 * or <code>null</code> if the net already contains the relation.
-	 * @throws ParameterException If some parameters are <code>null</code> or the net does not contain the given places/transitions.
-	 */
-	public F addFlowRelationTP(String transitionName, String placeName, int weight) throws ParameterException {
-		F newRelation = super.addFlowRelationTP(transitionName, placeName);
-		if(newRelation != null){
-			newRelation.setWeight(weight);
-		}
-		return newRelation;
-	}
-	
-	
 	
 	@Override
 	protected void validateMarking(M marking) throws ParameterException {
