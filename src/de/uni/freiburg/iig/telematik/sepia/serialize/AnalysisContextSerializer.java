@@ -7,13 +7,13 @@ import org.w3c.dom.Element;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 
-public class ACSerializer {
+public class AnalysisContextSerializer {
 	
 	private AnalysisContext analysisContext = null;
 	private Labeling labeling = null;
 	private XMLSerializationSupport support = null;
 	
-	public ACSerializer(AnalysisContext analysisContext){
+	public AnalysisContextSerializer(AnalysisContext analysisContext){
 		this.analysisContext = analysisContext;
 		this.labeling = analysisContext.getLabeling();
 		support = new XMLSerializationSupport("labeling");

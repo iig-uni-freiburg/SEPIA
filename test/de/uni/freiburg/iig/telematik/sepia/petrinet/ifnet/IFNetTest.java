@@ -13,7 +13,6 @@ import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
@@ -153,43 +152,6 @@ public class IFNetTest {
 			}
 		}
 		// TODO do something with the unused flow relations?
-	}
-
-	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where the classification of a color created from a declassificationtransition is not set.
-	 */
-	@Ignore
-	public void testCheckValidityAnalysisContextDeclassificationTransCreatesUnlabeldColor() throws ParameterException {
-		dSNet.getAnalysisContext().getLabeling().removeAttribute("yellow");
-		try {
-			dSNet.checkValidity();
-			//TODO: This test fails, because the test itself is not set up properly.
-			//The test assumes, that the analysis context contains all process activities, which is not true!
-			fail("An invalid ifNet  is not detected!");
-		} catch (PNValidationException e) {
-		}
-	}
-
-	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where the classification of a declassificationtransition is LOW.
-	 */
-	@Test
-	public void testCheckValidityAnalysisContextDeclassificationTransLabaledLow() throws ParameterException {
-
-		dSNet.getAnalysisContext().getLabeling().setActivityClassification("td", SecurityLevel.LOW);
-		try {
-			dSNet.checkValidity();
-			fail("An invalid ifNet  is not detected!");
-		} catch (PNValidationException e) {
-		}
-
-		// remove a transition from the labeling and see whether the missing label is detected
-		dSNet.getAnalysisContext().getLabeling().removeActivities("td");
-		try {
-			dSNet.checkValidity();
-			fail("An invalid ifNet  is not detected!");
-		} catch (PNValidationException e) {
-		}
 	}
 
 	/*

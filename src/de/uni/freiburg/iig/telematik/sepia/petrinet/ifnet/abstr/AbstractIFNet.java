@@ -128,7 +128,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		if(super.removeTransition(transitionName)){
 			regularTransitions.remove(transitionName);
 			declassificationTransitions.remove(transitionName);
-			analysisContext.getLabeling().removeActivities(transitionName);
+//			analysisContext.getLabeling().removeActivities(transitionName);
 			return true;
 		}
 		return false;

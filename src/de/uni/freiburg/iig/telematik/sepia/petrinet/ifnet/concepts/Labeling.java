@@ -122,26 +122,26 @@ public class Labeling {
 		return modified;
 	}
 	
-	public boolean removeActivities(String... activities) {
-		return removeActivities(Arrays.asList(activities));
-	}
-	
-	public boolean removeActivities(Collection<String> activities) {
-		Validate.notNull(activities);
-		Validate.noNullElements(activities);
-				
-		
-		if(activities.isEmpty())
-			return false;
-		
-		if(this.activities.removeAll(activities)){
-			for(String activity: activities){
-				activiyClassification.remove(activity);
-			}
-			return true;
-		}
-		return false;
-	}
+//	public boolean removeActivities(String... activities) {
+//		return removeActivities(Arrays.asList(activities));
+//	}
+//	
+//	public boolean removeActivities(Collection<String> activities) {
+//		Validate.notNull(activities);
+//		Validate.noNullElements(activities);
+//				
+//		
+//		if(activities.isEmpty())
+//			return false;
+//		
+//		if(this.activities.removeAll(activities)){
+//			for(String activity: activities){
+//				activiyClassification.remove(activity);
+//			}
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	public Set<String> getSubjects(){
 		return Collections.unmodifiableSet(subjects);
@@ -168,25 +168,25 @@ public class Labeling {
 		return modified;
 	}
 	
-	public boolean removeSubjects(String... subjects) {
-		return removeSubjects(Arrays.asList(subjects));
-	}
-	
-	public boolean removeSubjects(Collection<String> subjects) {
-		Validate.notNull(subjects);
-		Validate.noNullElements(subjects);
-		
-		if(subjects.isEmpty())
-			return false;
-		
-		if(this.subjects.removeAll(subjects)){
-			for(String subject: subjects){
-				subjectClearance.remove(subject);
-			}
-			return true;
-		}
-		return false;
-	}
+//	public boolean removeSubjects(String... subjects) {
+//		return removeSubjects(Arrays.asList(subjects));
+//	}
+//	
+//	public boolean removeSubjects(Collection<String> subjects) {
+//		Validate.notNull(subjects);
+//		Validate.noNullElements(subjects);
+//		
+//		if(subjects.isEmpty())
+//			return false;
+//		
+//		if(this.subjects.removeAll(subjects)){
+//			for(String subject: subjects){
+//				subjectClearance.remove(subject);
+//			}
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	public Set<String> getAttributes(){
 		return Collections.unmodifiableSet(attributes);
@@ -217,25 +217,25 @@ public class Labeling {
 		return modified;
 	}
 	
-	public boolean removeAttribute(String... attributes) {
-		return removeAttributes(Arrays.asList(attributes));
-	}
-	
-	public boolean removeAttributes(Collection<String> attributes) {
-		Validate.notNull(attributes);
-		Validate.noNullElements(attributes);
-		
-		if(attributes.isEmpty())
-			return false;
-		
-		if(this.attributes.removeAll(attributes)){
-			for(String attribute: attributes){
-				attributeClassification.remove(attribute);
-			}
-			return true;
-		}
-		return false;
-	}
+//	public boolean removeAttribute(String... attributes) {
+//		return removeAttributes(Arrays.asList(attributes));
+//	}
+//	
+//	public boolean removeAttributes(Collection<String> attributes) {
+//		Validate.notNull(attributes);
+//		Validate.noNullElements(attributes);
+//		
+//		if(attributes.isEmpty())
+//			return false;
+//		
+//		if(this.attributes.removeAll(attributes)){
+//			for(String attribute: attributes){
+//				attributeClassification.remove(attribute);
+//			}
+//			return true;
+//		}
+//		return false;
+//	}
 	
 	public void setActivityClassification(String activity, SecurityLevel securityLevel) {
 		validateActivity(activity);
