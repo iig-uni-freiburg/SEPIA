@@ -71,8 +71,8 @@ public class AnalysisContext {
 	}
 	  
 	public void setSubjectDescriptor(String activity, String subject) {
-		labeling.getContext().validateActivity(activity);
-		labeling.getContext().validateSubject(subject);
+		labeling.validateActivity(activity);
+		labeling.validateSubject(subject);
 		
 		if(labeling.getSubjectClearance(subject) == SecurityLevel.LOW && labeling.getActivityClassification(activity) == SecurityLevel.HIGH)
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot assign a subject with LOW clearance to an activity with HIGH classification.");
@@ -81,7 +81,7 @@ public class AnalysisContext {
 	}
 	
 	public String getSubjectDescriptor(String activity) {
-		labeling.getContext().validateActivity(activity);
+		labeling.validateActivity(activity);
 		return subjectDescriptors.get(activity);
 	}
 	
@@ -91,5 +91,9 @@ public class AnalysisContext {
 	
 	public void setContext(Context context, boolean reset){
 		labeling.setContext(context, reset);
+	}
+	
+	public String getContextName(){
+		return labeling.getContextName();
 	}
 }

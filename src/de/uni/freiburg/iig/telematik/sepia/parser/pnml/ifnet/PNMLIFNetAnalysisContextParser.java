@@ -94,6 +94,46 @@ public class PNMLIFNetAnalysisContextParser {
 			String name = analysisContextDocument.getDocumentElement().getAttribute("id");
 			analysisContext.setName(name);
 			
+			NodeList contextList = analysisContextDocument.getElementsByTagName("context");
+			if(contextList == null || contextList.getLength() == 0)
+				throw new ParserException("Cannot parse context information.");
+			if(contextList.getLength() > 1)
+				throw new ParserException("XML contains more than one context element.");
+			Element contextElement = (Element) contextList.item(0);
+			Boolean requiresContext = new Boolean(contextElement.getAttribute("requires-context"));
+			if(requiresContext){
+				Element contextNameElement = null;
+				String contextName = null;
+				try {
+					contextNameElement = (Element) contextElement.getElementsByTagName("contextname").item(0);
+					contextName = contextNameElement.getTextContent();
+				} catch(Exception e){
+					throw new ParserException("Cannot parse context name.\nReason: " + e.getMessage());
+				}
+				if(contextName == null || contextName.isEmpty())
+					throw new ParserException("Cannot parse context name.");
+				labeling.setContextName(contextName);
+				
+				Element contextClassElement = null;
+				String contextClassName = null;
+				try {
+					contextClassElement = (Element) contextElement.getElementsByTagName("contextclass").item(0);
+					contextClassName = contextNameElement.getTextContent();
+				} catch(Exception e){
+					throw new ParserException("Cannot parse context class.\nReason: " + e.getMessage());
+				}
+				if(contextClassName == null || contextClassName.isEmpty())
+					throw new ParserException("Cannot parse context class.");
+				
+				Class<?> contextClass = null;
+				try{
+					contextClass = Class.forName(contextClassName);
+				} catch(Exception e){
+					throw new ParserException("Cannot load context class.");
+				}
+				labeling.setContextclass(contextClass);
+			}
+			
 			// read activity descriptors
 			NodeList subjectDescriptorsList = analysisContextDocument.getElementsByTagName("subjectdescriptors");
 			if (subjectDescriptorsList.getLength() > 0) {

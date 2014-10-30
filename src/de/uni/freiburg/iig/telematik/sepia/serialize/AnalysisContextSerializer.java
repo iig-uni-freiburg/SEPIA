@@ -7,6 +7,7 @@ import java.util.Map;
 import org.w3c.dom.Element;
 
 import de.uni.freiburg.iig.telematik.jawl.context.Context;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetAnalysisContextParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 
@@ -19,7 +20,7 @@ public class AnalysisContextSerializer {
 	public AnalysisContextSerializer(AnalysisContext analysisContext){
 		this.analysisContext = analysisContext;
 		this.labeling = analysisContext.getLabeling();
-		support = new XMLSerializationSupport("analysis-context");
+		support = new XMLSerializationSupport("analysiscontext");
 	}
 	
 	private void addContent() {
@@ -43,12 +44,12 @@ public class AnalysisContextSerializer {
 		if (labeling != null) {
 			// Add context name
 			Element contextElement = support.createElement("context");
-			contextElement.setAttribute("requires-context", labeling.requiresContext() ? "true" : "false");
+			contextElement.setAttribute("requirescontext", labeling.requiresContext() ? "true" : "false");
 			if(labeling.requiresContext()){
-				Element contextNameElement = support.createElement("context-name");	
+				Element contextNameElement = support.createElement("contextname");	
 				contextNameElement.setTextContent(labeling.getContext().getName());
 				contextElement.appendChild(contextNameElement);
-				Element contextTypeElement = support.createElement("context-type");	
+				Element contextTypeElement = support.createElement("contexttype");	
 				contextTypeElement.setTextContent(labeling.getContext().getClass().toString());
 				contextElement.appendChild(contextTypeElement);
 			}
@@ -109,5 +110,7 @@ public class AnalysisContextSerializer {
 		c.setSubjectDescriptor("act1", "Gerd");
 		AnalysisContextSerializer serializer = new AnalysisContextSerializer(c);
 		serializer.serialize("/Users/stocker/Desktop/", "test");
+		
+		PNMLIFNetAnalysisContextParser.parse("/Users/stocker/Desktop/test.xml", false);
 	}
 }

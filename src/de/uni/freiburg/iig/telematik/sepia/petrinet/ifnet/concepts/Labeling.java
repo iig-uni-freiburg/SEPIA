@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.validate.CompatibilityException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.jawl.context.ContextListener;
@@ -44,6 +45,8 @@ public class Labeling implements ContextListener {
 	private Map<String, SecurityLevel> subjectClearance = new HashMap<String, SecurityLevel>();
 
 	private Context context = null;
+	private String contextName = null;
+	private Class<?> contextclass = null;
 	
 	private boolean requireContext = true;
 	
@@ -73,6 +76,7 @@ public class Labeling implements ContextListener {
 		}
 		this.context = context;
 		this.context.addContextListener(this);
+		this.contextName = context.getName();
 		
 		List<String> activitiesToRemove = new ArrayList<String>();
 		for(String activity: activiyClassification.keySet()){
@@ -111,6 +115,32 @@ public class Labeling implements ContextListener {
 		}
 	}
 	
+	public String getContextName() {
+		if(context != null)
+			return context.getName();
+		return contextName;
+	}
+
+	public boolean setContextName(String contextName) {
+		if(requireContext)
+			return false;
+		this.contextName = contextName;
+		return true;
+	}
+
+	public Class<?> getContextclass() {
+		if(context != null)
+			return context.getClass();
+		return contextclass;
+	}
+
+	public boolean setContextclass(Class<?> contextclass) {
+		if(requireContext)
+			return false;
+		this.contextclass = contextclass;
+		return true;
+	}
+
 	private void setDefaultSubjectClearance(String subject) {
 		subjectClearance.put(subject, defaultSecurityLevel);
 	}
@@ -156,41 +186,35 @@ public class Labeling implements ContextListener {
 	}
 	
 	public void setActivityClassification(String activity, SecurityLevel securityLevel) {
-		if(requiresContext())
-			context.validateActivity(activity);
+		validateActivity(activity);
 		Validate.notNull(securityLevel);
 		activiyClassification.put(activity, securityLevel);
 	}
 	
 	public SecurityLevel getActivityClassification(String activity) {
-		if(requiresContext())
-			context.validateActivity(activity);
+		validateActivity(activity);
 		return activiyClassification.get(activity);
 	}
 	
 	public void setAttributeClassification(String attribute, SecurityLevel securityLevel) {
-		if(requiresContext())
-			context.validateObject(attribute);
+		validateAttribute(attribute);
 		Validate.notNull(securityLevel);
 		attributeClassification.put(attribute, securityLevel);
 	}
 	
 	public SecurityLevel getAttributeClassification(String attribute) {
-		if(requiresContext())
-			context.validateObject(attribute);
+		validateAttribute(attribute);
 		return attributeClassification.get(attribute);
 	}
 
 	public void setSubjectClearance(String subject, SecurityLevel securityLevel) {
-		if(requiresContext())
-			context.validateSubject(subject);
+		validateSubject(subject);
 		Validate.notNull(securityLevel);
 		subjectClearance.put(subject, securityLevel);
 	}
 	
 	public SecurityLevel getSubjectClearance(String subject) {
-		if(requiresContext())
-			context.validateSubject(subject);
+		validateSubject(subject);
 		return subjectClearance.get(subject);
 	}
 	
@@ -230,6 +254,21 @@ public class Labeling implements ContextListener {
 	@Override
 	public void activityRemoved(String transaction) {
 		activiyClassification.remove(transaction);
+	}
+	
+	public void validateActivity(String activity) throws CompatibilityException{
+		if(requireContext)
+			getContext().validateActivity(activity);
+	}
+	
+	public void validateAttribute(String attribute) throws CompatibilityException{
+		if(requireContext)
+			getContext().validateObject(attribute);
+	}
+	
+	public void validateSubject(String subject) throws CompatibilityException{
+		if(requireContext)
+			getContext().validateSubject(subject);
 	}
 	
 	@Override
