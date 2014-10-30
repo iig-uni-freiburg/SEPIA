@@ -50,7 +50,7 @@ public class AnalysisContextSerializer {
 				contextNameElement.setTextContent(labeling.getContext().getName());
 				contextElement.appendChild(contextNameElement);
 				Element contextTypeElement = support.createElement("contexttype");	
-				contextTypeElement.setTextContent(labeling.getContext().getClass().toString());
+				contextTypeElement.setTextContent(labeling.getContext().getClass().getCanonicalName());
 				contextElement.appendChild(contextTypeElement);
 			}
 			support.getRootElement().appendChild(contextElement);
@@ -111,6 +111,8 @@ public class AnalysisContextSerializer {
 		AnalysisContextSerializer serializer = new AnalysisContextSerializer(c);
 		serializer.serialize("/Users/stocker/Desktop/", "test");
 		
-		PNMLIFNetAnalysisContextParser.parse("/Users/stocker/Desktop/test.xml", false);
+		AnalysisContext parsedContext = PNMLIFNetAnalysisContextParser.parse("/Users/stocker/Desktop/test.xml", false);
+		System.out.println(parsedContext.getContextName());
+		System.out.println(parsedContext.getContextClass());
 	}
 }

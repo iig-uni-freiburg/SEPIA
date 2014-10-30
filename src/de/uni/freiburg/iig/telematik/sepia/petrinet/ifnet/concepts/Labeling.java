@@ -128,7 +128,7 @@ public class Labeling implements ContextListener {
 		return true;
 	}
 
-	public Class<?> getContextclass() {
+	public Class<?> getContextClass() {
 		if(context != null)
 			return context.getClass();
 		return contextclass;

@@ -100,7 +100,7 @@ public class PNMLIFNetAnalysisContextParser {
 			if(contextList.getLength() > 1)
 				throw new ParserException("XML contains more than one context element.");
 			Element contextElement = (Element) contextList.item(0);
-			Boolean requiresContext = new Boolean(contextElement.getAttribute("requires-context"));
+			Boolean requiresContext = new Boolean(contextElement.getAttribute("requirescontext"));
 			if(requiresContext){
 				Element contextNameElement = null;
 				String contextName = null;
@@ -117,8 +117,8 @@ public class PNMLIFNetAnalysisContextParser {
 				Element contextClassElement = null;
 				String contextClassName = null;
 				try {
-					contextClassElement = (Element) contextElement.getElementsByTagName("contextclass").item(0);
-					contextClassName = contextNameElement.getTextContent();
+					contextClassElement = (Element) contextElement.getElementsByTagName("contexttype").item(0);
+					contextClassName = contextClassElement.getTextContent();
 				} catch(Exception e){
 					throw new ParserException("Cannot parse context class.\nReason: " + e.getMessage());
 				}

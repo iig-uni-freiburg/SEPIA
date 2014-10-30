@@ -96,4 +96,8 @@ public class AnalysisContext {
 	public String getContextName(){
 		return labeling.getContextName();
 	}
+	
+	public Class<?> getContextClass(){
+		return labeling.getContextClass();
+	}
 }
