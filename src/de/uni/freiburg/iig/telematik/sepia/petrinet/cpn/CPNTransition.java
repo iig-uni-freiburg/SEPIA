@@ -6,9 +6,9 @@ public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	
 	private static final long serialVersionUID = 5527205170645751350L;
 
-	protected CPNTransition(){
-		super();
-	}
+//	protected CPNTransition(){
+//		super();
+//	}
 
 	public CPNTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);
@@ -27,8 +27,8 @@ public class CPNTransition extends AbstractCPNTransition<CPNFlowRelation> {
 	}
 
 	@Override
-	protected CPNTransition newInstance() {
-		return new CPNTransition();
+	protected CPNTransition newInstance(String name) {
+		return new CPNTransition(name);
 	}
 
 	@Override

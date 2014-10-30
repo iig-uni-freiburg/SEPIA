@@ -107,6 +107,7 @@ public class IFNetTest {
 			net.checkValidity();
 		} catch (PNValidationException e) {
 			System.out.println(e.getMessage());
+			System.out.println(net);
 			fail("An IF-net without analysis context should not be considered invalid!");
 		}
 	}

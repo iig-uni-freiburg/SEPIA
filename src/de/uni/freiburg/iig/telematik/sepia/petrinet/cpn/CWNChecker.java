@@ -204,15 +204,16 @@ public class CWNChecker {
 				throw new PNSoundnessException("At least one drain in the marking graph of the given cpn is not a valid end state.\nDrain: " + drainVertex.getElement() + "\nReason: " + e.getMessage());
 			}
 		}
-		Set<AbstractCPNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getVertices());
-		otherVertexes.removeAll(drains);
-		for(AbstractCPNMarkingGraphState<M> otherVertex : otherVertexes){			
-			try {
-				checkEndStateProperty(cpn, otherVertex.getElement(), outputPlaceName);
-			} catch(PNValidationException e){
-				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement() + "\nReason: " + e.getMessage());
-			}
-		}
+//		Set<AbstractCPNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getVertices());
+//		otherVertexes.removeAll(drains);
+//		for(AbstractCPNMarkingGraphState<M> otherVertex : otherVertexes){			
+//			try {
+//				checkEndStateProperty(cpn, otherVertex.getElement(), outputPlaceName);
+//				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement());
+//			} catch(PNValidationException e){
+////				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement() + "\nReason: " + e.getMessage());
+//			}
+//		}
 	}
 	
 	/**

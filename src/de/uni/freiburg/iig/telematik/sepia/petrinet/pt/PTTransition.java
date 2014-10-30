@@ -7,9 +7,9 @@ public class PTTransition extends AbstractPTTransition<PTFlowRelation> {
 	
 	private static final long serialVersionUID = -3508062465237541851L;
 
-	protected PTTransition(){
-		super();
-	}
+//	protected PTTransition(){
+//		super();
+//	}
 	
 	public PTTransition(String name) throws ParameterException {
 		super(name);
@@ -28,8 +28,8 @@ public class PTTransition extends AbstractPTTransition<PTFlowRelation> {
 	}
 
 	@Override
-	protected PTTransition newInstance() {
-		return new PTTransition();
+	protected PTTransition newInstance(String name) {
+		return new PTTransition(name);
 	}
 	
 	@Override

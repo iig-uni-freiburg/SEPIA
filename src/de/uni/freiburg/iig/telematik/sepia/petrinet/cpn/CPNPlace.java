@@ -6,9 +6,9 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 
 	private static final long serialVersionUID = 3215280429385825876L;
 
-	protected CPNPlace(){
-		super();
-	}
+//	protected CPNPlace(){
+//		super();
+//	}
 
 	public CPNPlace(String name) {
 		super(name);
@@ -19,8 +19,8 @@ public class CPNPlace extends AbstractCPNPlace<CPNFlowRelation> {
 	}
 
 	@Override
-	protected CPNPlace newInstance() {
-		return new CPNPlace();
+	protected CPNPlace newInstance(String name) {
+		return new CPNPlace(name);
 	}
 	
 	@Override

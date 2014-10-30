@@ -75,20 +75,18 @@ public class PNMLIFNetAnalysisContextParser {
 
 		if (analysisContextDocument != null) {
 			Labeling labeling = new Labeling();
+			labeling.setRequireContext(false);
 
 			// read token labels
 			Map<String, SecurityLevel> tokenLabels = readLabeling(analysisContextDocument, "tokenlabels", "tokenlabel", "color");
-			labeling.addAttributes(tokenLabels.keySet());
 			for (Entry<String, SecurityLevel> attributeClassification : tokenLabels.entrySet())
 				labeling.setAttributeClassification(attributeClassification.getKey(), attributeClassification.getValue());
 			// read clearances
 			Map<String, SecurityLevel> clearances = readLabeling(analysisContextDocument, "clearances", "clearance", "subject");
-			labeling.addSubjects(clearances.keySet());
 			for (Entry<String, SecurityLevel> clearance : clearances.entrySet())
 				labeling.setSubjectClearance(clearance.getKey(), clearance.getValue());
 			// read activity classifications
 			Map<String, SecurityLevel> activityClassifications = readLabeling(analysisContextDocument, "classifications", "classification", "activity");
-			labeling.addActivities(activityClassifications.keySet());
 			for (Entry<String, SecurityLevel> activityClassification : activityClassifications.entrySet())
 				labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
 

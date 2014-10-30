@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.PlaceListener;
@@ -60,9 +59,9 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 
 	// ------- Constructors --------------------------------------------------------------------------
 
-	protected AbstractPlace() {
-		super(PNNodeType.PLACE);
-	}
+//	protected AbstractPlace() {
+//		super(PNNodeType.PLACE);
+//	}
 
 	/**
 	 * Creates a new place with the given name.
@@ -159,13 +158,13 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 		return true;
 	}
 	
-	@Override
-	public void setName(String name){
-		Validate.notNull(name);
-		if(!placeListenerSupport.requestNameChangePermission(this, name))
-			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
-		this.name = name;
-	}
+//	@Override
+//	protected void setName(String name){
+//		Validate.notNull(name);
+//		if(!placeListenerSupport.requestNameChangePermission(this, name))
+//			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
+//		this.name = name;
+//	}
 
 	// ------- State manipulation -----------------------------------------------------------------------------
 
@@ -360,7 +359,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	}
 
 	@Override
-	protected abstract AbstractPlace<E, S> newInstance();
+	protected abstract AbstractPlace<E, S> newInstance(String name);
 
 	// ------- hashCode and equals --------------------------------------------------------------------
 

@@ -56,9 +56,9 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	
 	//------- Constructors ----------------------------------------------------------------------------
 	
-	protected AbstractTransition(){
-		super(PNNodeType.TRANSITION);
-	}
+//	protected AbstractTransition(){
+//		super(PNNodeType.TRANSITION);
+//	}
 	
 	/**
 	 * Creates a new transition with the given name.
@@ -149,13 +149,13 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 		return enabled;
 	}
 	
-	@Override
-	public void setName(String name){
-		Validate.notNull(name);
-		if(!listenerSupport.requestNameChangePermission(this, name))
-			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
-		this.name = name;
-	}
+//	@Override
+//	protected void setName(String name){
+//		Validate.notNull(name);
+//		if(!listenerSupport.requestNameChangePermission(this, name))
+//			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
+//		this.name = name;
+//	}
 	
 	/**
 	 * Checks if the Petri net transition is valid.<br>
@@ -269,7 +269,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	}
 	
 	@Override
-	protected abstract AbstractTransition<E,S> newInstance();
+	protected abstract AbstractTransition<E,S> newInstance(String name);
 	
 	
 	//------- hashCode and equals --------------------------------------------------------------------

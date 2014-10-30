@@ -6,9 +6,9 @@ public class PTPlace extends AbstractPTPlace<PTFlowRelation>{
 	
 	private static final long serialVersionUID = 5289560548969177264L;
 
-	protected PTPlace(){
-		super();
-	}
+//	protected PTPlace(){
+//		super();
+//	}
 	
 	public PTPlace(String name, String label) {
 		super(name, label);
@@ -19,8 +19,8 @@ public class PTPlace extends AbstractPTPlace<PTFlowRelation>{
 	}
 	
 	@Override
-	protected PTPlace newInstance() {
-		return new PTPlace();
+	protected PTPlace newInstance(String name) {
+		return new PTPlace(name);
 	}
 	
 	@Override

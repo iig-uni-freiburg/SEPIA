@@ -23,10 +23,10 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	 */
 	private Map<String, Integer> colorCapacity = new HashMap<String, Integer>();
 	
-	protected AbstractCPNPlace(){
-		super();
-		state = new Multiset<String>();
-	}
+//	protected AbstractCPNPlace(){
+//		super();
+//		state = new Multiset<String>();
+//	}
 	
 	public AbstractCPNPlace(String name) {
 		this(name, name);

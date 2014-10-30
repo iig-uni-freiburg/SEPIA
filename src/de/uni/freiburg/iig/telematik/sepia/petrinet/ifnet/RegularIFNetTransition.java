@@ -8,9 +8,9 @@ public class RegularIFNetTransition extends AbstractRegularIFNetTransition<IFNet
 
 	private static final long serialVersionUID = 8765864248775516722L;
 
-	protected RegularIFNetTransition() {
-		super();
-	}
+//	protected RegularIFNetTransition() {
+//		super();
+//	}
 
 	public RegularIFNetTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);
@@ -48,7 +48,7 @@ public class RegularIFNetTransition extends AbstractRegularIFNetTransition<IFNet
 	}
 
 	@Override
-	protected RegularIFNetTransition newInstance() {
-		return new RegularIFNetTransition();
+	protected RegularIFNetTransition newInstance(String name) {
+		return new RegularIFNetTransition(name);
 	}
 }

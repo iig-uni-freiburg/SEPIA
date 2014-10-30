@@ -27,9 +27,9 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 	protected GuardDataContainer dataContainer = null;
 	protected Set<AbstractConstraint<?>> guards = new HashSet<AbstractConstraint<?>>();
 	
-	protected AbstractRegularIFNetTransition() {
-		super(TransitionType.REGULAR);
-	}
+//	protected AbstractRegularIFNetTransition() {
+//		super(TransitionType.REGULAR);
+//	}
 
 	public AbstractRegularIFNetTransition(String name, boolean isSilent) {
 		super(TransitionType.REGULAR, name, isSilent);

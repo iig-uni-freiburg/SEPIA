@@ -7,9 +7,9 @@ public class DeclassificationTransition extends AbstractDeclassificationTransiti
 	
 	private static final long serialVersionUID = 7856785255356077316L;
 
-	protected DeclassificationTransition(){
-		super();
-	}
+//	protected DeclassificationTransition(){
+//		super();
+//	}
 	
 	public DeclassificationTransition(String name, String label, boolean isEmpty) {
 		super(name, label, isEmpty);
@@ -28,8 +28,8 @@ public class DeclassificationTransition extends AbstractDeclassificationTransiti
 	}
 
 	@Override
-	protected DeclassificationTransition newInstance() {
-		return new DeclassificationTransition();
+	protected DeclassificationTransition newInstance(String name) {
+		return new DeclassificationTransition(name);
 	}
 
 	@Override

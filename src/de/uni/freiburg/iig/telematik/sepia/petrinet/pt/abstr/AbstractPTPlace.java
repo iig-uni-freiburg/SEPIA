@@ -24,10 +24,10 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	private static final long serialVersionUID = -6000454236117805465L;
 
 
-	protected AbstractPTPlace(){
-		super();
-		state = 0;
-	}
+//	protected AbstractPTPlace(){
+//		super();
+//		state = 0;
+//	}
 	
 	/**
 	 * Constructs a new P/T Net place with the given name<br>

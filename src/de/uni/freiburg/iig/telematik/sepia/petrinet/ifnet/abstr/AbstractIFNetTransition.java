@@ -14,10 +14,10 @@ public abstract class AbstractIFNetTransition<E extends AbstractIFNetFlowRelatio
 	
 	private TransitionType type = null;
 	
-	protected AbstractIFNetTransition(TransitionType type){
-		super();
-		this.type = type;
-	}
+//	protected AbstractIFNetTransition(TransitionType type){
+//		super();
+//		this.type = type;
+//	}
 
 	public AbstractIFNetTransition(TransitionType type, String name, boolean isEmpty) {
 		super(name, isEmpty);

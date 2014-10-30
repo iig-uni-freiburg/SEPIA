@@ -6,9 +6,9 @@ public class IFNetPlace extends AbstractIFNetPlace<IFNetFlowRelation> {
 
 	private static final long serialVersionUID = 4230385963571421717L;
 
-	protected IFNetPlace(){
-		super();
-	}
+//	protected IFNetPlace(){
+//		super();
+//	}
 
 	public IFNetPlace(String name, String label) {
 		super(name, label);
@@ -19,8 +19,8 @@ public class IFNetPlace extends AbstractIFNetPlace<IFNetFlowRelation> {
 	}
 
 	@Override
-	protected IFNetPlace newInstance() {
-		return new IFNetPlace();
+	protected IFNetPlace newInstance(String name) {
+		return new IFNetPlace(name);
 	}
 
 }

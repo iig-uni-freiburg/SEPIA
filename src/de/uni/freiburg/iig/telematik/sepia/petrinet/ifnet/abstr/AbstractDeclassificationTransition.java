@@ -11,9 +11,9 @@ public abstract class AbstractDeclassificationTransition<E extends AbstractIFNet
 	
 	private static final long serialVersionUID = 6265290456894007048L;
 
-	protected AbstractDeclassificationTransition(){
-		super(TransitionType.REGULAR);
-	}
+//	protected AbstractDeclassificationTransition(){
+//		super(TransitionType.REGULAR);
+//	}
 	
 	public AbstractDeclassificationTransition(String name, String label, boolean isSilent) {
 		super(TransitionType.REGULAR, name, label, isSilent);

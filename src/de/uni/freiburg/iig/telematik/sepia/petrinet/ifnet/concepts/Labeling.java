@@ -1,23 +1,19 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
-import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
+import de.uni.freiburg.iig.telematik.jawl.context.Context;
+import de.uni.freiburg.iig.telematik.jawl.context.ContextListener;
 
 
 
-public class Labeling {
+public class Labeling implements ContextListener {
 	
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>
@@ -46,259 +42,157 @@ public class Labeling {
 	 * Subjects are indexed by name.
 	 */
 	private Map<String, SecurityLevel> subjectClearance = new HashMap<String, SecurityLevel>();
-	/**
-	 * Process activities (Names of Petri net transitions).
-	 */
-	private Set<String> activities = new HashSet<String>();
-	/**
-	 * Data elements processed during process execution.
-	 */
-	private Set<String> attributes = new HashSet<String>();
-	/**
-	 * Subjects executing process activities (subject descriptors of Petri net transitions).
-	 */
-	private Set<String> subjects = new HashSet<String>();
+
+	private Context context = null;
 	
-	public Labeling(){};
+	private boolean requireContext = true;
 	
-	public Labeling(IFNet ifNet, Collection<String> subjects) {
-		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions(), false), ifNet.getTokenColors(), subjects, DEFAULT_SECURITY_LEVEL);
+	public Labeling(){}
+	
+	public Labeling(Context context) {
+		setContext(context, true);
 	}
 	
-	public Labeling(IFNet ifNet, 
-					Collection<String> subjects, 
-				    SecurityLevel defaultSecurityLevel) {
-		this(PNUtils.getLabelSetFromTransitions(ifNet.getTransitions(), false), ifNet.getTokenColors(), subjects, defaultSecurityLevel);
-	}
-	
-	public Labeling(Collection<String> activities,
-					Collection<String> attributes,
-					Collection<String> subjects, 
-					SecurityLevel defaultSecurityLevel) {
-				
-		
-		initialize(activities, attributes, subjects, defaultSecurityLevel);
-	}
-	
-	public Labeling(Collection<String> activities,
-			   		Collection<String> attributes,
-			   		Collection<String> subjects) {
-		this(activities, attributes, subjects, DEFAULT_SECURITY_LEVEL);
-	}
-	
-	private void initialize(Collection<String> activities,
-			   				Collection<String> attributes,
-			   				Collection<String> subjects, 
-			   				SecurityLevel defaultSecurityLevel) {
-		
+	public Labeling(Context context, SecurityLevel defaultSecurityLevel) {
+		this(context);
+		Validate.notNull(defaultSecurityLevel);
 		this.defaultSecurityLevel = defaultSecurityLevel;
-		addActivities(activities);
-		addAttributes(attributes);
-		addSubjects(subjects);
 	}
 	
-	public Set<String> getActivities(){
-		return Collections.unmodifiableSet(activities);
+	public Context getContext(){
+		return context;
 	}
 	
-	public boolean addActivities(String... activities) {
-		return addActivities(Arrays.asList(activities));
-	}
-	
-	public boolean addActivities(Collection<String> activities) {
-		Validate.notNull(activities);
-		Validate.noNullElements(activities);
-		
-		if(activities.isEmpty())
-			return false;
-		
-		boolean modified = false;
-		for(String activity: activities){
-			if(this.activities.add(activity)){
-				activiyClassification.put(activity, defaultSecurityLevel);
-				modified = true;
-			}
+	public void setContext(Context context, boolean reset){
+		Validate.notNull(context);
+		if(this.context != null){
+			this.context.removeContextListener(this);
 		}
-		return modified;
+		if(reset){
+			reset();
+		}
+		this.context = context;
+		this.context.addContextListener(this);
+		
+		List<String> activitiesToRemove = new ArrayList<String>();
+		for(String activity: activiyClassification.keySet()){
+			if(!getActivities().contains(activity))
+				activitiesToRemove.add(activity);
+		}
+		for(String activityToRemove: activitiesToRemove)
+			activiyClassification.remove(activityToRemove);
+		for(String activity: getActivities()){
+			if(!activiyClassification.containsKey(activity))
+				setDefaultActivityClassification(activity);
+		}
+		
+		List<String> attributesToRemove = new ArrayList<String>();
+		for(String attribute: attributeClassification.keySet()){
+			if(!getAttributes().contains(attribute))
+				attributesToRemove.add(attribute);
+		}
+		for(String attributeToRemove: attributesToRemove)
+			attributeClassification.remove(attributeToRemove);
+		for(String attribute: getAttributes()){
+			if(!attributeClassification.containsKey(attribute))
+				setDefaultAttributeClassification(attribute);
+		}
+		
+		List<String> subjectsToRemove = new ArrayList<String>();
+		for(String subject: subjectClearance.keySet()){
+			if(!getSubjects().contains(subject))
+				subjectsToRemove.add(subject);
+		}
+		for(String subjectToRemove: subjectsToRemove)
+			subjectClearance.remove(subjectToRemove);
+		for(String subject: getSubjects()){
+			if(!subjectClearance.containsKey(subject))
+				setDefaultSubjectClearance(subject);
+		}
 	}
 	
-//	public boolean removeActivities(String... activities) {
-//		return removeActivities(Arrays.asList(activities));
-//	}
-//	
-//	public boolean removeActivities(Collection<String> activities) {
-//		Validate.notNull(activities);
-//		Validate.noNullElements(activities);
-//				
-//		
-//		if(activities.isEmpty())
-//			return false;
-//		
-//		if(this.activities.removeAll(activities)){
-//			for(String activity: activities){
-//				activiyClassification.remove(activity);
-//			}
-//			return true;
-//		}
-//		return false;
-//	}
+	private void setDefaultSubjectClearance(String subject) {
+		subjectClearance.put(subject, defaultSecurityLevel);
+	}
+
+	private void setDefaultAttributeClassification(String attribute) {
+		attributeClassification.put(attribute, defaultSecurityLevel);
+	}
+
+	private void setDefaultActivityClassification(String activity) {
+		activiyClassification.put(activity, defaultSecurityLevel);
+	}
+
+	public void reset(){
+		activiyClassification.clear();
+		attributeClassification.clear();
+		subjectClearance.clear();
+	}
+	
+	public boolean requiresContext() {
+		return requireContext;
+	}
+
+	public void setRequireContext(boolean requireContext) {
+		this.requireContext = requireContext;
+	}
+
+	public Set<String> getActivities(){
+		if(requiresContext())
+			return Collections.unmodifiableSet(context.getActivities());
+		return Collections.unmodifiableSet(activiyClassification.keySet());
+	}
 	
 	public Set<String> getSubjects(){
-		return Collections.unmodifiableSet(subjects);
+		if(requiresContext())
+			return Collections.unmodifiableSet(context.getSubjects());
+		return Collections.unmodifiableSet(subjectClearance.keySet());
 	}
-	
-	public boolean addSubjects(String... subjects) {
-		return addSubjects(Arrays.asList(subjects));
-	}
-	
-	public boolean addSubjects(Collection<String> subjects) {
-		Validate.notNull(subjects);
-		Validate.noNullElements(subjects);
-		
-		if(subjects.isEmpty())
-			return false;
-		
-		boolean modified = false;
-		for(String subject: subjects){
-			if(this.subjects.add(subject)){
-				subjectClearance.put(subject, defaultSecurityLevel);
-				modified = true;
-			}
-		}
-		return modified;
-	}
-	
-//	public boolean removeSubjects(String... subjects) {
-//		return removeSubjects(Arrays.asList(subjects));
-//	}
-//	
-//	public boolean removeSubjects(Collection<String> subjects) {
-//		Validate.notNull(subjects);
-//		Validate.noNullElements(subjects);
-//		
-//		if(subjects.isEmpty())
-//			return false;
-//		
-//		if(this.subjects.removeAll(subjects)){
-//			for(String subject: subjects){
-//				subjectClearance.remove(subject);
-//			}
-//			return true;
-//		}
-//		return false;
-//	}
 	
 	public Set<String> getAttributes(){
-		return Collections.unmodifiableSet(attributes);
+		if(requiresContext())
+			return Collections.unmodifiableSet(context.getObjects());
+		return Collections.unmodifiableSet(attributeClassification.keySet());
 	}
-	
-	public boolean addAttributes(String... attributes) {
-		return addAttributes(Arrays.asList(attributes));
-	}
-	
-	public boolean addAttributes(Collection<String> attributes) {
-		Validate.notNull(attributes);
-		Validate.noNullElements(attributes);
-		
-		if(attributes.isEmpty())
-			return false;
-		
-		boolean modified = false;
-		for(String attribute: attributes){
-			
-			if(AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR.equals(attribute))
-				continue;
-								
-			if(this.attributes.add(attribute)){
-				attributeClassification.put(attribute, defaultSecurityLevel);
-				modified = true;
-			}
-		}
-		return modified;
-	}
-	
-//	public boolean removeAttribute(String... attributes) {
-//		return removeAttributes(Arrays.asList(attributes));
-//	}
-//	
-//	public boolean removeAttributes(Collection<String> attributes) {
-//		Validate.notNull(attributes);
-//		Validate.noNullElements(attributes);
-//		
-//		if(attributes.isEmpty())
-//			return false;
-//		
-//		if(this.attributes.removeAll(attributes)){
-//			for(String attribute: attributes){
-//				attributeClassification.remove(attribute);
-//			}
-//			return true;
-//		}
-//		return false;
-//	}
 	
 	public void setActivityClassification(String activity, SecurityLevel securityLevel) {
-		validateActivity(activity);
+		if(requiresContext())
+			context.validateActivity(activity);
 		Validate.notNull(securityLevel);
-		
 		activiyClassification.put(activity, securityLevel);
 	}
 	
 	public SecurityLevel getActivityClassification(String activity) {
-		if(!activiyClassification.containsKey(activity))
-			return getDefaultSecurityLevel();
+		if(requiresContext())
+			context.validateActivity(activity);
 		return activiyClassification.get(activity);
 	}
 	
 	public void setAttributeClassification(String attribute, SecurityLevel securityLevel) {
-		validateAttribute(attribute);
+		if(requiresContext())
+			context.validateObject(attribute);
 		Validate.notNull(securityLevel);
-		
 		attributeClassification.put(attribute, securityLevel);
 	}
 	
 	public SecurityLevel getAttributeClassification(String attribute) {
-		if(!attributeClassification.containsKey(attribute))
-			return getDefaultSecurityLevel();
+		if(requiresContext())
+			context.validateObject(attribute);
 		return attributeClassification.get(attribute);
 	}
 
 	public void setSubjectClearance(String subject, SecurityLevel securityLevel) {
-		validateSubject(subject);
+		if(requiresContext())
+			context.validateSubject(subject);
 		Validate.notNull(securityLevel);
-
 		subjectClearance.put(subject, securityLevel);
 	}
 	
-	public SecurityLevel getSubjectClearance(String subjectDescriptor) {
-		if(!subjectClearance.containsKey(subjectDescriptor))
-			return getDefaultSecurityLevel();
-		return subjectClearance.get(subjectDescriptor);
+	public SecurityLevel getSubjectClearance(String subject) {
+		if(requiresContext())
+			context.validateSubject(subject);
+		return subjectClearance.get(subject);
 	}
-	
-	 
-	//------- Parameter validation -----------------------------------------------------------------------------------
-	
-	protected void validateActivity(String activity) {
-		Validate.notNull(activity);
-		if(!activities.contains(activity))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown process activity: " + activity);
-	}
-	
-	protected void validateAttribute(String attribute) {
-		Validate.notNull(attribute);
-		if(!attributes.contains(attribute))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown data element: " + attribute);
-	}
-	
-	protected void validateSubject(String subject) {
-		Validate.notNull(subject);
-		if(!subjects.contains(subject))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Unknown subject descriptor: " + subject);
-	}
-	
-	
-	
 	
 	public SecurityLevel getDefaultSecurityLevel() {
 		return defaultSecurityLevel;
@@ -309,10 +203,40 @@ public class Labeling {
 	}
 
 	@Override
+	public void subjectAdded(String subject) {
+		setDefaultSubjectClearance(subject);
+	}
+
+	@Override
+	public void subjectRemoved(String subject) {
+		subjectClearance.remove(subject);
+	}
+
+	@Override
+	public void objectAdded(String object) {
+		setDefaultAttributeClassification(object);
+	}
+
+	@Override
+	public void objectRemoved(String object) {
+		attributeClassification.remove(object);
+	}
+
+	@Override
+	public void activityAdded(String transaction) {
+		setDefaultActivityClassification(transaction);
+	}
+
+	@Override
+	public void activityRemoved(String transaction) {
+		activiyClassification.remove(transaction);
+	}
+	
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Activities: ");
-		for (String activity : activities) {
+		for (String activity : getActivities()) {
 			builder.append(activity);
 			builder.append('[');
 			builder.append(getActivityClassification(activity));
@@ -322,7 +246,7 @@ public class Labeling {
 		builder.append('\n');
 
 		builder.append("Attributes: ");
-		for (String attribute : attributes) {
+		for (String attribute : getAttributes()) {
 			builder.append(attribute);
 			builder.append('[');
 			builder.append(getAttributeClassification(attribute));
@@ -332,7 +256,7 @@ public class Labeling {
 		builder.append('\n');
 
 		builder.append("Subjects: ");
-		for (String subject : subjects) {
+		for (String subject : getSubjects()) {
 			builder.append(subject);
 			builder.append('[');
 			builder.append(getSubjectClearance(subject));
@@ -341,4 +265,5 @@ public class Labeling {
 		}
 		return builder.toString();
 	}
+	
 }

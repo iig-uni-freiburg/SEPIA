@@ -226,14 +226,28 @@ public class PNSerialization {
 		serializer.serialize(path, fileName);
 	}
 
-	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>, N extends AbstractPetriNet<P, T, F, M, S, X, Y>, G extends AbstractPNGraphics<P, T, F, M, S>>
-
+	public static <P extends AbstractPlace<F,S>, 
+				   T extends AbstractTransition<F,S>, 
+				   F extends AbstractFlowRelation<P,T,S>, 
+				   M extends AbstractMarking<S>, 
+				   S extends Object, 
+				   X extends AbstractMarkingGraphState<M,S>, 
+				   Y extends AbstractMarkingGraphRelation<M,X,S>, 
+				   N extends AbstractPetriNet<P,T,F,M,S,X,Y>, 
+				   G extends AbstractPNGraphics<P,T,F,M,S>>
+	
 	void
 
 	serialize(N net, PNSerializationFormat format, String fileName) throws SerializationException, IOException {
-
 		Validate.notNull(fileName);
 		File file = new File(fileName);
 		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
+	}
+	
+	public static void main(String[] args) throws SerializationException, IOException {
+		GraphicalPTNet net = new GraphicalPTNet();
+		net.getPetriNet().setName("gerd");
+		System.out.println(net.getPetriNet().getName());
+		PNSerialization.serialize(net, PNSerializationFormat.PNML, "/Users/stocker/Desktop/test.pnml");
 	}
 }

@@ -7,19 +7,16 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
@@ -57,16 +54,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	protected Map<String, R> regularTransitions;
 	protected Map<String, D> declassificationTransitions;
 	
-	/**
-	 * The analysis context of the IF-Net.<br>
-	 * This context contains information about:
-	 * <ul>
-	 * <li>Activity classification: The security level of process activities (IF-Net transitions).</li>
-	 * <li>Attribute classification: The security level of process attributes (Colored tokens of the IF-Net).</li>
-	 * <li>Subject clearance: The clearance level of subjects executing process activities.</li>
-	 * <li>Subject descriptors: Subjects assigned to process activities.</li>
-	 * </ul>
-	 */
 	protected AnalysisContext analysisContext;
 	
 	public AbstractIFNet() {
@@ -96,7 +83,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		super.initialize();
 		regularTransitions = new HashMap<String, R>();
 		declassificationTransitions = new HashMap<String, D>();
-		analysisContext = new AnalysisContext();
 	}
 	
 	public Collection<R> getRegularTransitions(){
@@ -110,6 +96,10 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean addTransition(T transition) {
+		if(hasAnalysisContext()){
+			if(!analysisContext.getActivities().contains(transition.getLabel()))
+				throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot add transition with label \"" +transition.getLabel()+"\".\nReason: The connected analysis context does not contain an activity with this name." );
+		}
 		boolean superResult = super.addTransition(transition);
 		if(!superResult)
 			return false;
@@ -119,7 +109,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		} else if(transition instanceof AbstractDeclassificationTransition) {
 			declassificationTransitions.put(transition.getName(), (D) transition);
 		}
-		analysisContext.getLabeling().addActivities(transition.getName());
 		return true;
 	}
 	 
@@ -128,7 +117,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		if(super.removeTransition(transitionName)){
 			regularTransitions.remove(transitionName);
 			declassificationTransitions.remove(transitionName);
-//			analysisContext.getLabeling().removeActivities(transitionName);
 			return true;
 		}
 		return false;
@@ -164,7 +152,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 			return false;
 		}
 		addTransition((T) createNewDeclassificationTransition(transitionName, transitionLabel, false));
-		getAnalysisContext().getLabeling().setActivityClassification(transitionName, SecurityLevel.HIGH);
+		if(hasAnalysisContext()){
+			getAnalysisContext().getLabeling().setActivityClassification(transitionName, SecurityLevel.HIGH);
+		}
 		return true;
 	}
 	
@@ -188,10 +178,12 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return analysisContext;
 	}
 	
+	public boolean hasAnalysisContext(){
+		return analysisContext != null;
+	}
+	
 	public void setAnalysisContext(AnalysisContext analysisContext) {
-		Validate.notNull(analysisContext);
-		if(!analysisContext.getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions(), false)))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all Petri net transitions as activities.");
+		validateAnalysisContext(analysisContext);
 		this.analysisContext = analysisContext;
 	}
 	
@@ -199,15 +191,20 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		this.analysisContext = null;
 	}
 	
-	//------- Interface methods ---------------------------------------------------------------------
-
-	@Override
-	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, Multiset<String>>> e) {
-		super.relationConstraintChanged(e);
+	public void validateAnalysisContext(AnalysisContext analysisContext){
+		Validate.notNull(analysisContext);
+		if(!analysisContext.getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions(), false)))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all Petri net transitions as activities.");
+		if(!analysisContext.getAttributes().containsAll(getTokenColors()))
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all token colors as attributes.");
+	}
+	
+	public boolean acceptsAnalysisContext(AnalysisContext analysisContext){
 		try {
-			getAnalysisContext().getLabeling().addAttributes(getTokenColors());
-		} catch (ParameterException e1) {
-			e1.printStackTrace();
+			validateAnalysisContext(analysisContext);
+			return true;
+		} catch(ParameterException e){
+			return false;
 		}
 	}
 
@@ -266,6 +263,19 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		
 		if(getAnalysisContext() == null)
 			return;
+		
+		// Check if all token colors are contained in the analysis context in form of attributes.
+		for(String tokenColor: getTokenColors()){
+			if(tokenColor == defaultTokenColor())
+				continue;
+			if(!getAnalysisContext().getAttributes().contains(tokenColor))
+				throw new PNValidationException("Analysis context does not contain attribute: " + tokenColor);
+		}
+		
+		for(T transition: getTransitions(false)){
+			if(!getAnalysisContext().getActivities().contains(transition.getLabel()))
+				throw new PNValidationException("Analysis context does not contain activity " + transition.getLabel());
+		}
 		
 		// Check if there is a subject descriptor for every transition
 		for (T transition : getTransitions()) {

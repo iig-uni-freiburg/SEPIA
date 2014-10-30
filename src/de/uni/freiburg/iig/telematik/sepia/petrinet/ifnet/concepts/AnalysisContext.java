@@ -1,6 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -8,41 +8,35 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
+import de.uni.freiburg.iig.telematik.jawl.context.Context;
 
-
+/**
+ * Analysis context of IF-Nets.<br>
+ * Analysis contexts contain information about:
+ * <ul>
+ * <li>Activity classification: The security level of process activities (IF-Net transitions).</li>
+ * <li>Attribute classification: The security level of process attributes (Colored tokens of the IF-Net).</li>
+ * <li>Subject clearance: The clearance level of subjects executing process activities.</li>
+ * <li>Subject descriptors: Subjects assigned to process activities.</li>
+ * </ul>
+ */
 public class AnalysisContext {
 	
 	private String name = null;
-	private Labeling labeling = new Labeling();
+	private Labeling labeling = null;
 	private Map<String, String> subjectDescriptors = new HashMap<String, String>();
-	
-	public AnalysisContext(){}
 	
 	public AnalysisContext(Labeling labeling) {
 		Validate.notNull(labeling);
 		this.labeling = labeling;
 	} 
 	
-	public AnalysisContext(IFNet ifNet, Collection<String> subjects) {
-		this(new Labeling(ifNet, subjects));
+	public AnalysisContext(Context context) {
+		this(new Labeling(context));
 	}
 	
-	public AnalysisContext(IFNet ifNet, Collection<String> subjects, SecurityLevel defaultSecurityLevel) {
-		this(new Labeling(ifNet, subjects, defaultSecurityLevel));
-	}
-	
-	public AnalysisContext(Collection<String> activities,
-						   Collection<String> attributes,
-						   Collection<String> subjects, 
-						   SecurityLevel defaultSecurityLevel) {
-		this(new Labeling(activities, attributes, subjects, defaultSecurityLevel));
-	}
-	
-	public AnalysisContext(Collection<String> activities,
-			   Collection<String> attributes,
-			   Collection<String> subjects) {
-		this(new Labeling(activities, attributes, subjects));
+	public AnalysisContext(Context context, SecurityLevel defaultSecurityLevel) {
+		this(new Labeling(context, defaultSecurityLevel));
 	}
 	
 	public String getName() {
@@ -77,8 +71,8 @@ public class AnalysisContext {
 	}
 	  
 	public void setSubjectDescriptor(String activity, String subject) {
-		labeling.validateActivity(activity);
-		labeling.validateSubject(subject);
+		labeling.getContext().validateActivity(activity);
+		labeling.getContext().validateSubject(subject);
 		
 		if(labeling.getSubjectClearance(subject) == SecurityLevel.LOW && labeling.getActivityClassification(activity) == SecurityLevel.HIGH)
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot assign a subject with LOW clearance to an activity with HIGH classification.");
@@ -87,7 +81,15 @@ public class AnalysisContext {
 	}
 	
 	public String getSubjectDescriptor(String activity) {
-		labeling.validateActivity(activity);
+		labeling.getContext().validateActivity(activity);
 		return subjectDescriptors.get(activity);
+	}
+	
+	public Map<String, String> getsubjectDescriptors(){
+		return Collections.unmodifiableMap(subjectDescriptors);
+	}
+	
+	public void setContext(Context context, boolean reset){
+		labeling.setContext(context, reset);
 	}
 }

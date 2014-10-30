@@ -181,7 +181,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	protected void initialize(){};
 	
 	
-	
 	//------- Basic properties ----------------------------------------------------------------------
 	
 	/**

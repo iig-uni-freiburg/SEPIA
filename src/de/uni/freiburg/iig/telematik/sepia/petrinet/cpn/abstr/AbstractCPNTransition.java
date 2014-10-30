@@ -12,9 +12,9 @@ public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? 
 
 	private static final long serialVersionUID = -4810541031431890045L;
 
-	protected AbstractCPNTransition(){
-		super();
-	}
+//	protected AbstractCPNTransition(){
+//		super();
+//	}
 	
 	public AbstractCPNTransition(String name, boolean isEmpty) {
 		super(name, isEmpty);

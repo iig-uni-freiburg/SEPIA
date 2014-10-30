@@ -8,9 +8,9 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 	
 	private static final long serialVersionUID = 1253534975141710023L;
 
-	protected AbstractPTTransition(){
-		super();
-	}
+//	protected AbstractPTTransition(){
+//		super();
+//	}
 
 	public AbstractPTTransition(String name) {
 		super(name);
@@ -71,9 +71,8 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 	
 	@Override
 	public AbstractPTTransition<E> clone() {
-		AbstractPTTransition<E> result = (AbstractPTTransition<E>) newInstance();
+		AbstractPTTransition<E> result = (AbstractPTTransition<E>) newInstance(getName());
 		try {
-			result.setName(getName());
 			result.setLabel(getLabel());
 		} catch (ParameterException e) {
 			e.printStackTrace();

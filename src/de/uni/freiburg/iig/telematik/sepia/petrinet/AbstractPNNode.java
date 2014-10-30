@@ -62,10 +62,10 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	//------- Constructors ---------------------------------------------------------------------------
 	
-	protected AbstractPNNode(PNNodeType type){
-		super();
-		this.type = type;
-	}
+//	protected AbstractPNNode(PNNodeType type){
+//		super();
+//		this.type = type;
+//	}
 	
 	/**
 	 * Creates a new Petri net node, using the given name.<br>
@@ -103,13 +103,13 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		return name;
 	}
 	
-	/**
-	 * Sets the name of the Petri net node.<br>
-	 * Implementing classes must make sure, that the net does not contain other nodes with the same name.
-	 * @param name New name for the Petri net node.
-	 * @If the given name is <code>null</code>.
-	 */
-	public abstract void setName(String name);
+//	/**
+//	 * Sets the name of the Petri net node.<br>
+//	 * Implementing classes must make sure, that the net does not contain other nodes with the same name.
+//	 * @param name New name for the Petri net node.
+//	 * @If the given name is <code>null</code>.
+//	 */
+//	protected abstract void setName(String name);
 	
 	/**
 	 * Returns the label of the Petri net node.
@@ -375,12 +375,11 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		return String.format(toStringFormat, name, label);
 	}
 
-	protected abstract AbstractPNNode<E> newInstance();
+	protected abstract AbstractPNNode<E> newInstance(String name);
 	
 	@Override
 	public AbstractPNNode<E> clone() {
-		AbstractPNNode<E> result = newInstance();
-		result.setName(getName());
+		AbstractPNNode<E> result = newInstance(getName());
 		result.setLabel(getLabel());
 		return result;
 	}
