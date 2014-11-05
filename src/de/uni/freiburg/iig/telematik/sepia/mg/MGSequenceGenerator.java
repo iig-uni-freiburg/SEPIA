@@ -53,8 +53,8 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		}
 		
 		if(!includeSilentTransitions){
-			removeSilentTransitions(sequences);	
-			removeSilentTransitions(completeSequences);	
+			sequences = removeSilentTransitions(sequences);	
+			completeSequences = removeSilentTransitions(completeSequences);	
 		}
 		return new MGTraversalResult(sequences, completeSequences);
 	}
@@ -143,9 +143,11 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 //		return sequences;
 	}
 	
-	private void removeSilentTransitions(Set<List<String>> sequences) {
+	private Set<List<String>> removeSilentTransitions(Set<List<String>> sequences) {
+		Set<List<String>> result = new HashSet<List<String>>();
 		if(sequences.isEmpty())
-			return;
+			return result;
+		
 		for(List<String> sequence: sequences){
 			Set<String> activitiesToRemove = new HashSet<String>();
 			for(String activityLabel: sequence){
@@ -155,8 +157,15 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 					}
 				}
 			}
-			sequence.removeAll(activitiesToRemove);
+//			System.out.println(sequence);
+//			System.out.println(activitiesToRemove);
+//			System.out.println("---");
+			if(activitiesToRemove.size() < sequence.size()){
+				sequence.removeAll(activitiesToRemove);
+				result.add(sequence);
+			}
 		}
+		return result;
 	}
 	
 	private Set<List<String>> getActivitySequencesRec(Set<List<String>> sequences, List<X> stateList, int index) {

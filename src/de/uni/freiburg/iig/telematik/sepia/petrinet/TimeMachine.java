@@ -20,10 +20,10 @@ public class TimeMachine<P extends AbstractPlace<F,S>,
 						 X extends AbstractMarkingGraphState<M,S>, 
 						 Y extends AbstractMarkingGraphRelation<M,X,S>> {
 
-	private long time = 0L;
+	private double time = 0;
 	private PNTimeContext timeContext = null;
 	private AbstractPetriNet<P,T,F,M,S,X,Y> petriNet = null;
-	private Map<Long,List<TokenConstraint>> pendingActions = new HashMap<Long,List<TokenConstraint>>();
+	private Map<Double, List<TokenConstraint>> pendingActions = new HashMap<Double, List<TokenConstraint>>();
 	
 	public TimeMachine(AbstractPetriNet<P, T, F, M, S, X, Y> petriNet, PNTimeContext timeContext) {
 		super();
@@ -42,23 +42,24 @@ public class TimeMachine<P extends AbstractPlace<F,S>,
 	}
 	
 	public void reset(){
-		time = 0L;
+		time = 0;
 		pendingActions.clear();
 		petriNet.reset();
 	}
 	
-	public long getTime(){
+	public double getTime() {
 		return time;
 	}
 	
 	public boolean incTime(){
-		time = Collections.min(pendingActions.keySet());
+		if (pendingActions.keySet().size() > 0)
+			time = Collections.min(pendingActions.keySet());
 		return checkPendingActions();
 	}
 	
 	private boolean checkPendingActions(){
-		List<Long> actionTimepoints = new ArrayList<Long>();
-		for(long pendingActionTime: pendingActions.keySet()){
+		List<Double> actionTimepoints = new ArrayList<Double>();
+		for (double pendingActionTime : pendingActions.keySet()) {
 			if(pendingActionTime <= time){
 				actionTimepoints.add(pendingActionTime);
 			}
@@ -67,7 +68,7 @@ public class TimeMachine<P extends AbstractPlace<F,S>,
 			return false;
 		
 		Collections.sort(actionTimepoints);
-		for(long actionTimepoint: actionTimepoints){
+		for (Double actionTimepoint : actionTimepoints) {
 			for(TokenConstraint constraint: pendingActions.get(actionTimepoint)){
 				petriNet.getPlace(constraint.placeName).addTokens(constraint.tokens);
 			}
@@ -97,14 +98,14 @@ public class TimeMachine<P extends AbstractPlace<F,S>,
 			TokenConstraint newConstraint = new TokenConstraint();
 			newConstraint.setPlaceName(r.getPlace().getName());
 			newConstraint.setTokens(r.getConstraint());
-			long delay = timeContext.getDelayTP(transitionName, r.getPlace().getName());
+			double delay = timeContext.getDelayTP(transitionName, r.getPlace().getName());
 			putConstraint(delay, newConstraint);
 		}
 		transition.notifyFiring();
 	}
 	
-	private void putConstraint(long delay, TokenConstraint constraint){
-		long actionTime = time + delay;
+	private void putConstraint(double delay, TokenConstraint constraint) {
+		double actionTime = time + delay;
 		if(!pendingActions.containsKey(actionTime)){
 			pendingActions.put(actionTime, new ArrayList<TokenConstraint>());
 		}

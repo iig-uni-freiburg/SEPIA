@@ -47,7 +47,7 @@ public abstract class TimedNetExecutor<P extends AbstractPlace<F,S>,
 	}
 	
 	public void continueExecution() throws PNException{
-		if(timeMachine.getTime() == 0){
+		if (closeToZero(timeMachine.getTime())) {
 			if(petriNet.getEnabledTransitions().isEmpty())
 				throw new PNException("No enabled Transitions in initial state");
 		} else {
@@ -83,8 +83,13 @@ public abstract class TimedNetExecutor<P extends AbstractPlace<F,S>,
 			TimedTransitionEvent<T> firingEvent = new TimedTransitionEvent<T>(firingTransition);
 			firingEvent.setTime(timeMachine.getTime());
 			listenerSupport.notifyFiring(firingEvent);
-			continueFiring = ++firedTransitions < targetFireTransitions;
+			//continueFiring = ++firedTransitions < targetFireTransitions;
 		}
 	}
+
+	private boolean closeToZero(double d){
+		return (Math.abs(d) < 2 * Double.MIN_VALUE);
+	}
+
 
 }

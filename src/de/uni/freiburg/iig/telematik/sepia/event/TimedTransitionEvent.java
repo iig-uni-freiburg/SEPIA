@@ -6,17 +6,17 @@ public class TimedTransitionEvent<T extends AbstractTransition<?,?>> extends Tra
 
 	private static final long serialVersionUID = -7370798435971705217L;
 	
-	private Long time = null;
+	private Double time = null;
 
 	public TimedTransitionEvent(T t) {
 		super(t);
 	}
 
-	public Long getTime() {
+	public Double getTime() {
 		return time;
 	}
 
-	public void setTime(Long time) {
+	public void setTime(Double time) {
 		this.time = time;
 	}
 }
