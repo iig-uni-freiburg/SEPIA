@@ -11,6 +11,5 @@
 	<classpathentry kind="lib" path="lib/relaxngDatatype/relaxngDatatype-20020414.jar"/>
 	<classpathentry kind="lib" path="lib/xsdlib/xsdlib-2.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JAWL"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SERAM"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

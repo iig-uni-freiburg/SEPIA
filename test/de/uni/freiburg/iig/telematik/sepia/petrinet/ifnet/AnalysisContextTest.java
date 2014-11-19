@@ -2,6 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -94,7 +97,7 @@ public class AnalysisContextTest {
 	@Test
 	public void testAnalysisContext() {
 
-		AnalysisContext ac = new AnalysisContext();
+		AnalysisContext ac = new AnalysisContext(new Labeling());
 		assertNotNull(ac.getLabeling());
 		assertTrue(ac.getActivities().isEmpty());
 		assertTrue(ac.getAttributes().isEmpty());
@@ -115,10 +118,23 @@ public class AnalysisContextTest {
 	public void testAnalysisContextLabeling() {
 
 		// Create a labeling first
-		Labeling l = new Labeling();
-		l.addActivities("t0", "t1", "t2");
-		l.addSubjects("s0", "s1", "s2");
-		l.addAttributes("c0", "c1", "c2");
+		Context c = new Context();
+		c.setActivities(Arrays.asList("t0", "t1", "t2"));
+		c.setSubjects(Arrays.asList("s0", "s1", "s2"));
+		c.setObjects(Arrays.asList("c0", "c1", "c2"));
+		Labeling l = new Labeling(c);
+		
+		l.setActivityClassification("t0", SecurityLevel.LOW);
+		l.setActivityClassification("t1", SecurityLevel.LOW);
+		l.setActivityClassification("t2", SecurityLevel.LOW);
+
+		l.setSubjectClearance("s0", SecurityLevel.LOW);
+		l.setSubjectClearance("s1", SecurityLevel.LOW);
+		l.setSubjectClearance("s2", SecurityLevel.LOW);
+
+		l.setAttributeClassification("c0", SecurityLevel.LOW);
+		l.setAttributeClassification("c1", SecurityLevel.LOW);
+		l.setAttributeClassification("c2", SecurityLevel.LOW);
 
 		// create the analysis context
 		AnalysisContext ac = new AnalysisContext(l);
@@ -133,29 +149,15 @@ public class AnalysisContextTest {
 	public void testAnalysisContextSNetCollectionOfString() {
 
 		// Create the AnalysisCOntext
-		AnalysisContext ac = new AnalysisContext(sNet, subjects);
+		Context context = new Context();
+		context.setSubjects(subjects);
+		context.setObjects(attributes);
+		context.setActivities(transitions);
+		AnalysisContext ac = new AnalysisContext(context);
 		assertEquals(subjects, ac.getSubjects());
 		assertEquals(transitions, ac.getActivities());
 		assertEquals(attributes, ac.getAttributes());
 		assertEquals(SecurityLevel.LOW, ac.getLabeling().getDefaultSecurityLevel());
-	}
-
-	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext#AnalysisContext(de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet, java.util.Collection, de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.SecurityLevel)}. Test whether the default security level is set properly.
-	 */
-	@Test
-	public void testAnalysisContextSNetCollectionOfStringSecurityLevel() {
-
-		AnalysisContext ac = null;
-		try {
-			ac = new AnalysisContext(sNet, subjects, SecurityLevel.HIGH);
-		} catch (ParameterException e) {
-			fail("Not able to create AnalysisContext.");
-		}
-		assertEquals(subjects, ac.getSubjects());
-		assertEquals(transitions, ac.getActivities());
-		assertEquals(attributes, ac.getAttributes());
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getDefaultSecurityLevel());
 	}
 
 	/*
@@ -166,7 +168,11 @@ public class AnalysisContextTest {
 
 		AnalysisContext ac = null;
 		try {
-			ac = new AnalysisContext(transitions, attributes, subjects, SecurityLevel.HIGH);
+			Context c = new Context();
+			c.addActivities(transitions);
+			c.addSubjects(subjects);
+			c.addObjects(attributes);
+			ac = new AnalysisContext(c, SecurityLevel.HIGH);
 		} catch (ParameterException e) {
 			fail("Not able to create AnalysisContext.");
 		}
@@ -185,7 +191,11 @@ public class AnalysisContextTest {
 
 		AnalysisContext ac = null;
 		try {
-			ac = new AnalysisContext(transitions, attributes, subjects);
+			Context c = new Context();
+			c.addActivities(transitions);
+			c.addSubjects(subjects);
+			c.addObjects(attributes);
+			ac = new AnalysisContext(c);
 		} catch (ParameterException e) {
 			fail("Not able to create AnalysisContext.");
 		}
@@ -204,22 +214,46 @@ public class AnalysisContextTest {
 
 		// Create three labelings first
 		// The labeling used to construct the ac
-		Labeling l1 = new Labeling();
-		l1.addActivities("t0", "t1", "t2");
-		l1.addSubjects("s0", "s1", "s2");
-		l1.addAttributes("c0", "c1", "c2");
+		Context c1 = new Context();
+		ArrayList<String> a1 = new ArrayList<String>();
+		a1.add("t0");
+		a1.add("t1");
+		a1.add("t2");
+		c1.addActivities(a1);
+		ArrayList<String> s1 = new ArrayList<String>();
+		s1.add("s0");
+		s1.add("s1");
+		s1.add("s2");
+		c1.addSubjects(s1);
+		ArrayList<String> o1 = new ArrayList<String>();
+		o1.add("c0");
+		o1.add("c1");
+		o1.add("c2");
+		c1.addObjects(o1);
+		Labeling l1 = new Labeling(c1);
 
-		// A labeling with the same subjects but different attribs and activities
-		Labeling l2 = new Labeling();
-		l2.addActivities("t0", "t1", "t3");
-		l2.addSubjects("s0", "s1", "s2");
-		l2.addAttributes("c0", "c1", "c3");
+		// A labeling with the same subjects but different attributes and activities
+		Context c2 = new Context();
+		ArrayList<String> a2 = new ArrayList<String>(a1);
+		a2.set(2, "t3");
+		c2.setActivities(a2);
+		ArrayList<String> s2 = new ArrayList<String>(s1);
+		c2.setSubjects(s2);
+		ArrayList<String> o2 = new ArrayList<String>(o1);
+		o2.set(2, "c3");
+		c2.setObjects(o2);
+		Labeling l2 = new Labeling(c2);
 
 		// A labeling with one different subject
-		Labeling l3 = new Labeling();
-		l3.addActivities("t0", "t1", "t2");
-		l3.addSubjects("s0", "s1", "s3");
-		l3.addAttributes("c0", "c1", "c2");
+		Context c3 = new Context();
+		ArrayList<String> a3 = new ArrayList<String>(a1);
+		c3.setActivities(a3);
+		ArrayList<String> s3 = new ArrayList<String>(s1);
+		s3.set(2, "s3");
+		c3.setSubjects(s3);
+		ArrayList<String> o3 = new ArrayList<String>(o1);
+		c3.setObjects(o3);
+		Labeling l3 = new Labeling(c3);
 
 		// create the analysis context with labeling l1
 		AnalysisContext ac = new AnalysisContext(l1);
@@ -237,7 +271,7 @@ public class AnalysisContextTest {
 			fail("No exception should be thrown");
 		}
 
-		// set an noncompatible labeling
+		// set an non-compatible labeling
 		ac.setSubjectDescriptor("t0", "s3");
 		try {
 			ac.setLabeling(l2);
@@ -256,7 +290,11 @@ public class AnalysisContextTest {
 		// Create the AnalysisCOntext
 		AnalysisContext ac = null;
 		try {
-			ac = new AnalysisContext(sNet, subjects);
+			Context context = new Context();
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			context.setActivities(transitions);
+			ac = new AnalysisContext(context);
 		} catch (ParameterException e) {
 			fail("Not able to create AnalysisContext.");
 		}

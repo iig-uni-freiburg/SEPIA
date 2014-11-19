@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 import java.util.Arrays;
 
 import de.invation.code.toval.types.Multiset;
+import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
@@ -39,8 +40,12 @@ public class IFNetTestUtil {
 	// processes green
 	// deletes red
 	// creates blue
-
+	
 	public static IFNet createSimpleIFNet() {
+		return createSimpleIFNet(true);
+	}
+
+	public static IFNet createSimpleIFNet(boolean setAnalysisContext) {
 
 		// create the SNet
 		IFNet ifNet = new IFNet();
@@ -114,14 +119,19 @@ public class IFNetTestUtil {
 		rst.addAccessMode("red", AccessMode.DELETE);
 		rst.addAccessMode("blue", AccessMode.CREATE);
 
-		// create labeling
-		Labeling l = new Labeling(ifNet, Arrays.asList("S1", "S2", "S3"));
-		ifNet.getAnalysisContext().setLabeling(l);
-
-		// add subject descriptors
-		ifNet.getAnalysisContext().setSubjectDescriptor("tIn", "S1");
-		ifNet.getAnalysisContext().setSubjectDescriptor("t0", "S2");
-		ifNet.getAnalysisContext().setSubjectDescriptor("tOut", "S3");
+		if (setAnalysisContext) {
+			// create labeling
+			Context context = new Context();
+			context.setSubjects(Arrays.asList("S1", "S2", "S3"));
+			context.setActivities(Arrays.asList("tIn", "t0", "tOut"));
+			context.setObjects(Arrays.asList("green", "red", "blue", "black"));
+			ifNet.setAnalysisContext(new AnalysisContext(new Labeling(context)));
+	
+			// add subject descriptors
+			ifNet.getAnalysisContext().setSubjectDescriptor("tIn", "S1");
+			ifNet.getAnalysisContext().setSubjectDescriptor("t0", "S2");
+			ifNet.getAnalysisContext().setSubjectDescriptor("tOut", "S3");
+		}
 
 		return ifNet;
 	}
@@ -139,33 +149,15 @@ public class IFNetTestUtil {
 	@SuppressWarnings("unused")
 	public static IFNet createSimpleIFNetWithDeclassification(boolean setAnalysisContext) {
 
-		IFNet simpleSNet = createSimpleIFNet();
-
-		// create additional transitions
-		simpleSNet.addDeclassificationTransition("td");
-		simpleSNet.addTransition("t1");
-
-		// create one additional place
-		simpleSNet.addPlace("p4");
-		simpleSNet.getPlace("p4").setColorCapacity("black", 1);
-		simpleSNet.getPlace("p4").setColorCapacity("yellow", 1);
-
-		// add flowrelations
-		IFNetFlowRelation f11 = simpleSNet.addFlowRelationPT("p1", "td");
-		IFNetFlowRelation f12 = simpleSNet.addFlowRelationTP("td", "p4");
-		IFNetFlowRelation f13 = simpleSNet.addFlowRelationPT("p4", "t1");
-		IFNetFlowRelation f14 = simpleSNet.addFlowRelationTP("t1", "pOut");
-
-		// add constraints
-		f11.addConstraint("red", 1);
-		f12.addConstraint("yellow", 1);
-		f13.addConstraint("yellow", 1);
-		// f14.addConstraint("black", 1);
+		IFNet simpleSNet = createSimpleIFNet(setAnalysisContext);
 
 		if (setAnalysisContext) {
-
 			// create labeling
-			Labeling l = new Labeling(simpleSNet, Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+			Context context = new Context();
+			context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+			context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
+			context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "td2", "t1", "connector"));
+			Labeling l = new Labeling(context);
 
 			// Set subject clearance
 			l.setSubjectClearance("sh0", SecurityLevel.HIGH);
@@ -188,8 +180,7 @@ public class IFNetTestUtil {
 			l.setAttributeClassification("yellow", SecurityLevel.LOW);
 
 			// Create a new analysis context
-			AnalysisContext ac = new AnalysisContext();
-			ac.setLabeling(l);
+			AnalysisContext ac = new AnalysisContext(l);
 
 			// Assign subjects to transitions
 			ac.setSubjectDescriptor("tIn", "sh0");
@@ -201,6 +192,27 @@ public class IFNetTestUtil {
 			// set the labeling
 			simpleSNet.setAnalysisContext(ac);
 		}
+
+		// create additional transitions
+		simpleSNet.addDeclassificationTransition("td");
+		simpleSNet.addTransition("t1");
+
+		// create one additional place
+		simpleSNet.addPlace("p4");
+		simpleSNet.getPlace("p4").setColorCapacity("black", 1);
+		simpleSNet.getPlace("p4").setColorCapacity("yellow", 1);
+
+		// add flowrelations
+		IFNetFlowRelation f11 = simpleSNet.addFlowRelationPT("p1", "td");
+		IFNetFlowRelation f12 = simpleSNet.addFlowRelationTP("td", "p4");
+		IFNetFlowRelation f13 = simpleSNet.addFlowRelationPT("p4", "t1");
+		IFNetFlowRelation f14 = simpleSNet.addFlowRelationTP("t1", "pOut");
+
+		// add constraints
+		f11.addConstraint("red", 1);
+		f12.addConstraint("yellow", 1);
+		f13.addConstraint("yellow", 1);
+		// f14.addConstraint("black", 1);
 
 		return simpleSNet;
 	}

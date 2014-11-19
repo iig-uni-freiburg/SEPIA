@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -295,7 +296,12 @@ public class IFNetTest {
 	public void testSetAnalysisContext() throws ParameterException {
 
 		// create labeling
-		Labeling l = new Labeling(dSNet, Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+		Context context = new Context();
+		context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "t1"));
+		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+		context.setObjects(Arrays.asList("black", "red", "blue", "green", "yellow"));
+		Labeling l = new Labeling(context);
+//		Labeling l = new Labeling(dSNet, Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 
 		// Set subject clearance
 		l.setSubjectClearance("sh0", SecurityLevel.HIGH);
@@ -318,8 +324,7 @@ public class IFNetTest {
 		l.setAttributeClassification("yellow", SecurityLevel.LOW);
 
 		// Create a new analysis context
-		AnalysisContext ac = new AnalysisContext();
-		ac.setLabeling(l);
+		AnalysisContext ac = new AnalysisContext(l);
 
 		// Assign subjects to transitions
 		ac.setSubjectDescriptor("tIn", "sh0");

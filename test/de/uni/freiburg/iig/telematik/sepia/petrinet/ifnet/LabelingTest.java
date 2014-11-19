@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
@@ -127,7 +129,11 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(sNet, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e) {
 			e.printStackTrace();
 			fail("Cannot create SNet!");
@@ -154,7 +160,11 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(sNet, subjects, SecurityLevel.HIGH);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context, SecurityLevel.LOW);
 		} catch (ParameterException e) {
 			e.printStackTrace();
 			fail("Cannot create SNet!");
@@ -183,7 +193,11 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects, SecurityLevel.HIGH);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context, SecurityLevel.HIGH);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -210,7 +224,11 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -240,7 +258,11 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(emptyTransitionSet, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(emptyTransitionSet);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -251,13 +273,17 @@ public class LabelingTest {
 		// try to add the same transition more than once
 		Labeling l3 = null;
 		try {
-			l3 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l3 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
 
 		try {
-			l3.addActivities("t0", "t0", "t0", "t0");
+			l3.getContext().addActivities(Arrays.asList("t0", "t0", "t0", "t0"));
 		} catch (ParameterException e) {
 			fail("Exception while adding an transition to a labeling.");
 		}
@@ -269,10 +295,14 @@ public class LabelingTest {
 	@Test
 	public void testRemoveActivities() {
 
-		// create alabeling
+		// create a labeling
 		Labeling l3 = null;
 		try {
-			l3 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l3 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -313,7 +343,11 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, emptySubjectSet);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(emptySubjectSet);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -324,13 +358,17 @@ public class LabelingTest {
 		// try to add the same subjects more than once
 		Labeling l3 = null;
 		try {
-			l3 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l3 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
 
 		try {
-			l3.addSubjects("s1", "s1", "s1");
+			l3.getContext().addSubjects(Arrays.asList("s1", "s1", "s1"));
 		} catch (ParameterException e) {
 			fail("Exception while adding an subject to a labeling.");
 		}
@@ -345,7 +383,11 @@ public class LabelingTest {
 		// create alabeling
 		Labeling l3 = null;
 		try {
-			l3 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l3 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -381,12 +423,16 @@ public class LabelingTest {
 	@Test
 	public void testAddAttributes() {
 
-		// create an empty set of attribs
+		// create an empty set of attributes
 		HashSet<String> emptyAttributeSet = new HashSet<String>();
 
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, emptyAttributeSet, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(emptyAttributeSet);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -397,13 +443,17 @@ public class LabelingTest {
 		// try to add the same attribs more than once
 		Labeling l3 = null;
 		try {
-			l3 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l3 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
 
 		try {
-			l3.addAttributes("a1", "a1", "a1");
+			l3.getContext().addObjects(Arrays.asList("a1", "a1", "a1"));
 		} catch (ParameterException e) {
 			fail("Exception while adding an attribute to a labeling.");
 		}
@@ -418,7 +468,11 @@ public class LabelingTest {
 		// create alabeling
 		Labeling l3 = null;
 		try {
-			l3 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l3 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -457,7 +511,11 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -479,7 +537,11 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -501,7 +563,11 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -523,7 +589,11 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
@@ -547,7 +617,11 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			l2 = new Labeling(transitions, attributes, subjects);
+			Context context = new Context();
+			context.setActivities(transitions);
+			context.setObjects(attributes);
+			context.setSubjects(subjects);
+			l2 = new Labeling(context);
 		} catch (ParameterException e1) {
 			fail("Cannot create labeling!");
 		}
