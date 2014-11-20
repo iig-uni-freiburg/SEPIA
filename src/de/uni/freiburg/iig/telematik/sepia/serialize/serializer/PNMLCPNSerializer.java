@@ -2,6 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
 import java.awt.Color;
 
+import javax.swing.text.html.StyleSheet;
+
 import org.w3c.dom.Element;
 
 import de.invation.code.toval.types.Multiset;
@@ -28,6 +30,8 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 							   N extends AbstractCPN<P,T,F,M,X,Y>,
 							   G extends AbstractCPNGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, X, Y, N, G> {
 
+	private final static StyleSheet STYLESHEET = new StyleSheet();
+
 	public PNMLCPNSerializer(AbstractGraphicalCPN<P, T, F, M, X, Y, N, G> petriNet) {
 		super(petriNet);
 	}
@@ -52,18 +56,27 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 		Element tokenColorElement = getSupport().createElement("tokencolor");
 		Element colorElement = getSupport().createTextElement("color", colorName);
 		tokenColorElement.appendChild(colorElement);
-		
+
+		Element rgbElement = getSupport().createElement("rgbcolor");
+		tokenColorElement.appendChild(rgbElement);
+		Color color = null;
+
 		if(hasGraphics()){
-			Element rgbElement = getSupport().createElement("rgbcolor");
-			tokenColorElement.appendChild(rgbElement);
-			Color color = getGraphics().getColors().get(colorName);
-			if (color != null) {
-				rgbElement.appendChild(getSupport().createTextElement("r", (new Integer(color.getRed())).toString()));
-				rgbElement.appendChild(getSupport().createTextElement("g", (new Integer(color.getGreen())).toString()));
-				rgbElement.appendChild(getSupport().createTextElement("b", (new Integer(color.getBlue())).toString()));
-			}
+			color = getGraphics().getColors().get(colorName);
+		} else {
+			color = STYLESHEET.stringToColor(colorName);
 		}
-		
+
+		if (color != null) {
+			rgbElement.appendChild(getSupport().createTextElement("r", (new Integer(color.getRed())).toString()));
+			rgbElement.appendChild(getSupport().createTextElement("g", (new Integer(color.getGreen())).toString()));
+			rgbElement.appendChild(getSupport().createTextElement("b", (new Integer(color.getBlue())).toString()));
+		} else {
+			rgbElement.appendChild(getSupport().createTextElement("r", (new Integer(0)).toString()));
+			rgbElement.appendChild(getSupport().createTextElement("g", (new Integer(0)).toString()));
+			rgbElement.appendChild(getSupport().createTextElement("b", (new Integer(0)).toString()));
+		}
+
 		return tokenColorElement;
 	}
 
