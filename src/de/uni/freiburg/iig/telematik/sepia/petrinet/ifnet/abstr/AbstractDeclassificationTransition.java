@@ -16,7 +16,7 @@ public abstract class AbstractDeclassificationTransition<E extends AbstractIFNet
 //	}
 	
 	public AbstractDeclassificationTransition(String name, String label, boolean isSilent) {
-		super(TransitionType.REGULAR, name, label, isSilent);
+		super(TransitionType.DECLASSIFICATION, name, label, isSilent);
 	}
 
 	public AbstractDeclassificationTransition(String name, boolean isSilent) {
