@@ -103,24 +103,6 @@ public class LabelingTest {
 
 	}
 
-	// ***************************
-	// ** Test the constructors **
-	// ***************************
-
-	// ////////////////////////////////
-	// Test the "empty" constructor //
-	// ////////////////////////////////
-	@Test
-	public void testEmpltyLabelingConstructor() {
-
-		// ////////////////////////////////
-		// Test the "empty" constructor //
-		// ////////////////////////////////
-		Labeling l1 = new Labeling();
-		assertTrue(l1.getActivities().isEmpty());
-		// TODO
-	}
-
 	// ///////////////////////////////////////
 	// Test the ifNet, Subjects constructor //
 	// ///////////////////////////////////////

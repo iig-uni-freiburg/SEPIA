@@ -243,12 +243,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid attribute (black) with validation. The Labeling class should throw an exception while validating the attributes.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidAttributeACWithValidation() throws ParameterException {
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void invalidAttributeACWithValidation() throws ParserException {
 		try {
 			PNMLIFNetAnalysisContextParser.parse(invalidAttributeACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
 			fail("Couldn't read analysis context file: " + e.getMessage());
 		}
@@ -257,12 +257,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid attribute (black) without validation. The Labeling class should throw an exception while validating the attributes.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidAttributeACWithoutValidation() throws ParameterException {
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void invalidAttributeACWithoutValidation() throws ParserException {
 		try {
 			PNMLIFNetAnalysisContextParser.parse(invalidAttributeACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
 			fail("Couldn't read analysis context file: " + e.getMessage());
 		}
@@ -285,13 +285,11 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid attribute security level without validation. No exception should be thrown and the attribute with the invalid security level will be ignored.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT)
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void invalidSecurityLevelAttributeACWithoutValidation() {
 		AnalysisContext ac = null;
 		try {
 			ac = PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), false);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -452,12 +450,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid descriptor activity with validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidDescriptorActivityACWithValidation() throws ParameterException {
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void invalidDescriptorActivityACWithValidation() throws ParserException {
 		try {
 			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
 			fail("Couldn't read analysis context file: " + e.getMessage());
 		}
@@ -466,12 +464,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid descriptor activity without validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidDescriptorActivityACWithoutValidation() throws ParameterException {
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void invalidDescriptorActivityACWithoutValidation() throws ParserException {
 		try {
 			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
 			fail("Couldn't read analysis context file: " + e.getMessage());
 		}
@@ -480,12 +478,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid descriptor subject with validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidDescriptorSubjectACWithValidation() throws ParameterException {
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void invalidDescriptorSubjectACWithValidation() throws ParserException {
 		try {
 			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
 			fail("Couldn't read analysis context file: " + e.getMessage());
 		}
@@ -494,12 +492,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid descriptor subject without validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidDescriptorSubjectACWithoutValidation() throws ParameterException {
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void invalidDescriptorSubjectACWithoutValidation() throws ParserException {
 		try {
 			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
 			fail("Couldn't read analysis context file: " + e.getMessage());
 		}

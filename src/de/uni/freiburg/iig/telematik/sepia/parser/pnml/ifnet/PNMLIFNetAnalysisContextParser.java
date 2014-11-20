@@ -3,7 +3,9 @@ package de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -13,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
+import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
@@ -58,6 +61,10 @@ public class PNMLIFNetAnalysisContextParser {
 	public static AnalysisContext parse(File analysisContextFile, boolean validate) throws ParserException, IOException {
 		Validate.notNull(analysisContextFile);
 
+		List<String> activities = new ArrayList<String>();
+		List<String> colors = new ArrayList<String>();
+		List<String> subjects = new ArrayList<String>();
+
 		if (validate)
 			PNMLParser.verifySchema(analysisContextFile, new URL(ANALYSIS_CONTEXT_SCHEMA));
 
@@ -78,15 +85,17 @@ public class PNMLIFNetAnalysisContextParser {
 			labeling.setRequireContext(false);
 
 			// read token labels
-			Map<String, SecurityLevel> tokenLabels = readLabeling(analysisContextDocument, "tokenlabels", "tokenlabel", "color");
+			Map<String, SecurityLevel> tokenLabels = readLabeling(analysisContextDocument, "tokenlabels", "tokenlabel", "color", colors);
 			for (Entry<String, SecurityLevel> attributeClassification : tokenLabels.entrySet())
 				labeling.setAttributeClassification(attributeClassification.getKey(), attributeClassification.getValue());
+			if (colors.contains("black"))
+				throw new ParserException("Control flow tokens aren't allowed to be listed within the token labels.");
 			// read clearances
-			Map<String, SecurityLevel> clearances = readLabeling(analysisContextDocument, "clearances", "clearance", "subject");
+			Map<String, SecurityLevel> clearances = readLabeling(analysisContextDocument, "clearances", "clearance", "subject", subjects);
 			for (Entry<String, SecurityLevel> clearance : clearances.entrySet())
 				labeling.setSubjectClearance(clearance.getKey(), clearance.getValue());
 			// read activity classifications
-			Map<String, SecurityLevel> activityClassifications = readLabeling(analysisContextDocument, "classifications", "classification", "activity");
+			Map<String, SecurityLevel> activityClassifications = readLabeling(analysisContextDocument, "classifications", "classification", "activity", activities);
 			for (Entry<String, SecurityLevel> activityClassification : activityClassifications.entrySet())
 				labeling.setActivityClassification(activityClassification.getKey(), activityClassification.getValue());
 
@@ -98,7 +107,7 @@ public class PNMLIFNetAnalysisContextParser {
 			if(contextList == null || contextList.getLength() == 0)
 				throw new ParserException("Cannot parse context information.");
 			if(contextList.getLength() > 1)
-				throw new ParserException("XML contains more than one context element.");
+				throw new ParserException("XML contains more than one context elements.");
 			Element contextElement = (Element) contextList.item(0);
 			Boolean requiresContext = new Boolean(contextElement.getAttribute("requirescontext"));
 			if(requiresContext){
@@ -153,6 +162,11 @@ public class PNMLIFNetAnalysisContextParser {
 						if (subjectList.getLength() > 0)
 							subject = ((Element) subjectList.item(0)).getTextContent();
 
+						if (activities.contains(activity) == false)
+							throw new ParserException("The activity \""+activity+"\" used in the subject descriptors wasn't listed in the classifications.");
+						if (subjects.contains(subject) == false)
+							throw new ParserException("The subject \""+subject+"\" used in the subject descriptors wasn't listed in the clearances.");
+						
 						if (activity != null && subject != null)
 							analysisContext.setSubjectDescriptor(activity, subject);
 					}
@@ -191,7 +205,7 @@ public class PNMLIFNetAnalysisContextParser {
 	 * &lt;/labelingListTypeName&gt;
 	 * </pre>
 	 */
-	protected static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName) {
+	protected static Map<String, SecurityLevel> readLabeling(Document doc, String labelingListTypeName, String labelingTypeName, String objectDescriptorName, List<String> labelList) {
 		Validate.notNull(doc);
 		Validate.notEmpty(labelingListTypeName);
 		Validate.notEmpty(labelingTypeName);
@@ -222,10 +236,14 @@ public class PNMLIFNetAnalysisContextParser {
 							securityLevel = SecurityLevel.LOW;
 						else if (securityLevelStr.equals("high"))
 							securityLevel = SecurityLevel.HIGH;
+						else
+							throw new ParameterException("\"" + securityLevelStr + "\" is not a valid security level. Only \"low\" and \"high\" are allowed.");
 					}
 
-					if (objectDescriptor != null && objectDescriptor.length() > 0 && securityLevel != null)
+					if (objectDescriptor != null && objectDescriptor.length() > 0 && securityLevel != null) {
 						labeling.put(objectDescriptor, securityLevel);
+						labelList.add(objectDescriptor);
+					}
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -168,20 +169,32 @@ public class Labeling implements ContextListener {
 	}
 
 	public Set<String> getActivities(){
-		if(requiresContext())
-			return Collections.unmodifiableSet(context.getActivities());
+		if(requiresContext()) {
+			if (context != null)
+				return Collections.unmodifiableSet(context.getActivities());
+			else
+				return Collections.unmodifiableSet(new HashSet<String>());
+		}
 		return Collections.unmodifiableSet(activiyClassification.keySet());
 	}
 	
 	public Set<String> getSubjects(){
-		if(requiresContext())
-			return Collections.unmodifiableSet(context.getSubjects());
+		if(requiresContext()) {
+			if (context != null)
+				return Collections.unmodifiableSet(context.getSubjects());
+			else
+				return Collections.unmodifiableSet(new HashSet<String>());
+		}
 		return Collections.unmodifiableSet(subjectClearance.keySet());
 	}
 	
 	public Set<String> getAttributes(){
-		if(requiresContext())
-			return Collections.unmodifiableSet(context.getObjects());
+		if(requiresContext()) {
+			if (context != null)
+				return Collections.unmodifiableSet(context.getObjects());
+			else
+				return Collections.unmodifiableSet(new HashSet<String>());
+		}
 		return Collections.unmodifiableSet(attributeClassification.keySet());
 	}
 	

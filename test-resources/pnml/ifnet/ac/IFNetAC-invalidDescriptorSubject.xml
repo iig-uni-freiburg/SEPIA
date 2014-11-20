@@ -1,4 +1,5 @@
 <analysiscontext xmlns="http://www.pnml.org/version-2009/grammar/pnml" id="ifn-analysiscontext-example" type="http://ifnml.process-security.de/grammar/v1.0/analysiscontext">
+  <context requirescontext="false" />
   <classifications>
     <classification>
       <activity>first activity</activity>

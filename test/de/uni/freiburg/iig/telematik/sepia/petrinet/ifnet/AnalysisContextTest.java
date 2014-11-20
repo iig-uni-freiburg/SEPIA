@@ -107,7 +107,7 @@ public class AnalysisContextTest {
 			// Try to get a subject descriptor of a non existing transition
 			ac.getSubjectDescriptor("tFail");
 			fail("An exception has not been thrown!");
-		} catch (ParameterException e) {
+		} catch (Exception e) {
 		}
 	}
 
