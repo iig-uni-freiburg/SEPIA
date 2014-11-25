@@ -91,12 +91,14 @@ public class IFNetTestUtil {
 		IFNetFlowRelation f3 = ifNet.addFlowRelationTP("t0", "p2");
 		IFNetFlowRelation f4 = ifNet.addFlowRelationTP("t0", "p3");
 
+		@SuppressWarnings("unused")
 		IFNetFlowRelation f5 = ifNet.addFlowRelationPT("pIn", "tIn");
 		IFNetFlowRelation f6 = ifNet.addFlowRelationTP("tIn", "p0");
 		IFNetFlowRelation f7 = ifNet.addFlowRelationTP("tIn", "p1");
 
 		IFNetFlowRelation f8 = ifNet.addFlowRelationPT("p2", "tOut");
 		IFNetFlowRelation f9 = ifNet.addFlowRelationPT("p3", "tOut");
+		@SuppressWarnings("unused")
 		IFNetFlowRelation f10 = ifNet.addFlowRelationTP("tOut", "pOut");
 
 		// configure flow relations

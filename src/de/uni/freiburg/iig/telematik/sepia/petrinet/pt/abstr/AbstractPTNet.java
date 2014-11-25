@@ -73,12 +73,14 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	
 	//------- Markings
 	
+	@Override
 	public M getInitialMarking(){
-		return (M) super.getInitialMarking();
+		return super.getInitialMarking();
 	}
 	
+	@Override
 	public M getMarking(){
-		return (M) super.getMarking();
+		return super.getMarking();
 	}
 
 	@Override

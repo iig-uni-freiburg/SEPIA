@@ -161,6 +161,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * Valid IFNet with validation, where no exception should be thrown. Performs also some shallow tests to check the correct amount of places, transitions, arcs and graphical information.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validIFNetWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -195,6 +196,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * Valid IFNet without validation, where no exception should be thrown. Performs also some shallow tests to check the correct amount of places, transitions, arcs and graphical information.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -233,6 +235,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without a net ID and validation. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noNetIDIFNetWithValidation() throws ParserException {
 		try {
@@ -247,6 +250,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without a net ID and no validation. No exception should be thrown and the net name should be the default name "PetriNet".
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -269,6 +273,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without type attribute but requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -283,6 +288,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without type attribute but requiring a valid one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -297,6 +303,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without type attribute and not requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetNotRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -311,6 +318,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without type attribute and not requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeIFNetNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -325,6 +333,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with unknown type attribute but requiring a known one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeIFNetRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -339,6 +348,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with unknown type attribute but requiring a known one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeIFNetRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -353,6 +363,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with unknown type attribute and not requiring a known one. Validating the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeIFNetNotRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -367,6 +378,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with unknown type attribute and not requiring a known one. No exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypeIFNetNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -385,6 +397,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without page tags. The validation should throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPageTagsIFNetWithValidation() throws ParserException {
 		try {
@@ -399,6 +412,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without page tags without validation. No exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPageTagsIFNetWithoutValidation() {
 		try {
@@ -415,6 +429,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with multiple page tags. Although this is valid, the parser can't handle it and throws an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsIFNetWithValidation() throws ParserException {
 		try {
@@ -429,6 +444,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with multiple page tags. Although this is valid, the parser can't handle it and throws an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsIFNetWithoutValidation() throws ParserException {
 		try {
@@ -447,6 +463,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing place ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDIFNetWithValidation() throws ParserException {
 		try {
@@ -461,6 +478,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing place ID. The parser should throw an exception while reading the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDIFNetWithoutValidation() throws ParserException {
 		try {
@@ -475,6 +493,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing place ID. As a place name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameIFNetWithValidation() {
 		try {
@@ -491,6 +510,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing place ID. As a place name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameIFNetWithoutValidation() {
 		try {
@@ -507,6 +527,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with an invalid place initial marking. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingIFNetWithValidation() throws ParserException {
 		try {
@@ -521,6 +542,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with an invalid place initial marking. The parser should throw an exception while reading the places.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingIFNetWithoutValidation() throws ParserException {
 		try {
@@ -535,6 +557,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with an invalid place graphics tag. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceGraphicsIFNetWithValidation() throws ParserException {
 		try {
@@ -549,6 +572,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with an invalid place graphics tag. No exception should be thrown and the invalid tag gets ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidPlaceGraphicsIFNetWithoutValidation() {
 		try {
@@ -565,6 +589,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a place capacity of zero for a color. The parser should throw an exception while validating.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityIFNetWithValidation() throws ParserException {
 		try {
@@ -579,6 +604,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a place capacity of zero for a color. The parser should throw an exception while setting the capacity.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityIFNetWithoutValidation() throws ParserException {
 		try {
@@ -597,6 +623,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing transition ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDIFNetWithValidation() throws ParserException {
 		try {
@@ -611,6 +638,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing transition ID. The parser should throw an exception while parsing the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDIFNetWithoutValidation() throws ParserException {
 		try {
@@ -625,6 +653,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing transition name. The parser should not throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameIFNetWithValidation() {
 		try {
@@ -641,6 +670,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing transition name. The parser should not throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameIFNetWithoutValidation() {
 		try {
@@ -657,6 +687,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with invalid graphical information. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionGraphicsIFNetWithValidation() throws ParserException {
 		try {
@@ -671,6 +702,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with invalid graphical information. No exception should be thrown and the invalid tag gets ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidTransitionGraphicsIFNetWithoutValidation() {
 		try {
@@ -687,6 +719,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with invalid transition type. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionTypeIFNetWithValidation() throws ParserException {
 		try {
@@ -701,6 +734,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with invalid transition type. The parser should throw an exception while parsing.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionTypeIFNetWithoutValidation() throws ParserException {
 		try {
@@ -715,6 +749,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without an access functions tag with validation. As this is valid, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noAccessFunctionsTagIFNetWithValidation() {
 		try {
@@ -731,6 +766,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet without an access functions tag without validation. As this is valid, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noAccessFunctionsTagIFNetWithoutValidation() {
 		try {
@@ -747,6 +783,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing access function color tag with validation. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected=ParserException.class)
 	public void noAccessFunctionColorIFNetWithValidation() throws ParserException {
 		try {
@@ -761,6 +798,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing access function color tag without validation. The parser just ignores the incomplete access function.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noAccessFunctionColorIFNetWithoutValidation() {
 		try {
@@ -777,6 +815,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with incomplete access modes with validation. No exception should be thrown and the missing values should be filled with default values.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteAccessModesIFNetWithValidation() throws ParameterException {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -805,6 +844,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with incomplete access modes without validation. No exception should be thrown and the missing values should be filled with default values.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteAccessModesIFNetWithoutValidation() throws ParameterException {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -833,6 +873,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with invalid graphical information for the access functions with validation. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidAccessFunctionsGraphicsIFNetWithValidation() throws ParserException {
 		try {
@@ -847,6 +888,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with invalid graphical information for the access functions without validation. The parser should just ignore the invalid tag.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidAccessFunctionsGraphicsIFNetWithoutValidation() {
 		try {
@@ -867,6 +909,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcIDIFNetWithValidation() throws ParserException {
 		try {
@@ -881,6 +924,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc ID. As a transition ID is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcIDIFNetWithoutValidation() {
 		try {
@@ -897,6 +941,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc source ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDIFNetWithValidation() throws ParserException {
 		try {
@@ -911,6 +956,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc source ID. The parser should throw an exception while creating the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDIFNetWithoutValidation() throws ParserException {
 		try {
@@ -925,6 +971,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc target ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDIFNetWithValidation() throws ParserException {
 		try {
@@ -939,6 +986,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc target ID. The parser should throw an exception while creating the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDIFNetWithoutValidation() throws ParserException {
 		try {
@@ -953,6 +1001,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc inscription. As there is control flow dependency in IFNets an exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected=ParserException.class)
 	public void noArcInscriptionIFNetWithValidation() throws ParserException {
 		try {
@@ -967,6 +1016,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a missing arc inscription. As there is no control flow dependency in IFNets, no exception should be thrown and the flow relation should be created with the default constraint.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionIFNetWithoutValidation() {
 		try {
@@ -983,6 +1033,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a negative arc inscription. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionIFNetWithValidation() throws ParserException {
 		try {
@@ -997,6 +1048,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a negative arc inscription. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionIFNetWithoutValidation() throws ParserException {
 		try {
@@ -1011,6 +1063,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a invalid arc graphics. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidArcGraphicsIFNetWithValidation() throws ParserException {
 		try {
@@ -1025,6 +1078,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with a invalid arc graphics. No exception should be thrown and the invalid tag gets ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidArcGraphicsIFNetWithoutValidation() {
 		try {
@@ -1045,6 +1099,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * Valid bounded IFNet with validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedIFNetWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -1066,6 +1121,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * Valid bounded IFNet without validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -1091,6 +1147,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with incomplete token colors RGB values. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void incompleteTokencolorsIFNetWithValidation() throws ParserException {
 		try {
@@ -1105,6 +1162,7 @@ public class PNMLIFNetParserComponentTest {
 	/*
 	 * IFNet with incomplete token colors RGB values without validation. No parser should be thrown and the missing values should be filled with the default value <code>0</code>.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteTokencolorsIFNetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;

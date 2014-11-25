@@ -273,7 +273,6 @@ public class CPNTest {
 		// Create the standard cpn
 		CPN cpn = createCPN();
 
-		@SuppressWarnings("unused")
 		CPNFlowRelation f = cpn.addFlowRelationPT("p0", "t1");
 		f.setConstraint(new Multiset<String>());
 

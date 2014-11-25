@@ -172,6 +172,7 @@ public class PNParsing {
 	 * @throws IOException
 	 *             If the file can't be found
 	 */
+	@SuppressWarnings("rawtypes")
 	public static synchronized PNParserInterface getParser(File file, PNParsingFormat format) throws ParserException {
 		switch(format){
 		case PNML: return new PNMLParser();

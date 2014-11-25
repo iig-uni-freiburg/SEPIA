@@ -51,7 +51,7 @@ public class CWNChecker {
 		// Check control flow dependency
 		String CFTokenColor = petriNet.defaultTokenColor();
 		if(AbstractIFNet.class.isAssignableFrom(petriNet.getClass())){
-			CFTokenColor = AbstractIFNet.DEFAULT_TOKEN_COLOR;
+			CFTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
 		}
 		for(T transition: petriNet.getTransitions()){
 			if(!transition.getConsumedColors().contains(CFTokenColor))

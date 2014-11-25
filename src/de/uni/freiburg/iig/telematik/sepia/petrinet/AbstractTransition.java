@@ -2,9 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
 import java.io.Serializable;
 
-import de.invation.code.toval.validate.ParameterException;
-import de.invation.code.toval.validate.ParameterException.ErrorCode;
-import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListenerSupport;

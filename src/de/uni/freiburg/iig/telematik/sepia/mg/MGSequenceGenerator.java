@@ -99,7 +99,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 			e.printStackTrace();
 		}
 //		System.out.println("children: " + children);
-		if(children.isEmpty()){
+		if(children == null || children.isEmpty()){
 			return null;
 		}
 		

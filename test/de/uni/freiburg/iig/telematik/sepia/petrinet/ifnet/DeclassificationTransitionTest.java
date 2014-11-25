@@ -99,10 +99,14 @@ public class DeclassificationTransitionTest {
 			}
 		}
 
-		// Set the constraint of the relation to only black
-		Multiset<String> constraint = new Multiset<String>();
-		constraint.addAll("black");
-		dtInRelation.setConstraint(constraint);
+		if (dtInRelation != null) {
+			// Set the constraint of the relation to only black
+			Multiset<String> constraint = new Multiset<String>();
+			constraint.addAll("black");
+			dtInRelation.setConstraint(constraint);
+		} else {
+			fail("Couldn't find a flow relation with the specified name.");
+		}
 
 		try {
 			td.checkValidity();
@@ -155,17 +159,21 @@ public class DeclassificationTransitionTest {
 			}
 		}
 
-		// Set the constraint of the relation to the same
-		// constraint as the constraint of an outrelation of
-		// a regular transition (t0 creates blue)
-		Multiset<String> constraint = new Multiset<String>();
-		constraint.addAll("black");
-		constraint.addAll("blue");
-		dtOutRelation.setConstraint(constraint);
-		((RegularIFNetTransition) dSNet.getTransition("t0")).setAccessMode("blue", AccessMode.CREATE);
-//		System.out.println(dSNet.getTransition("t0").producesColor("blue"));
-//		System.out.println(((RegularIFNetTransition) dSNet.getTransition("t0")).getAccessModes("blue").contains(AccessMode.CREATE));
-//		System.out.println(dSNet.getDeclassificationTransitions());
+		if (dtOutRelation != null) {
+			// Set the constraint of the relation to the same
+			// constraint as the constraint of an outrelation of
+			// a regular transition (t0 creates blue)
+			Multiset<String> constraint = new Multiset<String>();
+			constraint.addAll("black");
+			constraint.addAll("blue");
+			dtOutRelation.setConstraint(constraint);
+			((RegularIFNetTransition) dSNet.getTransition("t0")).setAccessMode("blue", AccessMode.CREATE);
+			// System.out.println(dSNet.getTransition("t0").producesColor("blue"));
+			// System.out.println(((RegularIFNetTransition) dSNet.getTransition("t0")).getAccessModes("blue").contains(AccessMode.CREATE));
+			// System.out.println(dSNet.getDeclassificationTransitions());
+		} else {
+			fail("Couldn't find a flow relation with the specified name.");
+		}
 
 		try {
 			dSNet.checkValidity();
@@ -189,13 +197,17 @@ public class DeclassificationTransitionTest {
 			}
 		}
 
-		// Set the constraint of the relation to the same
-		// constraint as the constraint of an outrelation of
-		// a regular transition (t0 creates blue)
-		Multiset<String> constraint = new Multiset<String>();
-		constraint.addAll("black");
-		constraint.addAll("green");
-		dtOutRelation.setConstraint(constraint);
+		if (dtOutRelation != null) {
+			// Set the constraint of the relation to the same
+			// constraint as the constraint of an outrelation of
+			// a regular transition (t0 creates blue)
+			Multiset<String> constraint = new Multiset<String>();
+			constraint.addAll("black");
+			constraint.addAll("green");
+			dtOutRelation.setConstraint(constraint);
+		} else {
+			fail("Couldn't find a flow relation with the specified name.");
+		}
 
 		try {
 			td.checkValidity();

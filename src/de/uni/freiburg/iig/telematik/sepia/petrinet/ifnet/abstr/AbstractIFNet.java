@@ -158,12 +158,14 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return true;
 	}
 	
+	@Override
 	public M getInitialMarking(){
-		return (M) super.getInitialMarking();
+		return super.getInitialMarking();
 	}
 	
+	@Override
 	public M getMarking(){
-		return (M) super.getMarking();
+		return super.getMarking();
 	}
 	
 	//------- Functionality -------------------------------------------------------------------------
@@ -217,7 +219,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	
 	//------- Validation methods --------------------------------------------------------------------
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void checkValidity() throws PNValidationException {
@@ -266,7 +268,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		
 		// Check if all token colors are contained in the analysis context in form of attributes.
 		for(String tokenColor: getTokenColors()){
-			if(tokenColor == defaultTokenColor())
+			if(tokenColor.equals(defaultTokenColor()))
 				continue;
 			if(!getAnalysisContext().getAttributes().contains(tokenColor))
 				throw new PNValidationException("Analysis context does not contain attribute: " + tokenColor);

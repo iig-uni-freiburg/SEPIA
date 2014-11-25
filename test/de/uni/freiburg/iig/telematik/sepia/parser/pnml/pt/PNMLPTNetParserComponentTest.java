@@ -133,6 +133,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * Valid P/T-net with validation, where no exception should be thrown. Performs also some shallow tests to check the correct amount of places, transitions, arcs and graphical information.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -165,6 +166,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * Valid P/T-net without validation, where no exception should be thrown. Performs also some shallow tests to check the correct amount of places, transitions, arcs and graphical information.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validPTnetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -201,6 +203,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without a net ID and validation. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noNetIDPTnetWithValidation() throws ParserException {
 		try {
@@ -215,6 +218,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without a net ID and no validation. No exception should be thrown and the net name should be the default name "PetriNet".
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDPTnetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -237,6 +241,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without type attribute but requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -251,6 +256,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without type attribute but requiring a valid one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -265,6 +271,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without type attribute and not requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetNotRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -279,6 +286,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without type attribute and not requiring a valid one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypePTnetNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -293,6 +301,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with unknown type attribute but requiring a known one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypePTnetRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -307,6 +316,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with unknown type attribute but requiring a known one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypePTnetRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -321,6 +331,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with unknown type attribute and not requiring a known one. Validating the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypePTnetNotRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -335,6 +346,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with unknown type attribute and not requiring a known one. No exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypePTnetNotRequiringTypeWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> net = null;
@@ -358,6 +370,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without page tags. The validation should throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPageTagsPTnetWithValidation() throws ParserException {
 		try {
@@ -372,6 +385,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net without page tags and no validation. As the page tags are ignored by the parser, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPageTagsPTnetWithoutValidation() {
 		try {
@@ -388,6 +402,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with multiple page tags. Although this is valid, the parser can't handle it and throws an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsPTnetWithValidation() throws ParserException {
 		try {
@@ -402,6 +417,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with multiple page tags without validation. The parser can't handle this and throws an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsPTnetWithoutValidation() throws ParserException {
 		try {
@@ -420,6 +436,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing place ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDPTnetWithValidation() throws ParserException {
 		try {
@@ -434,6 +451,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing place ID. The parser should throw an exception while reading the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDPTnetWithoutValidation() throws ParserException {
 		try {
@@ -448,6 +466,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing place name. As a place name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNamePTnetWithValidation() {
 		try {
@@ -464,6 +483,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing place name. As a place name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNamePTnetWithoutValidation() {
 		try {
@@ -480,6 +500,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with an invalid place initial marking. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingPTnetWithValidation() throws ParserException {
 		try {
@@ -494,6 +515,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with an invalid place initial marking. The parser should throw an exception while reading the places.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingPTnetWithoutValidation() throws ParserException {
 		try {
@@ -508,6 +530,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a invalid place graphics. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceGraphicsPTnetWithValidation() throws ParserException {
 		try {
@@ -522,6 +545,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a invalid place graphics. The invalid offset tag should be ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidPlaceGraphicsPTnetWithoutValidation() {
 		try {
@@ -539,6 +563,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a place capacity of zero. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceCapacityPTnetWithValidation() throws ParserException {
 		try {
@@ -553,6 +578,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a place capacity of zero. The parser should throw an exception while reading the places.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceCapacityPTnetWithoutValidation() throws ParserException {
 		try {
@@ -571,6 +597,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing transition ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDPTnetWithValidation() throws ParserException {
 		try {
@@ -585,6 +612,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing transition ID. The parser should throw an exception while adding the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDPTnetWithoutValidation() throws ParserException {
 		try {
@@ -599,6 +627,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing transition name. The parser should not throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNamePTnetWithValidation() {
 		try {
@@ -615,6 +644,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing transition name. The parser should not throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNamePTnetWithoutValidation() {
 		try {
@@ -631,6 +661,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with invalid graphical information. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionGraphicsPTnetWithValidation() throws ParserException {
 		try {
@@ -645,6 +676,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with invalid graphical information. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidTransitionGraphicsPTnetWithoutValidation() {
 		try {
@@ -666,6 +698,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcIDPTnetWithValidation() throws ParserException {
 		try {
@@ -680,6 +713,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc ID. As a transition name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcIDPTnetWithoutValidation() {
 		try {
@@ -696,6 +730,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc source ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDPTnetWithValidation() throws ParserException {
 		try {
@@ -710,6 +745,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc source ID. The parser should throw an exception while reading the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDPTnetWithoutValidation() throws ParserException {
 		try {
@@ -724,6 +760,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc target ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDPTnetWithValidation() throws ParserException {
 		try {
@@ -738,6 +775,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc target ID. The parser should throw an exception while reading the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDPTnetWithoutValidation() throws ParserException {
 		try {
@@ -752,6 +790,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc inscription. As there is no control flow dependency in P/T-nets, no exception should be thrown and the flow relation should be created with the default constraint.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionPTnetWithValidation() {
 		try {
@@ -768,6 +807,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a missing arc inscription. As there is no control flow dependency in P/T-nets, no exception should be thrown and the flow relation should be created with the default constraint.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionPTnetWithoutValidation() {
 		try {
@@ -784,6 +824,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a negative arc inscription. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionPTnetWithValidation() throws ParserException {
 		try {
@@ -798,6 +839,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a negative arc inscription. The parser should throw an exception while checking the parameters of the flow relation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void negativeArcInscriptionPTnetWithoutValidation() throws ParameterException {
 		try {
@@ -812,6 +854,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a invalid arc graphics. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidArcGraphicsPTnetWithValidation() throws ParserException {
 		try {
@@ -826,6 +869,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * P/T-net with a invalid arc graphics. The invalid offset tag should be ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidArcGraphicsPTnetWithoutValidation() {
 		try {
@@ -847,6 +891,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * Valid bounded P/T-net with validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedPTnetWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -868,6 +913,7 @@ public class PNMLPTNetParserComponentTest {
 	/*
 	 * Valid bounded P/T-net with validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedPTnetWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;

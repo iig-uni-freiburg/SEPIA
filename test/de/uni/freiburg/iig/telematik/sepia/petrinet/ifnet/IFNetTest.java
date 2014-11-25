@@ -64,14 +64,11 @@ public class IFNetTest {
 	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
 	 */
-	@Test
-	public void testCheckValidity() throws ParameterException {
+	@Test( expected = PNValidationException.class )
+	public void testCheckValidity() throws ParameterException, PNValidationException {
 
-		try {
-			dSNet.checkValidity();
-			fail("An invalid ifNet  is not detected!");
-		} catch (PNValidationException e) {
-		}
+		dSNet.checkValidity();
+//		fail("An invalid ifNet  is not detected!");
 //
 //		// change the flow relation such that there will never be
 //		// proper completion => SNet is invalid

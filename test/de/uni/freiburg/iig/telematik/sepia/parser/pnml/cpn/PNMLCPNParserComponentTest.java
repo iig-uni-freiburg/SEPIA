@@ -138,6 +138,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * Valid CPN with validation, where no exception should be thrown. Performs also some shallow tests to check the correct amount of places, transitions, arcs and graphical information.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validCPNWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -172,6 +173,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * Valid CPN without validation, where no exception should be thrown. Performs also some shallow tests to check the correct amount of places, transitions, arcs and graphical information.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validCPNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -210,6 +212,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without a net ID and validation. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noNetIDCPNWithValidation() throws ParserException {
 		try {
@@ -224,6 +227,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without a net ID and no validation. No exception should be thrown and the net name should be the default name "PetriNet".
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDCPNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -246,6 +250,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without type attribute but requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCPNRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -260,6 +265,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without type attribute but requiring a valid one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCPNRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -274,6 +280,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without type attribute and not requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCPNNotRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -288,6 +295,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without type attribute and not requiring a valid one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTypeCPNNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -302,6 +310,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with unknown type attribute but requiring a known one. Validation should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeCPNRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -316,6 +325,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with unknown type attribute but requiring a known one. Retrieving the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeCPNRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -330,6 +340,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with unknown type attribute and not requiring a known one. Validating the net type should throw a ParserException.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void unknownTypeCPNNotRequiringTypeWithValidation() throws ParserException {
 		try {
@@ -344,6 +355,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with unknown type attribute and not requiring a known one. No exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unknownTypeCPNNotRequiringTypeWithoutValidation() throws ParserException {
 		try {
@@ -362,6 +374,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without page tags. The validation should throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPageTagsCPNWithValidation() throws ParserException {
 		try {
@@ -376,6 +389,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN without page tags without validation. No exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPageTagsCPNWithoutValidation() {
 		try {
@@ -392,6 +406,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with multiple page tags. Although this is valid, the parser can't handle it and throws an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsCPNWithValidation() throws ParserException {
 		try {
@@ -406,6 +421,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with multiple page tags. Although this is valid, the parser can't handle it and throws an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void multiplePageTagsCPNWithoutValidation() throws ParserException {
 		try {
@@ -424,6 +440,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing place ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDCPNWithValidation() throws ParserException {
 		try {
@@ -438,6 +455,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing place ID. The parser should throw an exception while reading the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noPlaceIDCPNWithoutValidation() throws ParserException {
 		try {
@@ -452,6 +470,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing place ID. As a place name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameCPNWithValidation() {
 		try {
@@ -468,6 +487,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing place ID. As a place name is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noPlaceNameCPNWithoutValidation() {
 		try {
@@ -484,6 +504,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with an invalid place initial marking. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingCPNWithValidation() throws ParserException {
 		try {
@@ -498,6 +519,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with an invalid place initial marking. The parser should throw an exception while reading the places.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidInitialMarkingCPNWithoutValidation() throws ParserException {
 		try {
@@ -512,6 +534,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with an invalid place graphics tag. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidPlaceGraphicsCPNWithValidation() throws ParserException {
 		try {
@@ -526,6 +549,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with an invalid place graphics tag. No exception should be thrown and the invalid tag gets ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidPlaceGraphicsCPNWithoutValidation() {
 		try {
@@ -542,6 +566,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a place capacity of zero for a color. The parser should throw an exception while validating.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityCPNWithValidation() throws ParserException {
 		try {
@@ -556,6 +581,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a place capacity of zero for a color. The parser should throw an exception while setting the capacity.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidPlaceCapacityCPNWithoutValidation() throws ParserException {
 		try {
@@ -574,6 +600,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing transition ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDCPNWithValidation() throws ParserException {
 		try {
@@ -588,6 +615,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing transition ID. The parser should throw an exception while parsing the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noTransitionIDCPNWithoutValidation() throws ParserException {
 		try {
@@ -602,6 +630,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing transition name. The parser should not throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameCPNWithValidation() {
 		try {
@@ -618,6 +647,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing transition name. The parser should not throw an exception.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noTransitionNameCPNWithoutValidation() {
 		try {
@@ -634,6 +664,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with invalid graphical information. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidTransitionGraphicsCPNWithValidation() throws ParserException {
 		try {
@@ -648,6 +679,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with invalid graphical information. No exception should be thrown and the invalid tag gets ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidTransitionGraphicsCPNWithoutValidation() {
 		try {
@@ -668,6 +700,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcIDCPNWithValidation() throws ParserException {
 		try {
@@ -682,6 +715,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc ID. As a transition ID is not necessary, no exception should be thrown.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcIDCPNWithoutValidation() {
 		try {
@@ -698,6 +732,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc source ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDCPNWithValidation() throws ParserException {
 		try {
@@ -712,6 +747,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc source ID. The parser should throw an exception while creating the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcSourceIDCPNWithoutValidation() throws ParserException {
 		try {
@@ -726,6 +762,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc target ID. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDCPNWithValidation() throws ParserException {
 		try {
@@ -740,6 +777,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc target ID. The parser should throw an exception while creating the flow relations.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void noArcTargetIDCPNWithoutValidation() throws ParserException {
 		try {
@@ -754,6 +792,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc inscription. As there is no control flow dependency in CPNs, no exception should be thrown and the flow relation should be created with the default constraint.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionCPNWithValidation() {
 		try {
@@ -770,6 +809,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a missing arc inscription. As there is no control flow dependency in CPNs, no exception should be thrown and the flow relation should be created with the default constraint.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noArcInscriptionCPNWithoutValidation() {
 		try {
@@ -786,6 +826,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a negative arc inscription. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionCPNWithValidation() throws ParserException {
 		try {
@@ -800,6 +841,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a negative arc inscription. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void negativeArcInscriptionCPNWithoutValidation() throws ParserException {
 		try {
@@ -814,6 +856,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a invalid arc graphics. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void invalidArcGraphicsCPNWithValidation() throws ParserException {
 		try {
@@ -828,6 +871,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with a invalid arc graphics. No exception should be thrown and the invalid tag gets ignored.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void invalidArcGraphicsCPNWithoutValidation() {
 		try {
@@ -848,6 +892,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * Valid bounded CPN with validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedCPNWithValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -869,6 +914,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * Valid bounded CPN without validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void boundedCPNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
@@ -894,6 +940,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with incomplete token colors RGB values. The parser should throw an exception while validation.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT, expected = PNMLParserException.class)
 	public void incompleteTokencolorsCPNWithValidation() throws ParserException {
 		try {
@@ -908,6 +955,7 @@ public class PNMLCPNParserComponentTest {
 	/*
 	 * CPN with incomplete token colors RGB values without validation. No parser should be thrown and the missing values should be filled with the default value <code>0</code>.
 	 */
+	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteTokencolorsCPNWithoutValidation() {
 		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;

@@ -36,9 +36,11 @@ public class XMLSerializationSupport implements SerializationSupport{
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		}
-		document = db.newDocument();
-		rootElement = createElement(rootElementName);
-		document.appendChild(rootElement);
+		if (db != null) {
+			document = db.newDocument();
+			rootElement = createElement(rootElementName);
+			document.appendChild(rootElement);
+		}
 	}
 	
 	public Element createElement(String elementName){

@@ -103,16 +103,17 @@ public class SilentTransitionPanel extends JPanel {
 				Set<String> transitionNames = null;
 				try {
 					transitionNames = PNUtils.getNameSetFromTransitions(net.getTransitions(transitionLabel), true);
+
+					for(String transitionName: transitionNames){
+						labelList.add(new JLabel(transitionLabel));
+						nameLabelList.add(new JLabel(transitionName));
+						JCheckBox checkBox = new JCheckBox("silent");
+						if(net.getTransition(transitionName).isSilent() || transitionLabel.startsWith("_"))
+							checkBox.setSelected(true);
+						checkBoxList.add(checkBox);
+					}
 				} catch (ParameterException e) {
 					e.printStackTrace();
-				}
-				for(String transitionName: transitionNames){
-					labelList.add(new JLabel(transitionLabel));
-					nameLabelList.add(new JLabel(transitionName));
-					JCheckBox checkBox = new JCheckBox("silent");
-					if(net.getTransition(transitionName).isSilent() || transitionLabel.startsWith("_"))
-						checkBox.setSelected(true);
-					checkBoxList.add(checkBox);
 				}
 			}
 		}

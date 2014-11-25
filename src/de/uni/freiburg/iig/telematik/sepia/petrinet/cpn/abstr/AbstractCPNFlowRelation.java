@@ -47,6 +47,7 @@ public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? exten
 //		}
 //	}
 
+	@Override
 	public Multiset<String> getDefaultConstraint(){
 		Multiset<String> defaultConstraint = new Multiset<String>();
 		defaultConstraint.add(AbstractCPN.DEFAULT_TOKEN_COLOR);

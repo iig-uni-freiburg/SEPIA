@@ -217,6 +217,7 @@ public class CPNTransitionTest {
 		CPNFlowRelation pre1ToT0 = cpn.addFlowRelationPT("pre1", "t0");
 		CPNFlowRelation pre2ToT0 = cpn.addFlowRelationPT("pre2", "t0");
 
+		@SuppressWarnings("unused")
 		CPNFlowRelation t0ToPost1 = cpn.addFlowRelationTP("t0", "post1");
 		CPNFlowRelation t0ToPost2 = cpn.addFlowRelationTP("t0", "post2");
 

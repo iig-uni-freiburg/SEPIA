@@ -138,11 +138,11 @@ public class AbstractPNMLPNParserTestUtils {
 		DocumentBuilder db = null;
 		try {
 			db = dbf.newDocumentBuilder();
+			Document doc = db.newDocument();
+			return doc;
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		}
-		Document doc = db.newDocument();
-
-		return doc;
+		return null;
 	}
 }

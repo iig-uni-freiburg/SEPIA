@@ -278,6 +278,7 @@ public class LabelingTest {
 	public void testRemoveActivities() {
 
 		// create a labeling
+		@SuppressWarnings("unused")
 		Labeling l3 = null;
 		try {
 			Context context = new Context();
@@ -363,6 +364,7 @@ public class LabelingTest {
 	public void testRemoveSubjects() {
 
 		// create alabeling
+		@SuppressWarnings("unused")
 		Labeling l3 = null;
 		try {
 			Context context = new Context();
@@ -448,6 +450,7 @@ public class LabelingTest {
 	public void testRemoveAttributes() {
 
 		// create alabeling
+		@SuppressWarnings("unused")
 		Labeling l3 = null;
 		try {
 			Context context = new Context();

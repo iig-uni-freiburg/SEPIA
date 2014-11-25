@@ -116,10 +116,12 @@ public class PTTransitionTest {
 			ptnet.addFlowRelationPT("pre2", "t0", 3);
 			ptnet.addFlowRelationTP("t0", "post1", 4);
 			ptnet.addFlowRelationTP("t0", "post2", 5);
+
+			return ptnet.getTransition("t0");
 		} catch (ParameterException e) {
 			e.printStackTrace();
 		}
 
-		return ptnet.getTransition("t0");
+		return null;
 	}
 }
