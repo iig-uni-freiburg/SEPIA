@@ -151,7 +151,7 @@ public class CWNChecker {
 		}
 		
 		// Requirement 1: Option to complete + proper completion
-		checkValidCompletion(cpn, places.getOutput());
+		checkValidCompletion(cpn, places.getOutput(), flags);
 		
 		// Requirement 2: No dead transitions
 		try {
@@ -204,21 +204,19 @@ public class CWNChecker {
 				throw new PNSoundnessException("At least one drain in the marking graph of the given cpn is not a valid end state.\nDrain: " + drainVertex.getElement() + "\nReason: " + e.getMessage());
 			}
 		}
-//		Set<AbstractCPNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getVertices());
-//		otherVertexes.removeAll(drains);
-//		for(AbstractCPNMarkingGraphState<M> otherVertex : otherVertexes){			
-//			try {
-//				checkEndStateProperty(cpn, otherVertex.getElement(), outputPlaceName);
-//				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement());
-//			} catch(PNValidationException e){
-////				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement() + "\nReason: " + e.getMessage());
-//			}
-//		}
+		Set<AbstractCPNMarkingGraphState<M>> otherVertexes = new HashSet<AbstractCPNMarkingGraphState<M>>(markingGraph.getVertices());
+		otherVertexes.removeAll(drains);
+		for(AbstractCPNMarkingGraphState<M> otherVertex : otherVertexes){			
+			try {
+				checkEndStateProperty(cpn, otherVertex.getElement(), outputPlaceName);
+				throw new PNSoundnessException("At least one non-drain in the marking graph of the given cpn is an end state.\nNon-Drain: " + otherVertex.getElement());
+			} catch(PNValidationException e){}
+		}
 	}
 	
 	/**
 	 * Checks if the given marking is an end state of the CPN, i.e.<br>
-	 * it contains the output place which in turn contains exactly one token.
+	 * it contains the output place which in turn contains exactly one control flow token.
 	 * 
 	 * @param traversalMarking The marking of interest.
 	 * @param cpn The corresponding CPN.
@@ -235,7 +233,6 @@ public class CWNChecker {
 					N extends AbstractCPN<P,T,F,M,X,Y>> 
 
 	void checkEndStateProperty(N cpn, M traversalMarking, String outputPlaceName, CWNPropertyFlag... flags) throws PNValidationException{
-		
 		// Check Option to complete property
 		if(!traversalMarking.contains(outputPlaceName))
 			throw new PNValidationException("Marking does not contain tokens for output place \"" + outputPlaceName + "\"");
@@ -247,11 +244,11 @@ public class CWNChecker {
 		if(!traversalMarking.get(outputPlaceName).support().contains(cfTokenColor))
 			throw new PNValidationException("Marking does not contain control flow token for output place \"" + outputPlaceName + "\"");
 		
-		boolean checkRemainingCFTokens = false;
+		boolean checkRemainingCFTokens = true;
 		if(flags != null){
 			for(CWNPropertyFlag flag: flags){
 				if(flag == CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS){
-					checkRemainingCFTokens = true;
+					checkRemainingCFTokens = false;
 				}
 			}
 		}

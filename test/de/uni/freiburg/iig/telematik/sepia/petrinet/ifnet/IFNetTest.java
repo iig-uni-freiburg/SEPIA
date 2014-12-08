@@ -16,9 +16,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.invation.code.toval.types.Multiset;
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
@@ -52,7 +52,7 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#removeTransition(java.lang.String)}.
 	 */
 	@Test
-	public void testRemoveTransition() throws ParameterException {
+	public void testRemoveTransition() {
 
 		// remove the transition
 		assertTrue(dSNet.containsTransition("t0"));
@@ -65,10 +65,9 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
 	 */
 	@Test( expected = PNValidationException.class )
-	public void testCheckValidity() throws ParameterException, PNValidationException {
-
+	public void testCheckValidity() throws PNValidationException {
 		dSNet.checkValidity();
-//		fail("An invalid ifNet  is not detected!");
+		
 //
 //		// change the flow relation such that there will never be
 //		// proper completion => SNet is invalid
@@ -96,13 +95,13 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where subjects are missing.
 	 */
 	@Test
-	public void testCheckValidityAnalysisContextMissingSubject() throws ParameterException {
+	public void testCheckValidityAnalysisContextMissingSubject() {
 		/*
 		 * an IFNet without an AnalysisContext is currently not seen as invalid
 		 */
 		IFNet net = IFNetTestUtil.createSimpleIFNetWithDeclassificationNoAC();
 		try {
-			net.checkValidity();
+			net.checkValidity(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
 		} catch (PNValidationException e) {
 			System.out.println(e.getMessage());
 			System.out.println(net);
@@ -114,7 +113,7 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where subjects CREATEs a token with a classification different from the subjects clearance.
 	 */
 	@Test
-	public void testCheckValidityAnalysisContextNonMatchingSecLevels() throws ParameterException {
+	public void testCheckValidityAnalysisContextNonMatchingSecLevels() {
 		// blue is created by transition t0. Both the transition and its subject (sh1) are high.
 		dSNet.getAnalysisContext().getLabeling().setAttributeClassification("blue", SecurityLevel.LOW);
 		try {
@@ -129,7 +128,7 @@ public class IFNetTest {
 	 */
 	@SuppressWarnings("unused")
 	@Test
-	public void testCheckValidityAnalysisContextDeclassificationTransCreatesHighColor() throws ParameterException {
+	public void testCheckValidityAnalysisContextDeclassificationTransCreatesHighColor() {
 
 		// blue is created by transition t0. Both the transition and its subject (sh1) are high.
 		dSNet.getAnalysisContext().getLabeling().setAttributeClassification("yellow", SecurityLevel.HIGH);
@@ -168,7 +167,7 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#SNet(java.util.Set, java.util.Set, de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking)}.
 	 */
 	@Test
-	public void testSNetSetOfStringSetOfStringSNetMarking() throws ParameterException {
+	public void testSNetSetOfStringSetOfStringSNetMarking() {
 
 		// create place transition and initial makring
 		Set<String> places = new HashSet<String>();
@@ -245,12 +244,8 @@ public class IFNetTest {
 	@Test
 	public void testAddDeclassificationTransitionString() {
 
-		try {
-			dSNet.addDeclassificationTransition("td");
-			dSNet.addDeclassificationTransition("td2");
-		} catch (ParameterException e) {
-			fail("Cannot add DeclassificationTransition.");
-		}
+		dSNet.addDeclassificationTransition("td");
+		dSNet.addDeclassificationTransition("td2");
 
 		assertTrue(dSNet.getDeclassificationTransitions().size() == 2);
 
@@ -264,7 +259,7 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#getSubjectDescriptors()}.
 	 */
 	@Test
-	public void testGetSubjectDescriptors() throws ParameterException {
+	public void testGetSubjectDescriptors() {
 
 		assertTrue(dSNet.getSubjectDescriptors().size() == 5);
 		assertTrue(dSNet.getSubjectDescriptors().contains("sh0"));
@@ -278,7 +273,7 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#getAnalysisContext()}.
 	 */
 	@Test
-	public void testGetAnalysisContext() throws ParameterException {
+	public void testGetAnalysisContext() {
 
 		assertTrue(dSNet.getAnalysisContext().getSubjectDescriptor("tIn").equals("sh0"));
 		assertTrue(dSNet.getAnalysisContext().getSubjectDescriptor("tOut").equals("sh2"));
@@ -290,10 +285,10 @@ public class IFNetTest {
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#setAnalysisContext(de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext)}.
 	 */
 	@Test
-	public void testSetAnalysisContext() throws ParameterException {
+	public void testSetAnalysisContext() {
 
 		// create labeling
-		Context context = new Context();
+		Context context = new Context("");
 		context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "t1"));
 		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 		context.setObjects(Arrays.asList("black", "red", "blue", "green", "yellow"));
@@ -341,7 +336,7 @@ public class IFNetTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test
-	public void testIFNetClone() throws ParameterException {
+	public void testIFNetClone() {
 		/*
 		 * Test equal IFNets
 		 */

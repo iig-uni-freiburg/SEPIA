@@ -1162,6 +1162,24 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	}
 	
 	/**
+	 * Checks if the Petri net is valid.<br>
+	 * Validity of a net relates to basic structural properties
+	 * and requires all net places and transitions to be valid.<br>
+	 * Subclasses may define the validity of a net e.g. in terms of specific constraints<br>
+	 * and must throw PNValidationExceptions in case any constraint is violated.
+	 * 
+	 * @see #checkValidity()
+	 */
+	public boolean isValid(){
+		try{
+			checkValidity();
+			return true;
+		} catch(PNValidationException e){
+			return false;
+		}
+	}
+	
+	/**
 	 * Checks if the Petri net is soundness.<br>
 	 * In contrast to validity, Soundness of a net relates to more complex net properties,
 	 * such as reachability properties or specific structural restrictions.
@@ -1192,6 +1210,17 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public void checkSoundness(boolean checkValidity) throws PNValidationException,PNSoundnessException{
 		if(checkValidity)
 			checkValidity();
+	}
+	
+	public boolean isSound(){
+		try {
+			checkSoundness();
+			return true;
+		} catch(PNValidationException e){
+			return false;
+		} catch(PNSoundnessException e){
+			return false;
+		}
 	}
 	
 	//------- Interface Methods ----------------------------------------------------------------------

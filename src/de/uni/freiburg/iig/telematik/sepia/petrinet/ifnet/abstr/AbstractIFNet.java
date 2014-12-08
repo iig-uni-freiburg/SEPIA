@@ -19,6 +19,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRel
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -220,13 +221,17 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	//------- Validation methods --------------------------------------------------------------------
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void checkValidity() throws PNValidationException {
+		checkValidity(new CWNPropertyFlag[0]);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void checkValidity(CWNPropertyFlag... flags) throws PNValidationException {
 		super.checkValidity();
 		
 		try{			
-			CWNChecker.checkCWNSoundness(this, true);
+			CWNChecker.checkCWNSoundness(this, true, flags);
 		} catch(PNSoundnessException e){
 			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + e.getMessage());
 		}
@@ -246,13 +251,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 							throw new PNValidationException("There is another declassification transition which produces color \""+color+"\"");
 					}
 				} else {
-					try{
 					for(String color: declassificationTransition.getProducedAttributes()){
 						if(otherTransition.producesColor(color) && ((R) otherTransition).getAccessModes(color).contains(AccessMode.CREATE))
 							throw new PNValidationException("There is another net transition which creates tokens of color \""+color+"\"");
-					}
-					}catch(ParameterException e){
-						e.printStackTrace();
 					}
 				}
 			}

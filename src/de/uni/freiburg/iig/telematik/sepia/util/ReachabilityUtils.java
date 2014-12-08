@@ -243,7 +243,7 @@ public class ReachabilityUtils {
 							stateNames.put(newMarking.toString(), newStateName);
 						} else {
 							// This marking is already known
-//							System.out.println("   -> Known marking");
+							System.out.println("   -> Known marking");
 							newStateName = stateNames.get(newMarking.toString());
 						}
 						if (!markingGraph.containsEvent(enabledTransition.getName())) {

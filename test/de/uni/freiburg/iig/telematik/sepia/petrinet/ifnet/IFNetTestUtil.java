@@ -123,7 +123,7 @@ public class IFNetTestUtil {
 
 		if (setAnalysisContext) {
 			// create labeling
-			Context context = new Context();
+			Context context = new Context("");
 			context.setSubjects(Arrays.asList("S1", "S2", "S3"));
 			context.setActivities(Arrays.asList("tIn", "t0", "tOut"));
 			context.setObjects(Arrays.asList("green", "red", "blue", "black"));
@@ -155,7 +155,7 @@ public class IFNetTestUtil {
 
 		if (setAnalysisContext) {
 			// create labeling
-			Context context = new Context();
+			Context context = new Context("");
 			context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 			context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
 			context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "td2", "t1", "connector"));
