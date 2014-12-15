@@ -20,6 +20,7 @@ import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
@@ -64,31 +65,146 @@ public class IFNetTest {
 	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
 	 */
-	@Test( expected = PNValidationException.class )
+	@SuppressWarnings("unused")
+	@Test
 	public void testCheckValidity() throws PNValidationException {
+		// create the SNet
+		IFNet ifNet = new IFNet();
+
+		// add places with marking and capacity
+		ifNet.addPlace("pIn");
+		ifNet.getPlace("pIn").setColorCapacity("black", 1);
+
+		ifNet.addPlace("p0");
+		ifNet.getPlace("p0").setColorCapacity("black", 1);
+		ifNet.getPlace("p0").setColorCapacity("green", 1);
+
+		ifNet.addPlace("p1");
+		ifNet.getPlace("p1").setColorCapacity("black", 1);
+		ifNet.getPlace("p1").setColorCapacity("red", 1);
+
+		ifNet.addPlace("p2");
+		ifNet.getPlace("p2").setColorCapacity("black", 1);
+		ifNet.getPlace("p2").setColorCapacity("green", 1);
+
+		ifNet.addPlace("p3");
+		ifNet.getPlace("p3").setColorCapacity("black", 1);
+		ifNet.getPlace("p3").setColorCapacity("blue", 1);
+
+		ifNet.addPlace("p4");
+		ifNet.getPlace("p4").setColorCapacity("black", 1);
+		ifNet.getPlace("p4").setColorCapacity("yellow", 1);
+
+		ifNet.addPlace("p5");
+		ifNet.getPlace("p5").setColorCapacity("black", 1);
+		ifNet.getPlace("p5").setColorCapacity("green", 1);
+
+		ifNet.addPlace("pOut");
+		ifNet.getPlace("pOut").setColorCapacity("black", 1);
+
+		Multiset<String> pInMarking = new Multiset<String>();
+		pInMarking.add("black");
+
+		IFNetMarking sm = new IFNetMarking();
+		sm.set("pIn", pInMarking);
+		ifNet.setInitialMarking(sm);
+
+		// add the transitions
+		ifNet.addTransition("tIn");
+		ifNet.addTransition("t0");
+		ifNet.addTransition("t1");
+		ifNet.addDeclassificationTransition("td");
+		ifNet.addTransition("tOut");
+
+		// add flowrelations
+		IFNetFlowRelation f1 = ifNet.addFlowRelationPT("p0", "t0");
+		IFNetFlowRelation f2 = ifNet.addFlowRelationPT("p1", "t0");
+		IFNetFlowRelation f3 = ifNet.addFlowRelationTP("t0", "p2");
+		IFNetFlowRelation f4 = ifNet.addFlowRelationTP("t0", "p3");
+
+		IFNetFlowRelation f5 = ifNet.addFlowRelationPT("pIn", "tIn");
+		IFNetFlowRelation f6 = ifNet.addFlowRelationTP("tIn", "p0");
+		IFNetFlowRelation f7 = ifNet.addFlowRelationTP("tIn", "p1");
+
+		IFNetFlowRelation f8 = ifNet.addFlowRelationPT("p2", "t1");
+		IFNetFlowRelation f9 = ifNet.addFlowRelationPT("p3", "t1");
+		IFNetFlowRelation f10 = ifNet.addFlowRelationTP("t1", "p5");
+
+		IFNetFlowRelation f13 = ifNet.addFlowRelationPT("p5", "td");
+		IFNetFlowRelation f14 = ifNet.addFlowRelationTP("td", "p4");
+
+		IFNetFlowRelation f11 = ifNet.addFlowRelationPT("p4", "tOut");
+		IFNetFlowRelation f12 = ifNet.addFlowRelationTP("tOut", "pOut");
+
+		// configure flow relations
+		f1.addConstraint("green", 1);
+		f2.addConstraint("red", 1);
+		f3.addConstraint("green", 1);
+		f4.addConstraint("blue", 1);
+		f6.addConstraint("green", 1);
+		f7.addConstraint("red", 1);
+		f8.addConstraint("green", 1);
+		f9.addConstraint("blue", 1);
+		f10.addConstraint("green", 1);
+		f11.addConstraint("yellow", 1);
+		f13.addConstraint("green", 1);
+		f14.addConstraint("yellow", 1);
+
+		// configure read write
+		RegularIFNetTransition rst = (RegularIFNetTransition) ifNet.getTransition("t0");
+		rst.addAccessMode("green", AccessMode.READ);
+		rst.addAccessMode("red", AccessMode.DELETE);
+		rst.addAccessMode("blue", AccessMode.CREATE);
+
+		// create labeling
+		Context context = new Context("");
+		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+		context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
+		context.setActivities(Arrays.asList("tIn", "t0", "t1", "td", "tOut"));
+		Labeling l = new Labeling(context);
+
+		// Set subject clearance
+		l.setSubjectClearance("sh0", SecurityLevel.HIGH);
+		l.setSubjectClearance("sh1", SecurityLevel.HIGH);
+		l.setSubjectClearance("sh2", SecurityLevel.HIGH);
+		l.setSubjectClearance("sh3", SecurityLevel.HIGH);
+		l.setSubjectClearance("sl0", SecurityLevel.LOW);
+
+		// set transition classification
+		l.setActivityClassification("tIn", SecurityLevel.HIGH);
+		l.setActivityClassification("t0", SecurityLevel.HIGH);
+		l.setActivityClassification("t1", SecurityLevel.HIGH);
+		l.setActivityClassification("td", SecurityLevel.HIGH);
+		l.setActivityClassification("tOut", SecurityLevel.LOW);
+
+		// set token color classification
+		l.setAttributeClassification("green", SecurityLevel.HIGH);
+		l.setAttributeClassification("red", SecurityLevel.HIGH);
+		l.setAttributeClassification("blue", SecurityLevel.HIGH);
+		l.setAttributeClassification("yellow", SecurityLevel.LOW);
+
+		// Create a new analysis context
+		AnalysisContext ac = new AnalysisContext(l);
+
+		// Assign subjects to transitions
+		ac.setSubjectDescriptor("tIn", "sh0");
+		ac.setSubjectDescriptor("t0", "sh1");
+		ac.setSubjectDescriptor("td", "sh2");
+		ac.setSubjectDescriptor("t1", "sh3");
+		ac.setSubjectDescriptor("tOut", "sl0");
+
+		// set the labeling
+		ifNet.setAnalysisContext(ac);
+
+		ifNet.checkValidity();
+	}
+
+	/*
+	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
+	 */
+	@Test( expected = PNValidationException.class )
+	public void testCheckNonValidity() throws PNValidationException {
 		dSNet.checkValidity();
-		
-//
-//		// change the flow relation such that there will never be
-//		// proper completion => SNet is invalid
-//		IFNetFlowRelation outRel = null;
-//		for (IFNetFlowRelation f : dSNet.getFlowRelations()) {
-//			if (f.getTarget().getName().equals("pOut")) {
-//				outRel = f;
-//				break;
-//			}
-//		}
-//
-//		// remove the black token and set green instead
-//		Multiset<String> constraint = new Multiset<String>();
-//		constraint.add("green");
-//		outRel.setConstraint(constraint);
-//		System.out.println(dSNet);
-//		try {
-//			dSNet.checkValidity();
-//			fail("An invalid ifNet  is not detected!");
-//		} catch (PNValidationException e) {
-//		}
 	}
 
 	/*
