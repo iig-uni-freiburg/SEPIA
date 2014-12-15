@@ -11,6 +11,8 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
 
 public class PNPropertiesChecker {
 	
@@ -80,7 +82,14 @@ public class PNPropertiesChecker {
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+inputPlaceName+"\"");
 		if(!petriNet.containsPlace(outputPlaceName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+outputPlaceName+"\"");
-		
+
+		// FIXME drop activity afterwards?
+		if (petriNet instanceof IFNet) {
+			IFNet ifnet = (IFNet) petriNet;
+			ifnet.getAnalysisContext().getLabeling().getContext().addActivity(CONNECTOR_NAME);
+			ifnet.getAnalysisContext().getLabeling().setActivityClassification(CONNECTOR_NAME, SecurityLevel.HIGH);
+		}
+
 		P input = petriNet.getPlace(inputPlaceName);
 		P output = petriNet.getPlace(outputPlaceName);
 		// Check connectedness of short-circuited net.
