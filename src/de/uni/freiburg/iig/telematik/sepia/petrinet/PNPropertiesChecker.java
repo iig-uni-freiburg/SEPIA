@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
@@ -12,11 +13,11 @@ import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
 
 public class PNPropertiesChecker {
-	
-	private static final String CONNECTOR_NAME = "connector";
+
+	/** temporary transition name with unique ID */
+	private static final String CONNECTOR_NAME = "connector" + UUID.randomUUID().toString();
 
 	public static 	<P extends AbstractPlace<F,S>, 
 		 			 T extends AbstractTransition<F,S>, 
@@ -83,11 +84,11 @@ public class PNPropertiesChecker {
 		if(!petriNet.containsPlace(outputPlaceName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+outputPlaceName+"\"");
 
-		// FIXME drop activity afterwards?
 		if (petriNet instanceof IFNet) {
 			IFNet ifnet = (IFNet) petriNet;
-			ifnet.getAnalysisContext().getLabeling().getContext().addActivity(CONNECTOR_NAME);
-			ifnet.getAnalysisContext().getLabeling().setActivityClassification(CONNECTOR_NAME, SecurityLevel.HIGH);
+			if (ifnet.getAnalysisContext() != null) {
+				ifnet.getAnalysisContext().getLabeling().getContext().addActivity(CONNECTOR_NAME);
+			}
 		}
 
 		P input = petriNet.getPlace(inputPlaceName);
@@ -101,6 +102,13 @@ public class PNPropertiesChecker {
 			throw new PNValidationException("Net is not strongly connected.");
 		}
 		petriNet.removeTransition(CONNECTOR_NAME);
+
+		if (petriNet instanceof IFNet) {
+			IFNet ifnet = (IFNet) petriNet;
+			if (ifnet.getAnalysisContext() != null) {
+				ifnet.getAnalysisContext().getLabeling().getContext().removeActivity(CONNECTOR_NAME);
+			}
+		}
 	}
 	
 	public static <P extends AbstractPlace<F,S>, 
