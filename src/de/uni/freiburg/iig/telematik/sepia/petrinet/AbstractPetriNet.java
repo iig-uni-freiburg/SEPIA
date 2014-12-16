@@ -911,7 +911,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	}
 	
 	//------- Markings -------------------------------------------------------------------------------
-	
+	/**
+	 * <b>Warning:</b> This non-final method gets called by constructors.
+	 */
 	protected abstract M createNewMarking();
 	
 	/**
