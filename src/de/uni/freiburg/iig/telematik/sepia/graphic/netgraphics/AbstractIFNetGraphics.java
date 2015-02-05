@@ -57,11 +57,6 @@ public class AbstractIFNetGraphics<P extends AbstractIFNetPlace<F>,
 		StringBuilder str = new StringBuilder();
 		str.append(super.toString());
 
-		str.append("                      tokenColors# " + colors.size());
-		if (colors.size() > 0)
-			str.append(":\n" + map2Str(colors) + "\n");
-		else
-			str.append("\n");
 		str.append("           accessFunctionGraphics# " + accessFunctionGraphics.size());
 		if (accessFunctionGraphics.size() > 0)
 			str.append(":\n" + map2Str(accessFunctionGraphics) + "\n");
