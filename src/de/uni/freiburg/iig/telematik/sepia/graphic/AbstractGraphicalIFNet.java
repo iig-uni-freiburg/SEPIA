@@ -33,4 +33,9 @@ public class AbstractGraphicalIFNet<P extends AbstractIFNetPlace<F>,
 	public AbstractGraphicalIFNet(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
+	
+	protected AbstractGraphicalIFNet() {
+		super();
+	}
+
 }

@@ -26,7 +26,7 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	}
 
 	@Override
-	protected CPNMarking createNewMarking() {
+	public CPNMarking createNewMarking() {
 		return new CPNMarking();
 	}
 

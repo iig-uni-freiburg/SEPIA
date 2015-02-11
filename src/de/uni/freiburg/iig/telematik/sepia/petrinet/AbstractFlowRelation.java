@@ -78,7 +78,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	}
 	
 	public AbstractFlowRelation(P place, T transition, S constraint){
-		this(place, transition, false, constraint);
+		this(place, transition, true, constraint);
 	}
 	
 	public AbstractFlowRelation(T transition, P place, S constraint){
@@ -232,8 +232,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 		result = prime * result + (directionPT ? 1231 : 1237);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((place == null) ? 0 : place.hashCode());
-		result = prime * result
-				+ ((transition == null) ? 0 : transition.hashCode());
+		result = prime * result	+ ((transition == null) ? 0 : transition.hashCode());
 		return result;
 	}
 

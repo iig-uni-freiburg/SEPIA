@@ -10,8 +10,8 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.CompatibilityException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jawl.context.Context;
-import de.uni.freiburg.iig.telematik.jawl.context.ContextListener;
+import de.uni.freiburg.iig.telematik.seram.context.Context;
+import de.uni.freiburg.iig.telematik.seram.context.ContextListener;
 
 
 
@@ -316,6 +316,30 @@ public class Labeling implements ContextListener {
 			builder.append(' ');
 		}
 		return builder.toString();
+	}
+
+	@Override
+	public boolean allowSubjectRemoval(String subject) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowObjectRemoval(String subject) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean allowActivityRemoval(String subject) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void nameChanged(String oldName, String newName) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

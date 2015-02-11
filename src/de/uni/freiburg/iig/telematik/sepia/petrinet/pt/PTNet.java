@@ -40,7 +40,7 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	}
 
 	@Override
-	protected PTMarking createNewMarking() {
+	public PTMarking createNewMarking() {
 		return new PTMarking();
 	}
 

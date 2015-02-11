@@ -1,5 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import java.awt.Color;
+import java.util.Random;
+
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
@@ -28,8 +31,17 @@ public class GraphicalIFNet extends AbstractGraphicalIFNet<	IFNetPlace,
 															IFNet, 
 															IFNetGraphics> {
 
-	public GraphicalIFNet() {
-		this(new IFNet(), new IFNetGraphics());
+	public GraphicalIFNet(IFNet petriNet) {
+		super();
+		setPetriNet(petriNet);
+		IFNetGraphics graphics = new IFNetGraphics();
+		Random rand = new Random();
+		for(String attribute: petriNet.getTokenColors()){
+			if(attribute.equals(petriNet.defaultTokenColor()))
+				continue;
+			graphics.getColors().put(attribute, new Color(rand.nextInt(255),rand.nextInt(255),rand.nextInt(255)));
+		}
+		setPetriNetGraphics(graphics);
 	}
 	
 	public GraphicalIFNet(IFNet petriNet, IFNetGraphics petriNetGraphics) {

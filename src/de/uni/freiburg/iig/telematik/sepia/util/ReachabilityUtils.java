@@ -187,7 +187,8 @@ public class ReachabilityUtils {
 		Validate.notNull(petriNet);
 		if(acceptOnlyBoundedNet & !petriNet.isBounded())
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot determine marking graph for unbounded nets.");
-
+		M savedMarking = (M) petriNet.getMarking().clone();
+		
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
 		Set<M> allKnownStates = new HashSet<M>();
 
@@ -260,6 +261,7 @@ public class ReachabilityUtils {
 		} catch (Exception e) {
 			throw new MarkingGraphException("Exception during marking graph construction.<br>Reason: " + e.getMessage());
 		}
+		petriNet.setMarking(savedMarking);
 		return markingGraph;
 	}
 	

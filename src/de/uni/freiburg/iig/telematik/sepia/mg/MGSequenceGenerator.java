@@ -39,6 +39,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 	}
 	
 	public MGTraversalResult getSequences(){
+		M actualMarking = (M) petriNet.getMarking().clone();
 		Set<List<String>> sequences = new HashSet<List<String>>();
 		Set<List<String>> completeSequences = new HashSet<List<String>>();
 		
@@ -56,6 +57,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 			sequences = removeSilentTransitions(sequences);	
 			completeSequences = removeSilentTransitions(completeSequences);	
 		}
+		petriNet.setMarking(actualMarking);
 		return new MGTraversalResult(sequences, completeSequences);
 	}
 	

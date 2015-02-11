@@ -29,4 +29,8 @@ public class AbstractGraphicalCPN<P extends AbstractCPNPlace<F>,
 	public AbstractGraphicalCPN(N petriNet, G petriNetGraphics) {
 		super(petriNet, petriNetGraphics);
 	}
+	
+	protected AbstractGraphicalCPN() {
+		super();
+	}
 }

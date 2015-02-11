@@ -38,7 +38,7 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 	}
 	
 	@Override
-	protected IFNetMarking createNewMarking() {
+	public IFNetMarking createNewMarking() {
 		return new IFNetMarking();
 	}	
 	

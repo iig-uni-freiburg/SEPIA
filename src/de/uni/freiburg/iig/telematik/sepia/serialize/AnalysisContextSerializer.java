@@ -6,10 +6,10 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
-import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetAnalysisContextParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
+import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 public class AnalysisContextSerializer {
 	

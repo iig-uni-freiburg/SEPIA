@@ -3,11 +3,11 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 import java.util.Arrays;
 
 import de.invation.code.toval.types.Multiset;
-import de.uni.freiburg.iig.telematik.jawl.context.Context;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
+import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 /**
  * Methods often used during testing of SNets.

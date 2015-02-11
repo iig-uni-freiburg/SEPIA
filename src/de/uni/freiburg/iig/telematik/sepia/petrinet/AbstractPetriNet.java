@@ -683,8 +683,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public F addFlowRelationPT(String placeName, String transitionName, S constraint){
 		validatePlace(placeName);
 		validateTransition(transitionName);
-		if(containsRelationPT(placeName, transitionName))
+		if(containsRelationPT(placeName, transitionName)){
 			return null;
+		}
 		F newFlowRelation = createNewFlowRelation(places.get(placeName), transitions.get(transitionName), constraint);
 		if(addFlowRelation(newFlowRelation)){
 			return newFlowRelation;
@@ -760,8 +761,11 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected boolean addFlowRelation(F relation){
 		Validate.notNull(relation);
-		if(containsRelation(relation))
-			return false;
+		for(F existingRelation: getFlowRelations()){
+			if(existingRelation.equals(relation)){
+				return false;
+			}
+		}
 		
 		if(relation.getDirectionPT()){
 			relation.getPlace().addOutgoingRelation(relation);
@@ -914,7 +918,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	/**
 	 * <b>Warning:</b> This non-final method gets called by constructors.
 	 */
-	protected abstract M createNewMarking();
+	public abstract M createNewMarking();
 	
 	/**
 	 * Sets the initial marking of the Petri net.<br>
@@ -1252,6 +1256,14 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	
 	//------ Listener methods ------------------------------------------------------------------------
+	
+	public boolean addStructureListener(StructureListener<P,T,F,M,S> listener){
+		return structureListenerSupport.addListener(listener);
+	}
+	
+	public boolean removeStructureListener(StructureListener<P,T,F,M,S> listener){
+		return structureListenerSupport.removeListener(listener);
+	}
 
 	/**
 	 * When a transition changes its state to enabled,<br>

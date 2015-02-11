@@ -1,6 +1,13 @@
 package de.uni.freiburg.iig.telematik.sepia.graphic;
 
+import de.uni.freiburg.iig.telematik.sepia.event.PlaceChangeEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
+import de.uni.freiburg.iig.telematik.sepia.event.StructureListener;
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -35,7 +42,7 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>,
 										  X extends AbstractMarkingGraphState<M, S>,
 										  Y extends AbstractMarkingGraphRelation<M, X, S>,
 										  N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-		   							  	  G extends AbstractPNGraphics<P,T,F,M,S>> {
+		   							  	  G extends AbstractPNGraphics<P,T,F,M,S>> implements StructureListener<P,T,F,M,S> {
 
 	private N petriNet = null;
 	private G petriNetGraphics = null;
@@ -46,6 +53,10 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>,
 	public AbstractGraphicalPN(N petriNet, G petriNetGraphics) {
 		setPetriNet(petriNet);
 		setPetriNetGraphics(petriNetGraphics);
+	}
+	
+	protected AbstractGraphicalPN() {
+		super();
 	}
 
 	/**
@@ -60,7 +71,12 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>,
 	 *            the petriNet to set
 	 */
 	public void setPetriNet(N petriNet) {
+		if(this.petriNet != null){
+			this.petriNet.removeStructureListener(this);
+		}
 		this.petriNet = petriNet;
+		this.petriNet.addStructureListener(this);
+		this.petriNetGraphics = null;
 	}
 
 	/**
@@ -77,4 +93,54 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>,
 	public void setPetriNetGraphics(G petriNetGraphics) {
 		this.petriNetGraphics = petriNetGraphics;
 	}
+
+	@Override
+	public void structureChanged() {}
+
+	@Override
+	public void placeAdded(PlaceChangeEvent<P> event) {
+		if(petriNetGraphics != null){
+			petriNetGraphics.getPlaceGraphics().put(event.place.getName(), new NodeGraphics());
+			petriNetGraphics.getPlaceLabelAnnotationGraphics().put(event.place.getName(), new AnnotationGraphics());
+		}
+	}
+
+	@Override
+	public void placeRemoved(PlaceChangeEvent<P> event) {
+		if(petriNetGraphics != null){
+			petriNetGraphics.getPlaceGraphics().remove(event.place.getName());
+			petriNetGraphics.getPlaceLabelAnnotationGraphics().remove(event.place.getName());
+		}
+	}
+
+	@Override
+	public void transitionAdded(TransitionChangeEvent<T> event) {
+		if(petriNetGraphics != null){
+			petriNetGraphics.getTransitionGraphics().put(event.transition.getName(), new NodeGraphics());
+			petriNetGraphics.getTransitionLabelAnnotationGraphics().put(event.transition.getName(), new AnnotationGraphics());
+		}
+	}
+
+	@Override
+	public void transitionRemoved(TransitionChangeEvent<T> event) {
+		if(petriNetGraphics != null){
+			petriNetGraphics.getTransitionGraphics().remove(event.transition.getName());
+			petriNetGraphics.getTransitionLabelAnnotationGraphics().remove(event.transition.getName());
+		}
+	}
+
+	@Override
+	public void relationAdded(RelationChangeEvent<F> event) {
+		if(petriNetGraphics != null){
+			petriNetGraphics.getArcGraphics().put(event.relation.getName(), new ArcGraphics());
+			petriNetGraphics.getArcAnnotationGraphics().put(event.relation.getName(), new AnnotationGraphics());
+		}
+	}
+
+	@Override
+	public void relationRemoved(RelationChangeEvent<F> event) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

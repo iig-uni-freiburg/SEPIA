@@ -8,7 +8,7 @@ import java.util.Set;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jawl.context.Context;
+import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 /**
  * Analysis context of IF-Nets.<br>
