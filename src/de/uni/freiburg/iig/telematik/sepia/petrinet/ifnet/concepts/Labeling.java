@@ -11,6 +11,7 @@ import java.util.Set;
 import de.invation.code.toval.validate.CompatibilityException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.seram.context.Context;
+import de.uni.freiburg.iig.telematik.seram.context.ContextChangeReply;
 import de.uni.freiburg.iig.telematik.seram.context.ContextListener;
 
 
@@ -28,6 +29,7 @@ public class Labeling implements ContextListener {
 	 */
 	private SecurityLevel defaultSecurityLevel = DEFAULT_SECURITY_LEVEL;
 	
+	public static final String DEFAULT_NAME = "Labeling";
 	
 	/**
 	 * This map contains the classification of process activities (Petri net transitions).<br>
@@ -50,6 +52,8 @@ public class Labeling implements ContextListener {
 	private Class<?> contextclass = null;
 	
 	private boolean requireContext = true;
+
+	protected String name;
 	
 	public Labeling(){}
 	
@@ -114,6 +118,18 @@ public class Labeling implements ContextListener {
 			if(!subjectClearance.containsKey(subject))
 				setDefaultSubjectClearance(subject);
 		}
+	}
+	
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name) {
+		Validate.notNull(name);
+		Validate.notEmpty(name);
+		if(this.name != null && this.name.equals(name))
+			return;
+		this.name = name;
 	}
 	
 	public String getContextName() {
@@ -319,27 +335,29 @@ public class Labeling implements ContextListener {
 	}
 
 	@Override
-	public boolean allowSubjectRemoval(String subject) {
-		// TODO Auto-generated method stub
-		return false;
+	public ContextChangeReply allowSubjectRemoval(String subject) {
+		return new ContextChangeReply(Labeling.this, true, subject);
 	}
 
 	@Override
-	public boolean allowObjectRemoval(String subject) {
-		// TODO Auto-generated method stub
-		return false;
+	public ContextChangeReply allowObjectRemoval(String object) {
+		return new ContextChangeReply(Labeling.this, true, object);
 	}
 
 	@Override
-	public boolean allowActivityRemoval(String subject) {
-		// TODO Auto-generated method stub
-		return false;
+	public ContextChangeReply allowActivityRemoval(String activity) {
+		return new ContextChangeReply(Labeling.this, true, activity);
 	}
 
 	@Override
 	public void nameChanged(String oldName, String newName) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getListenerDescription() {
+		return "labeling " + getName();
 	}
 	
 }

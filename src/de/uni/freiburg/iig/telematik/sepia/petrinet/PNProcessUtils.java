@@ -6,7 +6,7 @@ import java.util.List;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.jawl.context.ProcessContext;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
-import de.uni.freiburg.iig.telematik.seram.context.DUContext;
+import de.uni.freiburg.iig.telematik.seram.context.data.DUContext;
 
 public class PNProcessUtils {
 
