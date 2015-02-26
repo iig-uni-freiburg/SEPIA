@@ -94,14 +94,14 @@ public class PNPropertiesChecker {
 		P input = petriNet.getPlace(inputPlaceName);
 		P output = petriNet.getPlace(outputPlaceName);
 		// Check connectedness of short-circuited net.
-		petriNet.addTransition(CONNECTOR_NAME, true);
-		petriNet.addFlowRelationPT(output.getName(), CONNECTOR_NAME);
-		petriNet.addFlowRelationTP(CONNECTOR_NAME, input.getName());
+		petriNet.addSilentTransition(CONNECTOR_NAME, false);
+		petriNet.addFlowRelationPT(output.getName(), CONNECTOR_NAME, false);
+		petriNet.addFlowRelationTP(CONNECTOR_NAME, input.getName(), false);
 
 		if (!TraversalUtils.isStronglyConnected(petriNet, input)) {
 			throw new PNValidationException("Net is not strongly connected.");
 		}
-		petriNet.removeTransition(CONNECTOR_NAME);
+		petriNet.removeTransition(CONNECTOR_NAME, false);
 
 		if (petriNet instanceof IFNet) {
 			IFNet ifnet = (IFNet) petriNet;

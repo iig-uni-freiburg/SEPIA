@@ -330,10 +330,26 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @see #addTransition(String)
 	 */
 	public boolean addTransitions(Collection<String> transitionNames) {
+		return addTransitions(transitionNames, true); 
+	}
+	
+	/**
+	 * Adds transitions with the given names to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains transitions with
+	 * given names, less transitions than the given number of arguments may be added to the Petri net.<br>
+	 * This method calls {@link #addTransition(String)} for each transition name.
+	 * @param transitionNames Names for the Petri net transitions.
+	 * @return <code>true</code> if at least one transition was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 * @If the set of transition names is <code>null</code>
+	 * or some transition names are <code>null</code>.
+	 * @see #addTransition(String)
+	 */
+	public boolean addTransitions(Collection<String> transitionNames, boolean notifyListeners) {
 		Validate.notNull(transitionNames);
 		boolean updated = false;
 		for(String transitionName: transitionNames){
-			if(addTransition(transitionName)){
+			if(addTransition(transitionName, notifyListeners)){
 				updated = true;
 			}
 		}
@@ -350,7 +366,20 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @If the transition name is <code>null</code>.
 	 */
 	public boolean addTransition(String transitionName) {
-		return addTransition(transitionName, transitionName);
+		return addTransition(transitionName, true);
+	}
+	
+	/**
+	 * Adds a transition with the given name to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the Petri net transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
+	 */
+	public boolean addTransition(String transitionName, boolean notifyListeners) {
+		return addTransition(transitionName, transitionName, notifyListeners);
 	}
 	
 	/**
@@ -364,7 +393,23 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @If the transition name is <code>null</code>.
 	 */
 	public boolean addTransition(String transitionName, String transitionLabel){
-		return addTransition(transitionName, transitionLabel, false);
+		return addTransition(transitionName, transitionLabel, true);
+	}
+	
+	/**
+	 * Adds a transition with the given name and label to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the Petri net transition.
+	 * @param transitionLabel the label for the Petri net transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
+	 */
+	public boolean addTransition(String transitionName, String transitionLabel, boolean notifyListeners){
+		if(containsTransition(transitionName))
+			return false;
+		return addTransition(createNewTransition(transitionName, transitionLabel, false), notifyListeners);
 	}
 	
 	/**
@@ -377,8 +422,22 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 * @If the transition name is <code>null</code>.
 	 */
-	public boolean addTransition(String transitionName, boolean isSilent){
-		return addTransition(transitionName, transitionName, isSilent);
+	public boolean addSilentTransition(String transitionName){
+		return addSilentTransition(transitionName, true);
+	}
+	
+	/**
+	 * Adds a transition with the given name and silent-state to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the Petri net transition.
+	 * @param isSilent The silent state of the transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
+	 */
+	public boolean addSilentTransition(String transitionName, boolean notifyListeners){
+		return addSilentTransition(transitionName, transitionName, notifyListeners);
 	}
 	
 	/**
@@ -392,10 +451,25 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 * @If the transition name is <code>null</code>.
 	 */
-	public boolean addTransition(String transitionName, String transitionLabel, boolean isSilent) {
+	public boolean addSilentTransition(String transitionName, String transitionLabel) {
+		return addSilentTransition(transitionName, transitionLabel, true);
+	}
+	
+	/**
+	 * Adds a transition with the given name, label and silent-state to the Petri net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the Petri net transition.
+	 * @param transitionLabel the label for the Petri net transition.
+	 * @param isSilent The silent state of the transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @If the transition name is <code>null</code>.
+	 */
+	public boolean addSilentTransition(String transitionName, String transitionLabel, boolean notifyListeners) {
 		if(containsTransition(transitionName))
 			return false;
-		return addTransition(createNewTransition(transitionName, transitionLabel, isSilent));
+		return addTransition(createNewTransition(transitionName, transitionLabel, true), notifyListeners);
 	}
 	
 	/**
@@ -405,14 +479,15 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param transition The Petri net transition to add.
 	 * @If the given transition is <code>null</code>.
 	 */
-	protected boolean addTransition(T transition) {
+	protected boolean addTransition(T transition, boolean notifyListeners) {
 		Validate.notNull(transition);
 		if(containsTransition(transition))
 			return false;
 		transitions.put(transition.getName(), transition);
 		transition.addTransitionListener(this);							
 		enabledTransitions.add(transition);
-		structureListenerSupport.notifyTransitionAdded(transition);
+		if(notifyListeners)
+			structureListenerSupport.notifyTransitionAdded(transition);
 		return true;
 	}
 	
@@ -446,27 +521,40 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @If the given transition name is <code>null</code>.
 	 */
 	public boolean removeTransition(String transitionName){
-		if(!containsTransition(transitionName))
-			return false;
-		return removeTransition(transitions.get(transitionName));
+		return removeTransition(transitionName, true);
 	}
 	
-	protected boolean removeTransition(T transition){
+	/**
+	 * Removes the transition with the given name from the Petri net.<br>
+	 * On removing a transition, all corresponding relations are removed as well.
+	 * @param transitionName The name of the place to remove
+	 * @return <code>true</code> if the transition was successfully removed from the net;<br>
+	 * <code>false</code> otherwise.
+	 * @If the given transition name is <code>null</code>.
+	 */
+	public boolean removeTransition(String transitionName, boolean notifyListeners){
+		if(!containsTransition(transitionName))
+			return false;
+		return removeTransition(transitions.get(transitionName), notifyListeners);
+	}
+	
+	protected boolean removeTransition(T transition, boolean notifyListeners){
 		if(!containsTransition(transition))
 			return false;
 		int affectedRelations = transition.degree();
 		for(F relation: transition.getIncomingRelations()){
-			removeFlowRelation(relation);
+			removeFlowRelation(relation, notifyListeners);
 		}
 		for(F relation: transition.getOutgoingRelations()){
-			removeFlowRelation(relation);
+			removeFlowRelation(relation, notifyListeners);
 		}
 		transition.removeTransitionListener(this);
 		enabledTransitions.remove(transition);
 		transitions.remove(transition.getName());
 		sourceTransitions.remove(transition.getName());
 		drainTransitions.remove(transition.getName());
-		structureListenerSupport.notifyTransitionRemoved(transition, affectedRelations);
+		if(notifyListeners)
+			structureListenerSupport.notifyTransitionRemoved(transition, affectedRelations);
 		return true;
 	}
 	
@@ -534,10 +622,26 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @see #addPlace(String)
 	 */
 	public boolean addPlaces(Set<String> placeNames){
+		return addPlaces(placeNames, true);
+	}
+	
+	/**
+	 * Adds places with the given names to the Petri net.<br>
+	 * Place names have to be unique. In case the net already contains places with
+	 * given names, less places than the given number of arguments may be added to the Petri net.<br>
+	 * This method calls {@link #addPlace(String)} for each place name.
+	 * @param placeNames Names for the Petri net places to add.
+	 * @return <code>true</code> if at least one place was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 * @If the set of place names is <code>null</code>
+	 * or some place names are <code>null</code>.
+	 * @see #addPlace(String)
+	 */
+	public boolean addPlaces(Set<String> placeNames, boolean notifyListeners){
 		Validate.notNull(placeNames);
 		boolean updated = false;
 		for(String placeName: placeNames){
-			if(addPlace(placeName)){
+			if(addPlace(placeName, notifyListeners)){
 				updated = true;
 			}
 		}
@@ -553,7 +657,19 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public boolean addPlace(String placeName){
-		return addPlace(placeName, placeName);
+		return addPlace(placeName, true);
+	}
+	
+	/**
+	 * Adds a place with the given name to the Petri net.<br>
+	 * Place names have to be unique. In case the net already contains a place with
+	 * the given name, no place is added to the net.
+	 * @param placeName The name for the Petri net place.
+	 * @return <code>true</code> if the place was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public boolean addPlace(String placeName, boolean notifyListeners){
+		return addPlace(placeName, placeName, notifyListeners);
 	}
 	
 	/**
@@ -567,9 +683,23 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public boolean addPlace(String placeName, String placeLabel){
+		return addPlace(placeName, placeLabel, true);
+	}
+	
+	/**
+	 * Adds a place with the given name to the Petri net.<br>
+	 * Place names have to be unique. In case the net already contains a place with
+	 * the given name, no place is added to the net.
+	 * Place labels do not have to be unique.
+	 * @param placeName The name for the Petri net place.
+	 * @param placeLabel The label for the Petri net place.
+	 * @return <code>true</code> if the place was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public boolean addPlace(String placeName, String placeLabel, boolean notifyListeners){
 		if(containsPlace(placeName))
 			return false;
-		return addPlace(createNewPlace(placeName, placeLabel));
+		return addPlace(createNewPlace(placeName, placeLabel), notifyListeners);
 	}
 	
 	/**
@@ -579,14 +709,15 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @param place The Petri net place to add.
 	 * @If the given place is <code>null</code>.
 	 */
-	protected boolean addPlace(P place){
+	protected boolean addPlace(P place, boolean notifyListeners){
 		Validate.notNull(place);
 		if(containsPlace(place))
 			return false;
 		places.put(place.getName(), place);
 		place.addTokenListener(this);
 		place.addPlaceListener(this);
-		structureListenerSupport.notifyPlaceAdded(place);
+		if(notifyListeners)
+			structureListenerSupport.notifyPlaceAdded(place);
 		return true;
 	}
 	
@@ -618,7 +749,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected abstract P createNewPlace(String name, String label);
 	
-	
 	/**
 	 * Removes the place with the given name from the Petri net.<br>
 	 * On removing a place, all corresponding relations are removed as well.
@@ -627,20 +757,31 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public boolean removePlace(String placeName){
-		if(!containsPlace(placeName))
-			return false;
-		return removePlace(places.get(placeName));
+		return removePlace(placeName, true);
 	}
 	
-	protected boolean removePlace(P place){
+	/**
+	 * Removes the place with the given name from the Petri net.<br>
+	 * On removing a place, all corresponding relations are removed as well.
+	 * @param placeName The name of the place to remove
+	 * @return <code>true</code> if the place was successfully removed from the net;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public boolean removePlace(String placeName, boolean notifyListeners){
+		if(!containsPlace(placeName))
+			return false;
+		return removePlace(places.get(placeName), notifyListeners);
+	}
+	
+	protected boolean removePlace(P place, boolean notifyListeners){
 		if(!containsPlace(place))
 			return false;
 		int affectedRelations = place.degree();
 		for(F relation: place.getIncomingRelations()){
-			removeFlowRelation(relation);
+			removeFlowRelation(relation, notifyListeners);
 		}
 		for(F relation: place.getOutgoingRelations()){
-			removeFlowRelation(relation);
+			removeFlowRelation(relation, notifyListeners);
 		}
 		place.removePlaceListener(this);
 		place.removeTokenListener(this);
@@ -649,7 +790,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		drainPlaces.remove(place.getName());
 		initialMarking.remove(place.getName());
 		marking.remove(place.getName());
-		structureListenerSupport.notifyPlaceRemoved(place, affectedRelations);
+		if(notifyListeners)
+			structureListenerSupport.notifyPlaceRemoved(place, affectedRelations);
 		return true;
 	}
 	
@@ -681,13 +823,25 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public F addFlowRelationPT(String placeName, String transitionName, S constraint){
+		return addFlowRelationPT(placeName, transitionName, constraint, true);
+	}
+	
+	/**
+	 * Adds a flow relation starting at a place and ending at a transition.
+	 * @param placeName The name of the place where toe relation starts.
+	 * @param transitionName The name of the transition where the relation ends.
+	 * @param constraint The constraint for the flow relation.
+	 * @return <code>true</code> if the flow relation was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public F addFlowRelationPT(String placeName, String transitionName, S constraint, boolean notifyListeners){
 		validatePlace(placeName);
 		validateTransition(transitionName);
 		if(containsRelationPT(placeName, transitionName)){
 			return null;
 		}
 		F newFlowRelation = createNewFlowRelation(places.get(placeName), transitions.get(transitionName), constraint);
-		if(addFlowRelation(newFlowRelation)){
+		if(addFlowRelation(newFlowRelation, notifyListeners)){
 			return newFlowRelation;
 		}
 		return null;
@@ -701,12 +855,23 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public F addFlowRelationPT(String placeName, String transitionName){
+		return addFlowRelationPT(placeName, transitionName, true);
+	}
+	
+	/**
+	 * Adds a flow relation starting at a place and ending at a transition.
+	 * @param placeName The name of the place where toe relation starts.
+	 * @param transitionName The name of the transition where the relation ends.
+	 * @return <code>true</code> if the flow relation was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public F addFlowRelationPT(String placeName, String transitionName, boolean notifyListeners){
 		validatePlace(placeName);
 		validateTransition(transitionName);
 		if(containsRelationPT(placeName, transitionName))
 			return null;
 		F newFlowRelation = createNewFlowRelation(places.get(placeName), transitions.get(transitionName));
-		if(addFlowRelation(newFlowRelation)){
+		if(addFlowRelation(newFlowRelation, notifyListeners)){
 			return newFlowRelation;
 		}
 		return null;
@@ -720,14 +885,26 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public F addFlowRelationTP(String transitionName, String placeName, S constraint){
+		return addFlowRelationTP(transitionName, placeName, constraint, true);
+	}
+	
+	/**
+	 * Adds a flow relation starting at a transition and ending at a place.
+	 * @param transitionName The name of the transition where the relation ends.
+	 * @param placeName The name of the place where toe relation starts.
+	 * @return <code>true</code> if the flow relation was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public F addFlowRelationTP(String transitionName, String placeName, S constraint, boolean notifyListeners){
 		validatePlace(placeName);
 		validateTransition(transitionName);
 		if(containsRelationTP(transitionName, placeName))
 			return null;
 		F newFlowRelation = createNewFlowRelation(transitions.get(transitionName), places.get(placeName), constraint);
-		if(addFlowRelation(newFlowRelation)){
+		if(addFlowRelation(newFlowRelation, notifyListeners)){
 			return newFlowRelation;
 		}
+	
 		return null;
 	}
 	
@@ -739,12 +916,23 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * <code>false</code> otherwise.
 	 */
 	public F addFlowRelationTP(String transitionName, String placeName){
+		return addFlowRelationTP(transitionName, placeName, true);
+	}
+	
+	/**
+	 * Adds a flow relation starting at a transition and ending at a place.
+	 * @param transitionName The name of the transition where the relation ends.
+	 * @param placeName The name of the place where toe relation starts.
+	 * @return <code>true</code> if the flow relation was successfully added;<br>
+	 * <code>false</code> otherwise.
+	 */
+	public F addFlowRelationTP(String transitionName, String placeName, boolean notifyListeners){
 		validatePlace(placeName);
 		validateTransition(transitionName);
 		if(containsRelationTP(transitionName, placeName))
 			return null;
 		F newFlowRelation = createNewFlowRelation(transitions.get(transitionName), places.get(placeName));
-		if(addFlowRelation(newFlowRelation)){
+		if(addFlowRelation(newFlowRelation, notifyListeners)){
 			return newFlowRelation;
 		}
 		return null;
@@ -759,7 +947,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @see #checkSD(AbstractPlace)
 	 * @see #checkSD(AbstractTransition)
 	 */
-	protected boolean addFlowRelation(F relation){
+	protected boolean addFlowRelation(F relation, boolean notifyListeners){
 		Validate.notNull(relation);
 		for(F existingRelation: getFlowRelations()){
 			if(existingRelation.equals(relation)){
@@ -779,7 +967,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
 		relation.addRelationListener(this);
-		structureListenerSupport.notifyRelationAdded(relation);
+		if(notifyListeners)
+			structureListenerSupport.notifyRelationAdded(relation);
 		return true;
 	}
 	
@@ -895,7 +1084,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * The caller is responsible for parameter validity.
 	 * @param relation The relation to remove.
 	 */
-	protected boolean removeFlowRelation(F relation){
+	protected boolean removeFlowRelation(F relation, boolean notifyListeners){
 		if(!containsRelation(relation))
 			return false;
 		relation.getPlace().removeRelation(relation);
@@ -904,14 +1093,19 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		relation.removeRelationListener(this);
 		checkSD(relation.getPlace());
 		checkSD(relation.getTransition());
-		structureListenerSupport.notifyRelationRemoved(relation);
+		if(notifyListeners)
+			structureListenerSupport.notifyRelationRemoved(relation);
 		return true;
 	}
 	
 	public boolean removeFlowRelation(String relationName){
+		return removeFlowRelation(relationName, true);
+	}
+	
+	public boolean removeFlowRelation(String relationName, boolean notifyListeners){
 		if(!containsFlowRelation(relationName))
 			return false;
-		return removeFlowRelation(relations.get(relationName));
+		return removeFlowRelation(relations.get(relationName), notifyListeners);
 	}
 	
 	//------- Markings -------------------------------------------------------------------------------
@@ -1411,16 +1605,16 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 
 			for(T ownTransition: getTransitions()){
 				clonedTransitions.put(ownTransition, (T) ownTransition.clone());
-				result.addTransition(clonedTransitions.get(ownTransition));
+				result.addTransition(clonedTransitions.get(ownTransition), false);
 			}
 			for(P ownPlace: getPlaces()){
 				clonedPlaces.put(ownPlace, (P) ownPlace.clone());
-				result.addPlace(clonedPlaces.get(ownPlace));
+				result.addPlace(clonedPlaces.get(ownPlace), false);
 			}
 			for(F ownRelation: getFlowRelations()){
 				result.addFlowRelation((F) ownRelation.clone(clonedPlaces.get(ownRelation.getPlace()),
 														     clonedTransitions.get(ownRelation.getTransition()), 
-														     ownRelation.getDirectionPT()));
+														     ownRelation.getDirectionPT()), false);
 			}
 			result.setInitialMarking((M) getInitialMarking().clone());
 

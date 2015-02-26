@@ -96,12 +96,12 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected boolean addTransition(T transition) {
+	protected boolean addTransition(T transition, boolean notifyListeners) {
 		if(hasAnalysisContext()){
 			if(!analysisContext.getActivities().contains(transition.getLabel()))
 				throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot add transition with label \"" +transition.getLabel()+"\".\nReason: The connected analysis context does not contain an activity with this name." );
 		}
-		boolean superResult = super.addTransition(transition);
+		boolean superResult = super.addTransition(transition, notifyListeners);
 		if(!superResult)
 			return false;
 		
@@ -123,7 +123,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return false;
 	}
 	
-	
 	/**
 	 * Adds a declassification transition with the given name to the IF-Net.<br>
 	 * Transitions names have to be unique. In case the net already contains a transition with
@@ -134,7 +133,34 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
 	public boolean addDeclassificationTransition(String transitionName) {
-		return addDeclassificationTransition(transitionName, transitionName);
+		return addDeclassificationTransition(transitionName, true);
+	}
+	
+	/**
+	 * Adds a declassification transition with the given name to the IF-Net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the declassification transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @throws ParameterException If the transition name is <code>null</code>.
+	 */
+	public boolean addDeclassificationTransition(String transitionName, boolean notifyListeners) {
+		return addDeclassificationTransition(transitionName, transitionName, notifyListeners);
+	}
+	
+	/**
+	 * Adds a declassification transition with the given name to the IF-Net.<br>
+	 * Transitions names have to be unique. In case the net already contains a transition with
+	 * the given name, no transition is added to the net.
+	 * @param transitionName The name for the declassification transition.
+	 * @param transitionLabel The label for the declassification transition.
+	 * @return <code>true</code> if the transition was successfully added to the net;<br>
+	 * <code>false</code> otherwise.
+	 * @throws ParameterException If the transition name is <code>null</code>.
+	 */
+	public boolean addDeclassificationTransition(String transitionName, String transitionLabel) {
+		return addDeclassificationTransition(transitionName, transitionLabel, true);
 	}
 	
 	/**
@@ -148,11 +174,11 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	 * @throws ParameterException If the transition name is <code>null</code>.
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean addDeclassificationTransition(String transitionName, String transitionLabel) {
+	public boolean addDeclassificationTransition(String transitionName, String transitionLabel, boolean notifyListeners) {
 		if(containsTransition(transitionName)){
 			return false;
 		}
-		addTransition((T) createNewDeclassificationTransition(transitionName, transitionLabel, false));
+		addTransition((T) createNewDeclassificationTransition(transitionName, transitionLabel, false), notifyListeners);
 		if(hasAnalysisContext()){
 			getAnalysisContext().getLabeling().setActivityClassification(transitionName, SecurityLevel.HIGH);
 		}
