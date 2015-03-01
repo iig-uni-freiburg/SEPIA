@@ -153,7 +153,7 @@ public class Fill extends AbstractAttribute {
 	 */
 	public static enum GradientRotation {
 		VERTICAL, HORIZONTAL, DIAGONAL;
-
+		
 		public static GradientRotation getGradientRotation(String gradientRotationStr) {
 			if (gradientRotationStr.equals("vertical"))
 				return GradientRotation.VERTICAL;

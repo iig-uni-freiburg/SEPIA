@@ -165,6 +165,14 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 //			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a node with this name.\n Cancel renaming to avoid name clash.");
 //		this.name = name;
 //	}
+	
+	public int outDegree(){
+		return getOutgoingRelations().size();
+	}
+	
+	public int inDegree(){
+		return getIncomingRelations().size();
+	}
 
 	// ------- State manipulation -----------------------------------------------------------------------------
 

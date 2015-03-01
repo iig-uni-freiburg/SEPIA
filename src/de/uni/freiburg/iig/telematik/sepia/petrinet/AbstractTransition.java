@@ -154,6 +154,14 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 //		this.name = name;
 //	}
 	
+	public int outDegree(){
+		return getOutgoingRelations().size();
+	}
+	
+	public int inDegree(){
+		return getIncomingRelations().size();
+	}
+	
 	/**
 	 * Checks if the Petri net transition is valid.<br>
 	 * Subclasses may define the validity of a net transition e.g. in terms of specific constraints
