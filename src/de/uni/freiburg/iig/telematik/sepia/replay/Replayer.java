@@ -127,7 +127,7 @@ public class Replayer<E extends LogEntry> {
 			case ESCAPABLE_WITH_SILENT_TRANSITIONS:
 				if(enabledTransitions.isEmpty())
 					return true;
-				Set<AbstractTransition> enabledSilentTransitions = PNUtils.getSilentTransitions(enabledTransitions);
+//				Set<AbstractTransition> enabledSilentTransitions = PNUtils.getSilentTransitions(enabledTransitions);
 				return escapableWithSilentTransitions(enabledTransitions, petriNet.getMarking().clone());
 //				if(enabledSilentTransitions.isEmpty()){
 //					System.out.println("--1--");
@@ -191,7 +191,7 @@ public class Replayer<E extends LogEntry> {
 		}
 		return false;
 	}
-	
+
 	private boolean escapableWithSilentTransitions(List<AbstractTransition> enabledTransitions, AbstractMarking marking) throws PNException{
 		if(enabledTransitions.isEmpty())
 			return true;
@@ -200,7 +200,7 @@ public class Replayer<E extends LogEntry> {
 		if(enabledSilentTransitions.isEmpty())
 			return false;
 		
-		boolean recPossible = false;
+//		boolean recPossible = false;
 		for(AbstractTransition enabledSilentTransition: enabledSilentTransitions){
 			petriNet.setMarking(marking.clone());
 			petriNet.fire(enabledSilentTransition.getName());
