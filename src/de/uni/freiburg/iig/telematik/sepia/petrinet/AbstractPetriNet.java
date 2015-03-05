@@ -35,7 +35,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
-
+ 
 /**
  * Abstract class for defining Petri nets and their properties.<br>
  * <br>
