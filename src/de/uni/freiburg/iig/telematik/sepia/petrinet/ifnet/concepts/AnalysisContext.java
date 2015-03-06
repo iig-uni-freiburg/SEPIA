@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 /**
  * Analysis context of IF-Nets.<br>
@@ -31,11 +31,11 @@ public class AnalysisContext {
 		this.labeling = labeling;
 	} 
 	
-	public AnalysisContext(Context context) {
+	public AnalysisContext(SOABase context) {
 		this(new Labeling(context));
 	}
 	
-	public AnalysisContext(Context context, SecurityLevel defaultSecurityLevel) {
+	public AnalysisContext(SOABase context, SecurityLevel defaultSecurityLevel) {
 		this(new Labeling(context, defaultSecurityLevel));
 	}
 	
@@ -89,7 +89,7 @@ public class AnalysisContext {
 		return Collections.unmodifiableMap(subjectDescriptors);
 	}
 	
-	public void setContext(Context context, boolean reset){
+	public void setContext(SOABase context, boolean reset){
 		labeling.setContext(context, reset);
 	}
 	

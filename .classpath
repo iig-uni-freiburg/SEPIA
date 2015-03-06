@@ -10,7 +10,7 @@
 	<classpathentry kind="lib" path="lib/msv/msv-core-2013.6.1.jar" sourcepath="lib/msv/msv-core-2013.6.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/relaxngDatatype/relaxngDatatype-20020414.jar"/>
 	<classpathentry kind="lib" path="lib/xsdlib/xsdlib-2.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/JAWL"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/SEWOL"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/SERAM"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

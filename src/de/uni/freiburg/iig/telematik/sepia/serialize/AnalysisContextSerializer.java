@@ -6,10 +6,10 @@ import java.util.Map;
 
 import org.w3c.dom.Element;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetAnalysisContextParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 public class AnalysisContextSerializer {
 	
@@ -102,7 +102,7 @@ public class AnalysisContextSerializer {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		Context context = new Context("context1");
+		SOABase context = new SOABase("context1");
 		context.setActivities(Arrays.asList("act1","act2"));
 		context.setSubjects(Arrays.asList("Gerd"));
 		AnalysisContext c = new AnalysisContext(context);

@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.jawl.log.LogEntry;
-import de.uni.freiburg.iig.telematik.jawl.log.LogTrace;
+import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
+import de.uni.freiburg.iig.telematik.sewol.log.LogTrace;
 
 public class ReplayResult<E extends LogEntry> {
 

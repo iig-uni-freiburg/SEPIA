@@ -5,10 +5,10 @@ import java.util.List;
 import de.invation.code.toval.misc.CollectionUtils;
 import de.invation.code.toval.time.TimeScale;
 import de.invation.code.toval.time.TimeValue;
-import de.uni.freiburg.iig.telematik.jawl.log.LogEntry;
-import de.uni.freiburg.iig.telematik.jawl.log.LogTrace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.replay.Replayer.TerminationCriteria;
+import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
+import de.uni.freiburg.iig.telematik.sewol.log.LogTrace;
 
 public class Replay {
 	

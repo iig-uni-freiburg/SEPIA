@@ -14,12 +14,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 /**
  * @author boehr
@@ -119,7 +119,7 @@ public class AnalysisContextTest {
 	public void testAnalysisContextLabeling() {
 
 		// Create a labeling first
-		Context c = new Context("");
+		SOABase c = new SOABase("");
 		c.setActivities(Arrays.asList("t0", "t1", "t2"));
 		c.setSubjects(Arrays.asList("s0", "s1", "s2"));
 		c.setObjects(Arrays.asList("c0", "c1", "c2"));
@@ -150,7 +150,7 @@ public class AnalysisContextTest {
 	public void testAnalysisContextSNetCollectionOfString() {
 
 		// Create the AnalysisCOntext
-		Context context = new Context("");
+		SOABase context = new SOABase("");
 		context.setSubjects(subjects);
 		context.setObjects(attributes);
 		context.setActivities(transitions);
@@ -169,7 +169,7 @@ public class AnalysisContextTest {
 
 		AnalysisContext ac = null;
 		try {
-			Context c = new Context("");
+			SOABase c = new SOABase("");
 			c.addActivities(transitions);
 			c.addSubjects(subjects);
 			c.addObjects(attributes);
@@ -192,7 +192,7 @@ public class AnalysisContextTest {
 
 		AnalysisContext ac = null;
 		try {
-			Context c = new Context("");
+			SOABase c = new SOABase("");
 			c.addActivities(transitions);
 			c.addSubjects(subjects);
 			c.addObjects(attributes);
@@ -215,7 +215,7 @@ public class AnalysisContextTest {
 
 		// Create three labelings first
 		// The labeling used to construct the ac
-		Context c1 = new Context("");
+		SOABase c1 = new SOABase("");
 		ArrayList<String> a1 = new ArrayList<String>();
 		a1.add("t0");
 		a1.add("t1");
@@ -234,7 +234,7 @@ public class AnalysisContextTest {
 		Labeling l1 = new Labeling(c1);
 
 		// A labeling with the same subjects but different attributes and activities
-		Context c2 = new Context("");
+		SOABase c2 = new SOABase("");
 		ArrayList<String> a2 = new ArrayList<String>(a1);
 		a2.set(2, "t3");
 		c2.setActivities(a2);
@@ -246,7 +246,7 @@ public class AnalysisContextTest {
 		Labeling l2 = new Labeling(c2);
 
 		// A labeling with one different subject
-		Context c3 = new Context("");
+		SOABase c3 = new SOABase("");
 		ArrayList<String> a3 = new ArrayList<String>(a1);
 		c3.setActivities(a3);
 		ArrayList<String> s3 = new ArrayList<String>(s1);
@@ -291,7 +291,7 @@ public class AnalysisContextTest {
 		// Create the AnalysisCOntext
 		AnalysisContext ac = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
 			context.setActivities(transitions);

@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
@@ -23,7 +24,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 /**
  * @author boehr
@@ -157,7 +157,7 @@ public class IFNetTest {
 		rst.addAccessMode("blue", AccessMode.CREATE);
 
 		// create labeling
-		Context context = new Context("");
+		SOABase context = new SOABase("");
 		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 		context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
 		context.setActivities(Arrays.asList("tIn", "t0", "t1", "td", "tOut"));
@@ -404,7 +404,7 @@ public class IFNetTest {
 	public void testSetAnalysisContext() {
 
 		// create labeling
-		Context context = new Context("");
+		SOABase context = new SOABase("");
 		context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "t1"));
 		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 		context.setObjects(Arrays.asList("black", "red", "blue", "green", "yellow"));

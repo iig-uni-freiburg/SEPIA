@@ -2,12 +2,12 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet;
 
 import java.util.Arrays;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 /**
  * Methods often used during testing of SNets.
@@ -123,7 +123,7 @@ public class IFNetTestUtil {
 
 		if (setAnalysisContext) {
 			// create labeling
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setSubjects(Arrays.asList("S1", "S2", "S3"));
 			context.setActivities(Arrays.asList("tIn", "t0", "tOut"));
 			context.setObjects(Arrays.asList("green", "red", "blue", "black"));
@@ -155,7 +155,7 @@ public class IFNetTestUtil {
 
 		if (setAnalysisContext) {
 			// create labeling
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 			context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
 			context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "td2", "t1", "connector"));

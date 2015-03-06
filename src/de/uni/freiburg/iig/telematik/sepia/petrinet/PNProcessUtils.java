@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.jawl.context.ProcessContext;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
-import de.uni.freiburg.iig.telematik.seram.context.data.DUContext;
+import de.uni.freiburg.iig.telematik.sewol.context.ProcessConstraintContext;
+import de.uni.freiburg.iig.telematik.sewol.context.ProcessContext;
 
 public class PNProcessUtils {
 
@@ -17,8 +17,8 @@ public class PNProcessUtils {
 	 * @throws Exception If activity list is <code>null</code> or empty.
 	 * @see {@link #getNameListFromTransitions(Collection)}
 	 */
-	public static ProcessContext createProcessContext(String name, Collection<AbstractTransition<?,?>> transitions){
-		ProcessContext context = new ProcessContext(name);
+	public static ProcessConstraintContext createProcessContext(String name, Collection<AbstractTransition<?,?>> transitions){
+		ProcessConstraintContext context = new ProcessConstraintContext(name);
 		context.setActivities(PNUtils.getLabelSetFromTransitions(transitions, false));
 		return context;
 	}
@@ -35,10 +35,10 @@ public class PNProcessUtils {
 	 * @throws ParameterException 
 	 * @throws Exception 
 	 */
-	public static ProcessContext createRandomContext(Collection<AbstractTransition<?,?>> transitions, int originatorCount, List<String> roles){
-		DUContext duContext = DUContext.createRandomContext(PNUtils.getLabelSetFromTransitions(transitions, false), originatorCount, roles);
+	public static ProcessConstraintContext createRandomContext(Collection<AbstractTransition<?,?>> transitions, int originatorCount, List<String> roles){
+		ProcessContext duContext = ProcessContext.createRandomContext(PNUtils.getLabelSetFromTransitions(transitions, false), originatorCount, roles);
 		try {
-			return new ProcessContext(duContext);
+			return new ProcessConstraintContext(duContext);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

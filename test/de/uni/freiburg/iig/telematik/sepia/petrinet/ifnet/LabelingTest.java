@@ -13,11 +13,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
 
 public class LabelingTest {
 
@@ -109,7 +109,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -140,7 +140,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -173,7 +173,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -204,7 +204,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -238,7 +238,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(emptyTransitionSet);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -253,7 +253,7 @@ public class LabelingTest {
 		// try to add the same transition more than once
 		Labeling l3 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -279,7 +279,7 @@ public class LabelingTest {
 		@SuppressWarnings("unused")
 		Labeling l3 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -324,7 +324,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(emptySubjectSet);
@@ -339,7 +339,7 @@ public class LabelingTest {
 		// try to add the same subjects more than once
 		Labeling l3 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -365,7 +365,7 @@ public class LabelingTest {
 		@SuppressWarnings("unused")
 		Labeling l3 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -410,7 +410,7 @@ public class LabelingTest {
 
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(emptyAttributeSet);
 			context.setSubjects(subjects);
@@ -425,7 +425,7 @@ public class LabelingTest {
 		// try to add the same attribs more than once
 		Labeling l3 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -451,7 +451,7 @@ public class LabelingTest {
 		@SuppressWarnings("unused")
 		Labeling l3 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -494,7 +494,7 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -520,7 +520,7 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -546,7 +546,7 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -572,7 +572,7 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);
@@ -600,7 +600,7 @@ public class LabelingTest {
 		// create a labeling
 		Labeling l2 = null;
 		try {
-			Context context = new Context("");
+			SOABase context = new SOABase("");
 			context.setActivities(transitions);
 			context.setObjects(attributes);
 			context.setSubjects(subjects);

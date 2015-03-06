@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.misc.soabase.SOABase;
+import de.invation.code.toval.misc.soabase.SOABaseChangeReply;
+import de.invation.code.toval.misc.soabase.SOABaseListener;
 import de.invation.code.toval.validate.CompatibilityException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.seram.context.Context;
-import de.uni.freiburg.iig.telematik.seram.context.ContextChangeReply;
-import de.uni.freiburg.iig.telematik.seram.context.ContextListener;
 
 
 
-public class Labeling implements ContextListener {
+public class Labeling implements SOABaseListener {
 	
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>
@@ -47,7 +47,7 @@ public class Labeling implements ContextListener {
 	 */
 	private Map<String, SecurityLevel> subjectClearance = new HashMap<String, SecurityLevel>();
 
-	private Context context = null;
+	private SOABase context = null;
 	private String contextName = null;
 	private Class<?> contextclass = null;
 	
@@ -57,21 +57,21 @@ public class Labeling implements ContextListener {
 	
 	public Labeling(){}
 	
-	public Labeling(Context context) {
+	public Labeling(SOABase context) {
 		setContext(context, true);
 	}
 	
-	public Labeling(Context context, SecurityLevel defaultSecurityLevel) {
+	public Labeling(SOABase context, SecurityLevel defaultSecurityLevel) {
 		this(context);
 		Validate.notNull(defaultSecurityLevel);
 		this.defaultSecurityLevel = defaultSecurityLevel;
 	}
 	
-	public Context getContext(){
+	public SOABase getContext(){
 		return context;
 	}
 	
-	public void setContext(Context context, boolean reset){
+	public void setContext(SOABase context, boolean reset){
 		Validate.notNull(context);
 		if(this.context != null){
 			this.context.removeContextListener(this);
@@ -335,18 +335,18 @@ public class Labeling implements ContextListener {
 	}
 
 	@Override
-	public ContextChangeReply allowSubjectRemoval(String subject) {
-		return new ContextChangeReply(Labeling.this, true, subject);
+	public SOABaseChangeReply allowSubjectRemoval(String subject) {
+		return new SOABaseChangeReply(Labeling.this, true, subject);
 	}
 
 	@Override
-	public ContextChangeReply allowObjectRemoval(String object) {
-		return new ContextChangeReply(Labeling.this, true, object);
+	public SOABaseChangeReply allowObjectRemoval(String object) {
+		return new SOABaseChangeReply(Labeling.this, true, object);
 	}
 
 	@Override
-	public ContextChangeReply allowActivityRemoval(String activity) {
-		return new ContextChangeReply(Labeling.this, true, activity);
+	public SOABaseChangeReply allowActivityRemoval(String activity) {
+		return new SOABaseChangeReply(Labeling.this, true, activity);
 	}
 
 	@Override
