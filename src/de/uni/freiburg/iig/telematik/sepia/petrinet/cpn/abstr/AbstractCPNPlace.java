@@ -266,8 +266,7 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((colorCapacity == null) ? 0 : colorCapacity.hashCode());
+		result = prime * result + ((colorCapacity == null) ? 0 : colorCapacity.hashCode());
 		return result;
 	}
 

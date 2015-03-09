@@ -287,4 +287,57 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((accessModes == null) ? 0 : accessModes.hashCode());
+		result = prime * result + ((dataContainer == null) ? 0 : dataContainer.hashCode());
+		result = prime * result + ((guards == null) ? 0 : guards.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		@SuppressWarnings("rawtypes")
+		AbstractRegularIFNetTransition other = (AbstractRegularIFNetTransition) obj;
+		if (accessModes == null) {
+			if (other.accessModes != null) {
+				return false;
+			}
+		} else if (!accessModes.equals(other.accessModes)) {
+			return false;
+		}
+		if (dataContainer == null) {
+			if (other.dataContainer != null) {
+				return false;
+			}
+		} else if (!dataContainer.equals(other.dataContainer)) {
+			return false;
+		}
+		if (guards == null) {
+			if (other.guards != null) {
+				return false;
+			}
+		} else if (!guards.equals(other.guards)) {
+			return false;
+		}
+		return true;
+	}
+
 }

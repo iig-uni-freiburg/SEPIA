@@ -363,4 +363,51 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		return (AbstractIFNetMarkingGraph<M, X, Y>) super.getMarkingGraph();
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((declassificationTransitions == null) ? 0 : declassificationTransitions.hashCode());
+		result = prime * result + ((regularTransitions == null) ? 0 : regularTransitions.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		@SuppressWarnings("rawtypes")
+		AbstractIFNet other = (AbstractIFNet) obj;
+		if (declassificationTransitions == null) {
+			if (other.declassificationTransitions != null) {
+				return false;
+			}
+		} else if (!declassificationTransitions.equals(other.declassificationTransitions)) {
+			return false;
+		}
+		if (regularTransitions == null) {
+			if (other.regularTransitions != null) {
+				return false;
+			}
+		} else if (!regularTransitions.equals(other.regularTransitions)) {
+			return false;
+		}
+		return true;
+	}
+
 }

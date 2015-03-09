@@ -1715,7 +1715,75 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public PNComplexity getComplexity(){
 		return new PNComplexity(getPlaceCount(), getTransitionCount(), getFlowRelationCount());
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((initialMarking == null) ? 0 : initialMarking.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((places == null) ? 0 : places.hashCode());
+		result = prime * result + ((relations == null) ? 0 : relations.hashCode());
+		result = prime * result + ((transitions == null) ? 0 : transitions.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		@SuppressWarnings("rawtypes")
+		AbstractPetriNet other = (AbstractPetriNet) obj;
+		if (initialMarking == null) {
+			if (other.initialMarking != null) {
+				return false;
+			}
+		} else if (!initialMarking.equals(other.initialMarking)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (places == null) {
+			if (other.places != null) {
+				return false;
+			}
+		} else if (!places.equals(other.places)) {
+			return false;
+		}
+		if (relations == null) {
+			if (other.relations != null) {
+				return false;
+			}
+		} else if (!relations.equals(other.relations)) {
+			return false;
+		}
+		if (transitions == null) {
+			if (other.transitions != null) {
+				return false;
+			}
+		} else if (!transitions.equals(other.transitions)) {
+			return false;
+		}
+		return true;
+	}
 	
 	public enum Boundedness {BOUNDED, UNBOUNDED, UNKNOWN}
-	
 }

@@ -332,44 +332,81 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	
 	//------- HashCode and Equals -------------------------------------------------------------------
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((incomingRelations == null) ? 0 : incomingRelations.hashCode());
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((outgoingRelations == null) ? 0 : outgoingRelations.hashCode());
+		result = prime * result + ((toStringFormat == null) ? 0 : toStringFormat.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		@SuppressWarnings("unchecked")
-		AbstractPNNode<E> other = (AbstractPNNode<E>) obj;
+		}
+		@SuppressWarnings("rawtypes")
+		AbstractPNNode other = (AbstractPNNode) obj;
+		if (incomingRelations == null) {
+			if (other.incomingRelations != null) {
+				return false;
+			}
+		} else if (!incomingRelations.equals(other.incomingRelations)) {
+			return false;
+		}
 		if (label == null) {
-			if (other.label != null)
+			if (other.label != null) {
 				return false;
-		} else if (!label.equals(other.label))
+			}
+		} else if (!label.equals(other.label)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!name.equals(other.name)) {
 			return false;
-		if (type != other.type)
+		}
+		if (outgoingRelations == null) {
+			if (other.outgoingRelations != null) {
+				return false;
+			}
+		} else if (!outgoingRelations.equals(other.outgoingRelations)) {
 			return false;
+		}
+		if (toStringFormat == null) {
+			if (other.toStringFormat != null) {
+				return false;
+			}
+		} else if (!toStringFormat.equals(other.toStringFormat)) {
+			return false;
+		}
+		if (type != other.type) {
+			return false;
+		}
 		return true;
 	}
 	
 	//------- toString -------------------------------------------------------------------------------
-	
 	@Override
 	public String toString() {
 		return String.format(toStringFormat, name, label);
