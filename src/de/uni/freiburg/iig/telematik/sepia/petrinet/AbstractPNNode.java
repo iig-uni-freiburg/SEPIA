@@ -340,10 +340,8 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((incomingRelations == null) ? 0 : incomingRelations.hashCode());
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((outgoingRelations == null) ? 0 : outgoingRelations.hashCode());
 		result = prime * result + ((toStringFormat == null) ? 0 : toStringFormat.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;

@@ -376,9 +376,11 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 		Attr fontRotationAttr = fontNode.getAttributeNode("rotation");
 		if (fontRotationAttr != null) {
 			String fontRotationStr = fontRotationAttr.getValue();
-			double fontRotation = Double.parseDouble(fontRotationStr);
-			if (fontRotationStr != null && fontRotation != 0)
-				font.setRotation(fontRotation);
+			if (fontRotationStr != null) {
+				double fontRotation = Double.parseDouble(fontRotationStr);
+				if (fontRotationStr != null && fontRotation != 0)
+					font.setRotation(fontRotation);
+			}
 		}
 
 		Attr fontSizeAttr = fontNode.getAttributeNode("size");
