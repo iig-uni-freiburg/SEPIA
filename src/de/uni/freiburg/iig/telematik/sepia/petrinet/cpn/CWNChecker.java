@@ -35,32 +35,67 @@ public class CWNChecker {
 	   				 Y extends AbstractCPNMarkingGraphRelation<M,X>,
 	   				 N extends AbstractCPN<P,T,F,M,X,Y>> 
 	
-	InOutPlaces checkCWNStructure(N petriNet) throws PNValidationException {
+	CWNProperties checkCWNStructure(N petriNet) {
 		Validate.notNull(petriNet);
+		CWNProperties result = new CWNProperties();
 		
 		// Check if there is only one input/output place
-		InOutPlaces places = PNPropertiesChecker.validateInputOutputPlace(petriNet);
+		InOutPlaces places = null;
+		try {
+			places = PNPropertiesChecker.validateInputOutputPlace(petriNet);
+		} catch (PNValidationException e) {
+			result.exception = e;
+			result.validInOutPlaces = PropertyCheckingResult.FALSE;
+			result.hasCWNStructure = PropertyCheckingResult.FALSE;
+			return result;
+		}
 		P input = petriNet.getPlace(places.getInput());
+		result.validInOutPlaces = PropertyCheckingResult.TRUE;
 		
 		// check strongly connectedness of short-circuited net
-		PNPropertiesChecker.validateStrongConnectedness(petriNet, places);
+		try {
+			PNPropertiesChecker.validateStrongConnectedness(petriNet, places);
+		} catch (PNValidationException e) {
+			result.exception = e;
+			result.strongConnectedness = PropertyCheckingResult.FALSE;
+			result.hasCWNStructure = PropertyCheckingResult.FALSE;
+			return result;
+		}
+		result.strongConnectedness = PropertyCheckingResult.TRUE;
 		
 		// Check initial marking
-		checkSingleCFTokenInInitialMarking(petriNet, input.getName());
+		try {
+			checkSingleCFTokenInInitialMarking(petriNet, input.getName());
+		} catch (PNValidationException e) {
+			result.exception = e;
+			result.validInitialMarking = PropertyCheckingResult.FALSE;
+			result.hasCWNStructure = PropertyCheckingResult.FALSE;
+			return result;
+		}
+		result.validInitialMarking = PropertyCheckingResult.TRUE;
 	
 		// Check control flow dependency
-		String CFTokenColor = petriNet.defaultTokenColor();
-		if(AbstractIFNet.class.isAssignableFrom(petriNet.getClass())){
-			CFTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
+		try {
+			String CFTokenColor = petriNet.defaultTokenColor();
+			if (AbstractIFNet.class.isAssignableFrom(petriNet.getClass())) {
+				CFTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
+			}
+			for (T transition : petriNet.getTransitions()) {
+				if (!transition.getConsumedColors().contains(CFTokenColor))
+					throw new PNValidationException("Transition \"" + transition + "\" does not consume control flow token");
+				if (!transition.getProducedColors().contains(CFTokenColor))
+					throw new PNValidationException("Transition \"" + transition + "\" does not produce control flow token");
+			}
+		} catch (PNValidationException e) {
+			result.exception = e;
+			result.controlFlowDependency = PropertyCheckingResult.FALSE;
+			result.hasCWNStructure = PropertyCheckingResult.FALSE;
+			return result;
 		}
-		for(T transition: petriNet.getTransitions()){
-			if(!transition.getConsumedColors().contains(CFTokenColor))
-				throw new PNValidationException("Transition \""+transition+"\" does not consume control flow token");
-			if(!transition.getProducedColors().contains(CFTokenColor))
-				throw new PNValidationException("Transition \""+transition+"\" does not produce control flow token");
-		}
+		result.controlFlowDependency = PropertyCheckingResult.TRUE;
 		
-		return places;
+		result.hasCWNStructure = PropertyCheckingResult.TRUE;
+		return result;
 	}
 	
 	public static 	<P extends AbstractCPNPlace<F>, 
@@ -72,12 +107,7 @@ public class CWNChecker {
 		 			 N extends AbstractCPN<P,T,F,M,X,Y>> 
 
 	boolean hasCWNStructure(N petriNet) {
-		try {
-			checkCWNStructure(petriNet);
-		} catch (PNValidationException e) {
-			return false;
-		}
-		return true;
+		return checkCWNStructure(petriNet).exception == null;
 	}
 	
 	
@@ -132,33 +162,53 @@ public class CWNChecker {
 		 		   Y extends AbstractCPNMarkingGraphRelation<M,X>,
 		 		   N extends AbstractCPN<P,T,F,M,X,Y>> 
 
-	void checkCWNSoundness(N cpn, boolean checkStructure, CWNPropertyFlag... flags) throws PNSoundnessException {
-		try {
-			PNPropertiesChecker.validateBoundedness(cpn);
-		} catch (PNValidationException e1) {
-			throw new PNSoundnessException("Net is not bounded.");
+	CWNProperties checkCWNSoundness(N cpn, boolean checkStructure, CWNPropertyFlag... flags) {
+		
+		CWNProperties result = null;
+		if (checkStructure) {
+			result = checkCWNStructure(cpn);
+		} else {
+			result = new CWNProperties();
+			try {
+				result.inOutPlaces = PNPropertiesChecker.validateInputOutputPlace(cpn);
+				result.validInOutPlaces = PropertyCheckingResult.TRUE;
+			} catch(PNValidationException e){
+				result.validInOutPlaces = PropertyCheckingResult.FALSE;
+				result.exception = e;
+				return result;
+			}
 		}
 		
-		InOutPlaces places = null;
 		try {
-			if (checkStructure) {
-				places = checkCWNStructure(cpn);
-			} else {
-				places = PNPropertiesChecker.validateInputOutputPlace(cpn);
-			}
-		} catch(PNValidationException e){
-			throw new PNSoundnessException(e.getMessage());
+			PNPropertiesChecker.validateBoundedness(cpn);
+			result.isBounded = PropertyCheckingResult.fromBoundedness(cpn.getBoundedness());
+		} catch (PNValidationException e1) {
+			result.isBounded = PropertyCheckingResult.FALSE;
+			result.exception = new PNSoundnessException("Net is not bounded.");
+			return result;
 		}
 		
 		// Requirement 1: Option to complete + proper completion
-		checkValidCompletion(cpn, places.getOutput(), flags);
+		try {
+			checkValidCompletion(cpn, result.inOutPlaces.getOutput(), flags);
+			result.optionToCompleteAndProperCompletion = PropertyCheckingResult.TRUE;
+		} catch (PNSoundnessException e1) {
+			result.optionToCompleteAndProperCompletion = PropertyCheckingResult.FALSE;
+			result.exception = e1;
+			return result;
+		}
 		
 		// Requirement 2: No dead transitions
 		try {
 			ReachabilityUtils.checkDeadTransitions(cpn);
+			result.noDeadTransitions = PropertyCheckingResult.TRUE;
 		} catch (PNException e) {
-			throw new PNSoundnessException("PN-Exception during soundness check: Cannot extract dead transitions.\nReason: " + e.getMessage());
+			result.noDeadTransitions = PropertyCheckingResult.FALSE;
+			result.exception = new PNSoundnessException("PN-Exception during soundness check: Cannot extract dead transitions.\nReason: " + e.getMessage());
+			return result;
 		}
+		
+		return result;
 	}
 	
 	/**
@@ -265,6 +315,19 @@ public class CWNChecker {
 			}
 		}
 		
+	}
+	
+	public enum PropertyCheckingResult {
+		TRUE, FALSE, UNKNOWN;
+		
+		public static PropertyCheckingResult fromBoundedness(Boundedness boundedness){
+			switch(boundedness){
+			case BOUNDED: return TRUE;
+			case UNBOUNDED: return FALSE;
+			case UNKNOWN: return UNKNOWN;
+			default: return null;
+			}
+		}
 	}
 	
 	public enum CWNPropertyFlag {

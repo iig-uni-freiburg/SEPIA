@@ -12,7 +12,6 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
@@ -20,6 +19,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphSta
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -256,11 +256,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	public void checkValidity(CWNPropertyFlag... flags) throws PNValidationException {
 		super.checkValidity();
 		
-		try{			
-			CWNChecker.checkCWNSoundness(this, true, flags);
-		} catch(PNSoundnessException e){
-			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + e.getMessage());
-		}
+		CWNProperties cwnProperties = CWNChecker.checkCWNSoundness(this, true, flags);
+		if(!cwnProperties.isSoundCWN())
+			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + cwnProperties.exception.getMessage());
 		
 		// Check property 4 for declassification transitions: 
 		// For each declassification transition t, the following condition must hold:
