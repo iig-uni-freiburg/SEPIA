@@ -16,7 +16,6 @@ import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker.InOutPlaces;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
@@ -40,21 +39,20 @@ public class CWNChecker {
 		CWNProperties result = new CWNProperties();
 		
 		// Check if there is only one input/output place
-		InOutPlaces places = null;
 		try {
-			places = PNPropertiesChecker.validateInputOutputPlace(petriNet);
+			result.inOutPlaces = PNPropertiesChecker.validateInputOutputPlace(petriNet);
 		} catch (PNValidationException e) {
 			result.exception = e;
 			result.validInOutPlaces = PropertyCheckingResult.FALSE;
 			result.hasCWNStructure = PropertyCheckingResult.FALSE;
 			return result;
 		}
-		P input = petriNet.getPlace(places.getInput());
+		P input = petriNet.getPlace(result.inOutPlaces.getInput());
 		result.validInOutPlaces = PropertyCheckingResult.TRUE;
 		
-		// check strongly connectedness of short-circuited net
+		// Check strongly connectedness of short-circuited net
 		try {
-			PNPropertiesChecker.validateStrongConnectedness(petriNet, places);
+			PNPropertiesChecker.validateStrongConnectedness(petriNet, result.inOutPlaces);
 		} catch (PNValidationException e) {
 			result.exception = e;
 			result.strongConnectedness = PropertyCheckingResult.FALSE;
