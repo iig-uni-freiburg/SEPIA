@@ -167,8 +167,12 @@ public class CWNChecker {
 		CWNProperties result = null;
 		if (checkStructure) {
 			result = checkCWNStructure(cpn);
+			if(result.exception != null)
+				return result;
 		} else {
 			result = new CWNProperties();
+			if(result.exception != null)
+				return result;
 			try {
 				result.inOutPlaces = PNPropertiesChecker.validateInputOutputPlace(cpn);
 				result.validInOutPlaces = PropertyCheckingResult.TRUE;
@@ -202,6 +206,10 @@ public class CWNChecker {
 		try {
 			ReachabilityUtils.checkDeadTransitions(cpn);
 			result.noDeadTransitions = PropertyCheckingResult.TRUE;
+		} catch (PNValidationException e) {
+			result.noDeadTransitions = PropertyCheckingResult.FALSE;
+			result.exception = new PNSoundnessException(e.getMessage());
+			return result;
 		} catch (PNException e) {
 			result.noDeadTransitions = PropertyCheckingResult.FALSE;
 			result.exception = new PNSoundnessException("PN-Exception during soundness check: Cannot extract dead transitions.\nReason: " + e.getMessage());
