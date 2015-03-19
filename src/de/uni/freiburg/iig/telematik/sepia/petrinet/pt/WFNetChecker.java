@@ -4,7 +4,8 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker.InOutPlaces;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
@@ -21,9 +22,35 @@ public class WFNetChecker {
 	 				 Y extends AbstractPTMarkingGraphRelation<M,X>,
 	 				 N extends AbstractPTNet<P,T,F,M,X,Y>> 
 
-	void checkWFNetStructure(N petriNet) throws PNValidationException {
-		InOutPlaces places = PNPropertiesChecker.validateInputOutputPlace(petriNet);
-		PNPropertiesChecker.validateStrongConnectedness(petriNet, places);
+	WFNetProperties checkWFNetStructure(N petriNet) {
+		
+		WFNetProperties result = new WFNetProperties();
+		
+		// Check if there is only one input/output place
+		try {
+			result.inOutPlaces = PNPropertiesChecker.validateInputOutputPlace(petriNet);
+		} catch (PNValidationException e) {
+			result.exception = e;
+			result.validInOutPlaces = PropertyCheckingResult.FALSE;
+			result.hasWFNetStructure = PropertyCheckingResult.FALSE;
+			return result;
+		}
+		P input = petriNet.getPlace(result.inOutPlaces.getInput());
+		result.validInOutPlaces = PropertyCheckingResult.TRUE;
+		
+		// Check strongly connectedness of short-circuited net
+		try {
+			PNPropertiesChecker.validateStrongConnectedness(petriNet, result.inOutPlaces);
+		} catch (PNValidationException e) {
+			result.exception = e;
+			result.strongConnectedness = PropertyCheckingResult.FALSE;
+			result.hasWFNetStructure = PropertyCheckingResult.FALSE;
+			return result;
+		}
+		result.strongConnectedness = PropertyCheckingResult.TRUE;
+		
+		result.hasWFNetStructure = PropertyCheckingResult.TRUE;
+		return result;
 	}
 	
 	public static 	<P extends AbstractPTPlace<F>, 
@@ -35,12 +62,7 @@ public class WFNetChecker {
 	 				 N extends AbstractPTNet<P,T,F,M,X,Y>> 
 
 	boolean hasWFNetStructure(N petriNet) {
-		try{
-			checkWFNetStructure(petriNet);
-		} catch(PNValidationException e){
-			return false;
-		}
-		return true;
+		return checkWFNetStructure(petriNet).exception == null;
 	}
 	
 	//TODO: WFNet soundness + structuredness
