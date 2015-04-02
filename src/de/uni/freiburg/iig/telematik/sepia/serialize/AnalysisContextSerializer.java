@@ -7,32 +7,34 @@ import java.util.Map;
 import org.w3c.dom.Element;
 
 import de.invation.code.toval.misc.soabase.SOABase;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetAnalysisContextParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.AnalysisContextParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 
 public class AnalysisContextSerializer {
 	
+	public static final String TYPE_URI = "http://ifnml.process-security.de/grammar/v1.0/analysiscontext";
+	
 	private AnalysisContext analysisContext = null;
-	private Labeling labeling = null;
 	private XMLSerializationSupport support = null;
 	
 	public AnalysisContextSerializer(AnalysisContext analysisContext){
 		this.analysisContext = analysisContext;
-		this.labeling = analysisContext.getLabeling();
 		support = new XMLSerializationSupport("analysiscontext");
 	}
 	
 	private void addContent() {
 		support.getRootElement().setAttribute("id", analysisContext.getName());
-//		// Add acmodel name
-//		Element acModelElement = support.createElement("acmodel");
-//		acModelElement.setAttribute("name", analysisContext.getACModelName());
-//		support.getRootElement().appendChild(acModelElement);
+		support.getRootElement().setAttribute("type", TYPE_URI);
+		
+		// Add AC model name
+		Element acModelElement = support.createElement("acmodel");
+		acModelElement.setTextContent(analysisContext.getACModel().getName());
+		support.getRootElement().appendChild(acModelElement);
 		
 		// Add subject descriptors
 		Element subjectDescriptorsElement = support.createElement("subjectdescriptors");
-		Map<String, String> descriptors = analysisContext.getsubjectDescriptors();
+		Map<String, String> descriptors = analysisContext.getSubjectDescriptors();
 		for (String activity : descriptors.keySet()) {
 			Element subjectDescriptorElement = support.createElement("subjectdescriptor");
 			subjectDescriptorElement.appendChild(support.createTextElement("activity", activity));
@@ -40,51 +42,6 @@ public class AnalysisContextSerializer {
 			subjectDescriptorsElement.appendChild(subjectDescriptorElement);
 		}
 		support.getRootElement().appendChild(subjectDescriptorsElement);
-		
-		if (labeling != null) {
-			// Add context name
-			Element contextElement = support.createElement("context");
-			contextElement.setAttribute("requirescontext", labeling.requiresContext() ? "true" : "false");
-			if(labeling.requiresContext()){
-				Element contextNameElement = support.createElement("contextname");	
-				contextNameElement.setTextContent(labeling.getContext().getName());
-				contextElement.appendChild(contextNameElement);
-				Element contextTypeElement = support.createElement("contexttype");	
-				contextTypeElement.setTextContent(labeling.getContext().getClass().getCanonicalName());
-				contextElement.appendChild(contextTypeElement);
-			}
-			support.getRootElement().appendChild(contextElement);
-			
-			// Add activity classifications
-			Element classificationsElement = support.createElement("classifications");
-			for (String activity : labeling.getActivities()) {
-				Element classificationElement = support.createElement("classification");
-				classificationElement.appendChild(support.createTextElement("activity", activity));
-				classificationElement.appendChild(support.createTextElement("securitydomain", labeling.getActivityClassification(activity).toString().toLowerCase()));
-				classificationsElement.appendChild(classificationElement);
-			}
-			support.getRootElement().appendChild(classificationsElement);
-			
-			// Add token classifications
-			Element tokenLabelsElement = support.createElement("tokenlabels");
-			for(String attribute: labeling.getAttributes()){
-				Element tokenLabelElement = support.createElement("tokenlabel");
-				tokenLabelElement.appendChild(support.createTextElement("color", attribute));
-				tokenLabelElement.appendChild(support.createTextElement("securitydomain", labeling.getAttributeClassification(attribute).toString().toLowerCase()));
-				tokenLabelsElement.appendChild(tokenLabelElement);
-			}
-			support.getRootElement().appendChild(tokenLabelsElement);
-			
-			// Add subject clearances
-			Element clearancesElement = support.createElement("clearances");
-			for(String subject: labeling.getSubjects()){
-				Element clearanceElement = support.createElement("clearance");
-				clearanceElement.appendChild(support.createTextElement("subject", subject));
-				clearanceElement.appendChild(support.createTextElement("securitydomain", labeling.getSubjectClearance(subject).toString().toLowerCase()));
-				clearancesElement.appendChild(clearanceElement);
-			}
-			support.getRootElement().appendChild(clearancesElement);
-		}
 	}
 	
 	public String serialize() throws SerializationException {
@@ -98,21 +55,22 @@ public class AnalysisContextSerializer {
 	}
 	
 	protected String getFileExtension(){
-		return "xml";
+		return "acon";
 	}
 	
 	public static void main(String[] args) throws Exception {
 		SOABase context = new SOABase("context1");
 		context.setActivities(Arrays.asList("act1","act2"));
 		context.setSubjects(Arrays.asList("Gerd"));
-		AnalysisContext c = new AnalysisContext(context);
-		c.setName("AnalysisContext1");
+		ACLModel acl = new ACLModel("acl1", context);
+		acl.addActivityPermission("Gerd", "act1");
+		AnalysisContext c = new AnalysisContext("analysisContext1", acl, true);
 		c.setSubjectDescriptor("act1", "Gerd");
+		
 		AnalysisContextSerializer serializer = new AnalysisContextSerializer(c);
 		serializer.serialize("/Users/stocker/Desktop/", "test");
 		
-		AnalysisContext parsedContext = PNMLIFNetAnalysisContextParser.parse("/Users/stocker/Desktop/test.xml", false);
-		System.out.println(parsedContext.getContextName());
-		System.out.println(parsedContext.getContextClass());
+		AnalysisContext parsedContext = AnalysisContextParser.parse("/Users/stocker/Desktop/test.acon", true, Arrays.asList(acl));
+
 	}
 }

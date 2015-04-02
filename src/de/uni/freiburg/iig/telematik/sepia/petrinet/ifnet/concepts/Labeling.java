@@ -1,22 +1,17 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.misc.soabase.SOABaseChangeReply;
 import de.invation.code.toval.misc.soabase.SOABaseListener;
-import de.invation.code.toval.validate.CompatibilityException;
 import de.invation.code.toval.validate.Validate;
 
 
 
-public class Labeling implements SOABaseListener {
+public class Labeling implements SOABaseListener, AnalysisContextListener {
 	
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>
@@ -47,74 +42,74 @@ public class Labeling implements SOABaseListener {
 	 */
 	private Map<String, SecurityLevel> subjectClearance = new HashMap<String, SecurityLevel>();
 
-	private SOABase context = null;
-	private String contextName = null;
-	private Class<?> contextclass = null;
-	
-	private boolean requireContext = true;
+	private AnalysisContext context = null;
 
 	protected String name;
 	
-	public Labeling(){}
-	
-	public Labeling(SOABase context) {
-		setContext(context, true);
+	public Labeling(String name, AnalysisContext context) {
+		setName(name);
+		setAnalysisContext(context, true);
 	}
 	
-	public Labeling(SOABase context, SecurityLevel defaultSecurityLevel) {
-		this(context);
+	public Labeling(String name, AnalysisContext context, SecurityLevel defaultSecurityLevel) {
+		this(name, context);
 		Validate.notNull(defaultSecurityLevel);
 		this.defaultSecurityLevel = defaultSecurityLevel;
 	}
 	
-	public SOABase getContext(){
+	public AnalysisContext getAnalysisContext(){
 		return context;
 	}
 	
-	public void setContext(SOABase context, boolean reset){
+	private void setAnalysisContext(AnalysisContext context, boolean reset){
 		Validate.notNull(context);
 		if(this.context != null){
-			this.context.removeContextListener(this);
-		}
-		if(reset){
-			reset();
+			this.context.removeAnalysisContextListener(this);
+			this.context.getACModel().getContext().removeContextListener(this);
 		}
 		this.context = context;
-		this.context.addContextListener(this);
-		this.contextName = context.getName();
+		this.context.addAnalysisContextListener(this);
+		this.context.getACModel().getContext().addContextListener(this);
 		
-		List<String> activitiesToRemove = new ArrayList<String>();
-		for(String activity: activiyClassification.keySet()){
-			if(!getActivities().contains(activity))
-				activitiesToRemove.add(activity);
+		if(reset){
+			reset();
+		} else {
+			List<String> activitiesToRemove = new ArrayList<String>();
+			for(String activity: activiyClassification.keySet()){
+				if(!context.getACModel().getContext().getActivities().contains(activity))
+					activitiesToRemove.add(activity);
+			}
+			for(String activityToRemove: activitiesToRemove)
+				activiyClassification.remove(activityToRemove);
+			
+			List<String> attributesToRemove = new ArrayList<String>();
+			for(String attribute: attributeClassification.keySet()){
+				if(!context.getACModel().getContext().getObjects().contains(attribute))
+					attributesToRemove.add(attribute);
+			}
+			for(String attributeToRemove: attributesToRemove)
+				attributeClassification.remove(attributeToRemove);
+			
+			List<String> subjectsToRemove = new ArrayList<String>();
+			for(String subject: subjectClearance.keySet()){
+				if(!context.getACModel().getContext().getSubjects().contains(subject))
+					subjectsToRemove.add(subject);
+			}
+			for(String subjectToRemove: subjectsToRemove)
+				subjectClearance.remove(subjectToRemove);
 		}
-		for(String activityToRemove: activitiesToRemove)
-			activiyClassification.remove(activityToRemove);
-		for(String activity: getActivities()){
+		
+		for(String activity: context.getACModel().getContext().getActivities()){
 			if(!activiyClassification.containsKey(activity))
 				setDefaultActivityClassification(activity);
 		}
 		
-		List<String> attributesToRemove = new ArrayList<String>();
-		for(String attribute: attributeClassification.keySet()){
-			if(!getAttributes().contains(attribute))
-				attributesToRemove.add(attribute);
-		}
-		for(String attributeToRemove: attributesToRemove)
-			attributeClassification.remove(attributeToRemove);
-		for(String attribute: getAttributes()){
+		for(String attribute: context.getACModel().getContext().getObjects()){
 			if(!attributeClassification.containsKey(attribute))
 				setDefaultAttributeClassification(attribute);
 		}
 		
-		List<String> subjectsToRemove = new ArrayList<String>();
-		for(String subject: subjectClearance.keySet()){
-			if(!getSubjects().contains(subject))
-				subjectsToRemove.add(subject);
-		}
-		for(String subjectToRemove: subjectsToRemove)
-			subjectClearance.remove(subjectToRemove);
-		for(String subject: getSubjects()){
+		for(String subject: context.getACModel().getContext().getSubjects()){
 			if(!subjectClearance.containsKey(subject))
 				setDefaultSubjectClearance(subject);
 		}
@@ -130,32 +125,6 @@ public class Labeling implements SOABaseListener {
 		if(this.name != null && this.name.equals(name))
 			return;
 		this.name = name;
-	}
-	
-	public String getContextName() {
-		if(context != null)
-			return context.getName();
-		return contextName;
-	}
-
-	public boolean setContextName(String contextName) {
-		if(requireContext)
-			return false;
-		this.contextName = contextName;
-		return true;
-	}
-
-	public Class<?> getContextClass() {
-		if(context != null)
-			return context.getClass();
-		return contextclass;
-	}
-
-	public boolean setContextclass(Class<?> contextclass) {
-		if(requireContext)
-			return false;
-		this.contextclass = contextclass;
-		return true;
 	}
 
 	private void setDefaultSubjectClearance(String subject) {
@@ -176,74 +145,36 @@ public class Labeling implements SOABaseListener {
 		subjectClearance.clear();
 	}
 	
-	public boolean requiresContext() {
-		return requireContext;
-	}
-
-	public void setRequireContext(boolean requireContext) {
-		this.requireContext = requireContext;
-	}
-
-	public Set<String> getActivities(){
-		if(requiresContext()) {
-			if (context != null)
-				return Collections.unmodifiableSet(context.getActivities());
-			else
-				return Collections.unmodifiableSet(new HashSet<String>());
-		}
-		return Collections.unmodifiableSet(activiyClassification.keySet());
-	}
-	
-	public Set<String> getSubjects(){
-		if(requiresContext()) {
-			if (context != null)
-				return Collections.unmodifiableSet(context.getSubjects());
-			else
-				return Collections.unmodifiableSet(new HashSet<String>());
-		}
-		return Collections.unmodifiableSet(subjectClearance.keySet());
-	}
-	
-	public Set<String> getAttributes(){
-		if(requiresContext()) {
-			if (context != null)
-				return Collections.unmodifiableSet(context.getObjects());
-			else
-				return Collections.unmodifiableSet(new HashSet<String>());
-		}
-		return Collections.unmodifiableSet(attributeClassification.keySet());
-	}
-	
 	public void setActivityClassification(String activity, SecurityLevel securityLevel) {
-		validateActivity(activity);
+		context.getACModel().getContext().validateActivity(activity);
 		Validate.notNull(securityLevel);
 		activiyClassification.put(activity, securityLevel);
 	}
 	
 	public SecurityLevel getActivityClassification(String activity) {
-		validateActivity(activity);
+		context.getACModel().getContext().validateActivity(activity);
 		return activiyClassification.get(activity);
 	}
 	
 	public void setAttributeClassification(String attribute, SecurityLevel securityLevel) {
-		validateAttribute(attribute);
+		context.getACModel().getContext().validateObject(attribute);
 		Validate.notNull(securityLevel);
 		attributeClassification.put(attribute, securityLevel);
 	}
 	
 	public SecurityLevel getAttributeClassification(String attribute) {
-		validateAttribute(attribute);
+		context.getACModel().getContext().validateObject(attribute);
 		return attributeClassification.get(attribute);
 	}
 
 	public void setSubjectClearance(String subject, SecurityLevel securityLevel) {
-		validateSubject(subject);
+		context.getACModel().getContext().validateSubject(subject);
 		Validate.notNull(securityLevel);
 		subjectClearance.put(subject, securityLevel);
 	}
 	
 	public SecurityLevel getSubjectClearance(String subject) {
-		validateSubject(subject);
+		context.getACModel().getContext().validateSubject(subject);
 		return subjectClearance.get(subject);
 	}
 	
@@ -285,26 +216,11 @@ public class Labeling implements SOABaseListener {
 		activiyClassification.remove(transaction);
 	}
 	
-	public void validateActivity(String activity) throws CompatibilityException{
-		if(requireContext)
-			getContext().validateActivity(activity);
-	}
-	
-	public void validateAttribute(String attribute) throws CompatibilityException{
-		if(requireContext)
-			getContext().validateObject(attribute);
-	}
-	
-	public void validateSubject(String subject) throws CompatibilityException{
-		if(requireContext)
-			getContext().validateSubject(subject);
-	}
-	
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
 		builder.append("Activities: ");
-		for (String activity : getActivities()) {
+		for (String activity : context.getACModel().getContext().getActivities()) {
 			builder.append(activity);
 			builder.append('[');
 			builder.append(getActivityClassification(activity));
@@ -314,7 +230,7 @@ public class Labeling implements SOABaseListener {
 		builder.append('\n');
 
 		builder.append("Attributes: ");
-		for (String attribute : getAttributes()) {
+		for (String attribute : context.getACModel().getContext().getObjects()) {
 			builder.append(attribute);
 			builder.append('[');
 			builder.append(getAttributeClassification(attribute));
@@ -324,7 +240,7 @@ public class Labeling implements SOABaseListener {
 		builder.append('\n');
 
 		builder.append("Subjects: ");
-		for (String subject : getSubjects()) {
+		for (String subject : context.getACModel().getContext().getSubjects()) {
 			builder.append(subject);
 			builder.append('[');
 			builder.append(getSubjectClearance(subject));
@@ -350,14 +266,25 @@ public class Labeling implements SOABaseListener {
 	}
 
 	@Override
-	public void nameChanged(String oldName, String newName) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void nameChanged(String oldName, String newName) {}
 
 	@Override
 	public String getListenerDescription() {
 		return "labeling " + getName();
 	}
+
+	@Override
+	public void acModelChanged() {
+		setAnalysisContext(this.context, false);
+	}
+
+	@Override
+	public void subjectDescriptorAdded(String activity, String subjectDescriptor) {}
+	
+	@Override
+	public void subjectDescriptorRemoved(String activity) {}
+
+	@Override
+	public void subjectDescriptorchanged(String activity, String oldSubjectDescriptor, String newSubjectDescriptor) {}
 	
 }

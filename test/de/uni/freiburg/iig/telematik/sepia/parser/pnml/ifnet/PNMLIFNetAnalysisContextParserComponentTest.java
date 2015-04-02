@@ -91,7 +91,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	public void validACWithValidation() throws ParameterException {
 		AnalysisContext ac = null;
 		try {
-			ac = PNMLIFNetAnalysisContextParser.parse(validACResource.getFile(), true);
+			ac = AnalysisContextParser.parse(validACResource.getFile(), true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -151,7 +151,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	public void validACWithoutValidation() throws ParameterException {
 		AnalysisContext ac = null;
 		try {
-			ac = PNMLIFNetAnalysisContextParser.parse(validACResource.getFile(), false);
+			ac = AnalysisContextParser.parse(validACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -214,7 +214,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidSecurityLevelActivityACWithValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), true);
+			AnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -228,7 +228,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void invalidSecurityLevelActivityACWithoutValidation() throws ParameterException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), false);
+			AnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -246,7 +246,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidAttributeACWithValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidAttributeACResource.getFile(), true);
+			AnalysisContextParser.parse(invalidAttributeACResource.getFile(), true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -260,7 +260,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidAttributeACWithoutValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidAttributeACResource.getFile(), false);
+			AnalysisContextParser.parse(invalidAttributeACResource.getFile(), false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -274,7 +274,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidSecurityLevelAttributeACWithValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), true);
+			AnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -289,7 +289,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	public void invalidSecurityLevelAttributeACWithoutValidation() {
 		AnalysisContext ac = null;
 		try {
-			ac = PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), false);
+			ac = AnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -313,7 +313,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidSecurityLevelSubjectACWithValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), true);
+			AnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -327,7 +327,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void invalidSecurityLevelSubjectACWithoutValidation() throws ParameterException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), false);
+			AnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -346,7 +346,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	public void missingDescriptorsACWithValidation() throws ParameterException {
 		AnalysisContext ac = null;
 		try {
-			ac = PNMLIFNetAnalysisContextParser.parse(missingDescriptorsACResource.getFile(), true);
+			ac = AnalysisContextParser.parse(missingDescriptorsACResource.getFile(), true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -370,7 +370,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	public void missingDescriptorsACWithoutValidation() throws ParameterException {
 		AnalysisContext ac = null;
 		try {
-			ac = PNMLIFNetAnalysisContextParser.parse(missingDescriptorsACResource.getFile(), false);
+			ac = AnalysisContextParser.parse(missingDescriptorsACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -393,7 +393,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void unevenDescriptorsAACWithValidation() throws ParameterException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), true);
+			AnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -407,7 +407,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
 	public void unevenDescriptorsAACWithoutValidation() throws ParameterException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), false);
+			AnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (IOException e) {
@@ -421,7 +421,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unevenDescriptorsBACWithValidation() throws ParameterException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), true);
+			AnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), true);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -437,7 +437,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unevenDescriptorsBACWithoutValidation() throws ParameterException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), false);
+			AnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), false);
 		} catch (ParserException e) {
 			fail("Exception while parsing: " + e.getMessage());
 		} catch (ParameterException e) {
@@ -453,7 +453,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidDescriptorActivityACWithValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), true);
+			AnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -467,7 +467,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidDescriptorActivityACWithoutValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), false);
+			AnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -481,7 +481,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidDescriptorSubjectACWithValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), true);
+			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), true);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {
@@ -495,7 +495,7 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
 	public void invalidDescriptorSubjectACWithoutValidation() throws ParserException {
 		try {
-			PNMLIFNetAnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), false);
+			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), false);
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {

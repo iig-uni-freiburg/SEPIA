@@ -1,14 +1,19 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.misc.soabase.SOABase;
+import de.invation.code.toval.types.DataUsage;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.AbstractACModel;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.event.ACModelListener;
 
 /**
  * Analysis context of IF-Nets.<br>
@@ -20,23 +25,35 @@ import de.invation.code.toval.validate.Validate;
  * <li>Subject descriptors: Subjects assigned to process activities.</li>
  * </ul>
  */
-public class AnalysisContext {
+public class AnalysisContext implements ACModelListener {
+	
+	private static final String DEFAULT_LABELING_NAME = "defaultLabeling";
 	
 	private String name = null;
 	private Labeling labeling = null;
 	private Map<String, String> subjectDescriptors = new HashMap<String, String>();
+	@SuppressWarnings("rawtypes")
+	private AbstractACModel acModel = null;
 	
-	public AnalysisContext(Labeling labeling) {
-		Validate.notNull(labeling);
-		this.labeling = labeling;
-	} 
+	private Set<AnalysisContextListener> listeners = new HashSet<AnalysisContextListener>();
 	
-	public AnalysisContext(SOABase context) {
-		this(new Labeling(context));
+	@SuppressWarnings("rawtypes")
+	public AnalysisContext(String name, AbstractACModel acModel, boolean createDefaultLabeling) {
+		setName(name);
+		Validate.notNull(acModel);
+		this.acModel = acModel;
+		acModel.addACModelListener(this);
+		if(createDefaultLabeling)
+			this.labeling = new Labeling(DEFAULT_LABELING_NAME, this);
 	}
 	
-	public AnalysisContext(SOABase context, SecurityLevel defaultSecurityLevel) {
-		this(new Labeling(context, defaultSecurityLevel));
+	@SuppressWarnings("rawtypes")
+	public AnalysisContext(String name, AbstractACModel acModel, boolean createDefaultLabeling, SecurityLevel defaultSecurityLevel) {
+		setName(name);
+		Validate.notNull(acModel);
+		this.acModel = acModel;
+		if(createDefaultLabeling)
+			this.labeling = new Labeling(DEFAULT_LABELING_NAME, this, defaultSecurityLevel);
 	}
 	
 	public String getName() {
@@ -44,60 +61,151 @@ public class AnalysisContext {
 	}
 
 	public void setName(String name) {
+		Validate.notNull(name);
 		this.name = name;
 	}
-
-	public Set<String> getActivities(){
-		return labeling.getActivities();
-	}
 	
-	public Set<String> getAttributes(){
-		return labeling.getAttributes();
-	}
-	
-	public Set<String> getSubjects(){
-		return labeling.getSubjects();
+	@SuppressWarnings("rawtypes")
+	public AbstractACModel getACModel(){
+		return acModel;
 	}
 	
 	public Labeling getLabeling(){
 		return labeling;
 	}
 	
+	public Labeling createNewLabeling(String name){
+		return new Labeling(name, this);
+	}
+	
+	public Labeling createNewLabeling(String name, SecurityLevel defaultSecurityLevel){
+		return new Labeling(name, this, defaultSecurityLevel);
+	}
+	
 	public void setLabeling(Labeling labeling) {
 		Validate.notNull(labeling);
-		if(!labeling.getSubjects().containsAll(subjectDescriptors.values()))
-			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Labeling must contain all subjects assigned to transitions.");
+		if(labeling.getAnalysisContext() != this)
+			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Labeling has different analysis context.");
 		this.labeling = labeling;
 	}
 	  
-	public void setSubjectDescriptor(String activity, String subject) {
-		labeling.validateActivity(activity);
-		labeling.validateSubject(subject);
-		
-		if(labeling.getSubjectClearance(subject) == SecurityLevel.LOW && labeling.getActivityClassification(activity) == SecurityLevel.HIGH)
-			throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot assign a subject with LOW clearance to an activity with HIGH classification.");
-		
+	public boolean setSubjectDescriptor(String activity, String subject) {
+		acModel.getContext().validateActivity(activity);
+		acModel.getContext().validateSubject(subject);
+		validate(activity, subject);
+		boolean existingEntry = subjectDescriptors.containsKey(activity);
+		String oldSubjectDescriptor = null;
+		if(existingEntry){
+			if(subjectDescriptors.get(activity).equals(subject))
+				return false;
+			oldSubjectDescriptor = subjectDescriptors.get(activity);
+		}
+			
 		subjectDescriptors.put(activity, subject);
+			for(AnalysisContextListener listener: listeners){
+				if(existingEntry){
+					listener.subjectDescriptorchanged(activity, oldSubjectDescriptor, subject);
+				} else {
+					listener.subjectDescriptorAdded(activity, subject);
+				}
+			}
+		return true;
+	}
+	
+	public void removeSubjectDescriptor(String activity) {
+		acModel.getContext().validateActivity(activity);
+		subjectDescriptors.remove(activity);
+		for(AnalysisContextListener listener: listeners){
+			listener.subjectDescriptorRemoved(activity);
+		}
 	}
 	
 	public String getSubjectDescriptor(String activity) {
-		labeling.validateActivity(activity);
+		acModel.getContext().validateActivity(activity);
 		return subjectDescriptors.get(activity);
 	}
 	
-	public Map<String, String> getsubjectDescriptors(){
+	public Map<String, String> getSubjectDescriptors(){
 		return Collections.unmodifiableMap(subjectDescriptors);
 	}
 	
-	public void setContext(SOABase context, boolean reset){
-		labeling.setContext(context, reset);
+	@SuppressWarnings("rawtypes")
+	public void setACModel(AbstractACModel acModel, boolean reset){
+		Validate.notNull(acModel);
+		if(acModel == this.acModel)
+			return;
+		this.acModel.removeACModelListener(this);
+		acModel.addACModelListener(this);
+		this.acModel = acModel;
+		for(AnalysisContextListener listener: listeners)
+			listener.acModelChanged();
 	}
 	
-	public String getContextName(){
-		return labeling.getContextName();
+	public boolean isValid(){
+		try{
+			validate();
+		}catch(ParameterException e){
+			return false;
+		}
+		return true;
 	}
 	
-	public Class<?> getContextClass(){
-		return labeling.getContextClass();
+	public void validate(){
+		for(String activity: subjectDescriptors.keySet()){
+			validate(activity, subjectDescriptors.get(activity));
+		}
 	}
+	
+	public void validate(String activity, String subject) {
+		if (!acModel.isAuthorizedForTransaction(subject, activity))
+			throw new ParameterException(ErrorCode.INCONSISTENCY, "Subject \"" + subject + "\" is not authorized for activity \"" + activity + "\".");
+
+		if (labeling != null) {
+			if (labeling.getSubjectClearance(subject) == SecurityLevel.LOW && labeling.getActivityClassification(activity) == SecurityLevel.HIGH)
+				throw new ParameterException(ErrorCode.INCONSISTENCY, "Cannot assign a subject with LOW clearance to an activity with HIGH classification.");
+		}
+	}
+	
+	public void addAnalysisContextListener(AnalysisContextListener listener){
+		listeners.add(listener);
+	}
+	
+	public void removeAnalysisContextListener(AnalysisContextListener listener){
+		listeners.remove(listener);
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void validUsageModesChanged(AbstractACModel sender, Set<DataUsage> oldModes, Set<DataUsage> newModes) {}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void contextChanged(AbstractACModel sender, SOABase context) {
+		if(labeling != null){
+			labeling.acModelChanged();
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void accessPermissionAdded(AbstractACModel sender, String subject, String object, Collection<DataUsage> dataUsageModes) {}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void accessPermissionRemoved(AbstractACModel sender, String subject, String object, Collection<DataUsage> dataUsageModes) {}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void executionPermissionAdded(AbstractACModel sender, String subject, String transaction) {}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void executionPermissionRemoved(AbstractACModel sender, String subject, String transaction) {
+		if(subjectDescriptors.containsKey(transaction)){
+			if(subjectDescriptors.get(transaction).equals(subject)){
+				removeSubjectDescriptor(transaction);
+			}
+		}
+	}
+	
 }

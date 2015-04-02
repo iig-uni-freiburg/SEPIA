@@ -87,7 +87,7 @@ public class PNPropertiesChecker {
 		if (petriNet instanceof IFNet) {
 			IFNet ifnet = (IFNet) petriNet;
 			if (ifnet.getAnalysisContext() != null) {
-				ifnet.getAnalysisContext().getLabeling().getContext().addActivity(CONNECTOR_NAME);
+				ifnet.getAnalysisContext().getLabeling().getAnalysisContext().getACModel().getContext().addActivity(CONNECTOR_NAME);
 			}
 		}
 
@@ -106,7 +106,7 @@ public class PNPropertiesChecker {
 		if (petriNet instanceof IFNet) {
 			IFNet ifnet = (IFNet) petriNet;
 			if (ifnet.getAnalysisContext() != null) {
-				ifnet.getAnalysisContext().getLabeling().getContext().removeActivity(CONNECTOR_NAME);
+				ifnet.getAnalysisContext().getLabeling().getAnalysisContext().getACModel().getContext().removeActivity(CONNECTOR_NAME);
 			}
 		}
 	}

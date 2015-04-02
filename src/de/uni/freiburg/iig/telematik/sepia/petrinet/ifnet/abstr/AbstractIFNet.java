@@ -98,7 +98,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	@Override
 	protected boolean addTransition(T transition, boolean notifyListeners) {
 		if(hasAnalysisContext()){
-			if(!analysisContext.getActivities().contains(transition.getLabel()))
+			if(!analysisContext.getACModel().getContext().getActivities().contains(transition.getLabel()))
 				throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Cannot add transition with label \"" +transition.getLabel()+"\".\nReason: The connected analysis context does not contain an activity with this name." );
 		}
 		boolean superResult = super.addTransition(transition, notifyListeners);
@@ -200,7 +200,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	public Set<String> getSubjectDescriptors(){
 		if(getAnalysisContext() == null)
 			return new HashSet<String>();
-		return getAnalysisContext().getSubjects();
+		return getAnalysisContext().getACModel().getContext().getSubjects();
 	}
 	
 	public AnalysisContext getAnalysisContext(){
@@ -222,9 +222,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	
 	public void validateAnalysisContext(AnalysisContext analysisContext){
 		Validate.notNull(analysisContext);
-		if(!analysisContext.getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions(), false)))
+		if(!analysisContext.getACModel().getContext().getActivities().containsAll(PNUtils.getLabelSetFromTransitions(getTransitions(), false)))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all Petri net transitions as activities.");
-		if(!analysisContext.getAttributes().containsAll(getTokenColors()))
+		if(!analysisContext.getACModel().getContext().getObjects().containsAll(getTokenColors()))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Analysis context must contain all token colors as attributes.");
 	}
 	
@@ -295,12 +295,12 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		for(String tokenColor: getTokenColors()){
 			if(tokenColor.equals(defaultTokenColor()))
 				continue;
-			if(!getAnalysisContext().getAttributes().contains(tokenColor))
+			if(!getAnalysisContext().getACModel().getContext().getObjects().contains(tokenColor))
 				throw new PNValidationException("Analysis context does not contain attribute: " + tokenColor);
 		}
 		
 		for(T transition: getTransitions(false)){
-			if(!getAnalysisContext().getActivities().contains(transition.getLabel()))
+			if(!getAnalysisContext().getACModel().getContext().getActivities().contains(transition.getLabel()))
 				throw new PNValidationException("Analysis context does not contain activity " + transition.getLabel());
 		}
 		
@@ -314,7 +314,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 		}
 
 		// Check security level consistency for regular transitions.
-		for(String attribute: getAnalysisContext().getAttributes()){
+		for(String attribute: getAnalysisContext().getACModel().getContext().getObjects()){
 			for(AbstractRegularIFNetTransition<F> transition: getRegularTransitions()){
 				if(transition.processesColor(attribute)){
 					// If the access modes of an activity contain CREATE for an attribute,
