@@ -382,21 +382,27 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		@SuppressWarnings("unchecked")
 		AbstractPlace<E, S> other = (AbstractPlace<E, S>) obj;
-		if (capacity != other.capacity)
+		if (capacity != other.capacity) {
 			return false;
+		}
 		if (state == null) {
-			if (other.state != null)
+			if (other.state != null) {
 				return false;
-		} else if (!state.equals(other.state))
+			}
+		} else if (!state.equals(other.state)) {
 			return false;
+		}
 		return true;
 	}
 

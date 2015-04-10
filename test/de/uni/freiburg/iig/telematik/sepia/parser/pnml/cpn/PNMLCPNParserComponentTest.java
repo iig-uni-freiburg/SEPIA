@@ -105,7 +105,7 @@ public class PNMLCPNParserComponentTest {
 	public TestResourceFile CPNBoundedResource = new TestResourceFile(CPN_TEST_RESOURCES_PATH + "CPN-bounded.pnml");
 	/* CPN with incomplete token color RGB values */
 	@Rule
-	public TestResourceFile CPNIncompleteTokencolorsResource = new TestResourceFile(CPN_TEST_RESOURCES_PATH + "CPN-IncompleteTokencolors.pnml");
+	public TestResourceFile CPNIncompleteTokencolorsResource = new TestResourceFile(CPN_TEST_RESOURCES_PATH + "CPN-incompleteTokencolors.pnml");
 
 	/*
 	 * Test if all sample files of the CPN exist.

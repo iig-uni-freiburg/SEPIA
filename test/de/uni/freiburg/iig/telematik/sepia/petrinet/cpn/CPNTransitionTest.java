@@ -134,6 +134,7 @@ public class CPNTransitionTest {
 		assertFalse(t1.processesColor("pink"));
 
 		CPNTransition t1clone = t1.clone();
+//		System.out.println(t1.equals(t1clone));
 		assertEquals(t1, t1clone);
 		assertNotSame(t1, t1clone);
 		assertTrue(t1clone.isSilent());

@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr;
 
-import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
@@ -71,12 +70,6 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 	
 	@Override
 	public AbstractPTTransition<E> clone() {
-		AbstractPTTransition<E> result = (AbstractPTTransition<E>) newInstance(getName());
-		try {
-			result.setLabel(getLabel());
-		} catch (ParameterException e) {
-			e.printStackTrace();
-		}
-		return result;
+		return (AbstractPTTransition<E>) super.clone();
 	}
 }

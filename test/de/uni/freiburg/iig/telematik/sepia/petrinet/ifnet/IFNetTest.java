@@ -24,6 +24,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 
 /**
  * @author boehr
@@ -157,11 +158,29 @@ public class IFNetTest {
 		rst.addAccessMode("blue", AccessMode.CREATE);
 
 		// create labeling
-		SOABase context = new SOABase("");
+		SOABase context = new SOABase("b");
 		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 		context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
 		context.setActivities(Arrays.asList("tIn", "t0", "t1", "td", "tOut"));
-		Labeling l = new Labeling(context);
+
+		ACLModel acm = new ACLModel("acl", context);
+		acm.addActivityPermission("sh0", "tIn");
+		acm.addActivityPermission("sh1", "t0");
+		acm.addActivityPermission("sh2", "td");
+		acm.addActivityPermission("sh3", "t1");
+		acm.addActivityPermission("sl0", "tOut");
+
+		// Create a new analysis context
+		AnalysisContext ac = new AnalysisContext("", acm, false);
+
+		// Assign subjects to transitions
+		ac.setSubjectDescriptor("tIn", "sh0");
+		ac.setSubjectDescriptor("t0", "sh1");
+		ac.setSubjectDescriptor("td", "sh2");
+		ac.setSubjectDescriptor("t1", "sh3");
+		ac.setSubjectDescriptor("tOut", "sl0");
+		
+		Labeling l = new Labeling("l", ac);
 
 		// Set subject clearance
 		l.setSubjectClearance("sh0", SecurityLevel.HIGH);
@@ -183,17 +202,8 @@ public class IFNetTest {
 		l.setAttributeClassification("blue", SecurityLevel.HIGH);
 		l.setAttributeClassification("yellow", SecurityLevel.LOW);
 
-		// Create a new analysis context
-		AnalysisContext ac = new AnalysisContext(l);
-
-		// Assign subjects to transitions
-		ac.setSubjectDescriptor("tIn", "sh0");
-		ac.setSubjectDescriptor("t0", "sh1");
-		ac.setSubjectDescriptor("td", "sh2");
-		ac.setSubjectDescriptor("t1", "sh3");
-		ac.setSubjectDescriptor("tOut", "sl0");
-
 		// set the labeling
+		ac.setLabeling(l);
 		ifNet.setAnalysisContext(ac);
 
 		ifNet.checkValidity();
@@ -404,12 +414,29 @@ public class IFNetTest {
 	public void testSetAnalysisContext() {
 
 		// create labeling
-		SOABase context = new SOABase("");
+		SOABase context = new SOABase("base");
 		context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "t1"));
 		context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 		context.setObjects(Arrays.asList("black", "red", "blue", "green", "yellow"));
-		Labeling l = new Labeling(context);
-//		Labeling l = new Labeling(dSNet, Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
+
+		ACLModel acm = new ACLModel("acm", context);
+		acm.addActivityPermission("sh0", "tIn");
+		acm.addActivityPermission("sh1", "t0");
+		acm.addActivityPermission("sh2", "tOut");
+		acm.addActivityPermission("sh3", "td");
+		acm.addActivityPermission("sl0", "t1");
+
+		// Create a new analysis context
+		AnalysisContext ac = new AnalysisContext("ac", acm, false);
+
+		// Assign subjects to transitions
+		ac.setSubjectDescriptor("tIn", "sh0");
+		ac.setSubjectDescriptor("t0", "sh1");
+		ac.setSubjectDescriptor("tOut", "sh2");
+		ac.setSubjectDescriptor("td", "sh3");
+		ac.setSubjectDescriptor("t1", "sl0");
+		
+		Labeling l = new Labeling("l", ac);
 
 		// Set subject clearance
 		l.setSubjectClearance("sh0", SecurityLevel.HIGH);
@@ -430,16 +457,6 @@ public class IFNetTest {
 		l.setAttributeClassification("red", SecurityLevel.HIGH);
 		l.setAttributeClassification("blue", SecurityLevel.HIGH);
 		l.setAttributeClassification("yellow", SecurityLevel.LOW);
-
-		// Create a new analysis context
-		AnalysisContext ac = new AnalysisContext(l);
-
-		// Assign subjects to transitions
-		ac.setSubjectDescriptor("tIn", "sh0");
-		ac.setSubjectDescriptor("t0", "sh1");
-		ac.setSubjectDescriptor("tOut", "sh2");
-		ac.setSubjectDescriptor("td", "sh3");
-		ac.setSubjectDescriptor("t1", "sl0");
 
 		// set the labeling
 		dSNet.setAnalysisContext(ac);
@@ -465,8 +482,8 @@ public class IFNetTest {
 		assertEquals(ifnet1.getPlaces().size(), ifnet1clone.getPlaces().size());
 		for (IFNetPlace p : ifnet1.getPlaces()) {
 			assertTrue(ifnet1clone.getPlace(p.getName()) != null);
-			assertEquals(p, ifnet1clone.getPlace(p.getName()));
 			assertNotSame(p, ifnet1clone.getPlace(p.getName()));
+			assertEquals(p, ifnet1clone.getPlace(p.getName()));
 		}
 		// Check equality for transitions
 		assertEquals(ifnet1.getTransitions().size(), ifnet1clone.getTransitions().size());

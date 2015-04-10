@@ -272,19 +272,24 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		@SuppressWarnings("unchecked")
 		AbstractCPNPlace<E> other = (AbstractCPNPlace<E>) obj;
 		if (colorCapacity == null) {
-			if (other.colorCapacity != null)
+			if (other.colorCapacity != null) {
 				return false;
-		} else if (!colorCapacity.equals(other.colorCapacity))
+			}
+		} else if (!colorCapacity.equals(other.colorCapacity)) {
 			return false;
+		}
 		return true;
 	}
 	

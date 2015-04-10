@@ -8,6 +8,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 
 /**
  * Methods often used during testing of SNets.
@@ -123,16 +124,43 @@ public class IFNetTestUtil {
 
 		if (setAnalysisContext) {
 			// create labeling
-			SOABase context = new SOABase("");
+			SOABase context = new SOABase("base");
 			context.setSubjects(Arrays.asList("S1", "S2", "S3"));
 			context.setActivities(Arrays.asList("tIn", "t0", "tOut"));
 			context.setObjects(Arrays.asList("green", "red", "blue", "black"));
-			ifNet.setAnalysisContext(new AnalysisContext(new Labeling(context)));
-	
-			// add subject descriptors
-			ifNet.getAnalysisContext().setSubjectDescriptor("tIn", "S1");
-			ifNet.getAnalysisContext().setSubjectDescriptor("t0", "S2");
-			ifNet.getAnalysisContext().setSubjectDescriptor("tOut", "S3");
+
+			ACLModel acm = new ACLModel("acl", context);
+			acm.addActivityPermission("S1", "tIn");
+			acm.addActivityPermission("S2", "t0");
+			acm.addActivityPermission("S3", "tOut");
+
+			// Create a new analysis context
+			AnalysisContext ac = new AnalysisContext("ac", acm, false);
+
+			// Assign subjects to transitions
+			ac.setSubjectDescriptor("tIn", "S1");
+			ac.setSubjectDescriptor("t0", "S2");
+			ac.setSubjectDescriptor("tOut", "S3");
+
+			Labeling l = new Labeling("l", ac);
+			// Set subject clearance
+			l.setSubjectClearance("S1", SecurityLevel.LOW);
+			l.setSubjectClearance("S2", SecurityLevel.LOW);
+			l.setSubjectClearance("S3", SecurityLevel.LOW);
+
+			// set transition classification
+			l.setActivityClassification("tIn", SecurityLevel.LOW);
+			l.setActivityClassification("t0", SecurityLevel.LOW);
+			l.setActivityClassification("tOut", SecurityLevel.LOW);
+
+			// set token color classification
+			l.setAttributeClassification("green", SecurityLevel.LOW);
+			l.setAttributeClassification("red", SecurityLevel.LOW);
+			l.setAttributeClassification("blue", SecurityLevel.LOW);
+
+			// set the labeling
+			ac.setLabeling(l);
+			ifNet.setAnalysisContext(ac);
 		}
 
 		return ifNet;
@@ -155,12 +183,29 @@ public class IFNetTestUtil {
 
 		if (setAnalysisContext) {
 			// create labeling
-			SOABase context = new SOABase("");
+			SOABase context = new SOABase("base");
 			context.setSubjects(Arrays.asList("sh0", "sh1", "sh2", "sh3", "sl0"));
 			context.setObjects(Arrays.asList("green", "red", "blue", "yellow", "black"));
 			context.setActivities(Arrays.asList("tIn", "t0", "tOut", "td", "td2", "t1", "connector"));
-			Labeling l = new Labeling(context);
 
+			ACLModel acm = new ACLModel("acl", context);
+			acm.addActivityPermission("sh0", "tIn");
+			acm.addActivityPermission("sh1", "t0");
+			acm.addActivityPermission("sh2", "tOut");
+			acm.addActivityPermission("sh3", "td");
+			acm.addActivityPermission("sl0", "t1");
+
+			// Create a new analysis context
+			AnalysisContext ac = new AnalysisContext("ac", acm, false);
+
+			// Assign subjects to transitions
+			ac.setSubjectDescriptor("tIn", "sh0");
+			ac.setSubjectDescriptor("t0", "sh1");
+			ac.setSubjectDescriptor("tOut", "sh2");
+			ac.setSubjectDescriptor("td", "sh3");
+			ac.setSubjectDescriptor("t1", "sl0");
+
+			Labeling l = new Labeling("l", ac);
 			// Set subject clearance
 			l.setSubjectClearance("sh0", SecurityLevel.HIGH);
 			l.setSubjectClearance("sh1", SecurityLevel.HIGH);
@@ -181,17 +226,8 @@ public class IFNetTestUtil {
 			l.setAttributeClassification("blue", SecurityLevel.HIGH);
 			l.setAttributeClassification("yellow", SecurityLevel.LOW);
 
-			// Create a new analysis context
-			AnalysisContext ac = new AnalysisContext(l);
-
-			// Assign subjects to transitions
-			ac.setSubjectDescriptor("tIn", "sh0");
-			ac.setSubjectDescriptor("t0", "sh1");
-			ac.setSubjectDescriptor("tOut", "sh2");
-			ac.setSubjectDescriptor("td", "sh3");
-			ac.setSubjectDescriptor("t1", "sl0");
-
 			// set the labeling
+			ac.setLabeling(l);
 			simpleSNet.setAnalysisContext(ac);
 		}
 

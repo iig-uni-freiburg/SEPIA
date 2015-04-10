@@ -54,7 +54,7 @@ public class PTTransitionTest {
 	 */
 	@Test
 	public void testPTTransitionClone() throws ParameterException {
-		// CPNTransition with non-default values
+		// PTTransition with non-default values
 		PTTransition t1 = setUpStandadEnabledTransition();
 
 		PTTransition t1clone = t1.clone();
@@ -68,7 +68,7 @@ public class PTTransitionTest {
 		assertEquals(t1.isSource(), t1clone.isSource());
 		assertEquals(t1.isTransition(), t1clone.isTransition());
 
-		// CPNTransition with default values
+		// PTTransition with default values
 		PTTransition t2 = new PTTransition("name_trans1");
 		assertFalse(t2.isSilent());
 

@@ -186,6 +186,4 @@ public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? 
 	public AbstractCPNTransition<E> clone() {
 		return (AbstractCPNTransition<E>) super.clone();
 	}
-	
-	
 }

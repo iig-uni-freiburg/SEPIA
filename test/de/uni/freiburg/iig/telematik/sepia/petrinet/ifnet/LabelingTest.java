@@ -16,8 +16,10 @@ import org.junit.Test;
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 
 public class LabelingTest {
 
@@ -38,6 +40,10 @@ public class LabelingTest {
 
 	// The standard snet marking
 	IFNetMarking m = null;
+	
+	SOABase context = null;
+	ACLModel acm = null;
+	AnalysisContext ac = null;
 
 	@Before
 	public void setUp() throws Exception {
@@ -86,6 +92,18 @@ public class LabelingTest {
 
 		// Create an SNet
 		sNet = new IFNet(places, transitions, m);
+
+		// SOABase
+		SOABase context = new SOABase("base");
+		context.setActivities(transitions);
+		context.setObjects(attributes);
+		context.setSubjects(subjects);
+
+		// ACModel
+		acm = new ACLModel("acm", context);
+
+		// AC
+		ac = new AnalysisContext("ac", acm, false);
 	}
 
 	@After
@@ -107,124 +125,13 @@ public class LabelingTest {
 	@Test
 	public void testSNetSubjectLabelingConstructor() {
 
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e) {
-			e.printStackTrace();
-			fail("Cannot create SNet!");
-		}
-
+		Labeling l1 = new Labeling("l", ac);
 		// Check whether the activities are setup right
-		assertFalse(l2.getActivities().isEmpty());
-		// TODO
+		assertEquals(l1.getDefaultSecurityLevel(), SecurityLevel.LOW);
 
-		// Check whether the attributes are setup right
-		assertFalse(l2.getAttributes().isEmpty());
-		// TODO
-
-		// Check whether the subjects are setup right
-		assertFalse(l2.getSubjects().isEmpty());
-		// TODO
-	}
-
-	// ///////////////////////////////////////
-	// Test the ifNet, Subjects, DefaultSecurityLevel constructor //
-	// ///////////////////////////////////////
-	@Test
-	public void testSNetSubjectDefaultLabelingConstructor() {
-
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context, SecurityLevel.LOW);
-		} catch (ParameterException e) {
-			e.printStackTrace();
-			fail("Cannot create SNet!");
-		}
-
+		Labeling l2 = new Labeling("l", ac, SecurityLevel.HIGH);
 		// Check whether the activities are setup right
-		assertFalse(l2.getActivities().isEmpty());
-		// TODO
-
-		// Check whether the attributes are setup right
-		assertFalse(l2.getAttributes().isEmpty());
-		// TODO
-
-		// Check whether the subjects are setup right
-		assertFalse(l2.getSubjects().isEmpty());
-		// TODO
-
-	}
-
-	// ///////////////////////////////////////////////////////////////////////////////
-	// Test the activities, attributes, subjects, defaultSecurityLevel
-	// constructor
-	// ///////////////////////////////////////////////////////////////////////////////
-	@Test
-	public void testActivitiesAttributesSubjectsDefaultSecurityLevelConstructor() {
-
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context, SecurityLevel.HIGH);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
-
-		// Check whether the activities are setup right
-		assertFalse(l2.getActivities().isEmpty());
-		// TODO
-
-		// Check whether the attributes are setup right
-		assertFalse(l2.getAttributes().isEmpty());
-		// TODO
-
-		// Check whether the subjects are setup right
-		assertFalse(l2.getSubjects().isEmpty());
-		// TODO
-	}
-
-	// ///////////////////////////////////////////////////////////////////////////////
-	// Test the activities, attributes, subjects
-	// constructor
-	// ///////////////////////////////////////////////////////////////////////////////
-	@Test
-	public void testActivitiesAttributesSubjectsConstructor() {
-
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
-
-		// Check whether the activities are setup right
-		assertFalse(l2.getActivities().isEmpty());
-		// TODO
-
-		// Check whether the attributes are setup right
-		assertFalse(l2.getAttributes().isEmpty());
-		// TODO
-
-		// Check whether the subjects are setup right
-		assertFalse(l2.getSubjects().isEmpty());
-		// TODO
-
+		assertEquals(l2.getDefaultSecurityLevel(), SecurityLevel.HIGH);
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////
@@ -236,34 +143,24 @@ public class LabelingTest {
 		// create an empty set of activities
 		HashSet<String> emptyTransitionSet = new HashSet<String>();
 
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(emptyTransitionSet);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		SOABase contextEmpty = new SOABase("baseEmptyActivities");
+		contextEmpty.setActivities(emptyTransitionSet);
+		contextEmpty.setObjects(attributes);
+		contextEmpty.setSubjects(subjects);
+		ACLModel acm2 = new ACLModel("acl", contextEmpty);
+		AnalysisContext ac2 = new AnalysisContext("ac", acm2, true);
+		Labeling l2 = new Labeling("l2", ac2);
 
-		// There should be activities
-		assertTrue(l2.getActivities().isEmpty());
+		// There shouldn't be activities
+		assertTrue(l2.getAnalysisContext().getACModel().getContext().getActivities().isEmpty());
 
 		// try to add the same transition more than once
-		Labeling l3 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l3 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		Labeling l3 = new Labeling("l", ac);
+		
+		assertFalse(l2.equals(l3));
 
 		try {
-			l3.getContext().addActivities(Arrays.asList("t0", "t0", "t0", "t0"));
+			l3.getAnalysisContext().getACModel().getContext().addActivities(Arrays.asList("t0", "t0", "t0", "t0"));
 		} catch (ParameterException e) {
 			fail("Exception while adding an transition to a labeling.");
 		}
@@ -276,41 +173,14 @@ public class LabelingTest {
 	public void testRemoveActivities() {
 
 		// create a labeling
-		@SuppressWarnings("unused")
-		Labeling l3 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l3 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		Labeling l3 = new Labeling("l", ac);
 
-		//TODO:
-//		// try to remove a transition
-//		try {
-//			l3.removeActivities("t0");
-//		} catch (ParameterException e) {
-//			fail("Exception while removing a transition from a labeling.");
-//		}
-//		assertFalse(l3.getActivities().contains("t0"));
-//
-//		// try to remove a transition which is not contained in the labeling
-//		try {
-//			l3.removeActivities("t0");
-//		} catch (ParameterException e) {
-//			fail("Exception while removing a transition from a labeling.");
-//		}
-//		assertFalse(l3.getActivities().contains("t0"));
-//
-//		// try to remove no transition
-//		try {
-//			l3.removeActivities(new HashSet<String>());
-//		} catch (ParameterException e) {
-//			fail("Eception while removing a transition from a labeling.");
-//		}
+		try {
+			l3.getAnalysisContext().getACModel().getContext().removeActivity("t0");
+		} catch (ParameterException e) {
+			fail("Exception while adding an transition to a labeling.");
+		}
+		assertFalse(l3.getAnalysisContext().getACModel().getContext().getActivities().contains("t0"));
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////
@@ -322,36 +192,26 @@ public class LabelingTest {
 		// create an empty set of subjects
 		HashSet<String> emptySubjectSet = new HashSet<String>();
 
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(emptySubjectSet);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		SOABase contextEmpty = new SOABase("baseEmptySubjects");
+		contextEmpty.setActivities(transitions);
+		contextEmpty.setObjects(attributes);
+		contextEmpty.setSubjects(emptySubjectSet);
+		ACLModel acm2 = new ACLModel("acl", contextEmpty);
+		AnalysisContext ac2 = new AnalysisContext("ac", acm2, true);
+		Labeling l2 = new Labeling("l2", ac2);
 
-		// There should be subjects
-		assertTrue(l2.getSubjects().isEmpty());
+		// There shouldn't be activities
+		assertTrue(l2.getAnalysisContext().getACModel().getContext().getSubjects().isEmpty());
 
-		// try to add the same subjects more than once
-		Labeling l3 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l3 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		// try to add the same transition more than once
+		Labeling l3 = new Labeling("l", ac);
+		
+		assertFalse(l2.equals(l3));
 
 		try {
-			l3.getContext().addSubjects(Arrays.asList("s1", "s1", "s1"));
+			l3.getAnalysisContext().getACModel().getContext().addSubjects(Arrays.asList("s0", "s0", "s0", "s0"));
 		} catch (ParameterException e) {
-			fail("Exception while adding an subject to a labeling.");
+			fail("Exception while adding an transition to a labeling.");
 		}
 	}
 
@@ -361,42 +221,15 @@ public class LabelingTest {
 	@Test
 	public void testRemoveSubjects() {
 
-		// create alabeling
-		@SuppressWarnings("unused")
-		Labeling l3 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l3 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		// create a labeling
+		Labeling l3 = new Labeling("l", ac);
 
-		//TODO:
-//		// try to remove a subject
-//		try {
-//			l3.removeSubjects("s1");
-//		} catch (ParameterException e) {
-//			fail("Exception while removing a subject from a labeling.");
-//		}
-//		assertFalse(l3.getSubjects().contains("s1"));
-//
-//		// try to remove a subject which is not contained in the labeling
-//		try {
-//			l3.removeSubjects("s1");
-//		} catch (ParameterException e) {
-//			fail("Exception while removing a subject from a labeling.");
-//		}
-//		assertFalse(l3.getSubjects().contains("s1"));
-//
-//		// try to remove no transition
-//		try {
-//			l3.removeSubjects(new HashSet<String>());
-//		} catch (ParameterException e) {
-//			fail("Eception while removing a subject from a labeling.");
-//		}
+		try {
+			l3.getAnalysisContext().getACModel().getContext().removeSubject("s0");
+		} catch (ParameterException e) {
+			fail("Exception while adding an transition to a labeling.");
+		}
+		assertFalse(l3.getAnalysisContext().getACModel().getContext().getSubjects().contains("s0"));
 	}
 
 	// ///////////////////////////////////////////////////////////////////////////////
@@ -405,39 +238,29 @@ public class LabelingTest {
 	@Test
 	public void testAddAttributes() {
 
-		// create an empty set of attributes
+		// create an empty set of activities
 		HashSet<String> emptyAttributeSet = new HashSet<String>();
 
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(emptyAttributeSet);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		SOABase contextEmpty = new SOABase("baseEmptyObjetcs");
+		contextEmpty.setActivities(transitions);
+		contextEmpty.setObjects(emptyAttributeSet);
+		contextEmpty.setSubjects(subjects);
+		ACLModel acm2 = new ACLModel("acl", contextEmpty);
+		AnalysisContext ac2 = new AnalysisContext("ac", acm2, true);
+		Labeling l2 = new Labeling("l2", ac2);
 
-		// There should be attributes
-		assertTrue(l2.getAttributes().isEmpty());
+		// There shouldn't be activities
+		assertTrue(l2.getAnalysisContext().getACModel().getContext().getObjects().isEmpty());
 
-		// try to add the same attribs more than once
-		Labeling l3 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l3 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		// try to add the same transition more than once
+		Labeling l3 = new Labeling("l", ac);
+
+		assertFalse(l2.equals(l3));
 
 		try {
-			l3.getContext().addObjects(Arrays.asList("a1", "a1", "a1"));
+			l3.getAnalysisContext().getACModel().getContext().addObjects(Arrays.asList("c0", "c0", "c0", "c0"));
 		} catch (ParameterException e) {
-			fail("Exception while adding an attribute to a labeling.");
+			fail("Exception while adding an transition to a labeling.");
 		}
 	}
 
@@ -447,42 +270,15 @@ public class LabelingTest {
 	@Test
 	public void testRemoveAttributes() {
 
-		// create alabeling
-		@SuppressWarnings("unused")
-		Labeling l3 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l3 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		// create a labeling
+		Labeling l3 = new Labeling("l", ac);
 
-		//TODO
-//		// try to remove a attributes
-//		try {
-//			l3.removeAttribute("c1");
-//		} catch (ParameterException e) {
-//			fail("Exception while removing a attribute from a labeling.");
-//		}
-//		assertFalse(l3.getAttributes().contains("c1"));
-//
-//		// try to remove an attribute which is not contained in the labeling
-//		try {
-//			l3.removeAttribute("c1");
-//		} catch (ParameterException e) {
-//			fail("Exception while removing an attribute from a labeling.");
-//		}
-//		assertFalse(l3.getAttributes().contains("s1"));
-//
-//		// try to remove no attribute
-//		try {
-//			l3.removeAttributes(new HashSet<String>());
-//		} catch (ParameterException e) {
-//			fail("Eception while removing an attribute from a labeling.");
-//		}
+		try {
+			l3.getAnalysisContext().getACModel().getContext().removeObject("c0");
+		} catch (ParameterException e) {
+			fail("Exception while adding an transition to a labeling.");
+		}
+		assertFalse(l3.getAnalysisContext().getACModel().getContext().getObjects().contains("c0"));
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
@@ -492,16 +288,7 @@ public class LabelingTest {
 	public void testSetActivityClassification() throws ParameterException {
 
 		// create a labeling
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		Labeling l2 = new Labeling("l", ac);
 
 		// add an activity classification
 		l2.setActivityClassification("t0", SecurityLevel.HIGH);
@@ -518,16 +305,7 @@ public class LabelingTest {
 	public void testSetAttributeClassification() throws ParameterException {
 
 		// create a labeling
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		Labeling l2 = new Labeling("l", ac);
 
 		// add an activity classification
 		l2.setAttributeClassification("c0", SecurityLevel.HIGH);
@@ -544,16 +322,7 @@ public class LabelingTest {
 	public void testSetSubjcetClearance() throws ParameterException {
 
 		// create a labeling
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		Labeling l2 = new Labeling("l", ac);
 
 		// set an subject clearance
 		l2.setSubjectClearance("s0", SecurityLevel.HIGH);
@@ -570,16 +339,7 @@ public class LabelingTest {
 	public void testGetSetDefaultSecurityLevel() throws ParameterException {
 
 		// create a labeling
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
+		Labeling l2 = new Labeling("l", ac);
 
 		// initially the default is LOW
 		assertEquals(SecurityLevel.LOW, l2.getDefaultSecurityLevel());
@@ -592,26 +352,26 @@ public class LabelingTest {
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////
-	// Test the method forconverting a labeling to a string
+	// Test the method forconverting a labeling to a string // TODO macht eher keinen Sinn!?
 	// ///////////////////////////////////////////////////////////////////////////////
-	@Test
-	public void testToString() throws ParameterException {
-
-		// create a labeling
-		Labeling l2 = null;
-		try {
-			SOABase context = new SOABase("");
-			context.setActivities(transitions);
-			context.setObjects(attributes);
-			context.setSubjects(subjects);
-			l2 = new Labeling(context);
-		} catch (ParameterException e1) {
-			fail("Cannot create labeling!");
-		}
-
-		// The correct string
-		String output = "Activities: t3[LOW] t2[LOW] t1[LOW] t0[LOW] t4[LOW] " + "\n" + "Attributes: c1[LOW] c2[LOW] c0[LOW] c4[LOW] c3[LOW] " + "\n" + "Subjects: s0[LOW] s2[LOW] s1[LOW] s3[LOW] s4[LOW] ";
-
-		assertEquals(output, l2.toString());
-	}
+//	@Test
+//	public void testToString() throws ParameterException {
+//
+//		// create a labeling
+//		Labeling l2 = null;
+//		try {
+//			SOABase context = new SOABase("");
+//			context.setActivities(transitions);
+//			context.setObjects(attributes);
+//			context.setSubjects(subjects);
+//			l2 = new Labeling(context);
+//		} catch (ParameterException e1) {
+//			fail("Cannot create labeling!");
+//		}
+//
+//		// The correct string
+//		String output = "Activities: t3[LOW] t2[LOW] t1[LOW] t0[LOW] t4[LOW] " + "\n" + "Attributes: c1[LOW] c2[LOW] c0[LOW] c4[LOW] c3[LOW] " + "\n" + "Subjects: s0[LOW] s2[LOW] s1[LOW] s3[LOW] s4[LOW] ";
+//
+//		assertEquals(output, l2.toString());
+//	}
 }

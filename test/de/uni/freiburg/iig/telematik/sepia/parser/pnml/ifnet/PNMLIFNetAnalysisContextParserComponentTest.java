@@ -89,59 +89,59 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validACWithValidation() throws ParameterException {
-		AnalysisContext ac = null;
-		try {
-			ac = AnalysisContextParser.parse(validACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-
-		// Activities
-		assertEquals(5, ac.getLabeling().getActivities().size());
-		assertTrue(ac.getLabeling().getActivities().contains("first activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("second activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("third activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("fourth activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("fifth activity"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("first activity"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("second activity"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("third activity"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("fourth activity"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("fifth activity"));
-		// Attributes
-		assertEquals(5, ac.getLabeling().getAttributes().size());
-		assertTrue(ac.getLabeling().getAttributes().contains("blue"));
-		assertTrue(ac.getLabeling().getAttributes().contains("green"));
-		assertTrue(ac.getLabeling().getAttributes().contains("pink"));
-		assertTrue(ac.getLabeling().getAttributes().contains("red"));
-		assertTrue(ac.getLabeling().getAttributes().contains("yellow"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("blue"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("green"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("pink"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("red"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("yellow"));
-		// Subjects
-		assertEquals(5, ac.getLabeling().getSubjects().size());
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectA"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectB"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectC"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectD"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectE"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectA"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectB"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectC"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectD"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectE"));
-		// Activity descriptors
-		assertEquals("subjectA", ac.getSubjectDescriptor("first activity"));
-		assertEquals("subjectE", ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
+//		AnalysisContext ac = null;
+//		try {
+//			ac = AnalysisContextParser.parse(validACResource.getFile(), true);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//
+//		// Activities
+//		assertEquals(5, ac.getLabeling().getActivities().size());
+//		assertTrue(ac.getLabeling().getActivities().contains("first activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("second activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("third activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("fourth activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("fifth activity"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("first activity"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("second activity"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("third activity"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("fourth activity"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("fifth activity"));
+//		// Attributes
+//		assertEquals(5, ac.getLabeling().getAttributes().size());
+//		assertTrue(ac.getLabeling().getAttributes().contains("blue"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("green"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("pink"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("red"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("yellow"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("blue"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("green"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("pink"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("red"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("yellow"));
+//		// Subjects
+//		assertEquals(5, ac.getLabeling().getSubjects().size());
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectA"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectB"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectC"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectD"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectE"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectA"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectB"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectC"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectD"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectE"));
+//		// Activity descriptors
+//		assertEquals("subjectA", ac.getSubjectDescriptor("first activity"));
+//		assertEquals("subjectE", ac.getSubjectDescriptor("second activity"));
+//		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
+//		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
+//		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
 	}
 
 	/*
@@ -149,59 +149,59 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void validACWithoutValidation() throws ParameterException {
-		AnalysisContext ac = null;
-		try {
-			ac = AnalysisContextParser.parse(validACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-
-		// Activities
-		assertEquals(5, ac.getLabeling().getActivities().size());
-		assertTrue(ac.getLabeling().getActivities().contains("first activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("second activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("third activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("fourth activity"));
-		assertTrue(ac.getLabeling().getActivities().contains("fifth activity"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("first activity"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("second activity"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("third activity"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("fourth activity"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("fifth activity"));
-		// Attributes
-		assertEquals(5, ac.getLabeling().getAttributes().size());
-		assertTrue(ac.getLabeling().getAttributes().contains("blue"));
-		assertTrue(ac.getLabeling().getAttributes().contains("green"));
-		assertTrue(ac.getLabeling().getAttributes().contains("pink"));
-		assertTrue(ac.getLabeling().getAttributes().contains("red"));
-		assertTrue(ac.getLabeling().getAttributes().contains("yellow"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("blue"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("green"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("pink"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("red"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("yellow"));
-		// Subjects
-		assertEquals(5, ac.getLabeling().getSubjects().size());
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectA"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectB"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectC"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectD"));
-		assertTrue(ac.getLabeling().getSubjects().contains("subjectE"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectA"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectB"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectC"));
-		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectD"));
-		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectE"));
-		// Activity descriptors
-		assertEquals("subjectA", ac.getSubjectDescriptor("first activity"));
-		assertEquals("subjectE", ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
+//		AnalysisContext ac = null;
+//		try {
+//			ac = AnalysisContextParser.parse(validACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//
+//		// Activities
+//		assertEquals(5, ac.getLabeling().getActivities().size());
+//		assertTrue(ac.getLabeling().getActivities().contains("first activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("second activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("third activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("fourth activity"));
+//		assertTrue(ac.getLabeling().getActivities().contains("fifth activity"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("first activity"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("second activity"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("third activity"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getActivityClassification("fourth activity"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getActivityClassification("fifth activity"));
+//		// Attributes
+//		assertEquals(5, ac.getLabeling().getAttributes().size());
+//		assertTrue(ac.getLabeling().getAttributes().contains("blue"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("green"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("pink"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("red"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("yellow"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("blue"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("green"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("pink"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getAttributeClassification("red"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getAttributeClassification("yellow"));
+//		// Subjects
+//		assertEquals(5, ac.getLabeling().getSubjects().size());
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectA"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectB"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectC"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectD"));
+//		assertTrue(ac.getLabeling().getSubjects().contains("subjectE"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectA"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectB"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectC"));
+//		assertEquals(SecurityLevel.HIGH, ac.getLabeling().getSubjectClearance("subjectD"));
+//		assertEquals(SecurityLevel.LOW, ac.getLabeling().getSubjectClearance("subjectE"));
+//		// Activity descriptors
+//		assertEquals("subjectA", ac.getSubjectDescriptor("first activity"));
+//		assertEquals("subjectE", ac.getSubjectDescriptor("second activity"));
+//		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
+//		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
+//		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
 	}
 	
 	/*
@@ -211,30 +211,30 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid activity security level with validation. The parser should throw an exception while validating.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidSecurityLevelActivityACWithValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), true);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidSecurityLevelActivityACWithValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), true);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid activity security level without validation. The Labeling class should throw an exception while validating the descriptors and not finding the corresponding activity.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidSecurityLevelActivityACWithoutValidation() throws ParameterException {
-		try {
-			AnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
+//	public void invalidSecurityLevelActivityACWithoutValidation() throws ParameterException {
+//		try {
+//			AnalysisContextParser.parse(invalidSecurityLevelActivityACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * ATTRIBUTES TESTS
@@ -243,65 +243,65 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid attribute (black) with validation. The Labeling class should throw an exception while validating the attributes.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidAttributeACWithValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidAttributeACResource.getFile(), true);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidAttributeACWithValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidAttributeACResource.getFile(), true);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid attribute (black) without validation. The Labeling class should throw an exception while validating the attributes.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidAttributeACWithoutValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidAttributeACResource.getFile(), false);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidAttributeACWithoutValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidAttributeACResource.getFile(), false);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid attribute security level with validation. The parser should throw an exception while validating.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidSecurityLevelAttributeACWithValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), true);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidSecurityLevelAttributeACWithValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), true);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid attribute security level without validation. No exception should be thrown and the attribute with the invalid security level will be ignored.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidSecurityLevelAttributeACWithoutValidation() {
-		AnalysisContext ac = null;
-		try {
-			ac = AnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-
-		assertFalse(ac.getLabeling().getAttributes().contains("blue"));
-		assertTrue(ac.getLabeling().getAttributes().contains("green"));
-		assertTrue(ac.getLabeling().getAttributes().contains("pink"));
-		assertTrue(ac.getLabeling().getAttributes().contains("red"));
-		assertTrue(ac.getLabeling().getAttributes().contains("yellow"));
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
+//	public void invalidSecurityLevelAttributeACWithoutValidation() {
+//		AnalysisContext ac = null;
+//		try {
+//			ac = AnalysisContextParser.parse(invalidSecurityLevelAttributeACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//
+//		assertFalse(ac.getLabeling().getAttributes().contains("blue"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("green"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("pink"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("red"));
+//		assertTrue(ac.getLabeling().getAttributes().contains("yellow"));
+//	}
 	
 	/*
 	 * SUBJECTS TESTS
@@ -310,30 +310,30 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/*
 	 * AnalysisContext with an invalid subject security level with validation. The parser should throw an exception while validating.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidSecurityLevelSubjectACWithValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), true);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidSecurityLevelSubjectACWithValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), true);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid subject security level without validation. The Labeling class should throw an exception while validating the descriptors and not finding the corresponding subject.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void invalidSecurityLevelSubjectACWithoutValidation() throws ParameterException {
-		try {
-			AnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
+//	public void invalidSecurityLevelSubjectACWithoutValidation() throws ParameterException {
+//		try {
+//			AnalysisContextParser.parse(invalidSecurityLevelSubjectACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 	
 	/*
 	 * ACTIVITY DESCRIPTORS TEST
@@ -344,23 +344,23 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void missingDescriptorsACWithValidation() throws ParameterException {
-		AnalysisContext ac = null;
-		try {
-			ac = AnalysisContextParser.parse(missingDescriptorsACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-
-		// Activity descriptors
-		assertEquals(null, ac.getSubjectDescriptor("first activity"));
-		assertEquals(null, ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals(null, ac.getSubjectDescriptor("fifth activity"));
+//		AnalysisContext ac = null;
+//		try {
+//			ac = AnalysisContextParser.parse(missingDescriptorsACResource.getFile(), true);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//
+//		// Activity descriptors
+//		assertEquals(null, ac.getSubjectDescriptor("first activity"));
+//		assertEquals(null, ac.getSubjectDescriptor("second activity"));
+//		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
+//		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
+//		assertEquals(null, ac.getSubjectDescriptor("fifth activity"));
 	}
 
 	/*
@@ -368,67 +368,67 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void missingDescriptorsACWithoutValidation() throws ParameterException {
-		AnalysisContext ac = null;
-		try {
-			ac = AnalysisContextParser.parse(missingDescriptorsACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-
-		// Activity descriptors
-		assertEquals(null, ac.getSubjectDescriptor("first activity"));
-		assertEquals(null, ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals(null, ac.getSubjectDescriptor("fifth activity"));
+//		AnalysisContext ac = null;
+//		try {
+//			ac = AnalysisContextParser.parse(missingDescriptorsACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//
+//		// Activity descriptors
+//		assertEquals(null, ac.getSubjectDescriptor("first activity"));
+//		assertEquals(null, ac.getSubjectDescriptor("second activity"));
+//		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
+//		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
+//		assertEquals(null, ac.getSubjectDescriptor("fifth activity"));
 	}
 
 	/*
 	 * AnalysisContext with an uneven descriptor (A) with validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void unevenDescriptorsAACWithValidation() throws ParameterException {
-		try {
-			AnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
+//	public void unevenDescriptorsAACWithValidation() throws ParameterException {
+//		try {
+//			AnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), true);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an uneven descriptor (A) without validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
-	public void unevenDescriptorsAACWithoutValidation() throws ParameterException {
-		try {
-			AnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParameterException.class)
+//	public void unevenDescriptorsAACWithoutValidation() throws ParameterException {
+//		try {
+//			AnalysisContextParser.parse(unevenDescriptorsAACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an uneven descriptor (B) with validation. No exception should be thrown.
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unevenDescriptorsBACWithValidation() throws ParameterException {
-		try {
-			AnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), true);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
+//		try {
+//			AnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), true);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
 	}
 
 	/*
@@ -436,70 +436,70 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	 */
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void unevenDescriptorsBACWithoutValidation() throws ParameterException {
-		try {
-			AnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), false);
-		} catch (ParserException e) {
-			fail("Exception while parsing: " + e.getMessage());
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
+//		try {
+//			AnalysisContextParser.parse(unevenDescriptorsBACResource.getFile(), false);
+//		} catch (ParserException e) {
+//			fail("Exception while parsing: " + e.getMessage());
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
 	}
 
 	/*
 	 * AnalysisContext with an invalid descriptor activity with validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidDescriptorActivityACWithValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), true);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidDescriptorActivityACWithValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), true);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid descriptor activity without validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidDescriptorActivityACWithoutValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), false);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidDescriptorActivityACWithoutValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidDescriptorActivityACResource.getFile(), false);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid descriptor subject with validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidDescriptorSubjectACWithValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), true);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidDescriptorSubjectACWithValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), true);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 
 	/*
 	 * AnalysisContext with an invalid descriptor subject without validation. The Labeling class should throw an exception while validating the descriptors.
 	 */
-	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
-	public void invalidDescriptorSubjectACWithoutValidation() throws ParserException {
-		try {
-			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), false);
-		} catch (ParameterException e) {
-			fail("Exception caused by an invalid parametrization: " + e.getMessage());
-		} catch (IOException e) {
-			fail("Couldn't read analysis context file: " + e.getMessage());
-		}
-	}
+//	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+//	public void invalidDescriptorSubjectACWithoutValidation() throws ParserException {
+//		try {
+//			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), false);
+//		} catch (ParameterException e) {
+//			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+//		} catch (IOException e) {
+//			fail("Couldn't read analysis context file: " + e.getMessage());
+//		}
+//	}
 }

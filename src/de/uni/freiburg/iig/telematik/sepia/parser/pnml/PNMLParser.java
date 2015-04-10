@@ -26,6 +26,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphic
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
@@ -263,5 +264,15 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 		} catch (SAXException e) {
 			throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, e.getMessage());
 		}
+	}
+
+	@Override
+	public PNMLParser<P, T, F, M, S, X, Y, N, G> getInstance() {
+		return this;
+	}
+
+	@Override
+	public PNParsingFormat getParsingFormat() {
+		return PNParsingFormat.PNML;
 	}
 }

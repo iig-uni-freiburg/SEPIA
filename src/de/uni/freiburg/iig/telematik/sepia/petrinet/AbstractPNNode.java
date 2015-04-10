@@ -317,6 +317,14 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public <N extends AbstractPNNode<E>> boolean containsRelationFrom(N node){
 		return getRelationFrom(node) != null;
 	}
+
+	protected PNNodeType getPNNodeType() {
+		return type;
+	}
+
+	protected void setType(PNNodeType type) {
+		this.type = type;
+	}
 	
 	public int degree(){
 		return outgoingRelations.size() + incomingRelations.size();
@@ -368,6 +376,14 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 				return false;
 			}
 		} else if (!incomingRelations.equals(other.incomingRelations)) {
+			if (incomingRelations.size() == other.incomingRelations.size()) {
+				for (E incomingRelation : incomingRelations) {
+					if (!other.incomingRelations.contains(incomingRelation)) {
+						return false;
+					}
+				}
+				return true;
+			}
 			return false;
 		}
 		if (label == null) {
@@ -389,6 +405,14 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 				return false;
 			}
 		} else if (!outgoingRelations.equals(other.outgoingRelations)) {
+			if (outgoingRelations.size() == other.outgoingRelations.size()) {
+				for (E outgoingRelation : outgoingRelations) {
+					if (!other.outgoingRelations.contains(outgoingRelation)) {
+						return false;
+					}
+				}
+				return true;
+			}
 			return false;
 		}
 		if (toStringFormat == null) {
@@ -404,6 +428,18 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		return true;
 	}
 	
+	@Override
+	public AbstractPNNode<E> clone() {
+		AbstractPNNode<E> result = newInstance(getName());
+		result.setLabel(getLabel());
+		result.setType(getPNNodeType());
+		for (E incomingRelation: getIncomingRelations())
+			result.addIncomingRelation(incomingRelation);
+		for (E outgoingRelation: getOutgoingRelations())
+			result.addOutgoingRelation(outgoingRelation);
+		return result;
+	}
+	
 	//------- toString -------------------------------------------------------------------------------
 	@Override
 	public String toString() {
@@ -411,11 +447,4 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	}
 
 	protected abstract AbstractPNNode<E> newInstance(String name);
-	
-	@Override
-	public AbstractPNNode<E> clone() {
-		AbstractPNNode<E> result = newInstance(getName());
-		result.setLabel(getLabel());
-		return result;
-	}
 }

@@ -36,5 +36,4 @@ public class PTTransition extends AbstractPTTransition<PTFlowRelation> {
 	public PTTransition clone(){
 		return (PTTransition) super.clone();
 	}
-
 }

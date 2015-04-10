@@ -123,7 +123,7 @@ public class PNMLIFNetParserComponentTest {
 	public TestResourceFile IFNetBoundedResource = new TestResourceFile(IFNet_TEST_RESOURCES_PATH + "IFNet-bounded.pnml");
 	/* IFNet with incomplete token color RGB values */
 	@Rule
-	public TestResourceFile IFNetIncompleteTokencolorsResource = new TestResourceFile(IFNet_TEST_RESOURCES_PATH + "IFNet-IncompleteTokencolors.pnml");
+	public TestResourceFile IFNetIncompleteTokencolorsResource = new TestResourceFile(IFNet_TEST_RESOURCES_PATH + "IFNet-incompleteTokencolors.pnml");
 
 	/*
 	 * Test if all sample files of the IFNet exist.

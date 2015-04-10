@@ -12,6 +12,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
@@ -131,7 +132,15 @@ public class PetrifyParser implements PNParserInterface{
 		}
 		return result;
 	}
-	
-	
+
+	@Override
+	public PetrifyParser getInstance() {
+		return this;
+	}
+
+	@Override
+	public PNParsingFormat getParsingFormat() {
+		return PNParsingFormat.PETRIFY;
+	}
 
 }
