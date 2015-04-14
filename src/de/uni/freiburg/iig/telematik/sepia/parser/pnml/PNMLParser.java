@@ -267,11 +267,6 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	}
 
 	@Override
-	public PNMLParser<P, T, F, M, S, X, Y, N, G> getInstance() {
-		return this;
-	}
-
-	@Override
 	public PNParsingFormat getParsingFormat() {
 		return PNParsingFormat.PNML;
 	}

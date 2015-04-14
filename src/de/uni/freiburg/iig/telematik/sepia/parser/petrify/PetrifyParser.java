@@ -134,11 +134,6 @@ public class PetrifyParser implements PNParserInterface{
 	}
 
 	@Override
-	public PetrifyParser getInstance() {
-		return this;
-	}
-
-	@Override
 	public PNParsingFormat getParsingFormat() {
 		return PNParsingFormat.PETRIFY;
 	}

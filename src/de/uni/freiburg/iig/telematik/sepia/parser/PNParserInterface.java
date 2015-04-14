@@ -37,8 +37,6 @@ public interface PNParserInterface {
 	    	G extends AbstractPNGraphics<P, T, F, M, S>>
 	
 			AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> parse(File file) throws IOException, ParserException;
-
-	public PNParserInterface getInstance();
 	
 	public PNParsingFormat getParsingFormat();
 }
