@@ -54,6 +54,12 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	/* Analysis context with an invalid descriptor subject */
 	@Rule
 	public TestResourceFile invalidDescriptorSubjectACResource = new TestResourceFile(AC_TEST_RESOURCES_PATH + "IFNetAC-invalidDescriptorSubject.xml");
+	/* Analysis context with an unknown access control model */
+	@Rule
+	public TestResourceFile unknownACMACResource = new TestResourceFile(AC_TEST_RESOURCES_PATH + "IFNetAC-unknownACM.xml");
+	/* Analysis context without an access control model */
+	@Rule
+	public TestResourceFile noACMACResource = new TestResourceFile(AC_TEST_RESOURCES_PATH + "IFNetAC-noACM.xml");
 
 	private ACLModel acm = null;
 	private SOABase base = null;
@@ -82,6 +88,8 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 		assertTrue(missingDescriptorsACResource.getFile().exists());
 		assertTrue(invalidDescriptorActivityACResource.getFile().exists());
 		assertTrue(invalidDescriptorSubjectACResource.getFile().exists());
+		assertTrue(unknownACMACResource.getFile().exists());
+		assertTrue(noACMACResource.getFile().exists());
 	}
 
 	/*
@@ -257,6 +265,66 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	public void invalidDescriptorSubjectACWithoutValidation() throws ParserException {
 		try {
 			AnalysisContextParser.parse(invalidDescriptorSubjectACResource.getFile(), false, Arrays.asList(acm));
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read analysis context file: " + e.getMessage());
+		}
+	}
+	
+	/*
+	 * ACCES CONTROL MODEL TESTS
+	 */
+
+	/*
+	 * AnalysisContext with an unknown access control model with validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void unknownACMACWithValidation() throws ParserException {
+		try {
+			AnalysisContextParser.parse(unknownACMACResource.getFile(), true, Arrays.asList(acm));
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read analysis context file: " + e.getMessage());
+		}
+	}
+
+	/*
+	 * AnalysisContext with an unknown access control model without validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void unknownACMACWithoutValidation() throws ParserException {
+		try {
+			AnalysisContextParser.parse(unknownACMACResource.getFile(), false, Arrays.asList(acm));
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read analysis context file: " + e.getMessage());
+		}
+	}
+
+	/*
+	 * AnalysisContext without an access control model with validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void noACMACWithValidation() throws ParserException {
+		try {
+			AnalysisContextParser.parse(noACMACResource.getFile(), true, Arrays.asList(acm));
+		} catch (ParameterException e) {
+			fail("Exception caused by an invalid parametrization: " + e.getMessage());
+		} catch (IOException e) {
+			fail("Couldn't read analysis context file: " + e.getMessage());
+		}
+	}
+
+	/*
+	 * AnalysisContext without an access control model without validation.
+	 */
+	@Test(timeout = VALIDATION_TIMEOUT, expected = ParserException.class)
+	public void noACMACWithoutValidation() throws ParserException {
+		try {
+			AnalysisContextParser.parse(noACMACResource.getFile(), false, Arrays.asList(acm));
 		} catch (ParameterException e) {
 			fail("Exception caused by an invalid parametrization: " + e.getMessage());
 		} catch (IOException e) {

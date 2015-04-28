@@ -1,0 +1,69 @@
+<labeling xmlns="" id="ifn-analysiscontext-example" type="http://ifnml.process-security.de/grammar/v1.0/labeling">
+  <defaultlevel>low</defaultlevel>
+  <classifications>
+    <classification>
+      <activity>first activity</activity>
+      <securitydomain>low</securitydomain>
+    </classification>
+    <classification>
+      <activity>second activity</activity>
+      <securitydomain>low</securitydomain>
+    </classification>
+    <classification>
+      <activity>third activity</activity>
+      <securitydomain>high</securitydomain>
+    </classification>
+    <classification>
+      <activity>fourth activity</activity>
+      <securitydomain>low</securitydomain>
+    </classification>
+    <classification>
+      <activity>fifth activity</activity>
+      <securitydomain>high</securitydomain>
+    </classification>
+  </classifications>
+  <tokenlabels>
+    <tokenlabel>
+      <color>blue</color>
+      <securitydomain>high</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>green</color>
+      <securitydomain>low</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>pink</color>
+      <securitydomain>low</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>red</color>
+      <securitydomain>low</securitydomain>
+    </tokenlabel>
+    <tokenlabel>
+      <color>yellow</color>
+      <securitydomain>high</securitydomain>
+    </tokenlabel>
+  </tokenlabels>
+  <clearances>
+    <clearance>
+      <subject>subjectA</subject>
+      <securitydomain>low</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectB</subject>
+      <securitydomain>low</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectC</subject>
+      <securitydomain>high</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectD</subject>
+      <securitydomain>high</securitydomain>
+    </clearance>
+    <clearance>
+      <subject>subjectE</subject>
+      <securitydomain>low</securitydomain>
+    </clearance>
+  </clearances>
+</labeling>

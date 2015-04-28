@@ -1,0 +1,24 @@
+<analysiscontext xmlns="" id="ifn-analysiscontext-example" type="http://ifnml.process-security.de/grammar/v1.0/analysiscontext">
+  <subjectdescriptors>
+    <subjectdescriptor>
+      <activity>first activity</activity>
+      <subject>subjectA</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>second activity</activity>
+      <subject>subjectE</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>third activity</activity>
+      <subject>subjectD</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>fourth activity</activity>
+      <subject>subjectB</subject>
+    </subjectdescriptor>
+    <subjectdescriptor>
+      <activity>fifth activity</activity>
+      <subject>subjectC</subject>
+    </subjectdescriptor>
+  </subjectdescriptors>
+</analysiscontext>
