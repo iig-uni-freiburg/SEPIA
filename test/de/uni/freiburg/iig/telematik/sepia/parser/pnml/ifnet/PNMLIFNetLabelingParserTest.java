@@ -22,7 +22,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel
  * 
  * @see AnalysisContextParser
  */
-public class PNMLIFNetAnalysisContextParserTest {
+public class PNMLIFNetLabelingParserTest {
 
 	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetAnalysisContextParser#readLabeling(org.w3c.dom.Document, java.lang.String, java.lang.String, java.lang.String)}.
@@ -33,7 +33,7 @@ public class PNMLIFNetAnalysisContextParserTest {
 		List<String> activities = new ArrayList<String>();
 
 		// Correct labeling
-		Document labelingDocument = PNMLIFNetAnalysisContextParserTestUtils.createLabeling("classifications", "classification", "activity");
+		Document labelingDocument = PNMLIFNetLabelingParserTestUtils.createLabeling("classifications", "classification", "activity");
 		Map<String, SecurityLevel> labeling = LabelingParser.readLabeling(labelingDocument, "classifications", "classification", "activity", activities);
 		assertEquals(5, labeling.size());
 		assertTrue(labeling.containsKey("first activity"));
@@ -49,19 +49,19 @@ public class PNMLIFNetAnalysisContextParserTest {
 
 		// Wrong list name
 		// No labeling should be found
-		labelingDocument = PNMLIFNetAnalysisContextParserTestUtils.createLabeling("classifications", "classification", "activity");
+		labelingDocument = PNMLIFNetLabelingParserTestUtils.createLabeling("classifications", "classification", "activity");
 		labeling = LabelingParser.readLabeling(labelingDocument, "wrongname", "classification", "activity", activities);
 		assertEquals(0, labeling.size());
 
 		// Wrong type name
 		// No labeling should be found
-		labelingDocument = PNMLIFNetAnalysisContextParserTestUtils.createLabeling("classifications", "classification", "activity");
+		labelingDocument = PNMLIFNetLabelingParserTestUtils.createLabeling("classifications", "classification", "activity");
 		labeling = LabelingParser.readLabeling(labelingDocument, "classifications", "wrongname", "activity", activities);
 		assertEquals(0, labeling.size());
 
 		// Wrong object descriptor name
 		// No labeling should be found
-		labelingDocument = PNMLIFNetAnalysisContextParserTestUtils.createLabeling("classifications", "classification", "activity");
+		labelingDocument = PNMLIFNetLabelingParserTestUtils.createLabeling("classifications", "classification", "activity");
 		labeling = LabelingParser.readLabeling(labelingDocument, "classifications", "classification", "wrongname", activities);
 		assertEquals(0, labeling.size());
 	}

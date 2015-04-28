@@ -38,7 +38,7 @@ public class AnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(File analysisContextFile, Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
+	public static AnalysisContext parse(File analysisContextFile, @SuppressWarnings("rawtypes") Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
 		return parse(analysisContextFile, true, acModels);
 	}
 
@@ -47,7 +47,7 @@ public class AnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(String analysisContextFilePath, Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
+	public static AnalysisContext parse(String analysisContextFilePath, @SuppressWarnings("rawtypes") Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
 		return parse(new File(analysisContextFilePath), acModels);
 	}
 
@@ -56,7 +56,7 @@ public class AnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(String analysisContextFilePath, boolean validate, Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
+	public static AnalysisContext parse(String analysisContextFilePath, boolean validate, @SuppressWarnings("rawtypes") Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
 		return parse(new File(analysisContextFilePath), validate, acModels);
 	}
 
@@ -65,7 +65,7 @@ public class AnalysisContextParser {
 	 * Parses a given analysis context file for IF-nets and returns the {@link AnalysisContext}.
 	 * </p>
 	 */
-	public static AnalysisContext parse(File analysisContextFile, boolean validate, Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
+	public static AnalysisContext parse(File analysisContextFile, boolean validate, @SuppressWarnings("rawtypes") Collection<? extends AbstractACModel> acModels) throws ParserException, IOException {
 		Validate.notNull(analysisContextFile);
 
 		if (validate)
@@ -90,6 +90,7 @@ public class AnalysisContextParser {
 		Map<String,String> subjectDescriptorMap = readSubjectDescriptors(contextDocument);
 		
 		// Check if correct access control model can be found
+		@SuppressWarnings("rawtypes")
 		AbstractACModel acModel = chooseACModel(contextDocument, acModels, subjectDescriptorMap);
 		
 		String name = contextDocument.getDocumentElement().getAttribute("id");
@@ -131,6 +132,7 @@ public class AnalysisContextParser {
 		return subjectDescriptorMap;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private static AbstractACModel chooseACModel(Document contextDocument, Collection<? extends AbstractACModel> acModels, Map<String,String> subjectDescriptorMap) throws ParserException{
 		NodeList acModelNodes = contextDocument.getElementsByTagName("acmodel");
 		if (acModelNodes == null || acModelNodes.getLength() == 0)

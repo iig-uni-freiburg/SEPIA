@@ -1,9 +1,10 @@
-<analysiscontext xmlns="http://www.pnml.org/version-2009/grammar/pnml" id="ifn-analysiscontext-example" type="http://ifnml.process-security.de/grammar/v1.0/analysiscontext">
-  <context requirescontext="false" />
+<labeling xmlns="" id="ifn-analysiscontext-example" type="http://ifnml.process-security.de/grammar/v1.0/labeling">
+  <defaultlevel>low</defaultlevel>
+  <analysiscontext>AC</analysiscontext>
   <classifications>
     <classification>
       <activity>first activity</activity>
-      <securitydomain>low</securitydomain>
+      <securitydomain>invalid</securitydomain>
     </classification>
     <classification>
       <activity>second activity</activity>
@@ -47,7 +48,7 @@
   <clearances>
     <clearance>
       <subject>subjectA</subject>
-      <securitydomain>invalid</securitydomain>
+      <securitydomain>low</securitydomain>
     </clearance>
     <clearance>
       <subject>subjectB</subject>
@@ -66,26 +67,4 @@
       <securitydomain>low</securitydomain>
     </clearance>
   </clearances>
-  <subjectdescriptors>
-    <subjectdescriptor>
-      <activity>first activity</activity>
-      <subject>subjectA</subject>
-    </subjectdescriptor>
-    <subjectdescriptor>
-      <activity>second activity</activity>
-      <subject>subjectE</subject>
-    </subjectdescriptor>
-    <subjectdescriptor>
-      <activity>third activity</activity>
-      <subject>subjectD</subject>
-    </subjectdescriptor>
-    <subjectdescriptor>
-      <activity>fourth activity</activity>
-      <subject>subjectB</subject>
-    </subjectdescriptor>
-    <subjectdescriptor>
-      <activity>fifth activity</activity>
-      <subject>subjectC</subject>
-    </subjectdescriptor>
-  </subjectdescriptors>
-</analysiscontext>
+</labeling>

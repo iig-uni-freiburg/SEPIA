@@ -11,7 +11,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLPNParserTestU
 /**
  * @author Adrian Lange
  */
-public class PNMLIFNetAnalysisContextParserTestUtils {
+public class PNMLIFNetLabelingParserTestUtils {
 
 	public static Document createLabeling(String labelingListTypeName, String labelingTypeName, String objectDescriptorName) {
 		Document doc = AbstractPNMLPNParserTestUtils.createDocumentInstance();
