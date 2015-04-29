@@ -29,7 +29,6 @@ public class PNRefinement {
 	 * @param net
 	 *            Petri net to refine.
 	 */
-	@SuppressWarnings("unchecked")
 	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>>
 
 	void
