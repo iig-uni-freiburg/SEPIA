@@ -7,11 +7,9 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 
 public class PNPropertiesChecker {
@@ -111,26 +109,26 @@ public class PNPropertiesChecker {
 		}
 	}
 	
-	public static <P extends AbstractPlace<F,S>, 
-	 			   T extends AbstractTransition<F,S>, 
-	 			   F extends AbstractFlowRelation<P,T,S>,
-	 			   M extends AbstractMarking<S>,
-	 			   S extends Object,
-	 			   X extends AbstractMarkingGraphState<M,S>, 
-	 			   Y extends AbstractMarkingGraphRelation<M,X,S>,
-	 			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
-
-	void validateBoundedness(N petriNet) throws PNValidationException {
-		if (petriNet.getBoundedness() == Boundedness.UNKNOWN) {
-			try {
-				petriNet.checkBoundedness();
-			} catch (PNException e) {
-				throw new PNValidationException("Cannot check boundedness of net.\nReason: " + e.getMessage());
-			}
-		}
-		if (!petriNet.isBounded())
-			throw new PNValidationException("Net is not bounded.");
-	}
+//	public static <P extends AbstractPlace<F,S>, 
+//	 			   T extends AbstractTransition<F,S>, 
+//	 			   F extends AbstractFlowRelation<P,T,S>,
+//	 			   M extends AbstractMarking<S>,
+//	 			   S extends Object,
+//	 			   X extends AbstractMarkingGraphState<M,S>, 
+//	 			   Y extends AbstractMarkingGraphRelation<M,X,S>,
+//	 			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
+//
+//	void validateBoundedness(N petriNet) throws PNValidationException {
+//		if (petriNet.getBoundedness() == Boundedness.UNKNOWN) {
+//			try {
+//				petriNet.checkBoundedness();
+//			} catch (PNException e) {
+//				throw new PNValidationException("Cannot check boundedness of net.\nReason: " + e.getMessage());
+//			}
+//		}
+//		if (!petriNet.isBounded())
+//			throw new PNValidationException("Net is not bounded.");
+//	}
 	
 	
 	public static class InOutPlaces {

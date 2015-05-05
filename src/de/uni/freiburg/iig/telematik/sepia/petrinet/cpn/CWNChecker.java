@@ -181,12 +181,17 @@ public class CWNChecker {
 			}
 		}
 		
-		try {
-			PNPropertiesChecker.validateBoundedness(cpn);
-			result.isBounded = PropertyCheckingResult.fromBoundedness(cpn.getBoundedness());
-		} catch (PNValidationException e1) {
+		switch(cpn.getBoundedness()){
+		case BOUNDED:
+			result.isBounded = PropertyCheckingResult.TRUE;
+			break;
+		case UNBOUNDED:
 			result.isBounded = PropertyCheckingResult.FALSE;
 			result.exception = new PNSoundnessException("Net is not bounded.");
+			return result;
+		case UNKNOWN:
+			result.isBounded = PropertyCheckingResult.UNKNOWN;
+			result.exception = new PNSoundnessException("Boundedness of net unknown.");
 			return result;
 		}
 		

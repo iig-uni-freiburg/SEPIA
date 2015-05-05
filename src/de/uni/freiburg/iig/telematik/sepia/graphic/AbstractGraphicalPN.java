@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.event.PlaceChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationChangeEvent;
-import de.uni.freiburg.iig.telematik.sepia.event.StructureListener;
+import de.uni.freiburg.iig.telematik.sepia.event.PNStructureListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
@@ -42,7 +42,7 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>,
 										  X extends AbstractMarkingGraphState<M, S>,
 										  Y extends AbstractMarkingGraphRelation<M, X, S>,
 										  N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-		   							  	  G extends AbstractPNGraphics<P,T,F,M,S>> implements StructureListener<P,T,F,M,S> {
+		   							  	  G extends AbstractPNGraphics<P,T,F,M,S>> implements PNStructureListener<P,T,F,M,S> {
 
 	private N petriNet = null;
 	private G petriNetGraphics = null;

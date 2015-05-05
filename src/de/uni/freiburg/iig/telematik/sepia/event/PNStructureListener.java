@@ -5,7 +5,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
-public interface StructureListener<P extends AbstractPlace<F,S>, 
+public interface PNStructureListener<P extends AbstractPlace<F,S>, 
 								   T extends AbstractTransition<F,S>, 
 								   F extends AbstractFlowRelation<P,T,S>,
 								   M extends AbstractMarking<S>,

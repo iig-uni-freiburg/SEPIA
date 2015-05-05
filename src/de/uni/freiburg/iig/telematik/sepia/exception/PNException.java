@@ -11,5 +11,15 @@ public class PNException extends Exception {
 	public PNException(String message) {
 		super(message);
 	}
+
+	public PNException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public PNException(Throwable cause) {
+		super(cause);
+	}
+	
+	
 	
 }

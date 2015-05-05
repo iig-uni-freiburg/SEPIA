@@ -13,4 +13,12 @@ public class MarkingGraphException extends PNException{
 		super(message);
 	}
 
+	public MarkingGraphException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public MarkingGraphException(Throwable cause) {
+		super(cause);
+	}
+	
 }

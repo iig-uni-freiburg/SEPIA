@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import de.invation.code.toval.graphic.dialog.DialogObject;
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.DataUsage;
 import de.invation.code.toval.validate.ParameterException;
@@ -25,9 +26,10 @@ import de.uni.freiburg.iig.telematik.sewol.accesscontrol.event.ACModelListener;
  * <li>Subject descriptors: Subjects assigned to process activities.</li>
  * </ul>
  */
-public class AnalysisContext implements ACModelListener {
+public class AnalysisContext implements ACModelListener, Cloneable, DialogObject<AnalysisContext> {
 	
 	private static final String DEFAULT_LABELING_NAME = "defaultLabeling";
+	private static final String DEFAULT_NAME = "AnalysisContext";
 	
 	private String name = null;
 	private Labeling labeling = null;
@@ -36,6 +38,11 @@ public class AnalysisContext implements ACModelListener {
 	private AbstractACModel acModel = null;
 	
 	private Set<AnalysisContextListener> listeners = new HashSet<AnalysisContextListener>();
+	
+	@SuppressWarnings("rawtypes")
+	public AnalysisContext(AbstractACModel acModel, boolean createDefaultLabeling) {
+		this(DEFAULT_NAME, acModel, createDefaultLabeling);
+	}
 	
 	@SuppressWarnings("rawtypes")
 	public AnalysisContext(String name, AbstractACModel acModel, boolean createDefaultLabeling) {
@@ -206,6 +213,62 @@ public class AnalysisContext implements ACModelListener {
 				removeSubjectDescriptor(transaction);
 			}
 		}
+	}
+	
+	@Override
+	public void takeoverValues(AnalysisContext other) {
+		setName(other.getName());
+		if(other.getLabeling() != null){
+			setLabeling(other.getLabeling());
+		}
+		if(other.getACModel() != null){
+			setACModel(other.getACModel(), true);
+		}
+		subjectDescriptors.clear();
+		for(String activity: getACModel().getContext().getActivities()){
+			if(other.getSubjectDescriptor(activity) != null){
+				setSubjectDescriptor(activity, other.getSubjectDescriptor(activity));
+			}
+		}
+	}
+	
+	@Override
+	public AnalysisContext clone(){
+		AnalysisContext clone = new AnalysisContext(getName(), acModel, false);
+		clone.takeoverValues(this);
+		return clone;
+	}
+	
+	@Override
+	public String toString(){
+		StringBuilder builder = new StringBuilder();
+		builder.append("AnalysisContext {");
+		builder.append('\n');
+		builder.append("Name: ");
+		builder.append(getName());
+		builder.append('\n');
+		builder.append("SubjectDescriptors:");
+		builder.append('\n');
+		for(String activity: subjectDescriptors.keySet()){
+			builder.append(activity);
+			builder.append(" -> ");
+			builder.append(getSubjectDescriptor(activity));
+			builder.append('\n');
+		}
+		builder.append('\n');
+		if(getACModel() != null){
+			builder.append("ACModel: ");
+			builder.append(getACModel().getName());
+			builder.append('\n');
+		}
+		if(getLabeling() != null){
+			builder.append("Labeling: ");
+			builder.append(getLabeling().getName());
+			builder.append('\n');
+		}
+		builder.append("}");
+		builder.append('\n');
+		return builder.toString();	
 	}
 	
 }

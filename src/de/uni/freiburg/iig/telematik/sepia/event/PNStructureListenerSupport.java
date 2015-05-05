@@ -7,16 +7,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 
-public class StructureListenerSupport<P extends AbstractPlace<F,S>, 
+public class PNStructureListenerSupport<P extends AbstractPlace<F,S>, 
 									  T extends AbstractTransition<F,S>, 
 									  F extends AbstractFlowRelation<P,T,S>,
 									  M extends AbstractMarking<S>,
-									  S extends Object> extends AbstractListenerSupport<StructureListener<P,T,F,M,S>>{
+									  S extends Object> extends AbstractListenerSupport<PNStructureListener<P,T,F,M,S>>{
 	
 	private static final long serialVersionUID = 2706896428707837624L;
 	
 	private void notifyStructureChange(){
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.structureChanged();
 	}
 	
@@ -26,14 +26,14 @@ public class StructureListenerSupport<P extends AbstractPlace<F,S>,
 	
 	public void notifyPlaceAdded(P place, int affectedRelations){
 		PlaceChangeEvent<P> event = new PlaceChangeEvent<P>(place, affectedRelations);
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.placeAdded(event);
 		notifyStructureChange();
 	}
 	
 	public void notifyPlaceRemoved(P place, int affectedRelations){
 		PlaceChangeEvent<P> event = new PlaceChangeEvent<P>(place, affectedRelations);
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.placeRemoved(event);
 		notifyStructureChange();
 	}
@@ -44,28 +44,28 @@ public class StructureListenerSupport<P extends AbstractPlace<F,S>,
 	
 	public void notifyTransitionAdded(T transition, int affectedRelations){
 		TransitionChangeEvent<T> event = new TransitionChangeEvent<T>(transition, affectedRelations);
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.transitionAdded(event);
 		notifyStructureChange();
 	}
 	
 	public void notifyTransitionRemoved(T transition, int affectedRelations){
 		TransitionChangeEvent<T> event = new TransitionChangeEvent<T>(transition, affectedRelations);
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.transitionRemoved(event);
 		notifyStructureChange();
 	}
 	
 	public void notifyRelationAdded(F relation){
 		RelationChangeEvent<F> event = new RelationChangeEvent<F>(relation);
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.relationAdded(event);
 		notifyStructureChange();
 	}
 
 	public void notifyRelationRemoved(F relation){
 		RelationChangeEvent<F> event = new RelationChangeEvent<F>(relation);
-		for(StructureListener<P,T,F,M,S> l: listeners)
+		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.relationRemoved(event);
 		notifyStructureChange();
 	}

@@ -13,4 +13,12 @@ public class BoundednessException extends PNException{
 		super(message);
 	}
 
+	public BoundednessException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public BoundednessException(Throwable cause) {
+		super(cause);
+	}
+	
 }

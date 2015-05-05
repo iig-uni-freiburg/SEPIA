@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.invation.code.toval.graphic.dialog.DialogObject;
 import de.invation.code.toval.misc.soabase.SOABaseChangeReply;
 import de.invation.code.toval.misc.soabase.SOABaseListener;
 import de.invation.code.toval.validate.Validate;
 
 
 
-public class Labeling implements SOABaseListener, AnalysisContextListener {
+public class Labeling implements SOABaseListener, AnalysisContextListener, Cloneable, DialogObject<Labeling> {
 	
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>
@@ -45,6 +46,10 @@ public class Labeling implements SOABaseListener, AnalysisContextListener {
 	private AnalysisContext context = null;
 
 	protected String name;
+	
+	public Labeling(AnalysisContext context) {
+		this(DEFAULT_NAME, context);
+	}
 	
 	public Labeling(String name, AnalysisContext context) {
 		setName(name);
@@ -216,37 +221,76 @@ public class Labeling implements SOABaseListener, AnalysisContextListener {
 		activiyClassification.remove(transaction);
 	}
 	
+	public void takeoverValues(Labeling labeling){
+		setName(labeling.getName());
+		if(labeling.getAnalysisContext() != getAnalysisContext())
+			setAnalysisContext(labeling.getAnalysisContext(), true);
+		setDefaultSecurityLevel(labeling.getDefaultSecurityLevel());
+		for(String activity: getAnalysisContext().getACModel().getContext().getActivities()){
+			setActivityClassification(activity, labeling.getActivityClassification(activity));
+		}
+		for(String subject: getAnalysisContext().getACModel().getContext().getSubjects()){
+			setSubjectClearance(subject, labeling.getSubjectClearance(subject));
+		}
+		for(String attribute: getAnalysisContext().getACModel().getContext().getObjects()){
+			setAttributeClassification(attribute, labeling.getAttributeClassification(attribute));
+		}
+	}
+	
+	@Override
+	public Labeling clone(){
+		Labeling clone = new Labeling(getName(), getAnalysisContext());
+		clone.takeoverValues(this);
+		return clone;
+	}
+	
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Activities: ");
-		for (String activity : context.getACModel().getContext().getActivities()) {
-			builder.append(activity);
-			builder.append('[');
-			builder.append(getActivityClassification(activity));
-			builder.append(']');
-			builder.append(' ');
-		}
+		builder.append("Labeling {");
 		builder.append('\n');
-
-		builder.append("Attributes: ");
-		for (String attribute : context.getACModel().getContext().getObjects()) {
-			builder.append(attribute);
-			builder.append('[');
-			builder.append(getAttributeClassification(attribute));
-			builder.append(']');
-			builder.append(' ');
-		}
+		builder.append("Name: ");
+		builder.append(getName());
 		builder.append('\n');
-
-		builder.append("Subjects: ");
-		for (String subject : context.getACModel().getContext().getSubjects()) {
-			builder.append(subject);
-			builder.append('[');
-			builder.append(getSubjectClearance(subject));
-			builder.append(']');
-			builder.append(' ');
+		
+		if (context.getACModel().getContext().containsActivities()) {
+			builder.append("Activities: ");
+			for (String activity : context.getACModel().getContext().getActivities()) {
+				builder.append(activity);
+				builder.append('[');
+				builder.append(getActivityClassification(activity));
+				builder.append(']');
+				builder.append(' ');
+			}
+			builder.append('\n');
 		}
+
+		if (context.getACModel().getContext().containsObjects()) {
+			builder.append("Attributes: ");
+			for (String attribute : context.getACModel().getContext().getObjects()) {
+				builder.append(attribute);
+				builder.append('[');
+				builder.append(getAttributeClassification(attribute));
+				builder.append(']');
+				builder.append(' ');
+			}
+			builder.append('\n');
+		}
+
+		if(context.getACModel().getContext().containsSubjects()){
+			builder.append("Subjects: ");
+			for (String subject : context.getACModel().getContext().getSubjects()) {
+				builder.append(subject);
+				builder.append('[');
+				builder.append(getSubjectClearance(subject));
+				builder.append(']');
+				builder.append(' ');
+			}
+			builder.append('\n');	
+		}
+		
+		builder.append("}");
+		builder.append('\n');
 		return builder.toString();
 	}
 
