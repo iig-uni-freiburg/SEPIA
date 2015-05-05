@@ -35,7 +35,6 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.exception.BoundednessException;
-import de.uni.freiburg.iig.telematik.sepia.exception.MarkingGraphException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
@@ -1516,6 +1515,14 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	
 	public boolean removeStructureListener(PNStructureListener<P,T,F,M,S> listener){
 		return structureListenerSupport.removeListener(listener);
+	}
+	
+	public boolean addMarkingListener(PNMarkingListener<S,M> listener){
+		return markingListenerSupport.addListener(listener);
+	}
+	
+	public boolean removeMarkingListener(PNMarkingListener<S,M> listener){
+		return markingListenerSupport.removeListener(listener);
 	}
 
 	/**
