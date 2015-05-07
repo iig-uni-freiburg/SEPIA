@@ -10,7 +10,7 @@ import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 
 public class PNPropertiesChecker {
 
@@ -82,8 +82,9 @@ public class PNPropertiesChecker {
 		if(!petriNet.containsPlace(outputPlaceName))
 			throw new ParameterException(ErrorCode.INCOMPATIBILITY, "Net does not contain a place with name \""+outputPlaceName+"\"");
 
-		if (petriNet instanceof IFNet) {
-			IFNet ifnet = (IFNet) petriNet;
+		if (petriNet.getNetType() == NetType.IFNet) {
+			@SuppressWarnings("rawtypes")
+			AbstractIFNet ifnet = (AbstractIFNet) petriNet;
 			if (ifnet.getAnalysisContext() != null) {
 				ifnet.getAnalysisContext().getLabeling().getAnalysisContext().getACModel().getContext().addActivity(CONNECTOR_NAME);
 			}
@@ -101,8 +102,9 @@ public class PNPropertiesChecker {
 		}
 		petriNet.removeTransition(CONNECTOR_NAME, false);
 
-		if (petriNet instanceof IFNet) {
-			IFNet ifnet = (IFNet) petriNet;
+		if (petriNet.getNetType() == NetType.IFNet) {
+			@SuppressWarnings("rawtypes")
+			AbstractIFNet ifnet = (AbstractIFNet) petriNet;
 			if (ifnet.getAnalysisContext() != null) {
 				ifnet.getAnalysisContext().getLabeling().getAnalysisContext().getACModel().getContext().removeActivity(CONNECTOR_NAME);
 			}
