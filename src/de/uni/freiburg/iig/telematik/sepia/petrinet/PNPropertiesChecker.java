@@ -86,7 +86,7 @@ public class PNPropertiesChecker {
 			@SuppressWarnings("rawtypes")
 			AbstractIFNet ifnet = (AbstractIFNet) petriNet;
 			if (ifnet.getAnalysisContext() != null) {
-				ifnet.getAnalysisContext().getLabeling().getAnalysisContext().getACModel().getContext().addActivity(CONNECTOR_NAME);
+				ifnet.getAnalysisContext().getACModel().getContext().addActivity(CONNECTOR_NAME);
 			}
 		}
 
@@ -106,7 +106,7 @@ public class PNPropertiesChecker {
 			@SuppressWarnings("rawtypes")
 			AbstractIFNet ifnet = (AbstractIFNet) petriNet;
 			if (ifnet.getAnalysisContext() != null) {
-				ifnet.getAnalysisContext().getLabeling().getAnalysisContext().getACModel().getContext().removeActivity(CONNECTOR_NAME);
+				ifnet.getAnalysisContext().getACModel().getContext().removeActivity(CONNECTOR_NAME);
 			}
 		}
 	}
