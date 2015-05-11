@@ -8,7 +8,5 @@ public interface GuardDataContainer {
 
 	public Object getValueForAttribute(String attribute) throws Exception;
 
-	@SuppressWarnings("rawtypes")
-	public Class getAttributeValueClass(String attribute);
-
+	public Class<?> getAttributeValueClass(String attribute);
 }

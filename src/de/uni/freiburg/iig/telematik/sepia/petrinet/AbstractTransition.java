@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet;
 
 import java.io.Serializable;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListenerSupport;
@@ -60,7 +61,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	/**
 	 * Creates a new transition with the given name.
 	 * @param name The name for the new Transition.
-	 * @If the given name is <code>null</code>.
+	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractTransition(String name){
 		super(PNNodeType.TRANSITION, name);
@@ -70,7 +71,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	 * Creates a new transition with the given name and label.
 	 * @param name The name for the new transition.
 	 * @param label The label for the new transition.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public AbstractTransition(String name, String label){
 		super(PNNodeType.TRANSITION, name, label);
@@ -80,7 +81,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	 * Creates a new transition with the given name and silent-state.
 	 * @param name The name for the new transition.
 	 * @param isSilent The silent-state for the new transition.
-	 * @If the given name is <code>null</code>.
+	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractTransition(String name, boolean isSilent){
 		this(name);
@@ -92,7 +93,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	 * @param name The name for the new transition.
 	 * @param label The label for the new transition.
 	 * @param isSilent The silent-state for the new transition.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public AbstractTransition(String name, String label, boolean isSilent){
 		this(name, label);
@@ -258,7 +259,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	/**
 	 * Adds a transition listener.
 	 * @param listener The transition listener to add.
-	 * @If the listener reference is <code>null</code>.
+	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
 	public void addTransitionListener(TransitionListener<AbstractTransition<E,S>> listener){
 		listenerSupport.addListener(listener);
@@ -267,7 +268,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	/**
 	 * Removes a transition listener.
 	 * @param l The transition listener to remove.
-	 * @If the listener reference is <code>null</code>.
+	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
 	public void removeTransitionListener(TransitionListener<AbstractTransition<E,S>> l){
 		listenerSupport.removeListener(l);

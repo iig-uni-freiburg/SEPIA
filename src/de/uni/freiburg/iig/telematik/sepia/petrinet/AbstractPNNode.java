@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 
 
@@ -71,7 +72,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * Creates a new Petri net node, using the given name.<br>
 	 * Ba default, the label of the node equals the name.
 	 * @param name The name for the Petri net node.
-	 * @If the given name is <code>null</code>.
+	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractPNNode(PNNodeType type, String name){
 		this(type, name, name);
@@ -82,7 +83,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * Creates a new Petri net node, using the given name and label.
 	 * @param name The name for the Petri net node.
 	 * @param label The label for the Petri net node.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public AbstractPNNode(PNNodeType type, String name, String label){
 		Validate.notNull(name);
@@ -107,7 +108,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 //	 * Sets the name of the Petri net node.<br>
 //	 * Implementing classes must make sure, that the net does not contain other nodes with the same name.
 //	 * @param name New name for the Petri net node.
-//	 * @If the given name is <code>null</code>.
+//	 * @throws ParameterException If the given name is <code>null</code>.
 //	 */
 //	protected abstract void setName(String name);
 	
@@ -122,7 +123,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	/**
 	 * Sets the label of the Petri net node.
 	 * @param label New label for the Petri net node.
-	 * @If the given label is <code>null</code>.
+	 * @throws ParameterException If the given label is <code>null</code>.
 	 */
 	public void setLabel(String label){
 		Validate.notNull(label);
@@ -200,7 +201,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param relation The incoming relation to add.
 	 * @return <code>true</code> if the relation was added;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given relation is <code>null</code>.
+	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
 	protected boolean addIncomingRelation(E relation){
 		Validate.notNull(relation);
@@ -214,7 +215,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param relation The outgoing relation to add.
 	 * @return <code>true</code> if the relation was added;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given relation is <code>null</code>.
+	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
 	protected boolean addOutgoingRelation(E relation){
 		Validate.notNull(relation);
@@ -227,7 +228,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param relation The relation to remove.
 	 * @return <code>true</code> if the relation was removed;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given relation is <code>null</code>.
+	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
 	protected boolean removeRelation(E relation){
 		Validate.notNull(relation);
@@ -241,7 +242,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param relation The incoming relation to remove.
 	 * @return <code>true</code> if the relation was removed;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given relation is <code>null</code>.
+	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
 	protected boolean removeIncomingRelation(E relation){
 		Validate.notNull(relation);
@@ -253,7 +254,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param relation The outgoing relation to remove.
 	 * @return <code>true</code> if the relation was removed;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given relation is <code>null</code>.
+	 * @throws ParameterException If the given relation is <code>null</code>.
 	 */
 	protected boolean removeOutgoingRelation(E relation){
 		Validate.notNull(relation);
@@ -266,7 +267,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param node The source node of the relation of interest.
 	 * @return The incoming relation leading from the given node to this node;<br>
 	 * <code>null</code> if there is no such incoming relation.
-	 * @If the given node is <code>null</code>.
+	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
 	public <N extends AbstractPNNode<E>> E getRelationFrom(N node){
 		Validate.notNull(node);
@@ -284,7 +285,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param node The target node of the relation of interest.
 	 * @return The outgoing relation leading from this node to the given node;<br>
 	 * <code>null</code> if there is no such outgoing relation.
-	 * @If the given node is <code>null</code>.
+	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
 	public <N extends AbstractPNNode<E>> E getRelationTo(N node){
 		Validate.notNull(node);
@@ -301,7 +302,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param node The node of interest.
 	 * @return <code>true</code> if there is an outgoing relation to the given node;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given node is <code>null</code>.
+	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
 	public <N extends AbstractPNNode<E>> boolean containsRelationTo(N node){
 		return getRelationTo(node) != null;
@@ -312,7 +313,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param node The node of interest.
 	 * @return <code>true</code> if there is an incoming relation from the given node;<br>
 	 * <code>false</code> otherwise.
-	 * @If the given node is <code>null</code>.
+	 * @throws ParameterException If the given node is <code>null</code>.
 	 */
 	public <N extends AbstractPNNode<E>> boolean containsRelationFrom(N node){
 		return getRelationFrom(node) != null;

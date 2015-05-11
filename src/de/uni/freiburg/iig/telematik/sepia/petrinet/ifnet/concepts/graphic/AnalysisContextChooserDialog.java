@@ -37,18 +37,17 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 
 	private static final long serialVersionUID = -6428039749340520188L;
 
-	private static final Dimension PREFERRED_SIZE = new Dimension(400,400);
-	
+	private static final Dimension PREFERRED_SIZE = new Dimension(400, 400);
+
 	private JComboBox comboAnalysisContext;
 	private DefaultComboBoxModel comboAnalysisContextModel = new DefaultComboBoxModel();
 	private Set<AnalysisContext> analysisContexts;
 	private JButton btnAddAnalysisContext;
 	private JButton btnEditAnalysisContext;
 	private JTextArea areaPreview;
-	private AbstractACModel acModel;
+	private AbstractACModel<?> acModel;
 
-	@SuppressWarnings("rawtypes")
-	public AnalysisContextChooserDialog(Window owner, AbstractACModel acModel, Collection<AnalysisContext> analysisContexts) {
+	public AnalysisContextChooserDialog(Window owner, AbstractACModel<?> acModel, Collection<AnalysisContext> analysisContexts) {
 		super(owner);
 		Validate.notNull(acModel);
 		Validate.notNull(analysisContexts);
@@ -61,36 +60,36 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 	@Override
 	protected void addComponents() throws Exception {
 		mainPanel().setLayout(new BorderLayout());
-		
+
 		JPanel topPanel = new JPanel(new FlowLayout());
-        topPanel.add(new JLabel("Analysis context:"));
-        comboAnalysisContext = new JComboBox(comboAnalysisContextModel);
-        comboAnalysisContext.setRenderer(new AnalysisContextCellRenderer());
-        comboAnalysisContext.addItemListener(new ItemListener() {
+		topPanel.add(new JLabel("Analysis context:"));
+		comboAnalysisContext = new JComboBox(comboAnalysisContextModel);
+		comboAnalysisContext.setRenderer(new AnalysisContextCellRenderer());
+		comboAnalysisContext.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if(e.getStateChange() == ItemEvent.SELECTED) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					updatePreview();
-                }
+				}
 			}
 		});
 		topPanel.add(comboAnalysisContext);
 		mainPanel().add(topPanel, BorderLayout.PAGE_START);
-		
+
 		areaPreview = new JTextArea();
 		mainPanel().add(new JScrollPane(areaPreview), BorderLayout.CENTER);
-		
+
 		mainPanel().add(getAnalysisContextButtonPanel(), BorderLayout.PAGE_END);
-		
+
 		updateModelCombo();
 		updatePreview();
 	}
-	
+
 	private JPanel getAnalysisContextButtonPanel() {
 		JPanel panelButtons = new JPanel();
 		BoxLayout l = new BoxLayout(panelButtons, BoxLayout.LINE_AXIS);
 		panelButtons.setLayout(l);
-		
+
 		panelButtons.add(getButtonAddAnalysisContext());
 		panelButtons.add(getButtonEditModel());
 		panelButtons.add(Box.createHorizontalGlue());
@@ -108,8 +107,8 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 		super.okProcedure();
 	}
 
-	private JButton getButtonAddAnalysisContext(){
-		if(btnAddAnalysisContext == null){
+	private JButton getButtonAddAnalysisContext() {
+		if (btnAddAnalysisContext == null) {
 			btnAddAnalysisContext = new JButton("Add");
 			btnAddAnalysisContext.addActionListener(new ActionListener() {
 				@Override
@@ -117,14 +116,14 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 					AnalysisContext newAnalysisContext = null;
 					try {
 						newAnalysisContext = AnalysisContextDialog.showDialog(AnalysisContextChooserDialog.this, acModel);
-					} catch(Exception ex){
+					} catch (Exception ex) {
 						internalExceptionMessage("Cannot launch AnalysisContextDialog: " + ex.getMessage());
 						return;
 					}
-					if(newAnalysisContext == null)
+					if (newAnalysisContext == null)
 						return;
-					
-					if(ensureValidAnalysisContext(newAnalysisContext)){
+
+					if (ensureValidAnalysisContext(newAnalysisContext)) {
 						addNewAnalysisContext(newAnalysisContext);
 					}
 				}
@@ -132,16 +131,16 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 		}
 		return btnAddAnalysisContext;
 	}
-	
+
 	private boolean ensureValidAnalysisContext(AnalysisContext newAnalysisContext) {
 		boolean cont = true;
-		while(cont){
-			try{
+		while (cont) {
+			try {
 				validateNewAnalysisContext(newAnalysisContext);
 				cont = false;
-			} catch(Exception ex){
+			} catch (Exception ex) {
 				int result = JOptionPane.showConfirmDialog(AnalysisContextChooserDialog.this, "Cannot add new analysis context: " + ex.getMessage() + "\nEdit analysis context?", "Invalid Parameter", JOptionPane.YES_NO_OPTION);
-				if(result != JOptionPane.YES_OPTION){
+				if (result != JOptionPane.YES_OPTION) {
 					return false;
 				}
 				try {
@@ -154,59 +153,61 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 		}
 		return true;
 	}
-	
+
 	protected void addNewAnalysisContext(AnalysisContext newAnalysisContext) {
 		analysisContexts.add(newAnalysisContext);
 		updateModelCombo();
 		comboAnalysisContext.setSelectedItem(newAnalysisContext);
 		updatePreview();
 	}
-	
-	private JButton getButtonEditModel(){
-		if(btnEditAnalysisContext == null){
+
+	private JButton getButtonEditModel() {
+		if (btnEditAnalysisContext == null) {
 			btnEditAnalysisContext = new JButton("Edit");
 			btnEditAnalysisContext.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					try{
+					try {
 						AnalysisContextDialog.showDialog(AnalysisContextChooserDialog.this, getSelectedAnalysisContext());
-					} catch(Exception ex){
+					} catch (Exception ex) {
 						internalExceptionMessage("Cannot launch ACModelDialog: " + ex.getMessage());
 						return;
 					}
-					if(ensureValidAnalysisContext(getSelectedAnalysisContext()))
+					if (ensureValidAnalysisContext(getSelectedAnalysisContext()))
 						updatePreview();
 				}
 			});
 		}
 		return btnEditAnalysisContext;
 	}
-	
-	private AnalysisContext getSelectedAnalysisContext(){
+
+	private AnalysisContext getSelectedAnalysisContext() {
 		Object selectedObject = comboAnalysisContext.getSelectedItem();
-		if(selectedObject == null)
+		if (selectedObject == null)
 			return null;
 		return (AnalysisContext) selectedObject;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	private void updateModelCombo() {
 		comboAnalysisContext.removeAllItems();
-		for(AnalysisContext analysisContext: analysisContexts){
+		for (AnalysisContext analysisContext : analysisContexts) {
 			comboAnalysisContextModel.addElement(analysisContext);
 		}
 		comboAnalysisContext.setEnabled(comboAnalysisContext.getItemCount() > 0);
 	}
-	
-	private void updatePreview(){
+
+	private void updatePreview() {
 		areaPreview.setText("");
-		if(comboAnalysisContext.getSelectedItem() != null){
+		if (comboAnalysisContext.getSelectedItem() != null) {
 			AnalysisContext selectedModel = (AnalysisContext) comboAnalysisContext.getSelectedItem();
 			areaPreview.setText(selectedModel.toString());
 		}
 	}
-	
-	protected void validateNewAnalysisContext(AnalysisContext newAnalysisContext) throws Exception {}
-	
+
+	protected void validateNewAnalysisContext(AnalysisContext newAnalysisContext) throws Exception {
+	}
+
 	private class AnalysisContextCellRenderer extends AlternatingRowColorListCellRenderer {
 
 		private static final long serialVersionUID = 6373356378620988440L;
@@ -220,29 +221,25 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 		protected String getTooltip(Object value) {
 			return ((AnalysisContext) value).getName();
 		}
-		
+
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public static AnalysisContext showDialog(Collection<AnalysisContext> analysisContexts, AbstractACModel acModel) throws Exception{
+
+	public static AnalysisContext showDialog(Collection<AnalysisContext> analysisContexts, AbstractACModel<?> acModel) throws Exception {
 		return showDialog(null, analysisContexts, acModel);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public static AnalysisContext showDialog(Window owner, Collection<AnalysisContext> analysisContexts, AbstractACModel acModel) throws Exception{
+	public static AnalysisContext showDialog(Window owner, Collection<AnalysisContext> analysisContexts, AbstractACModel<?> acModel) throws Exception {
 		AnalysisContextChooserDialog dialog = new AnalysisContextChooserDialog(owner, acModel, analysisContexts);
 		dialog.setUpGUI();
 		return dialog.getDialogObject();
 	}
-	
-	
-	public static void main(String[] args) throws Exception{
+
+	public static void main(String[] args) throws Exception {
 		SOABase base1 = SOABase.createSOABase("base1", 10, 10, 10);
 		ACLModel m1 = new ACLModel("m1", base1);
 		AnalysisContext aContext = new AnalysisContext("aContext1", m1, false);
 		AnalysisContext bContext = new AnalysisContext("bContext1", m1, false);
 
-		
 		List<AnalysisContext> list = new ArrayList<AnalysisContext>();
 		list.add(aContext);
 		list.add(bContext);

@@ -66,7 +66,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Creates a new place with the given name.
 	 * @param name The name for the new Place.
-	 * @If the given name is <code>null</code>.
+	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
 	public AbstractPlace(String name){
 		super(PNNodeType.PLACE, name);
@@ -351,7 +351,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Adds a capacity listener.
 	 * @param l The capacity listener to add.
-	 * @If the listener reference is <code>null</code>.
+	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
 	public void addPlaceListener(PlaceListener<AbstractPlace<E, S>> l){
 		placeListenerSupport.addListener(l);
@@ -360,7 +360,7 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	/**
 	 * Removes a capacity listener.
 	 * @param l The capacity listener to remove.
-	 * @If the listener reference is <code>null</code>.
+	 * @throws ParameterException If the listener reference is <code>null</code>.
 	 */
 	public void removePlaceListener(PlaceListener<AbstractPlace<E, S>> l){
 		placeListenerSupport.removeListener(l);

@@ -72,7 +72,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
 	}
 
 	/**
-	 * Reads all arcs given in a list of DOM nodes and adds them to the {@link Abstract}.
+	 * Reads all arcs given in a list of DOM nodes.
 	 */
 	@Override
 	protected void readArcs(NodeList arcNodes) throws ParserException {

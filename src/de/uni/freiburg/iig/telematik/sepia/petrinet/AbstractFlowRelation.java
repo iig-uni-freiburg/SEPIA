@@ -59,7 +59,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * Creates a new flow relation leading from the given place to the given transition.
 	 * @param place Place where the flow relation starts.
 	 * @param transition Transition where the flow relation ends.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
 	public AbstractFlowRelation(P place, T transition){
@@ -70,7 +70,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * Creates a new flow relation leading from the given transition to the given place.
 	 * @param transition Transition where the flow relation starts.
 	 * @param place Place where the flow relation ends.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 * @see #setValues(AbstractTransition, AbstractPlace)
 	 */
 	public AbstractFlowRelation(T transition, P place){
@@ -149,7 +149,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * It uses {@link #setName(AbstractPlace, AbstractTransition)} to assign the flow relation a unique name.
 	 * @param transition The transition for the flow relation.
 	 * @param place The place for the flow relation.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	private void setValues(T transition, P place){
 		Validate.notNull(place);
@@ -165,7 +165,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * the caller is responsible to guarantee unique flow relation names.<br>
 	 * Name collisions can cause unintended or erroneous Petri net behavior.
 	 * @param name The name for the flow relation.
-	 * @If some parameters are <code>null</code>.
+	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public void setName(String name){
 		Validate.notNull(name);
@@ -276,7 +276,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 		/**
 		 * Adds a flow relation listener.
 		 * @param listener The flow relation listener to add.
-		 * @If the listener reference is <code>null</code>.
+		 * @throws ParameterException If the listener reference is <code>null</code>.
 		 */
 		public void addRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener){
 			relationListenerSupport.addListener(listener);
@@ -285,7 +285,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 		/**
 		 * Removes a flow relation listener.
 		 * @param listener The flow relation listener to remove.
-		 * @If the listener reference is <code>null</code>.
+		 * @throws ParameterException If the listener reference is <code>null</code>.
 		 */
 		public void removeRelationListener(FlowRelationListener<AbstractFlowRelation<P,T,S>> listener){
 			relationListenerSupport.removeListener(listener);

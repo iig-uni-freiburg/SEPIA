@@ -38,15 +38,13 @@ public class AnalysisContextDialog extends AbstractEditCreateDialog<AnalysisCont
 		super(owner, analysisContext);
 	}
 
-	@SuppressWarnings("rawtypes")
-	protected AnalysisContextDialog(Window owner, AbstractACModel acModel) {
+	protected AnalysisContextDialog(Window owner, AbstractACModel<?> acModel) {
 		super(owner, acModel);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	protected AnalysisContext newDialogObject(Object... parameters) {
-		return new AnalysisContext((AbstractACModel) parameters[0], false);
+		return new AnalysisContext((AbstractACModel<?>) parameters[0], false);
 	}
 
 	@Override
@@ -103,7 +101,7 @@ public class AnalysisContextDialog extends AbstractEditCreateDialog<AnalysisCont
 			setTitle("Create AnalysisContext");
 		}
 	}
-	
+
 	private class SubjectDescriptorBox extends JComboBox {
 		
 		private static final long serialVersionUID = -3257254776844101160L;
@@ -157,14 +155,12 @@ public class AnalysisContextDialog extends AbstractEditCreateDialog<AnalysisCont
 		AnalysisContextDialog dialog = new AnalysisContextDialog(owner, analysisContext);
 		dialog.setUpGUI();
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public static AnalysisContext showDialog(AbstractACModel acModel) throws Exception{
+
+	public static AnalysisContext showDialog(AbstractACModel<?> acModel) throws Exception{
 		return showDialog(null, acModel);
 	}
-		
-	@SuppressWarnings("rawtypes")
-	public static AnalysisContext showDialog(Window owner, AbstractACModel acModel) throws Exception{
+
+	public static AnalysisContext showDialog(Window owner, AbstractACModel<?> acModel) throws Exception{
 		AnalysisContextDialog dialog = new AnalysisContextDialog(owner, acModel);
 		dialog.setUpGUI();
 		return dialog.getDialogObject();
@@ -174,7 +170,7 @@ public class AnalysisContextDialog extends AbstractEditCreateDialog<AnalysisCont
 		ACLModel acl = new ACLModel("acl1", SOABase.createSOABase("base", 5, 5, 5));
 		ACModelDialog.showDialog(null, acl);
 		AnalysisContext analysisContext = new AnalysisContext("AnalysisContext1", acl, false);
-//		System.out.println(analysisContext);
+		System.out.println(analysisContext);
 		AnalysisContext newContext = AnalysisContextDialog.showDialog(acl);
 		System.out.println(newContext);
 //		System.out.println(analysisContext);
