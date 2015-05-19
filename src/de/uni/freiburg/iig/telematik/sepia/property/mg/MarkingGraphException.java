@@ -1,4 +1,6 @@
-package de.uni.freiburg.iig.telematik.sepia.exception;
+package de.uni.freiburg.iig.telematik.sepia.property.mg;
+
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 
 
 public class MarkingGraphException extends PNException{

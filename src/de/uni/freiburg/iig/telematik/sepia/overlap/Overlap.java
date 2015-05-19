@@ -1,11 +1,12 @@
-package de.uni.freiburg.iig.telematik.sepia.replay;
+package de.uni.freiburg.iig.telematik.sepia.overlap;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.mg.MGTraversalResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.property.sequences.MGTraversalResult;
+import de.uni.freiburg.iig.telematik.sepia.replay.ReplayResult;
 import de.uni.freiburg.iig.telematik.sepia.replay.Replayer.TerminationCriteria;
 import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
 

@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.mg;
+package de.uni.freiburg.iig.telematik.sepia.property.sequences;
 
 import java.util.HashSet;
 import java.util.List;

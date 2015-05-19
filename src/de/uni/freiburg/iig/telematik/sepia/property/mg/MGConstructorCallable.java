@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.util;
+package de.uni.freiburg.iig.telematik.sepia.property.mg;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,10 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import de.invation.code.toval.thread.AbstractCallable;
-import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.exception.MarkingGraphException;
-import de.uni.freiburg.iig.telematik.sepia.exception.StateSpaceException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
@@ -18,34 +14,37 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.property.AbstractPNPropertyCheckerCallable;
 
 public class MGConstructorCallable< P extends AbstractPlace<F,S>, 
-							T extends AbstractTransition<F,S>, 
-							F extends AbstractFlowRelation<P,T,S>, 
-							M extends AbstractMarking<S>, 
-							S extends Object,
-							X extends AbstractMarkingGraphState<M,S>,
-							Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallable<AbstractMarkingGraph<M,S,X,Y>> {
+									T extends AbstractTransition<F,S>, 
+									F extends AbstractFlowRelation<P,T,S>, 
+									M extends AbstractMarking<S>, 
+									S extends Object,
+									X extends AbstractMarkingGraphState<M,S>,
+									Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,AbstractMarkingGraph<M,S,X,Y>> {
 	
-	public static final int MAX_RG_CALCULATION_STEPS = Integer.MAX_VALUE;
 	private static final String rgGraphNodeFormat = "s%s";
 	
-	private AbstractPetriNet<P,T,F,M,S,X,Y> petriNet = null;
-	
-	public  MGConstructorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
-		Validate.notNull(petriNet);
-		this.petriNet = petriNet;
+	public MGConstructorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
+		super(petriNet);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractMarkingGraph<M,S,X,Y> callRoutine() throws MarkingGraphException {
+	public AbstractMarkingGraph<M,S,X,Y> callRoutine() throws MarkingGraphException, InterruptedException {
+		
 		M savedMarking = (M) petriNet.getMarking().clone();
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
 		Set<M> allKnownStates = new HashSet<M>();
 
 		allKnownStates.add(petriNet.getInitialMarking());
-		AbstractMarkingGraph<M,S,X,Y> markingGraph = petriNet.createNewMarkingGraph();
+		AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
+		try{
+			markingGraph = (AbstractMarkingGraph<M,S,X,Y>) petriNet.getMarkingGraphClass().newInstance();
+		} catch (Exception e) {
+			throw new MarkingGraphException("Cannot create new instance of markign graph class", e);
+		}
 		int stateCount = 0;
 		Map<String, String> stateNames = new HashMap<String, String>();
 		M initialMarking = petriNet.getInitialMarking();
@@ -64,7 +63,7 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 					throw new InterruptedException();
 				}
 				calculationSteps++;
-				if((calculationSteps >= MAX_RG_CALCULATION_STEPS)){
+				if((calculationSteps >= MGConstruction.MAX_RG_CALCULATION_STEPS)){
 					petriNet.setMarking(savedMarking);
 					throw new StateSpaceException("Reached maximum calculation steps for building marking graph.");
 				}
@@ -114,8 +113,10 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 					markingGraph.addEndState(nextStateName);
 				}
 			}
+		} catch(InterruptedException e){
+			throw e;
 		} catch (Exception e) {
-			throw new MarkingGraphException("Exception during marking graph construction.<br>Reason: " + e.getMessage());
+			throw new MarkingGraphException("Exception during marking graph construction.<br>Reason: " + e.getMessage(), e);
 		}
 		petriNet.setMarking(savedMarking);
 		return markingGraph;

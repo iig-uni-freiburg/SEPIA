@@ -11,15 +11,11 @@ import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -249,17 +245,19 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 
 	@Override
 	public void checkValidity() throws PNValidationException {
-		checkValidity(new CWNPropertyFlag[0]);
+		checkValidity(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void checkValidity(CWNPropertyFlag... flags) throws PNValidationException {
 		super.checkValidity();
 		
-		CWNProperties cwnProperties = CWNChecker.checkCWNSoundness(this, true, flags);
-		if(!cwnProperties.isSoundCWN())
-			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + cwnProperties.exception.getMessage());
-		
+		System.out.println("before check cwn soundness");
+//		CWNProperties cwnProperties = CWNChecker.checkCWNSoundness(this, true, flags);
+//		if(!cwnProperties.isSoundCWN())
+//			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + cwnProperties.exception.getMessage());
+//		
+		System.out.println("after check cwn soundness");
 		// Check property 4 for declassification transitions: 
 		// For each declassification transition t, the following condition must hold:
 		// No other net transition creates a token with the same color than any of the produced colors of t
@@ -354,11 +352,6 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 				throw new PNValidationException("All declassification transitions must have classification HIGH.");
 		}
 		
-	}
-	
-	@Override
-	public AbstractIFNetMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
-		return (AbstractIFNetMarkingGraph<M, X, Y>) super.getMarkingGraph();
 	}
 
 	/* (non-Javadoc)

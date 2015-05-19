@@ -4,7 +4,6 @@ import java.util.Set;
 
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
@@ -41,11 +40,6 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 	public IFNetMarking createNewMarking() {
 		return new IFNetMarking();
 	}	
-	
-	@Override
-	public IFNetMarkingGraph createNewMarkingGraph() {
-		return new IFNetMarkingGraph();
-	}
 
 	@Override
 	protected IFNetPlace createNewPlace(String name, String label) {
@@ -92,9 +86,10 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 
 	@Override
 	public void capacityChanged(CapacityEvent<? extends AbstractPlace<IFNetFlowRelation, Multiset<String>>> o) {}
-	
+
 	@Override
-	public IFNetMarkingGraph getMarkingGraph() throws PNException{
-		return (IFNetMarkingGraph) super.getMarkingGraph();
+	public Class<?> getMarkingGraphClass() {
+		return IFNetMarkingGraph.class;
 	}
+	
 }

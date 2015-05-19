@@ -59,11 +59,6 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	protected CPNFlowRelation createNewFlowRelation(CPNTransition transition, CPNPlace place) {
 		return new CPNFlowRelation(transition, place);
 	}
-	
-	@Override
-	public CPNMarkingGraph createNewMarkingGraph() {
-		return new CPNMarkingGraph();
-	}
 
 	@Override
 	public CPNMarking fireCheck(String transitionName) throws PNException {
@@ -91,8 +86,8 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 	public void capacityChanged(CapacityEvent<? extends AbstractPlace<CPNFlowRelation, Multiset<String>>> o) {}
 
 	@Override
-	public CPNMarkingGraph getMarkingGraph() throws PNException {
-		return (CPNMarkingGraph) super.getMarkingGraph();
+	public Class<?> getMarkingGraphClass() {
+		return CPNMarkingGraph.class;
 	}
 	
 //	public static void main(String[] args) throws Exception{

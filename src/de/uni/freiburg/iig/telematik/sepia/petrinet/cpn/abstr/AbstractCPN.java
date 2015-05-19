@@ -12,7 +12,6 @@ import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
@@ -283,14 +282,10 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	//------- Interface methods -------------------------------------------------------------
 	
 	@Override
-	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, Multiset<String>>> e) {
-		// TODO Auto-generated method stub
-	}
+	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, Multiset<String>>> e) {}
 
 	@Override
-	public void transitionFired(TransitionEvent<? extends AbstractTransition<F, Multiset<String>>> e) {
-		// TODO Auto-generated method stub
-	}
+	public void transitionFired(TransitionEvent<? extends AbstractTransition<F, Multiset<String>>> e) {}
 	
 	
 	//------- Soundness ---------------------------------------------------------------------
@@ -371,11 +366,6 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 	@Override
 	public M getMarking(){
 		return super.getMarking();
-	}
-	
-	@Override
-	public AbstractCPNMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
-		return (AbstractCPNMarkingGraph<M, X, Y>) super.getMarkingGraph();
 	}
 	
 	@Override

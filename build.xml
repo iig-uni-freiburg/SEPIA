@@ -172,7 +172,7 @@
 
 	<target name="compile" depends="init" description="Compiles the source and the test files">
 		<echo>Compile classes...</echo>
-		<javac destdir="${classes.target.dir}" includeantruntime="false">
+		<javac destdir="${classes.target.dir}" includeantruntime="false" verbose="true">
 			<src path="${src.dir}" />
 			<classpath refid="SEPIA.classpath" />
 		</javac>

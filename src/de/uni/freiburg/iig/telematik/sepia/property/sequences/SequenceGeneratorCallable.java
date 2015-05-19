@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.mg;
+package de.uni.freiburg.iig.telematik.sepia.property.sequences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import de.invation.code.toval.misc.ListUtils;
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
+import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
@@ -19,38 +21,89 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.property.AbstractPNPropertyCheckerCallable;
+import de.uni.freiburg.iig.telematik.sepia.property.mg.MGConstructorCallable;
+import de.uni.freiburg.iig.telematik.sepia.property.mg.MarkingGraphException;
+import de.uni.freiburg.iig.telematik.sepia.property.mg.StateSpaceException;
 
-public class MGSequenceGenerator<	P extends AbstractPlace<F, S>, 
-									T extends AbstractTransition<F, S>, 
-									F extends AbstractFlowRelation<P, T, S>, 
-									M extends AbstractMarking<S>, 
-									S extends Object, 
-									X extends AbstractMarkingGraphState<M, S>,
-									Y extends AbstractMarkingGraphRelation<M, X, S>> {
+public class SequenceGeneratorCallable< P extends AbstractPlace<F,S>, 
+										T extends AbstractTransition<F,S>, 
+										F extends AbstractFlowRelation<P,T,S>, 
+										M extends AbstractMarking<S>, 
+										S extends Object,
+										X extends AbstractMarkingGraphState<M,S>,
+										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,MGTraversalResult> {
+
+	private static final boolean DEFAULT_INCLUDE_SILENT_TRANSITIONS = true;
 	
-	private AbstractPetriNet<P,T,F,M,S,X,Y> petriNet = null;
 	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	private boolean includeSilentTransitions = false;
 	
-	public MGSequenceGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
-		this.petriNet = petriNet;
-		this.markingGraph = markingGraph;
+	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+		this(petriNet, DEFAULT_INCLUDE_SILENT_TRANSITIONS);
+	}
+	
+	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, boolean includeSilentTransitions) {
+		super(petriNet);
 		this.includeSilentTransitions = includeSilentTransitions;
 	}
 	
-	public MGTraversalResult getSequences(){
+	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph) {
+		this(petriNet, markingGraph, DEFAULT_INCLUDE_SILENT_TRANSITIONS);
+	}
+	
+	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions) {
+		super(petriNet);
+		Validate.notNull(markingGraph);
+		this.markingGraph = markingGraph;
+		this.includeSilentTransitions = includeSilentTransitions;
+	}
+
+	@Override
+	protected MGTraversalResult callRoutine() throws SequenceGenerationException, InterruptedException {
+		// Check if marking graph is available and construct it in case it is not
+		if(markingGraph == null){
+			MGConstructorCallable<P,T,F,M,S,X,Y> mgConstructionCallable = new MGConstructorCallable<P,T,F,M,S,X,Y>(petriNet);
+			try {
+				markingGraph = mgConstructionCallable.callRoutine();
+			} catch(MarkingGraphException e){
+				// Abort when Petri net is unbounded
+				if(e.getCause() != null && e.getCause() instanceof StateSpaceException){
+					throw new SequenceGenerationException("Cannot generate sequences of unbounded net", e);
+				}
+				throw new SequenceGenerationException(e);
+			}
+		}
+		
+		// check whether marking graph contains cycles
+		if(TraversalUtils.hasCycle(markingGraph))
+			throw new SequenceGenerationException("Cannot generate sequences of Petri net whose markign graph contains cycles");
+		
 		M actualMarking = (M) petriNet.getMarking().clone();
 		Set<List<String>> sequences = new HashSet<List<String>>();
 		Set<List<String>> completeSequences = new HashSet<List<String>>();
 		
-		for(List<X> detSequence: getStateSequences()){
-			Set<List<String>> activitySequences = getActivitySequences(detSequence);
-			for(List<String> activitySequence: activitySequences){
-				sequences.addAll(getSequences(activitySequence));
-				if(markingGraph.isEndState(detSequence.get(detSequence.size()-1).getName())){
-					completeSequences.add(activitySequence);
+		try {
+			for (List<X> detSequence : getStateSequences()) {
+				if (Thread.currentThread().isInterrupted()) {
+					throw new InterruptedException();
+				}
+				Set<List<String>> activitySequences = getActivitySequences(detSequence);
+				for (List<String> activitySequence : activitySequences) {
+					if (Thread.currentThread().isInterrupted()) {
+						throw new InterruptedException();
+					}
+					sequences.addAll(getSequences(activitySequence));
+					if (markingGraph.isEndState(detSequence.get(detSequence.size() - 1).getName())) {
+						completeSequences.add(activitySequence);
+					}
 				}
 			}
+
+		} catch (InterruptedException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new SequenceGenerationException("Exception during sequence generation.<br>Reason: " + e.getMessage());
 		}
 		
 		if(!includeSilentTransitions){
@@ -61,9 +114,12 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		return new MGTraversalResult(sequences, completeSequences);
 	}
 	
-	private List<List<X>> getStateSequences(){
+	private List<List<X>> getStateSequences() throws InterruptedException{
 		List<List<X>> stateSequences = new ArrayList<List<X>>();
 		for(List<X> continuation: getContinuationsRec(markingGraph.getInitialState())){
+			if (Thread.currentThread().isInterrupted()) {
+				throw new InterruptedException();
+			}
 			List<X> newContinuation = new ArrayList<X>();
 			newContinuation.add(markingGraph.getInitialState());
 			newContinuation.addAll(continuation);
@@ -72,13 +128,16 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		return stateSequences;
 	}
 	
-	private List<List<String>> getSequences(List<String> completeSequence){
+	private List<List<String>> getSequences(List<String> completeSequence) throws InterruptedException{
 		List<List<String>> result = new ArrayList<List<String>>();
 		
 		if(completeSequence.size() == 1){
 			result.add(completeSequence);
 		} else {
 			for(int i=0; i<completeSequence.size(); i++){
+				if (Thread.currentThread().isInterrupted()) {
+					throw new InterruptedException();
+				}
 				result.add(ListUtils.copyOfRange(completeSequence, 0, i));
 			}
 		}
@@ -86,11 +145,11 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		return result;
 	}
 	
-	private Set<List<String>> getActivitySequences(List<X> stateList) {
+	private Set<List<String>> getActivitySequences(List<X> stateList) throws InterruptedException {
 		return getActivitySequencesRec(new HashSet<List<String>>(), stateList, 0);
 	}
 	
-	private List<List<X>> getContinuationsRec(X actualState){
+	private List<List<X>> getContinuationsRec(X actualState) throws InterruptedException{
 //		System.out.println("sequences: " + sequences);
 //		System.out.println("actual state: " + actualState.getName());
 	
@@ -107,6 +166,9 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		
 		List<List<X>> continuations = new ArrayList<List<X>>();
 		for(X child: children){
+			if (Thread.currentThread().isInterrupted()) {
+				throw new InterruptedException();
+			}
 			List<List<X>> childContinuations = getContinuationsRec(child);
 			if(childContinuations != null){
 				for(List<X> childContinuation: childContinuations){
@@ -145,12 +207,15 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 //		return sequences;
 	}
 	
-	private Set<List<String>> removeSilentTransitions(Set<List<String>> sequences) {
+	private Set<List<String>> removeSilentTransitions(Set<List<String>> sequences) throws InterruptedException {
 		Set<List<String>> result = new HashSet<List<String>>();
 		if(sequences.isEmpty())
 			return result;
 		
 		for(List<String> sequence: sequences){
+			if (Thread.currentThread().isInterrupted()) {
+				throw new InterruptedException();
+			}
 			Set<String> activitiesToRemove = new HashSet<String>();
 			for(String activityLabel: sequence){
 				for(T transition: petriNet.getTransitions(activityLabel)){
@@ -170,7 +235,7 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		return result;
 	}
 	
-	private Set<List<String>> getActivitySequencesRec(Set<List<String>> sequences, List<X> stateList, int index) {
+	private Set<List<String>> getActivitySequencesRec(Set<List<String>> sequences, List<X> stateList, int index) throws InterruptedException {
 //		System.out.println(sequences + " " + stateList + " " + index);
 		
 		if(stateList.size() < 2)
@@ -178,6 +243,9 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		
 		if(stateList.size() == 2){
 			for(String eventName: getEventsBetweenStates(stateList.get(0).getName(), stateList.get(1).getName())){
+				if (Thread.currentThread().isInterrupted()) {
+					throw new InterruptedException();
+				}
 				sequences.add(Arrays.asList(eventName));
 			}
 			return sequences;
@@ -220,10 +288,13 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		}
 	}
 	
-	private List<String> getEventsBetweenStates(String fromStateName, String toStateName){
+	private List<String> getEventsBetweenStates(String fromStateName, String toStateName) throws InterruptedException{
 		List<String> eventNames = new ArrayList<String>();
 		try {
 			for (AbstractLabeledTransitionRelation<X,Event,M> relation : markingGraph.getIncomingRelationsFor(toStateName)) {
+				if (Thread.currentThread().isInterrupted()) {
+					throw new InterruptedException();
+				}
 				if (relation.getSource().getName().equals(fromStateName)) {
 					eventNames.add(relation.getEvent().getLabel());
 				}
@@ -233,5 +304,6 @@ public class MGSequenceGenerator<	P extends AbstractPlace<F, S>,
 		}
 		return eventNames;
 	}
+
 	
 }

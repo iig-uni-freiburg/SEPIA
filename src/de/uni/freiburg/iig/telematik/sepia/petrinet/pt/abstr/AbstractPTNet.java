@@ -6,15 +6,12 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
-
 
 /**
  * Abstract class for defining P/T-Nets, which are a special kind of Petri nets
@@ -34,9 +31,10 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 									X extends AbstractPTMarkingGraphState<M>,
 									Y extends AbstractPTMarkingGraphRelation<M,X>> 
 
-									  extends AbstractPetriNet<P,T,F,M,Integer,X,Y> {
+									  extends AbstractPetriNet<P,T,F,M,Integer,X,Y>{
 
 	private static final long serialVersionUID = -1544464197896650398L;
+	
 	/**
 	 * String format for plain output.
 	 * @see #toString()
@@ -46,7 +44,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	/**
 	 * Creates a new P/T-Net.
 	 */
-	public AbstractPTNet() {
+	public AbstractPTNet(){
 		super();
 	}
 	
@@ -57,22 +55,18 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	 * @param initialMarking The initial marking of the Petri net.
 	 * @throws ParameterException If some parameters are <code>null</code> or contain <code>null</code>-values.
 	 */
-	public AbstractPTNet(Set<String> places,
-				 Set<String> transitions,
-				 M initialMarking) 
-				 throws ParameterException {
+	public AbstractPTNet(Set<String> places, Set<String> transitions, M initialMarking){
 		super(places, transitions);
 		setInitialMarking(initialMarking);
 	}
 	
 	@Override
-	public NetType getNetType() {
+	public NetType getNetType(){
 		return NetType.PTNet;
 	}
 	
-	
 	//------- Markings
-	
+
 	@Override
 	public M getInitialMarking(){
 		return super.getInitialMarking();
@@ -84,7 +78,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	}
 
 	@Override
-	protected void updateMarking(P p) throws ParameterException {
+	protected void updateMarking(P p){
 		Validate.notNull(p);
 		if(!places.containsKey(p.getName()))
 			return;
@@ -98,7 +92,7 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	//------- Flow Relations
 	
 	@Override
-	protected void validateMarking(M marking) throws ParameterException {
+	protected void validateMarking(M marking){
 		super.validateMarking(marking);
 		for(P place: getPlaces()){
 			if(marking.get(place.getName()) != null && place.isBounded()){
@@ -109,24 +103,15 @@ public abstract class AbstractPTNet<P extends AbstractPTPlace<F>,
 	}
 
 	@Override
-	public void transitionFired(TransitionEvent<? extends AbstractTransition<F, Integer>> e) {
-		// TODO Auto-generated method stub
-	}
+	public void transitionFired(TransitionEvent<? extends AbstractTransition<F, Integer>> e){}
 
 	@Override
-	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, Integer>> e) {
-		// TODO Auto-generated method stub
-	}
-	
-	@Override
-	public AbstractPTMarkingGraph<M,X,Y> getMarkingGraph() throws PNException{
-		return (AbstractPTMarkingGraph<M, X, Y>) super.getMarkingGraph();
-	}
+	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, Integer>> e){}
 	
 	//------- ToString
 
 	@Override
-	public String toString() {
+	public String toString(){
 		StringBuilder relationBuilder = new StringBuilder();
 		for(F relation: relations.values()){
 			relationBuilder.append("                  ");

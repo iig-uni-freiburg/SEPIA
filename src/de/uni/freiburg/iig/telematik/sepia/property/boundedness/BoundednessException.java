@@ -1,4 +1,6 @@
-package de.uni.freiburg.iig.telematik.sepia.exception;
+package de.uni.freiburg.iig.telematik.sepia.property.boundedness;
+
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 
 
 public class BoundednessException extends PNException{

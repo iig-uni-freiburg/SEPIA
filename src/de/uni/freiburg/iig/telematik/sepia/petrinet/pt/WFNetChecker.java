@@ -39,15 +39,15 @@ public class WFNetChecker {
 		result.validInOutPlaces = PropertyCheckingResult.TRUE;
 		
 		// Check strongly connectedness of short-circuited net
-		try {
-			PNPropertiesChecker.validateStrongConnectedness(petriNet, result.inOutPlaces);
-		} catch (PNValidationException e) {
-			result.exception = e;
-			result.strongConnectedness = PropertyCheckingResult.FALSE;
-			result.hasWFNetStructure = PropertyCheckingResult.FALSE;
-			return result;
-		}
-		result.strongConnectedness = PropertyCheckingResult.TRUE;
+//		try {
+//			PNPropertiesChecker.validateStrongConnectedness(petriNet, result.inOutPlaces);
+//		} catch (PNValidationException e) {
+//			result.exception = e;
+//			result.strongConnectedness = PropertyCheckingResult.FALSE;
+//			result.hasWFNetStructure = PropertyCheckingResult.FALSE;
+//			return result;
+//		}
+//		result.strongConnectedness = PropertyCheckingResult.TRUE;
 		
 		result.hasWFNetStructure = PropertyCheckingResult.TRUE;
 		return result;
