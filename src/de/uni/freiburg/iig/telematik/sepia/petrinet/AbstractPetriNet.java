@@ -10,10 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 
-import de.invation.code.toval.thread.ExecutorListener;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
@@ -34,16 +31,11 @@ import de.uni.freiburg.iig.telematik.sepia.event.TokenListener;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionChangeEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
-import de.uni.freiburg.iig.telematik.sepia.exception.BoundednessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.exception.StateSpaceException;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
-import de.uni.freiburg.iig.telematik.sepia.util.ReachabilityUtils;
-import de.uni.freiburg.iig.telematik.sepia.util.ThreadedMGCalculator;
  
 /**
  * Abstract class for defining Petri nets and their properties.<br>
@@ -89,8 +81,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 							PlaceListener<AbstractPlace<F,S>>,
 							PNStructureListener<P,T,F,M,S>,
 							PNMarkingListener<S,M>,
-							Serializable,
-							ExecutorListener{
+							Serializable{
 	
 	private static final long serialVersionUID = 7324151598039390349L;
 	
@@ -145,21 +136,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected M marking = null;
 	
-	protected AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
-	
-	protected Boundedness boundedness = Boundedness.UNKNOWN;
-	
-	protected ThreadedMGCalculator<P,T,F,M,S,X,Y> boundednessCalculator = null;
-	
 	protected PNStructureListenerSupport<P,T,F,M,S> structureListenerSupport = new PNStructureListenerSupport<P,T,F,M,S>();
 	
 	protected PNMarkingListenerSupport<S,M> markingListenerSupport = new PNMarkingListenerSupport<S,M>();
-	
-//	/**
-//	 * The flow control of the Petri net.<br>
-//	 * It determines the next enabled transition to fire.
-//	 */
-//	protected FlowControl<P,T,F> flowControl;
 	
 	
 	//------- Constructors --------------------------------------------------------------------------
@@ -216,6 +195,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		this.name = name;
 	}
 	
+<<<<<<< .mine
+=======
 //	/**
 //	 * Sets the flow control for the Petri net.<br>
 //	 * The flow control decides which transition to fire, if there is more than one enabled transition.
@@ -230,6 +211,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 //		this.flowControl = flowControl;
 //	}
 	
+>>>>>>> .r261
 	/**
 	 * Checks if the Petri net has enabled transitions that are ready to fire.
 	 * @return <code>true</code> if the net has enabled transitions;<br>
@@ -260,6 +242,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public boolean isEmpty(){
 		return places.isEmpty() && transitions.isEmpty() && relations.isEmpty();
 	}
+	
+	public abstract Class<?> getMarkingGraphClass();
 	
 	//------- Transitions ------------------------------------------------------------------------
 	
@@ -576,8 +560,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * @return A new transition of type <code>T</code> with the given name.
 	 */
 	protected abstract T createNewTransition(String name, String label, boolean isSilent);
-	
-	public abstract AbstractMarkingGraph<M,S,X,Y> createNewMarkingGraph();
 	
 	//------- Places ---------------------------------------------------------------------------------
 
@@ -1261,6 +1243,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		setMarking((M) initialMarking.clone());
 	}
 	
+<<<<<<< .mine
+=======
 	public boolean isCapacityBounded(){
 		for(P p: getPlaces()){
 			if(!p.isBounded())
@@ -1319,26 +1303,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public void executorStopped() {
 		resetBoundedness();
 	}
-	
-	protected void resetBoundedness(){
-		if(boundednessCalculator != null && !boundednessCalculator.isDone()){
-			try {
-				boundednessCalculator.stop();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		markingGraph = null;
-		boundedness = Boundedness.UNKNOWN;
-	}
+>>>>>>> .r261
 	
 	
 	//------- Validation methods --------------------------------------------------------------------
 
 	@Override
-	public void capacityChanged(CapacityEvent<? extends AbstractPlace<F, S>> o) {
-		resetBoundedness();
-	}
+	public void capacityChanged(CapacityEvent<? extends AbstractPlace<F, S>> o) {}
 
 	/**
 	 * This method can be used to validate transition names.<br>
@@ -1565,19 +1536,13 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public void markingChanged(MarkingChangeEvent<S, M> markingEvent) {}
 
 	@Override
-	public void initialMarkingChanged(MarkingChangeEvent<S, M> markingEvent) {
-		resetBoundedness();
-	}
+	public void initialMarkingChanged(MarkingChangeEvent<S, M> markingEvent) {}
 
 	@Override
-	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, S>> e) {
-		resetBoundedness();
-	}
+	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, S>> e) {}
 
 	@Override
-	public void structureChanged() {
-		resetBoundedness();
-	}
+	public void structureChanged() {}
 	
 	@Override
 	public void placeAdded(PlaceChangeEvent<P> event) {}
@@ -1693,18 +1658,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	}
 	
 	public abstract AbstractPetriNet<P,T,F,M,S,X,Y> newInstance();
-	
-	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() throws PNException{
-		if(markingGraph == null){
-			checkBoundedness();
-		}
-		while(!boundednessCalculator.isDone()){
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {}
-		}
-		return markingGraph;
-	}
+
 	
 //	@SuppressWarnings("unchecked")
 //	public AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph() throws PNException{
@@ -1862,4 +1816,5 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	}
 	
 	public enum Boundedness {BOUNDED, UNBOUNDED, UNKNOWN}
+	
 }
