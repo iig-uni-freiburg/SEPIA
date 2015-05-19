@@ -179,30 +179,30 @@ public class AnalysisContext implements ACModelListener, Cloneable, DialogObject
 	}
 
 	@Override
-	public void validUsageModesChanged(AbstractACModel sender, Set<DataUsage> oldModes, Set<DataUsage> newModes) {
+	public void validUsageModesChanged(AbstractACModel<?> sender, Set<DataUsage> oldModes, Set<DataUsage> newModes) {
 	}
 
 	@Override
-	public void contextChanged(AbstractACModel sender, SOABase context) {
+	public void contextChanged(AbstractACModel<?> sender, SOABase context) {
 		if (labeling != null) {
 			labeling.acModelChanged();
 		}
 	}
 
 	@Override
-	public void accessPermissionAdded(AbstractACModel sender, String subject, String object, Collection<DataUsage> dataUsageModes) {
+	public void accessPermissionAdded(AbstractACModel<?> sender, String subject, String object, Collection<DataUsage> dataUsageModes) {
 	}
 
 	@Override
-	public void accessPermissionRemoved(AbstractACModel sender, String subject, String object, Collection<DataUsage> dataUsageModes) {
+	public void accessPermissionRemoved(AbstractACModel<?> sender, String subject, String object, Collection<DataUsage> dataUsageModes) {
 	}
 
 	@Override
-	public void executionPermissionAdded(AbstractACModel sender, String subject, String transaction) {
+	public void executionPermissionAdded(AbstractACModel<?> sender, String subject, String transaction) {
 	}
 
 	@Override
-	public void executionPermissionRemoved(AbstractACModel sender, String subject, String transaction) {
+	public void executionPermissionRemoved(AbstractACModel<?> sender, String subject, String transaction) {
 		if (subjectDescriptors.containsKey(transaction)) {
 			if (subjectDescriptors.get(transaction).equals(subject)) {
 				removeSubjectDescriptor(transaction);
