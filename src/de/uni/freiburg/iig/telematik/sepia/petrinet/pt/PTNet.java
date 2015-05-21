@@ -86,7 +86,7 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 	public Class<?> getMarkingGraphClass() {
 		return PTMarkingGraph.class;
 	}
-	
+
 	public static void main(String[] args) {
 		PTNet net = new PTNet();
 		net.addPlace("p1");

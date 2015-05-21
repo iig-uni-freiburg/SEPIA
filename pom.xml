@@ -42,7 +42,7 @@
 		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
 		<url>http://www.telematik.uni-freiburg.de/</url>
 	</organization>
-	<description>SEPIA provides implementations for various types of Petri nets. Along Place/Trransition-nets, it supports Petri nets with distinguishable token colors and defines coloured workflow nets, where coloured tokens are interpreted as data elements used during process execution. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modeling which enable users to assign security-levels (HIGH, LOW) to transitions, data elements and persons/agents participating in the process execution.</description>
+	<description>SEPIA provides implementations for various types of Petri nets. Along Place/Transition-nets, it supports Petri nets with distinguishable token colors and defines coloured workflow nets, where coloured tokens are interpreted as data elements used during process execution. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modeling which enable users to assign security-levels (HIGH, LOW) to transitions, data elements and persons/agents participating in the process execution.</description>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -55,8 +55,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -72,37 +72,63 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.3</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.5.4</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>attached</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>withoutDocLint</id>
+			<activation>
+				<jdk>[1.6,1.7]</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.3</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<excludePackageNames>org.deckfour.*</excludePackageNames>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>withDocLint</id>
+			<activation>
+				<jdk>1.8</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.3</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<additionalparam>-Xdoclint:none</additionalparam>
+								</configuration>
+							</execution>
+						</executions>
+						<configuration>
+							<excludePackageNames>org.deckfour.*</excludePackageNames>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -62,13 +62,13 @@
 		<pathelement location="${SEWOL.location}/bin/classes" />
 		<path refid="TOVAL.classpath" />
 		<path refid="JAGAL.classpath" />
-		<pathelement location="lib/openxes/OpenXES.jar" />
-		<pathelement location="lib/openxes/guava-16.0.1.jar" />
-		<pathelement location="lib/collections-generic-4.01.jar" />
-		<pathelement location="lib/jung-algorithms-2.0.1.jar" />
-		<pathelement location="lib/jung-api-2.0.1.jar" />
-		<pathelement location="lib/jung-graph-impl-2.0.1.jar" />
-		<pathelement location="lib/jung-visualization-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/guava-16.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/collections-generic-4.01.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/xstream-1.4.8.jar" />
 	</path>
 	
 	<path id="SEPIA.classpath">
@@ -111,6 +111,9 @@
 			<fileset dir="${SEWOL.location}/src">
 				<include name="**/*.java" />
 			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
+				<include name="**/*.java" />
+			</fileset>
 		</javadoc>
 
 		<echo>Creating new JARs...</echo>
@@ -151,19 +154,19 @@
 			<fileset dir="${JAGAL.location}/bin/classes" />
 			<fileset dir="${SEWOL.location}/bin/classes" />
 			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphXwithsources.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/openxes/OpenXES.jar" />
-			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/openxes/guava-16.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/hamcrest/hamcrest-core-1.3.jar" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/isorelax/isorelax.jar" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/msv/msv-core-2013.6.1.jar" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/relaxngDatatype/relaxngDatatype-20020414.jar" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/xsdlib/xsdlib-2.2.jar" />
-			<zipfileset excludes="META-INF/*.SF,*.properties,*.txt" src="${libs.dir}/xsom/xsom-20110101-SNAPSHOT.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/xstream-1.4.8.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/hamcrest/hamcrest-core-1.3.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/isorelax/isorelax.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/msv/msv-core-2013.6.1.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/relaxngDatatype/relaxngDatatype-20020414.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/xsdlib/xsdlib-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/xsom/xsom-20110101-SNAPSHOT.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/hamcrest/hamcrest-core-1.3.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/xsom/xsom-20110101-SNAPSHOT.jar" />
 			
@@ -179,11 +182,11 @@
 		<copy includeemptydirs="false" todir="${classes.target.dir}">
 			<fileset file="${basedir}/LICENSE.txt" />
 		</copy>
-		<echo>Compile tests...</echo>
+<!--		<echo>Compile tests...</echo>
 		<javac destdir="${tests.target.dir}" includeantruntime="false">
 			<src path="${test.dir}" />
 			<classpath refid="SEPIA.classpath" />
-		</javac>
+		</javac>-->
 	</target>
 
 	<target name="clean" description="Deletes the target files including current JARs. Old versions of the JARs stay untouched.">

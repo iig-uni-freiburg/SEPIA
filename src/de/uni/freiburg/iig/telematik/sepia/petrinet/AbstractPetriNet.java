@@ -997,7 +997,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	/**
 	 * Checks the source and drain property of the given transition<br>
 	 * and adds/removes it from the list of source/drain transitions.
-	 * @param place The Petri net transition to check.
+	 * @param transition The Petri net transition to check.
 	 */
 	private void checkSD(T transition){
 		if(transition.isSource()){
@@ -1264,11 +1264,6 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 * It checks if the given name is <code>null</code>, if the Petri net contains a transition with this name<br>
 	 * and if this transition is enabled.
 	 * @param transitionName The name of the transition in question.
-<<<<<<< .mine
-	 * @If the transition name is <code>null</code><br>
-	 * or the net does not contain a transition with this name.
-=======
->>>>>>> .r194
 	 * @throws PNException If the net transition with the given name is not enabled.
 	 */
 	protected void validateFireTransition(String transitionName) throws PNException{
