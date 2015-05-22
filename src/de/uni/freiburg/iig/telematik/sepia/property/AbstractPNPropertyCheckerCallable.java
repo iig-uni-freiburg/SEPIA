@@ -6,7 +6,6 @@ import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
@@ -19,10 +18,14 @@ public abstract class AbstractPNPropertyCheckerCallable<P extends AbstractPlace<
 														Y extends AbstractMarkingGraphRelation<M,X,S>,
 														R> extends AbstractCallable<R> {
 
-	protected AbstractPetriNet<P,T,F,M,S,X,Y> petriNet = null;
+	private AbstractCallableGenerator<P,T,F,M,S,X,Y> generator = null;
 	
-	protected AbstractPNPropertyCheckerCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
-		Validate.notNull(petriNet);
-		this.petriNet = petriNet;
+	protected AbstractPNPropertyCheckerCallable(AbstractCallableGenerator<P,T,F,M,S,X,Y> generator){
+		Validate.notNull(generator);
+		this.generator = generator;
+	}
+	
+	protected AbstractCallableGenerator<P,T,F,M,S,X,Y> getGenerator(){
+		return generator;
 	}
 }

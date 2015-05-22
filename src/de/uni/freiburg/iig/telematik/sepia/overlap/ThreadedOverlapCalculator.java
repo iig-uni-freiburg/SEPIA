@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.replay;
+package de.uni.freiburg.iig.telematik.sepia.overlap;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -13,52 +13,52 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.property.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
 
-public class ThreadedReplayer<P extends AbstractPlace<F,S>, 
+public class ThreadedOverlapCalculator<P extends AbstractPlace<F,S>, 
 										T extends AbstractTransition<F,S>, 
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
 										S extends Object,
 										X extends AbstractMarkingGraphState<M,S>,
 										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,ReplayResult<E>>{
+										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,OverlapResult<E>>{
 	
-	protected ThreadedReplayer(ReplayCallableGenerator<P,T,F,M,S,X,Y,E> generator){
+	protected ThreadedOverlapCalculator(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> generator){
 		super(generator);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ReplayCallableGenerator<P,T,F,M,S,X,Y,E> getGenerator() {
-		return (ReplayCallableGenerator<P,T,F,M,S,X,Y,E>) super.getGenerator();
+	protected OverlapCallableGenerator<P,T,F,M,S,X,Y,E> getGenerator() {
+		return (OverlapCallableGenerator<P,T,F,M,S,X,Y,E>) super.getGenerator();
 	}
 
 	@Override
-	protected AbstractCallable<ReplayResult<E>> getCallable() {
-		return new ReplayCallable<P,T,F,M,S,X,Y,E>(getGenerator());
+	protected AbstractCallable<OverlapResult<E>> getCallable() {
+		return new OverlapCallable<P,T,F,M,S,X,Y,E>(getGenerator());
 	}
 	
 	public void runCalculation(){
 		setUpAndRun();
 	}
 	
-	public ReplayResult<E> getReplayResult() throws ReplayException{
+	public OverlapResult<E> getOverlapResult() throws OverlapException{
 		try {
 			return getResult();
 		} catch (CancellationException e) {
-			throw new ReplayException("Replaying cancelled.", e);
+			throw new OverlapException("Overlap calculation cancelled.", e);
 		} catch (InterruptedException e) {
-			throw new ReplayException("Replaying interrupted.", e);
+			throw new OverlapException("Overlap calculation interrupted.", e);
 		} catch (ExecutionException e) {
 			Throwable cause = e.getCause();
 			if(cause == null){
-				throw new ReplayException("Exception during replay.\n" + e.getMessage(), e);
+				throw new OverlapException("Exception during overlap calculation.\n" + e.getMessage(), e);
 			}
-			if(cause instanceof ReplayException){
-				throw (ReplayException) cause;
+			if(cause instanceof OverlapException){
+				throw (OverlapException) cause;
 			}
-			throw new ReplayException("Exception during replay.\n" + e.getMessage(), e);
+			throw new OverlapException("Exception during overlap calculation.\n" + e.getMessage(), e);
 		} catch(Exception e){
-			throw new ReplayException("Exception during replay.\n" + e.getMessage(), e);
+			throw new OverlapException("Exception during overlap calculation.\n" + e.getMessage(), e);
 		}
 	}
 }

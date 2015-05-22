@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.property.sequences;
+package de.uni.freiburg.iig.telematik.sepia.overlap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,121 +7,81 @@ import java.util.List;
 import java.util.Set;
 
 import de.invation.code.toval.misc.ListUtils;
-import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.jagal.graph.exception.VertexNotFoundException;
-import de.uni.freiburg.iig.telematik.jagal.traverse.TraversalUtils;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.exception.StateNotFoundException;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.property.AbstractPNPropertyCheckerCallable;
-import de.uni.freiburg.iig.telematik.sepia.property.mg.MGConstructorCallable;
-import de.uni.freiburg.iig.telematik.sepia.property.mg.MarkingGraphException;
 import de.uni.freiburg.iig.telematik.sepia.property.mg.StateSpaceException;
+import de.uni.freiburg.iig.telematik.sepia.property.sequences.MGTraversalResult;
+import de.uni.freiburg.iig.telematik.sepia.property.sequences.SequenceGenerationCallable;
+import de.uni.freiburg.iig.telematik.sepia.property.sequences.SequenceGenerationCallableGenerator;
+import de.uni.freiburg.iig.telematik.sepia.replay.ReplayCallable;
+import de.uni.freiburg.iig.telematik.sepia.replay.ReplayCallableGenerator;
+import de.uni.freiburg.iig.telematik.sepia.replay.ReplayResult;
+import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
 
-public class SequenceGeneratorCallable< P extends AbstractPlace<F,S>, 
-										T extends AbstractTransition<F,S>, 
-										F extends AbstractFlowRelation<P,T,S>, 
-										M extends AbstractMarking<S>, 
-										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,MGTraversalResult> {
-
-	private static final boolean DEFAULT_INCLUDE_SILENT_TRANSITIONS = true;
+public class OverlapCallable< 	P extends AbstractPlace<F,S>, 
+								T extends AbstractTransition<F,S>, 
+								F extends AbstractFlowRelation<P,T,S>, 
+								M extends AbstractMarking<S>, 
+								S extends Object,
+								X extends AbstractMarkingGraphState<M,S>,
+								Y extends AbstractMarkingGraphRelation<M,X,S>,
+								E extends LogEntry> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,OverlapResult<E>> {
 	
-	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
-	private boolean includeSilentTransitions = false;
-	
-	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
-		this(petriNet, DEFAULT_INCLUDE_SILENT_TRANSITIONS);
+	protected OverlapCallable(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> generator) {
+		super(generator);
 	}
 	
-	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, boolean includeSilentTransitions) {
-		super(petriNet);
-		this.includeSilentTransitions = includeSilentTransitions;
-	}
-	
-	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph) {
-		this(petriNet, markingGraph, DEFAULT_INCLUDE_SILENT_TRANSITIONS);
-	}
-	
-	protected SequenceGeneratorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions) {
-		super(petriNet);
-		Validate.notNull(markingGraph);
-		this.markingGraph = markingGraph;
-		this.includeSilentTransitions = includeSilentTransitions;
+	@SuppressWarnings("unchecked")
+	@Override
+	protected OverlapCallableGenerator<P,T,F,M,S,X,Y,E> getGenerator() {
+		return (OverlapCallableGenerator<P, T, F, M, S, X, Y, E>) super.getGenerator();
 	}
 
 	@Override
-	protected MGTraversalResult callRoutine() throws SequenceGenerationException, InterruptedException {
-		// Check if marking graph is available and construct it in case it is not
-		if(markingGraph == null){
-			MGConstructorCallable<P,T,F,M,S,X,Y> mgConstructionCallable = new MGConstructorCallable<P,T,F,M,S,X,Y>(petriNet);
-			try {
-				markingGraph = mgConstructionCallable.callRoutine();
-			} catch(MarkingGraphException e){
-				// Abort when Petri net is unbounded
-				if(e.getCause() != null && e.getCause() instanceof StateSpaceException){
-					throw new SequenceGenerationException("Cannot generate sequences of unbounded net", e);
-				}
-				throw new SequenceGenerationException(e);
-			}
-		}
-		
-		// check whether marking graph contains cycles
-		if(TraversalUtils.hasCycle(markingGraph))
-			throw new SequenceGenerationException("Cannot generate sequences of Petri net whose markign graph contains cycles");
-		
-		M actualMarking = (M) petriNet.getMarking().clone();
-		Set<List<String>> sequences = new HashSet<List<String>>();
-		Set<List<String>> completeSequences = new HashSet<List<String>>();
-		
+	protected OverlapResult<E> callRoutine() throws OverlapException, InterruptedException {
+		// Generate Sequences
+		MGTraversalResult traversalResult = null;
 		try {
-			for (List<X> detSequence : getStateSequences()) {
-				if (Thread.currentThread().isInterrupted()) {
-					throw new InterruptedException();
-				}
-				Set<List<String>> activitySequences = getActivitySequences(detSequence);
-				for (List<String> activitySequence : activitySequences) {
-					if (Thread.currentThread().isInterrupted()) {
-						throw new InterruptedException();
-					}
-					sequences.addAll(getSequences(activitySequence));
-					if (markingGraph.isEndState(detSequence.get(detSequence.size() - 1).getName())) {
-						completeSequences.add(activitySequence);
-					}
-				}
+			SequenceGenerationCallable<P,T,F,M,S,X,Y> sequenceGeneratorCallable = new SequenceGenerationCallable<P,T,F,M,S,X,Y>(new SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y>(getGenerator()));
+			traversalResult = sequenceGeneratorCallable.callRoutine();
+			getGenerator().setMarkingGraph(sequenceGeneratorCallable.getMarkingGraph());
+		} catch(Exception e){
+			// Abort when Petri net is unbounded
+			if(e.getCause() != null && e.getCause() instanceof StateSpaceException){
+				throw new OverlapException("Cannot generate sequences of unbounded net", e);
 			}
-
-		} catch (InterruptedException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new SequenceGenerationException("Exception during sequence generation.<br>Reason: " + e.getMessage());
+			throw new OverlapException("Exception during marking graph construction", e);
 		}
 		
-		if(!includeSilentTransitions){
-			sequences = removeSilentTransitions(sequences);	
-			completeSequences = removeSilentTransitions(completeSequences);	
+		// Perform replay
+		ReplayResult<E> replayResult = null;
+		try {
+			ReplayCallable<P,T,F,M,S,X,Y,E> replayingCallable = new ReplayCallable<P,T,F,M,S,X,Y,E>(new ReplayCallableGenerator<P,T,F,M,S,X,Y,E>(getGenerator()));
+			replayResult = replayingCallable.callRoutine();
+		} catch(Exception e){
+			throw new OverlapException("Exception during replay", e);
 		}
-		petriNet.setMarking(actualMarking);
-		return new MGTraversalResult(sequences, completeSequences);
+		
+		return new OverlapResult<E>(traversalResult, replayResult);
 	}
 	
 	private List<List<X>> getStateSequences() throws InterruptedException{
 		List<List<X>> stateSequences = new ArrayList<List<X>>();
-		for(List<X> continuation: getContinuationsRec(markingGraph.getInitialState())){
+		for(List<X> continuation: getContinuationsRec(getGenerator().getMarkingGraph().getInitialState())){
 			if (Thread.currentThread().isInterrupted()) {
 				throw new InterruptedException();
 			}
 			List<X> newContinuation = new ArrayList<X>();
-			newContinuation.add(markingGraph.getInitialState());
+			newContinuation.add(getGenerator().getMarkingGraph().getInitialState());
 			newContinuation.addAll(continuation);
 			stateSequences.add(newContinuation);
 		}
@@ -155,7 +115,7 @@ public class SequenceGeneratorCallable< P extends AbstractPlace<F,S>,
 	
 		Set<X> children = null;
 		try {
-			children = markingGraph.getChildren(actualState.getName());
+			children = getGenerator().getMarkingGraph().getChildren(actualState.getName());
 		} catch (VertexNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -218,7 +178,7 @@ public class SequenceGeneratorCallable< P extends AbstractPlace<F,S>,
 			}
 			Set<String> activitiesToRemove = new HashSet<String>();
 			for(String activityLabel: sequence){
-				for(T transition: petriNet.getTransitions(activityLabel)){
+				for(T transition: getGenerator().getPetriNet().getTransitions(activityLabel)){
 					if(transition.isSilent()){
 						activitiesToRemove.add(activityLabel);
 					}
@@ -291,7 +251,7 @@ public class SequenceGeneratorCallable< P extends AbstractPlace<F,S>,
 	private List<String> getEventsBetweenStates(String fromStateName, String toStateName) throws InterruptedException{
 		List<String> eventNames = new ArrayList<String>();
 		try {
-			for (AbstractLabeledTransitionRelation<X,Event,M> relation : markingGraph.getIncomingRelationsFor(toStateName)) {
+			for (AbstractLabeledTransitionRelation<X,Event,M> relation : getGenerator().getMarkingGraph().getIncomingRelationsFor(toStateName)) {
 				if (Thread.currentThread().isInterrupted()) {
 					throw new InterruptedException();
 				}

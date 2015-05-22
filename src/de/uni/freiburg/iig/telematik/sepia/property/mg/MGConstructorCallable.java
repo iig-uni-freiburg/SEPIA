@@ -11,7 +11,6 @@ import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.property.AbstractPNPropertyCheckerCallable;
@@ -26,28 +25,28 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 	
 	private static final String rgGraphNodeFormat = "s%s";
 	
-	public MGConstructorCallable(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
-		super(petriNet);
+	public MGConstructorCallable(MGConstructorCallableGenerator<P,T,F,M,S,X,Y> generator){
+		super(generator);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public AbstractMarkingGraph<M,S,X,Y> callRoutine() throws MarkingGraphException, InterruptedException {
 		
-		M savedMarking = (M) petriNet.getMarking().clone();
+		M savedMarking = (M) getGenerator().getPetriNet().getMarking().clone();
 		ArrayBlockingQueue<M> queue = new ArrayBlockingQueue<M>(10);
 		Set<M> allKnownStates = new HashSet<M>();
 
-		allKnownStates.add(petriNet.getInitialMarking());
+		allKnownStates.add(getGenerator().getPetriNet().getInitialMarking());
 		AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 		try{
-			markingGraph = (AbstractMarkingGraph<M,S,X,Y>) petriNet.getMarkingGraphClass().newInstance();
+			markingGraph = (AbstractMarkingGraph<M,S,X,Y>) getGenerator().getPetriNet().getMarkingGraphClass().newInstance();
 		} catch (Exception e) {
 			throw new MarkingGraphException("Cannot create new instance of markign graph class", e);
 		}
 		int stateCount = 0;
 		Map<String, String> stateNames = new HashMap<String, String>();
-		M initialMarking = petriNet.getInitialMarking();
+		M initialMarking = getGenerator().getPetriNet().getInitialMarking();
 		queue.offer(initialMarking);
 		String stateName = String.format(rgGraphNodeFormat, stateCount++);
 		markingGraph.addState(stateName, (M) initialMarking.clone());
@@ -64,21 +63,21 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 				}
 				calculationSteps++;
 				if((calculationSteps >= MGConstruction.MAX_RG_CALCULATION_STEPS)){
-					petriNet.setMarking(savedMarking);
+					getGenerator().getPetriNet().setMarking(savedMarking);
 					throw new StateSpaceException("Reached maximum calculation steps for building marking graph.");
 				}
 				M nextMarking = queue.poll();
-				petriNet.setMarking(nextMarking);
+				getGenerator().getPetriNet().setMarking(nextMarking);
 //				M marking = (M) nextMarking.clone();
 				String nextStateName = stateNames.get(nextMarking.toString());
 //				System.out.println("Next marking (" + nextStateName + "): " + nextMarking);
 
-				if(petriNet.hasEnabledTransitions()){
+				if(getGenerator().getPetriNet().hasEnabledTransitions()){
 					String newStateName = null;
-					for (T enabledTransition : petriNet.getEnabledTransitions()) {
+					for (T enabledTransition : getGenerator().getPetriNet().getEnabledTransitions()) {
 
 //						System.out.println("   enabled: " + enabledTransition.getName());
-						M newMarking = petriNet.fireCheck(enabledTransition.getName());
+						M newMarking = getGenerator().getPetriNet().fireCheck(enabledTransition.getName());
 						
 						// Check if this marking is already known
 						M equalMarking = null;
@@ -118,7 +117,7 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 		} catch (Exception e) {
 			throw new MarkingGraphException("Exception during marking graph construction.<br>Reason: " + e.getMessage(), e);
 		}
-		petriNet.setMarking(savedMarking);
+		getGenerator().getPetriNet().setMarking(savedMarking);
 		return markingGraph;
 	}
 

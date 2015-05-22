@@ -4,13 +4,10 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
-import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.property.AbstractThreadedPNPropertyChecker;
@@ -23,26 +20,19 @@ public class ThreadedDeadTransitionsChecker<P extends AbstractPlace<F,S>,
 											S extends Object,
 											X extends AbstractMarkingGraphState<M,S>,
 											Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,DeadTransitionCheckResult>{
-
-	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	
-	protected ThreadedDeadTransitionsChecker(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
-		super(petriNet);
+	public ThreadedDeadTransitionsChecker(DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y> generator){
+		super(generator);
 	}
 	
-	protected ThreadedDeadTransitionsChecker(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph){
-		this(petriNet);
-		Validate.notNull(markingGraph);
-		this.markingGraph = markingGraph;
+	@Override
+	protected DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
+		return (DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y>) super.getGenerator();
 	}
 	
 	@Override
 	protected AbstractCallable<DeadTransitionCheckResult> getCallable() {
-		if(markingGraph != null){
-			return new DeadTransitionCheckingCallable<P,T,F,M,S,X,Y>(petriNet, markingGraph);
-		} else {
-			return new DeadTransitionCheckingCallable<P,T,F,M,S,X,Y>(petriNet);
-		}
+		return new DeadTransitionCheckingCallable<P,T,F,M,S,X,Y>(getGenerator());
 	}
 	
 	public void runCalculation(){

@@ -32,9 +32,14 @@ public class ThreadedMGCalculator<	P extends AbstractPlace<F,S>,
 																				   implements MGCalculator<P,T,F,M,S,X,Y>{
 	
 	protected ThreadedMGCalculator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
-		super(petriNet);
+		super(new MGConstructorCallableGenerator<P,T,F,M,S,X,Y>(petriNet));
 	}
 	
+	@Override
+	protected MGConstructorCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
+		return (MGConstructorCallableGenerator<P,T,F,M,S,X,Y>) super.getGenerator();
+	}
+
 	@Override
 	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() throws MarkingGraphException{
 		try {
@@ -62,7 +67,7 @@ public class ThreadedMGCalculator<	P extends AbstractPlace<F,S>,
 	
 	@Override
 	public AbstractCallable<AbstractMarkingGraph<M,S,X,Y>> getCallable() {
-		return new MGConstructorCallable<P,T,F,M,S,X,Y>(petriNet);
+		return new MGConstructorCallable<P,T,F,M,S,X,Y>(getGenerator());
 	}
 	
 	@Override

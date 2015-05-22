@@ -4,13 +4,10 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
-import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.property.AbstractThreadedPNPropertyChecker;
@@ -24,44 +21,18 @@ public class ThreadedSequencesGenerator<P extends AbstractPlace<F,S>,
 										X extends AbstractMarkingGraphState<M,S>,
 										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,MGTraversalResult>{
 
-	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
-	private Boolean includeSilentTransitions = null;
-	
-	protected ThreadedSequencesGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
-		super(petriNet);
-	}
-	
-	protected ThreadedSequencesGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, boolean includeSilentTransitions){
-		this(petriNet);
-		this.includeSilentTransitions = includeSilentTransitions;
-	}
-	
-	protected ThreadedSequencesGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph){
-		this(petriNet);
-		Validate.notNull(markingGraph);
-		this.markingGraph = markingGraph;
-	}
-	
-	protected ThreadedSequencesGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, AbstractMarkingGraph<M,S,X,Y> markingGraph, boolean includeSilentTransitions){
-		this(petriNet, markingGraph);
-		this.includeSilentTransitions = includeSilentTransitions;
+	protected ThreadedSequencesGenerator(SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y> generator){
+		super(generator);
 	}
 	
 	@Override
+	protected SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
+		return (SequenceGenerationCallableGenerator<P, T, F, M, S, X, Y>) super.getGenerator();
+	}
+
+	@Override
 	protected AbstractCallable<MGTraversalResult> getCallable() {
-		if(markingGraph != null){
-			if(includeSilentTransitions != null){
-				return new SequenceGeneratorCallable<P,T,F,M,S,X,Y>(petriNet, markingGraph, includeSilentTransitions);
-			} else {
-				return new SequenceGeneratorCallable<P,T,F,M,S,X,Y>(petriNet, markingGraph);
-			}
-		} else {
-			if(includeSilentTransitions != null){
-				return new SequenceGeneratorCallable<P,T,F,M,S,X,Y>(petriNet, includeSilentTransitions);
-			} else {
-				return new SequenceGeneratorCallable<P,T,F,M,S,X,Y>(petriNet);
-			}
-		}
+		return new SequenceGenerationCallable<P,T,F,M,S,X,Y>(getGenerator());
 	}
 	
 	public void runCalculation(){
