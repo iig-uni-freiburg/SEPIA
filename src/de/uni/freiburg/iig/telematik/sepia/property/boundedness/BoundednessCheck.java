@@ -35,6 +35,26 @@ public class BoundednessCheck {
 		}
 		return true;
 	}
+	
+	/**
+	 * Checks if the Petri net is bounded.<br>
+	 * In case the marking graph of the net cannot be constructed with the maximum number of elements (see {@link MGConstruction#MAX_RG_CALCULATION_STEPS}),<br>
+	 * it is assumed to be unbounded; otherwise bounded.<br>
+	 * @param petriNet The basic Petri net for operation.
+	 * @return The marking graph of the given Petri net.
+	 * @throws BoundednessException
+	 */
+	public static <	P extends AbstractPlace<F,S>, 
+					T extends AbstractTransition<F,S>, 
+					F extends AbstractFlowRelation<P,T,S>, 
+					M extends AbstractMarking<S>, 
+					S extends Object,
+					X extends AbstractMarkingGraphState<M,S>,
+					Y extends AbstractMarkingGraphRelation<M,X,S>>
+
+	void initiateBoundednessCheck(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, ExecutorListener listener) throws BoundednessException{
+		initiateBoundednessCheck(new BoundednessCheckGenerator<P,T,F,M,S,X,Y>(petriNet), listener);
+	}
 
 	/**
 	 * Checks if the Petri net is bounded.<br>
@@ -58,6 +78,26 @@ public class BoundednessCheck {
 		checker.addExecutorListener(listener);
 		
 		checker.runCalculation();
+	}
+	
+	/**
+	 * Checks if the Petri net is bounded.<br>
+	 * In case the marking graph of the net cannot be constructed with the maximum number of elements (see {@link MGConstruction#MAX_RG_CALCULATION_STEPS}),<br>
+	 * it is assumed to be unbounded; otherwise bounded.<br>
+	 * @param petriNet The basic Petri net for operation.
+	 * @return The marking graph of the given Petri net.
+	 * @throws BoundednessException
+	 */
+	public static <	P extends AbstractPlace<F,S>, 
+					T extends AbstractTransition<F,S>, 
+					F extends AbstractFlowRelation<P,T,S>, 
+					M extends AbstractMarking<S>, 
+					S extends Object,
+					X extends AbstractMarkingGraphState<M,S>,
+					Y extends AbstractMarkingGraphRelation<M,X,S>>
+
+	Boundedness getBoundedness(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException{
+		return getBoundedness(new BoundednessCheckGenerator<P,T,F,M,S,X,Y>(petriNet));
 	}
 	
 	/**

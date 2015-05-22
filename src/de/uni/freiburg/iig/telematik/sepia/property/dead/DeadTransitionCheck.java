@@ -5,6 +5,7 @@ import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
@@ -25,6 +26,20 @@ public class DeadTransitionCheck {
 		calculator.addExecutorListener(listener);
 		calculator.runCalculation();
 	}
+	
+	public static <	P extends AbstractPlace<F,S>, 
+					T extends AbstractTransition<F,S>, 
+					F extends AbstractFlowRelation<P,T,S>, 
+					M extends AbstractMarking<S>, 
+					S extends Object,
+					X extends AbstractMarkingGraphState<M,S>,
+					Y extends AbstractMarkingGraphRelation<M,X,S>>
+
+					void initiateDeadTransitionCheck(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, ExecutorListener listener)
+							throws DeadTransitionCheckException {
+
+		initiateDeadTransitionCheck(new DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y>(petriNet), listener);
+}
 
 	public static <	P extends AbstractPlace<F,S>, 
 					T extends AbstractTransition<F,S>, 
@@ -43,4 +58,17 @@ public class DeadTransitionCheck {
 		return calculator.getTransitionCheckingResult();
 	}
 
+	public static <	P extends AbstractPlace<F,S>, 
+					T extends AbstractTransition<F,S>, 
+					F extends AbstractFlowRelation<P,T,S>, 
+					M extends AbstractMarking<S>, 
+					S extends Object,
+					X extends AbstractMarkingGraphState<M,S>,
+					Y extends AbstractMarkingGraphRelation<M,X,S>>
+
+					DeadTransitionCheckResult checkDeadTransitions(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet)
+							throws DeadTransitionCheckException {
+
+		return checkDeadTransitions(new DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y>(petriNet));
+	}
 }
