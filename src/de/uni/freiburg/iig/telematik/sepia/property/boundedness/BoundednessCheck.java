@@ -24,11 +24,9 @@ public class BoundednessCheck {
 					T extends AbstractTransition<F,S>, 
 					F extends AbstractFlowRelation<P,T,S>, 
 					M extends AbstractMarking<S>, 
-					S extends Object,
-					X extends AbstractMarkingGraphState<M,S>,
-					Y extends AbstractMarkingGraphRelation<M,X,S>>
+					S extends Object>
 
-	boolean checkCapacityBoundedness(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	boolean checkCapacityBoundedness(AbstractPetriNet<P,T,F,M,S> petriNet) {
 		for(P p: petriNet.getPlaces()){
 			if(!p.isBounded())
 				return false;
@@ -52,8 +50,8 @@ public class BoundednessCheck {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	void initiateBoundednessCheck(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, ExecutorListener listener) throws BoundednessException{
-		initiateBoundednessCheck(new BoundednessCheckGenerator<P,T,F,M,S,X,Y>(petriNet), listener);
+	void initiateBoundednessCheck(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener listener) throws BoundednessException{
+		initiateBoundednessCheck(new BoundednessCheckGenerator<P,T,F,M,S>(petriNet), listener);
 	}
 
 	/**
@@ -72,7 +70,7 @@ public class BoundednessCheck {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	void initiateBoundednessCheck(BoundednessCheckGenerator<P,T,F,M,S,X,Y> generator, ExecutorListener listener) throws BoundednessException{
+	void initiateBoundednessCheck(BoundednessCheckGenerator<P,T,F,M,S> generator, ExecutorListener listener) throws BoundednessException{
 		
 		ThreadedBoundednessChecker<P,T,F,M,S,X,Y> checker = new ThreadedBoundednessChecker<P,T,F,M,S,X,Y>(generator);
 		checker.addExecutorListener(listener);
@@ -96,8 +94,8 @@ public class BoundednessCheck {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	Boundedness getBoundedness(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) throws BoundednessException{
-		return getBoundedness(new BoundednessCheckGenerator<P,T,F,M,S,X,Y>(petriNet));
+	Boundedness getBoundedness(AbstractPetriNet<P,T,F,M,S> petriNet) throws BoundednessException{
+		return getBoundedness(new BoundednessCheckGenerator<P,T,F,M,S>(petriNet));
 	}
 	
 	/**
@@ -116,7 +114,7 @@ public class BoundednessCheck {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	Boundedness getBoundedness(BoundednessCheckGenerator<P,T,F,M,S,X,Y> generator) throws BoundednessException{
+	Boundedness getBoundedness(BoundednessCheckGenerator<P,T,F,M,S> generator) throws BoundednessException{
 		
 		ThreadedBoundednessChecker<P,T,F,M,S,X,Y> checker = new ThreadedBoundednessChecker<P,T,F,M,S,X,Y>(generator);
 		checker.runCalculation();

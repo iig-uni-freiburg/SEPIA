@@ -11,8 +11,6 @@ import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
@@ -25,14 +23,12 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 							   T extends AbstractCPNTransition<F>, 
 							   F extends AbstractCPNFlowRelation<P,T>, 
 							   M extends AbstractCPNMarking,
-							   X extends AbstractCPNMarkingGraphState<M>,
-				   			   Y extends AbstractCPNMarkingGraphRelation<M, X>,
-							   N extends AbstractCPN<P,T,F,M,X,Y>,
-							   G extends AbstractCPNGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, X, Y, N, G> {
+							   N extends AbstractCPN<P,T,F,M>,
+							   G extends AbstractCPNGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, N, G> {
 
 	private final static StyleSheet STYLESHEET = new StyleSheet();
 
-	public PNMLCPNSerializer(AbstractGraphicalCPN<P, T, F, M, X, Y, N, G> petriNet) {
+	public PNMLCPNSerializer(AbstractGraphicalCPN<P, T, F, M, N, G> petriNet) {
 		super(petriNet);
 	}
 

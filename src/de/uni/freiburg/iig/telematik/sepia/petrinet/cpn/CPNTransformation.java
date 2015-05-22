@@ -25,14 +25,14 @@ public class CPNTransformation {
 	   			   	  M1 extends AbstractPTMarking,
 	   			   	  X1 extends AbstractPTMarkingGraphState<M1>,
 	   			   	  Y1 extends AbstractPTMarkingGraphRelation<M1,X1>,
-	   			   	  N1 extends AbstractPTNet<P1,T1,F1,M1,X1,Y1>,
+	   			   	  N1 extends AbstractPTNet<P1,T1,F1,M1>,
 	   			   	  P2 extends AbstractCPNPlace<F2>,
 	   			   	  T2 extends AbstractCPNTransition<F2>, 
 	   			   	  F2 extends AbstractCPNFlowRelation<P2,T2>, 
 	   			   	  M2 extends AbstractCPNMarking,
 	   			   	  X2 extends AbstractCPNMarkingGraphState<M2>,
 	   			   	  Y2 extends AbstractCPNMarkingGraphRelation<M2,X2>,
-	   			   	  N2 extends AbstractCPN<P2,T2,F2,M2,X2,Y2>> 
+	   			   	  N2 extends AbstractCPN<P2,T2,F2,M2>> 
 
 	void transform(N1 ptNet, N2 cpn) {
 		cpn.setName(ptNet.getName());
@@ -68,11 +68,9 @@ public class CPNTransformation {
 				   T extends AbstractPTTransition<F>, 
 				   F extends AbstractPTFlowRelation<P,T>, 
 				   M extends AbstractPTMarking,
-				   X extends AbstractPTMarkingGraphState<M>,
-				   Y extends AbstractPTMarkingGraphRelation<M,X>,
-				   N extends AbstractPTNet<P,T,F,M,X,Y>> 
+				   N extends AbstractPTNet<P,T,F,M>> 
 	
-	CPN transformToCPN(AbstractPTNet<P,T,F,M,X,Y> ptNet) {
+	CPN transformToCPN(AbstractPTNet<P,T,F,M> ptNet) {
 		Validate.notNull(ptNet);
 		CPN cpn = new CPN();
 		transform(ptNet, cpn);

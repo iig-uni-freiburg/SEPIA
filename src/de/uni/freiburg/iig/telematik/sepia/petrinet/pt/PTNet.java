@@ -5,13 +5,11 @@ import java.util.Set;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraph;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 
-public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTMarkingGraphState, PTMarkingGraphRelation>{
+public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, PTMarking>{
 	
 	private static final long serialVersionUID = 7377840837566864887L;
 

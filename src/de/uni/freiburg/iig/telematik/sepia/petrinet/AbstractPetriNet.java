@@ -34,8 +34,6 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
  
 /**
  * Abstract class for defining Petri nets and their properties.<br>
@@ -70,9 +68,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 									   T extends AbstractTransition<F,S>, 
 									   F extends AbstractFlowRelation<P,T,S>,
 									   M extends AbstractMarking<S>,
-									   S extends Object,
-									   X extends AbstractMarkingGraphState<M,S>, 
-									   Y extends AbstractMarkingGraphRelation<M,X,S>>
+									   S extends Object>
 
 			    implements 	TransitionListener<AbstractTransition<F,S>>, 
 			    			TokenListener<AbstractPlace<F,S>>,
@@ -1558,8 +1554,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public AbstractPetriNet<P,T,F,M,S,X,Y> clone(){
-		AbstractPetriNet<P,T,F,M,S,X,Y> result = newInstance();
+	public AbstractPetriNet<P,T,F,M,S> clone(){
+		AbstractPetriNet<P,T,F,M,S> result = newInstance();
 		Map<T,T> clonedTransitions = new HashMap<T,T>();
 		Map<P,P> clonedPlaces = new HashMap<P,P>();
 
@@ -1581,7 +1577,7 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 		return result;
 	}
 	
-	public abstract AbstractPetriNet<P,T,F,M,S,X,Y> newInstance();
+	public abstract AbstractPetriNet<P,T,F,M,S> newInstance();
 
 	
 //	@SuppressWarnings("unchecked")

@@ -25,22 +25,21 @@ public class ReplayCallableGenerator< 	P extends AbstractPlace<F,S>,
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
 										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										E extends LogEntry> extends AbstractCallableGenerator<P,T,F,M,S,X,Y>{
+										E extends LogEntry> extends AbstractCallableGenerator<P,T,F,M,S>{
 
 	private Map<String, String> transitionLabelRelation = null;
 	private TerminationCriteria terminationCriteria = null;
 	protected List<List<String>> activitySequences = null;
 	protected List<LogTrace<E>> logTraces = null;
 	
-	public ReplayCallableGenerator(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> overlapGenerator){
+	public <X extends AbstractMarkingGraphState<M,S>,
+			Y extends AbstractMarkingGraphRelation<M,X,S>> ReplayCallableGenerator(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> overlapGenerator){
 		super(overlapGenerator);
 		this.transitionLabelRelation = overlapGenerator.getTransitionLabelRelation();
 		this.terminationCriteria = overlapGenerator.getTerminationCriteria();
 	}
 	
-	public ReplayCallableGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	public ReplayCallableGenerator(AbstractPetriNet<P,T,F,M,S> petriNet) {
 		super(petriNet);
 		this.transitionLabelRelation = Replay.getDefaultTransitionLabelRelation(petriNet);
 	}

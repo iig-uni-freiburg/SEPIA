@@ -11,14 +11,14 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 
 public abstract class PNTraverser<T extends AbstractTransition<?,?>> {
 	
-	protected AbstractPetriNet<?,T,?,?,?,?,?> net;
+	protected AbstractPetriNet<?,T,?,?,?> net;
 	
-	public PNTraverser(AbstractPetriNet<?,T,?,?,?,?,?> net){
+	public PNTraverser(AbstractPetriNet<?,T,?,?,?> net){
 		Validate.notNull(net);
 		this.net = net;
 	}
 	
-	public AbstractPetriNet<?,T,?,?,?,?,?> getPetriNet(){
+	public AbstractPetriNet<?,T,?,?,?> getPetriNet(){
 		return net;
 	}
 

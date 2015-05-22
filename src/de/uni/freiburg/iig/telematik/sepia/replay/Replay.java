@@ -42,18 +42,16 @@ public class Replay {
 					F extends AbstractFlowRelation<P,T,S>, 
 					M extends AbstractMarking<S>, 
 					S extends Object,
-					X extends AbstractMarkingGraphState<M,S>,
-					Y extends AbstractMarkingGraphRelation<M,X,S>,
 					E extends LogEntry>
 
 		void 
 					
-		initiateReplay(	ReplayCallableGenerator<P,T,F,M,S,X,Y,E> generator,
+		initiateReplay(	ReplayCallableGenerator<P,T,F,M,S,E> generator,
 						ExecutorListener listener)
 												
 		throws ReplayException {
 
-		ThreadedReplayer<P,T,F,M,S,X,Y,E> calculator = new ThreadedReplayer<P,T,F,M,S,X,Y,E>(generator);
+		ThreadedReplayer<P,T,F,M,S,E> calculator = new ThreadedReplayer<P,T,F,M,S,E>(generator);
 		calculator.addExecutorListener(listener);
 		calculator.runCalculation();
 	}
@@ -63,17 +61,15 @@ public class Replay {
 					F extends AbstractFlowRelation<P,T,S>, 
 					M extends AbstractMarking<S>, 
 					S extends Object,
-					X extends AbstractMarkingGraphState<M,S>,
-					Y extends AbstractMarkingGraphRelation<M,X,S>,
 					E extends LogEntry>
 
 		ReplayResult<E> 
 
-		replayTraces(ReplayCallableGenerator<P,T,F,M,S,X,Y,E> generator)
+		replayTraces(ReplayCallableGenerator<P,T,F,M,S,E> generator)
 		
 		throws ReplayException {
 
-		ThreadedReplayer<P,T,F,M,S,X,Y,E> calculator = new ThreadedReplayer<P,T,F,M,S,X,Y,E>(generator);
+		ThreadedReplayer<P,T,F,M,S,E> calculator = new ThreadedReplayer<P,T,F,M,S,E>(generator);
 		calculator.runCalculation();
 
 		return calculator.getReplayResult();
@@ -84,13 +80,11 @@ public class Replay {
 					F extends AbstractFlowRelation<P,T,S>, 
 					M extends AbstractMarking<S>, 
 					S extends Object,
-					X extends AbstractMarkingGraphState<M,S>,
-					Y extends AbstractMarkingGraphRelation<M,X,S>,
 					E extends LogEntry>
 	
 		Map<String,String> 
 	
-		getDefaultTransitionLabelRelation(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
+		getDefaultTransitionLabelRelation(AbstractPetriNet<P,T,F,M,S> petriNet){
 		
 		Map<String,String> transitionLabelRelation = new HashMap<String,String>();
 		Set<String> transitionLabels = PNUtils.getLabelSetFromTransitions(petriNet.getTransitions(), false);

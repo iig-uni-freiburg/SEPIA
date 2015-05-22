@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -23,18 +21,16 @@ public class ReplayCallable< P extends AbstractPlace<F,S>,
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
 										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										E extends LogEntry> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,ReplayResult<E>> {
+										E extends LogEntry> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,ReplayResult<E>> {
 	
-	public ReplayCallable(ReplayCallableGenerator<P,T,F,M,S,X,Y,E> generator) {
+	public ReplayCallable(ReplayCallableGenerator<P,T,F,M,S,E> generator) {
 		super(generator);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ReplayCallableGenerator<P,T,F,M,S,X,Y,E> getGenerator() {
-		return (ReplayCallableGenerator<P,T,F,M,S,X,Y,E>) super.getGenerator();
+	protected ReplayCallableGenerator<P,T,F,M,S,E> getGenerator() {
+		return (ReplayCallableGenerator<P,T,F,M,S,E>) super.getGenerator();
 	}
 
 	@Override

@@ -19,12 +19,13 @@ public class ThreadedSequencesGenerator<P extends AbstractPlace<F,S>,
 										M extends AbstractMarking<S>, 
 										S extends Object,
 										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,MGTraversalResult>{
+										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,MGTraversalResult>{
 
 	protected ThreadedSequencesGenerator(SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y> generator){
 		super(generator);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
 		return (SequenceGenerationCallableGenerator<P, T, F, M, S, X, Y>) super.getGenerator();

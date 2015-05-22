@@ -35,7 +35,7 @@ public class DeadTransitionCheck {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-					void initiateDeadTransitionCheck(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, ExecutorListener listener)
+					void initiateDeadTransitionCheck(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener listener)
 							throws DeadTransitionCheckException {
 
 		initiateDeadTransitionCheck(new DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y>(petriNet), listener);
@@ -66,7 +66,7 @@ public class DeadTransitionCheck {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-					DeadTransitionCheckResult checkDeadTransitions(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet)
+					DeadTransitionCheckResult checkDeadTransitions(AbstractPetriNet<P,T,F,M,S> petriNet)
 							throws DeadTransitionCheckException {
 
 		return checkDeadTransitions(new DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y>(petriNet));

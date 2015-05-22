@@ -5,8 +5,6 @@ import java.util.Set;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraph;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
@@ -17,9 +15,7 @@ public class IFNet extends AbstractIFNet<IFNetPlace,
 										 IFNetFlowRelation, 
 										 IFNetMarking, 
 										 RegularIFNetTransition, 
-										 DeclassificationTransition, 
-										 IFNetMarkingGraphState, 
-										 IFNetMarkingGraphRelation> {
+										 DeclassificationTransition> {
 
 	private static final long serialVersionUID = -2155147434115176455L;
 

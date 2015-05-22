@@ -19,12 +19,13 @@ public class ThreadedDeadTransitionsChecker<P extends AbstractPlace<F,S>,
 											M extends AbstractMarking<S>, 
 											S extends Object,
 											X extends AbstractMarkingGraphState<M,S>,
-											Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,DeadTransitionCheckResult>{
+											Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,DeadTransitionCheckResult>{
 	
 	public ThreadedDeadTransitionsChecker(DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y> generator){
 		super(generator);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
 		return (DeadTransitionCheckCallableGenerator<P,T,F,M,S,X,Y>) super.getGenerator();

@@ -12,8 +12,6 @@ import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.AbstractCPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -35,10 +33,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 								  T extends AbstractCPNTransition<F>, 
 								  F extends AbstractCPNFlowRelation<P,T>, 
-								  M extends AbstractCPNMarking,
-								  X extends AbstractCPNMarkingGraphState<M>,
-								  Y extends AbstractCPNMarkingGraphRelation<M,X>> 
-									extends AbstractPetriNet<P,T,F,M,Multiset<String>,X,Y>{
+								  M extends AbstractCPNMarking> 
+									extends AbstractPetriNet<P,T,F,M,Multiset<String>>{
 	
 	private static final long serialVersionUID = -6786656892963004407L;
 	public static final String DEFAULT_TOKEN_COLOR = "black";

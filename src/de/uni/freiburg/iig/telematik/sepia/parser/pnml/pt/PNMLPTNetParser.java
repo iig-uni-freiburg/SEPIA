@@ -5,8 +5,6 @@ import org.w3c.dom.Document;
 import de.invation.code.toval.parser.ParserException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.PTGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.PTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
@@ -30,7 +28,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
  * 
  * @author Adrian Lange
  */
-public class PNMLPTNetParser extends AbstractPNMLPTNetParser<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTMarkingGraphState, PTMarkingGraphRelation, PTNet, PTGraphics> {
+public class PNMLPTNetParser extends AbstractPNMLPTNetParser<PTPlace, PTTransition, PTFlowRelation, PTMarking, PTNet, PTGraphics> {
 
 	@Override
 	public GraphicalPTNet parse(Document pnmlDocument) throws ParserException {

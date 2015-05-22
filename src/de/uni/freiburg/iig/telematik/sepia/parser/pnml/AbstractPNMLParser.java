@@ -22,17 +22,15 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Dimension;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
-import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Fill.GradientRotation;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Align;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Font.Decoration;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Shape;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
+import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
@@ -50,9 +48,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 										 F extends AbstractFlowRelation<P, T, S>,
 										 M extends AbstractMarking<S>,
 										 S extends Object,
-										 X extends AbstractMarkingGraphState<M, S>,
-								   		 Y extends AbstractMarkingGraphRelation<M, X, S>,
-										 N extends AbstractPetriNet<P, T, F, M, S, X, Y>,
+										 N extends AbstractPetriNet<P, T, F, M, S>,
 										 G extends AbstractPNGraphics<P, T, F, M, S>> {
 
 	protected N net;
@@ -73,7 +69,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
 	 *            DOM document to parse
 	 * @return Petri net with graphical information
 	 */
-	public abstract AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> parse(Document pnmlDocument) throws ParserException;
+	public abstract AbstractGraphicalPN<P, T, F, M, S, N, G> parse(Document pnmlDocument) throws ParserException;
 
 	/**
 	 * Parses a PNML document into an existing instance of an {@link AbstractGraphicalPN}. Use {@link #parse(Document)} to return an {@link AbstractGraphicalPN}.

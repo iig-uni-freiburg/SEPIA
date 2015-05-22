@@ -30,7 +30,7 @@ public class MGConstruction {
 					X extends AbstractMarkingGraphState<M,S>,
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
-	void initiateMarkingGraphConstruction(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet, ExecutorListener listener) 
+	void initiateMarkingGraphConstruction(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener listener) 
 			throws MarkingGraphException {
 		
 		initiateMarkingGraphConstruction(new ThreadedMGCalculator<P,T,F,M,S,X,Y>(petriNet), listener);
@@ -101,7 +101,7 @@ public class MGConstruction {
 					Y extends AbstractMarkingGraphRelation<M,X,S>>
 
 	
-	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) 
+	AbstractMarkingGraph<M,S,X,Y> buildMarkingGraph(AbstractPetriNet<P,T,F,M,S> petriNet) 
 			throws MarkingGraphException {
 		
 		return buildMarkingGraph(new ThreadedMGCalculator<P,T,F,M,S,X,Y>(petriNet));

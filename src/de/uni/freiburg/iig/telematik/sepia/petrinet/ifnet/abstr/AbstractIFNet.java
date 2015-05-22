@@ -12,8 +12,6 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
@@ -38,11 +36,9 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 						   			F extends AbstractIFNetFlowRelation<P,T>, 
 						   			M extends AbstractIFNetMarking,
 						   			R extends AbstractRegularIFNetTransition<F>,
-						   			D extends AbstractDeclassificationTransition<F>,
-						   			X extends AbstractIFNetMarkingGraphState<M>,
-									Y extends AbstractIFNetMarkingGraphRelation<M, X>> 
+						   			D extends AbstractDeclassificationTransition<F>> 
  
-							 		  extends AbstractCPN<P,T,F,M,X,Y>{
+							 		  extends AbstractCPN<P,T,F,M>{
 
 	private static final long serialVersionUID = 7710837900551942698L;
 	

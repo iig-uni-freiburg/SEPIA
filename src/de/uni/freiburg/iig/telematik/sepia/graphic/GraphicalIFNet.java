@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.Random;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
@@ -26,8 +24,6 @@ public class GraphicalIFNet extends AbstractGraphicalIFNet<	IFNetPlace,
 															IFNetMarking, 
 															RegularIFNetTransition, 
 															DeclassificationTransition, 
-															IFNetMarkingGraphState, 
-															IFNetMarkingGraphRelation, 
 															IFNet, 
 															IFNetGraphics> {
 

@@ -31,12 +31,13 @@ public class SequenceGenerationCallable< P extends AbstractPlace<F,S>,
 										M extends AbstractMarking<S>, 
 										S extends Object,
 										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,MGTraversalResult> {
+										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,MGTraversalResult> {
 
 	public SequenceGenerationCallable(SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y> generator) {
 		super(generator);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
 		return (SequenceGenerationCallableGenerator<P,T,F,M,S,X,Y>) super.getGenerator();

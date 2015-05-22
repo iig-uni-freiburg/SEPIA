@@ -8,8 +8,6 @@ import java.util.List;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -31,11 +29,9 @@ public class PNTraversalUtils {
 	   			   T extends AbstractTransition<F,S>, 
 	   			   F extends AbstractFlowRelation<P,T,S>, 
 	   			   M extends AbstractMarking<S>, 
-	   			   S extends Object,
-	   			   X extends AbstractMarkingGraphState<M, S>,
-				   Y extends AbstractMarkingGraphRelation<M, X, S>> 
+	   			   S extends Object> 
 	
-				   Collection<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S,X,Y> net, int runs, int maxEventsPerTrace){
+				   Collection<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace){
 		
 		return testTraces(net, runs, maxEventsPerTrace, false, false, false);
 	}
@@ -53,11 +49,9 @@ public class PNTraversalUtils {
 	   			   T extends AbstractTransition<F,S>, 
 	   			   F extends AbstractFlowRelation<P,T,S>, 
 	   			   M extends AbstractMarking<S>, 
-	   			   S extends Object,
-	   			   X extends AbstractMarkingGraphState<M, S>,
-				   Y extends AbstractMarkingGraphRelation<M, X, S>> 
+	   			   S extends Object> 
 	
-				   Collection<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S,X,Y> net, int runs, int maxEventsPerTrace, boolean printOut, boolean onlyDistinctTraces, boolean useLabelNames){
+				   Collection<List<String>> testTraces(AbstractPetriNet<P,T,F,M,S> net, int runs, int maxEventsPerTrace, boolean printOut, boolean onlyDistinctTraces, boolean useLabelNames){
 		
 		Validate.notNull(net);
 		Collection<List<String>> traces = null;

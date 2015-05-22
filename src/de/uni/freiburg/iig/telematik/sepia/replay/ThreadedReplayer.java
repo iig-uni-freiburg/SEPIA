@@ -4,8 +4,6 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
@@ -18,23 +16,21 @@ public class ThreadedReplayer<P extends AbstractPlace<F,S>,
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
 										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,ReplayResult<E>>{
+										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,ReplayResult<E>>{
 	
-	protected ThreadedReplayer(ReplayCallableGenerator<P,T,F,M,S,X,Y,E> generator){
+	protected ThreadedReplayer(ReplayCallableGenerator<P,T,F,M,S,E> generator){
 		super(generator);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected ReplayCallableGenerator<P,T,F,M,S,X,Y,E> getGenerator() {
-		return (ReplayCallableGenerator<P,T,F,M,S,X,Y,E>) super.getGenerator();
+	protected ReplayCallableGenerator<P,T,F,M,S,E> getGenerator() {
+		return (ReplayCallableGenerator<P,T,F,M,S,E>) super.getGenerator();
 	}
 
 	@Override
 	protected AbstractCallable<ReplayResult<E>> getCallable() {
-		return new ReplayCallable<P,T,F,M,S,X,Y,E>(getGenerator());
+		return new ReplayCallable<P,T,F,M,S,E>(getGenerator());
 	}
 	
 	public void runCalculation(){

@@ -34,7 +34,7 @@ public class OverlapCallable< 	P extends AbstractPlace<F,S>,
 								S extends Object,
 								X extends AbstractMarkingGraphState<M,S>,
 								Y extends AbstractMarkingGraphRelation<M,X,S>,
-								E extends LogEntry> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,OverlapResult<E>> {
+								E extends LogEntry> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,OverlapResult<E>> {
 	
 	protected OverlapCallable(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> generator) {
 		super(generator);
@@ -65,7 +65,7 @@ public class OverlapCallable< 	P extends AbstractPlace<F,S>,
 		// Perform replay
 		ReplayResult<E> replayResult = null;
 		try {
-			ReplayCallable<P,T,F,M,S,X,Y,E> replayingCallable = new ReplayCallable<P,T,F,M,S,X,Y,E>(new ReplayCallableGenerator<P,T,F,M,S,X,Y,E>(getGenerator()));
+			ReplayCallable<P,T,F,M,S,E> replayingCallable = new ReplayCallable<P,T,F,M,S,E>(new ReplayCallableGenerator<P,T,F,M,S,E>(getGenerator()));
 			replayResult = replayingCallable.callRoutine();
 		} catch(Exception e){
 			throw new OverlapException("Exception during replay", e);

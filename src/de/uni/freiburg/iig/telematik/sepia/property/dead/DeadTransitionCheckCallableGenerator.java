@@ -16,15 +16,15 @@ public class DeadTransitionCheckCallableGenerator<	P extends AbstractPlace<F,S>,
 													M extends AbstractMarking<S>, 
 													S extends Object,
 													X extends AbstractMarkingGraphState<M,S>,
-													Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallableGenerator<P,T,F,M,S,X,Y>{
+													Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallableGenerator<P,T,F,M,S>{
 
 	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	
-	public DeadTransitionCheckCallableGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	public DeadTransitionCheckCallableGenerator(AbstractPetriNet<P,T,F,M,S> petriNet) {
 		super(petriNet);
 	}
 	
-	public AbstractMarkingGraph<M, S, X, Y> getMarkingGraph() {
+	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() {
 		return markingGraph;
 	}
 	

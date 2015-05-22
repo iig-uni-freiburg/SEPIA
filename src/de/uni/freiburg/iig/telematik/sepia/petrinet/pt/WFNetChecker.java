@@ -1,11 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.PNPropertiesChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.PropertyCheckingResult;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
@@ -18,9 +15,7 @@ public class WFNetChecker {
 	 				 T extends AbstractPTTransition<F>, 
 	 				 F extends AbstractPTFlowRelation<P,T>,
 	 				 M extends AbstractPTMarking,
-	 				 X extends AbstractPTMarkingGraphState<M>, 
-	 				 Y extends AbstractPTMarkingGraphRelation<M,X>,
-	 				 N extends AbstractPTNet<P,T,F,M,X,Y>> 
+	 				 N extends AbstractPTNet<P,T,F,M>> 
 
 	WFNetProperties checkWFNetStructure(N petriNet) {
 		
@@ -57,9 +52,7 @@ public class WFNetChecker {
 	 				 T extends AbstractPTTransition<F>, 
 	 				 F extends AbstractPTFlowRelation<P,T>,
 	 				 M extends AbstractPTMarking,
-	 				 X extends AbstractPTMarkingGraphState<M>, 
-	 				 Y extends AbstractPTMarkingGraphRelation<M,X>,
-	 				 N extends AbstractPTNet<P,T,F,M,X,Y>> 
+	 				 N extends AbstractPTNet<P,T,F,M>> 
 
 	boolean hasWFNetStructure(N petriNet) {
 		return checkWFNetStructure(petriNet).exception == null;

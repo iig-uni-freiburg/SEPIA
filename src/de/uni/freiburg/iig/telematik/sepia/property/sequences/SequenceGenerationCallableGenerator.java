@@ -13,17 +13,17 @@ import de.uni.freiburg.iig.telematik.sepia.property.AbstractCallableGenerator;
 import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
 
 public class SequenceGenerationCallableGenerator< 	P extends AbstractPlace<F,S>, 
-										T extends AbstractTransition<F,S>, 
-										F extends AbstractFlowRelation<P,T,S>, 
-										M extends AbstractMarking<S>, 
-										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallableGenerator<P,T,F,M,S,X,Y>{
+													T extends AbstractTransition<F,S>, 
+													F extends AbstractFlowRelation<P,T,S>, 
+													M extends AbstractMarking<S>, 
+													S extends Object,
+													X extends AbstractMarkingGraphState<M,S>,
+													Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallableGenerator<P,T,F,M,S>{
 	
 	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	private boolean includeSilentTransitions = SequenceGeneration.DEFAULT_INCLUDE_SILENT_TRANSITIONS;
 	
-	public SequenceGenerationCallableGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	public SequenceGenerationCallableGenerator(AbstractPetriNet<P,T,F,M,S> petriNet) {
 		super(petriNet);
 	}
 	

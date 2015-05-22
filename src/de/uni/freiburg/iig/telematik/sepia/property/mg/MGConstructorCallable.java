@@ -21,7 +21,7 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 									M extends AbstractMarking<S>, 
 									S extends Object,
 									X extends AbstractMarkingGraphState<M,S>,
-									Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,X,Y,AbstractMarkingGraph<M,S,X,Y>> {
+									Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,AbstractMarkingGraph<M,S,X,Y>> {
 	
 	private static final String rgGraphNodeFormat = "s%s";
 	

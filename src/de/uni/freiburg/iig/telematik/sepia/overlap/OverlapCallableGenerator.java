@@ -23,23 +23,23 @@ public class OverlapCallableGenerator< 	P extends AbstractPlace<F,S>,
 										S extends Object,
 										X extends AbstractMarkingGraphState<M,S>,
 										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										E extends LogEntry> extends AbstractCallableGenerator<P,T,F,M,S,X,Y>{
+										E extends LogEntry> extends AbstractCallableGenerator<P,T,F,M,S>{
 	
 	private AbstractMarkingGraph<M,S,X,Y> markingGraph = null;
 	private boolean includeSilentTransitions = SequenceGeneration.DEFAULT_INCLUDE_SILENT_TRANSITIONS;
 	private Map<String, String> transitionLabelRelation = null;
 	private TerminationCriteria terminationCriteria = null;
 	
-	public OverlapCallableGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	public OverlapCallableGenerator(AbstractPetriNet<P,T,F,M,S> petriNet) {
 		super(petriNet);
 		this.transitionLabelRelation = Replay.getDefaultTransitionLabelRelation(petriNet);
 	}
 
-	public AbstractMarkingGraph<M, S, X, Y> getMarkingGraph() {
+	public AbstractMarkingGraph<M,S,X,Y> getMarkingGraph() {
 		return markingGraph;
 	}
 	
-	public void setMarkingGraph(AbstractMarkingGraph<M, S, X, Y> markingGraph) {
+	public void setMarkingGraph(AbstractMarkingGraph<M,S,X,Y> markingGraph) {
 		this.markingGraph = markingGraph;
 	}
 	

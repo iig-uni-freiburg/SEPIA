@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -29,11 +27,11 @@ public class PNRefinement {
 	 * @param net
 	 *            Petri net to refine.
 	 */
-	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, X extends AbstractMarkingGraphState<M, S>, Y extends AbstractMarkingGraphRelation<M, X, S>>
+	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object>
 
 	void
 
-	refine(AbstractPetriNet<P, T, F, M, S, X, Y> net) {
+	refine(AbstractPetriNet<P, T, F, M, S> net) {
 
 		List<P> placeList = new ArrayList<P>(net.getPlaces());
 		// Build equivalence classes of places having the same relations.

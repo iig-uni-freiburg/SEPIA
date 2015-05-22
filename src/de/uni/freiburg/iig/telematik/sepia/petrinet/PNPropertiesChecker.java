@@ -24,7 +24,7 @@ public class PNPropertiesChecker {
 		 			 S extends Object,
 		 			 X extends AbstractMarkingGraphState<M,S>, 
 		 			 Y extends AbstractMarkingGraphRelation<M,X,S>,
-		 			 N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
+		 			 N extends AbstractPetriNet<P,T,F,M,S>> 
 
 		InOutPlaces validateInputOutputPlace(N petriNet) throws PNValidationException {
 		Validate.notNull(petriNet);
@@ -58,7 +58,7 @@ public class PNPropertiesChecker {
 	 				 S extends Object,
 	 				 X extends AbstractMarkingGraphState<M,S>, 
 	 				 Y extends AbstractMarkingGraphRelation<M,X,S>,
-	 				 N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
+	 				 N extends AbstractPetriNet<P,T,F,M,S>> 
 
 	void validateStrongConnectedness(N petriNet, InOutPlaces places) throws PNValidationException {
 		validateStrongConnectednessOfShortCircuitedNet(petriNet, places.input, places.output);
@@ -71,7 +71,7 @@ public class PNPropertiesChecker {
 	 				 S extends Object,
 	 				 X extends AbstractMarkingGraphState<M,S>, 
 	 				 Y extends AbstractMarkingGraphRelation<M,X,S>,
-	 				 N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
+	 				 N extends AbstractPetriNet<P,T,F,M,S>> 
 
 	void validateStrongConnectednessOfShortCircuitedNet(N petriNet, String inputPlaceName, String outputPlaceName) throws PNValidationException {
 		Validate.notNull(petriNet);
@@ -118,7 +118,7 @@ public class PNPropertiesChecker {
 //	 			   S extends Object,
 //	 			   X extends AbstractMarkingGraphState<M,S>, 
 //	 			   Y extends AbstractMarkingGraphRelation<M,X,S>,
-//	 			   N extends AbstractPetriNet<P,T,F,M,S,X,Y>> 
+//	 			   N extends AbstractPetriNet<P,T,F,M,S>> 
 //
 //	void validateBoundedness(N petriNet) throws PNValidationException {
 //		if (petriNet.getBoundedness() == Boundedness.UNKNOWN) {

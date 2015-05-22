@@ -6,13 +6,11 @@ import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraph;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 
 
-public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation> {
+public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking> {
 	
 	private static final long serialVersionUID = -5549362122826931975L;
 

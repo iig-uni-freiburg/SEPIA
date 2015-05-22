@@ -22,13 +22,13 @@ public abstract class TimedNetExecutor<P extends AbstractPlace<F,S>,
 	private static final int MAX_FIRE_TRANSITIONS = 2;
 
 	private Random rand = new Random();
-	private AbstractPetriNet<P,T,F,M,S,X,Y> petriNet = null;
+	private AbstractPetriNet<P,T,F,M,S> petriNet = null;
 	private PNTraverser<T> traverser = null;
-	private TimeMachine<P,T,F,M,S,X,Y> timeMachine = null;
+	private TimeMachine<P,T,F,M,S> timeMachine = null;
 	
 	private TimedTransitionListenerSupport<T> listenerSupport = new TimedTransitionListenerSupport<T>();
 	
-	private TimedNetExecutor(TimeMachine<P,T,F,M,S,X,Y> timeMachine, PNTraverser<T> traverser){
+	private TimedNetExecutor(TimeMachine<P,T,F,M,S> timeMachine, PNTraverser<T> traverser){
 		this.timeMachine = timeMachine;
 		this.petriNet = timeMachine.getPetriNet();
 		this.traverser = traverser;

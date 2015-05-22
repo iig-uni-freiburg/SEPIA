@@ -15,9 +15,9 @@ public class MGConstructorCallableGenerator<P extends AbstractPlace<F,S>,
 											M extends AbstractMarking<S>, 
 											S extends Object,
 											X extends AbstractMarkingGraphState<M,S>,
-											Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallableGenerator<P,T,F,M,S,X,Y> {
+											Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractCallableGenerator<P,T,F,M,S> {
 
-	public MGConstructorCallableGenerator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet) {
+	public MGConstructorCallableGenerator(AbstractPetriNet<P,T,F,M,S> petriNet) {
 		super(petriNet);
 	}
 

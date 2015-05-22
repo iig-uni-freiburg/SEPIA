@@ -9,8 +9,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
@@ -28,12 +26,10 @@ public class PNMLIFNetSerializer<P extends AbstractIFNetPlace<F>,
 								  M extends AbstractIFNetMarking,
 								  R extends AbstractRegularIFNetTransition<F>,
 								  D extends AbstractDeclassificationTransition<F>,
-								  X extends AbstractIFNetMarkingGraphState<M>,
-					   			  Y extends AbstractIFNetMarkingGraphRelation<M, X>,
-								  N extends AbstractIFNet<P,T,F,M,R,D,X,Y>,
-  							  	  G extends AbstractIFNetGraphics<P,T,F,M>> extends PNMLCPNSerializer<P, T, F, M, X, Y, N, G> {
+								  N extends AbstractIFNet<P,T,F,M,R,D>,
+  							  	  G extends AbstractIFNetGraphics<P,T,F,M>> extends PNMLCPNSerializer<P, T, F, M, N, G> {
 
-	public PNMLIFNetSerializer(AbstractGraphicalIFNet<P, T, F, M, R, D, X, Y, N, G> ifNet) {
+	public PNMLIFNetSerializer(AbstractGraphicalIFNet<P, T, F, M, R, D, N, G> ifNet) {
 		super(ifNet);
 	}
 

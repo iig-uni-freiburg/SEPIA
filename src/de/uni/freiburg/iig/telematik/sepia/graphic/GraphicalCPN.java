@@ -2,8 +2,6 @@ package de.uni.freiburg.iig.telematik.sepia.graphic;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractCPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.CPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.cpn.CPNMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
@@ -16,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
  * @author Thomas Stocker
  * @author Adrian Lange
  */
-public class GraphicalCPN extends AbstractGraphicalCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPNMarkingGraphState, CPNMarkingGraphRelation, CPN, CPNGraphics> {
+public class GraphicalCPN extends AbstractGraphicalCPN<CPNPlace, CPNTransition, CPNFlowRelation, CPNMarking, CPN, CPNGraphics> {
 
 	public GraphicalCPN() {
 		this(new CPN(), new CPNGraphics());

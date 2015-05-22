@@ -20,7 +20,7 @@ public class ThreadedOverlapCalculator<P extends AbstractPlace<F,S>,
 										S extends Object,
 										X extends AbstractMarkingGraphState<M,S>,
 										Y extends AbstractMarkingGraphRelation<M,X,S>,
-										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,OverlapResult<E>>{
+										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,OverlapResult<E>>{
 	
 	protected ThreadedOverlapCalculator(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> generator){
 		super(generator);

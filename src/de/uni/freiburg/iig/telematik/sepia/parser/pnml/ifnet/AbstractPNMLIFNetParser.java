@@ -18,8 +18,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGrap
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.AbstractIFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser;
@@ -46,12 +44,10 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
 											  M extends AbstractIFNetMarking, 
 											  R extends AbstractRegularIFNetTransition<F>, 
 											  D extends AbstractDeclassificationTransition<F>,
-											  X extends AbstractIFNetMarkingGraphState<M>,
-									   		  Y extends AbstractIFNetMarkingGraphRelation<M, X>,
-											  N extends AbstractIFNet<P, T, F, M, R, D, X, Y>, 
+											  N extends AbstractIFNet<P, T, F, M, R, D>, 
 											  G extends AbstractIFNetGraphics<P, T, F, M>>
 
-extends AbstractPNMLCPNParser<P, T, F, M, X, Y, N, G> {
+extends AbstractPNMLCPNParser<P, T, F, M, N, G> {
 
 	@Override
 	public void parseDocument(Document pnmlDocument) throws ParserException {

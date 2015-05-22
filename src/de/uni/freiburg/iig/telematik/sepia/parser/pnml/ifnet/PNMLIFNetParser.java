@@ -5,8 +5,6 @@ import org.w3c.dom.Document;
 import de.invation.code.toval.parser.ParserException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.IFNetGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
@@ -37,9 +35,7 @@ public class PNMLIFNetParser extends AbstractPNMLIFNetParser<IFNetPlace,
 															 IFNetFlowRelation, 
 															 IFNetMarking, 
 															 RegularIFNetTransition, 
-															 DeclassificationTransition, 
-															 IFNetMarkingGraphState,
-															 IFNetMarkingGraphRelation,
+															 DeclassificationTransition,
 															 IFNet, 
 															 IFNetGraphics> {
 

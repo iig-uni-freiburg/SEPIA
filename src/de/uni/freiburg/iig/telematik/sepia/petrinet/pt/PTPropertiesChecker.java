@@ -20,7 +20,7 @@ public class PTPropertiesChecker {
 	 				 M extends AbstractPTMarking,
 	 				 X extends AbstractPTMarkingGraphState<M>, 
 	 				 Y extends AbstractPTMarkingGraphRelation<M,X>,
-	 				 N extends AbstractPTNet<P,T,F,M,X,Y>> 
+	 				 N extends AbstractPTNet<P,T,F,M>> 
 
 	void checkSingleCFTokenInInitialMarking(N petriNet, String placeName) throws PNValidationException {
 		Validate.notNull(petriNet);

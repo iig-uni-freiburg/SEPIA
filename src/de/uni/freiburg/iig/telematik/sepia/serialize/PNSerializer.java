@@ -7,8 +7,6 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -21,9 +19,7 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
    							  	   F extends AbstractFlowRelation<P,T,S>, 
    							  	   M extends AbstractMarking<S>, 
    							  	   S extends Object,
-   							  	   X extends AbstractMarkingGraphState<M, S>,
-   							  	   Y extends AbstractMarkingGraphRelation<M, X, S>,
-   							  	   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
+   							  	   N extends AbstractPetriNet<P,T,F,M,S>,
 							  	   G extends AbstractPNGraphics<P,T,F,M,S>> {
 	
 	protected N petriNet = null;
@@ -35,7 +31,7 @@ public abstract class PNSerializer<P extends AbstractPlace<F,S>,
 		this.petriNet = petriNet;
 	}
 	
-	public PNSerializer(AbstractGraphicalPN<P,T,F,M,S,X,Y,N,G> petriNet) {
+	public PNSerializer(AbstractGraphicalPN<P,T,F,M,S,N,G> petriNet) {
 		Validate.notNull(petriNet);
 		validatePetriNet(petriNet.getPetriNet());
 		this.petriNet = petriNet.getPetriNet();

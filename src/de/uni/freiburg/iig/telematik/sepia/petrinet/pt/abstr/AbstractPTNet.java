@@ -6,8 +6,6 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.pt.AbstractPTMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
@@ -27,11 +25,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 public abstract class AbstractPTNet<P extends AbstractPTPlace<F>, 
 									T extends AbstractPTTransition<F>, 
 									F extends AbstractPTFlowRelation<P,T>, 
-									M extends AbstractPTMarking,
-									X extends AbstractPTMarkingGraphState<M>,
-									Y extends AbstractPTMarkingGraphRelation<M,X>> 
+									M extends AbstractPTMarking> 
 
-									  extends AbstractPetriNet<P,T,F,M,Integer,X,Y>{
+									  extends AbstractPetriNet<P,T,F,M,Integer>{
 
 	private static final long serialVersionUID = -1544464197896650398L;
 	

@@ -28,13 +28,14 @@ public class ThreadedMGCalculator<	P extends AbstractPlace<F,S>,
 									M extends AbstractMarking<S>, 
 									S extends Object,
 									X extends AbstractMarkingGraphState<M,S>,
-									Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,X,Y,AbstractMarkingGraph<M,S,X,Y>>
+									Y extends AbstractMarkingGraphRelation<M,X,S>> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,AbstractMarkingGraph<M,S,X,Y>>
 																				   implements MGCalculator<P,T,F,M,S,X,Y>{
 	
-	protected ThreadedMGCalculator(AbstractPetriNet<P,T,F,M,S,X,Y> petriNet){
+	protected ThreadedMGCalculator(AbstractPetriNet<P,T,F,M,S> petriNet){
 		super(new MGConstructorCallableGenerator<P,T,F,M,S,X,Y>(petriNet));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected MGConstructorCallableGenerator<P,T,F,M,S,X,Y> getGenerator() {
 		return (MGConstructorCallableGenerator<P,T,F,M,S,X,Y>) super.getGenerator();

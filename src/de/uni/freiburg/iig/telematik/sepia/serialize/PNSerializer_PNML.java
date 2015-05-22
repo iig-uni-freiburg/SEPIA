@@ -11,8 +11,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphic
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
@@ -25,12 +23,10 @@ public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>,
    							   F extends AbstractFlowRelation<P,T,S>, 
    							   M extends AbstractMarking<S>, 
    							   S extends Object,
-   							   X extends AbstractMarkingGraphState<M, S>,
-   							   Y extends AbstractMarkingGraphRelation<M, X, S>,
-   							   N extends AbstractPetriNet<P,T,F,M,S,X,Y>,
-						  	   G extends AbstractPNGraphics<P,T,F,M,S>>  extends PNSerializer_XML<P, T, F, M, S, X, Y, N, G> {
+   							   N extends AbstractPetriNet<P,T,F,M,S>,
+						  	   G extends AbstractPNGraphics<P,T,F,M,S>>  extends PNSerializer_XML<P, T, F, M, S, N, G> {
 
-	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S, X, Y, N, G> petriNet) {
+	public PNSerializer_PNML(AbstractGraphicalPN<P, T, F, M, S, N, G> petriNet) {
 		super(petriNet);
 	}
 
