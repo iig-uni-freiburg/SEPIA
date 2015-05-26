@@ -19,6 +19,8 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
+import de.uni.freiburg.iig.telematik.sepia.property.boundedness.BoundednessCheck;
+import de.uni.freiburg.iig.telematik.sepia.property.boundedness.BoundednessException;
 
 /**
  * <p>
@@ -140,8 +142,8 @@ public class PNMLCPNParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void validCPNWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void validCPNWithValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CPNResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -167,7 +169,7 @@ public class PNMLCPNParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(3, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(net.getPetriNet().getBoundedness().equals(Boundedness.UNKNOWN));
+		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -175,8 +177,8 @@ public class PNMLCPNParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void validCPNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void validCPNWithoutValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CPNResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -202,7 +204,7 @@ public class PNMLCPNParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(3, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(net.getPetriNet().getBoundedness().equals(Boundedness.UNKNOWN));
+		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -230,7 +232,7 @@ public class PNMLCPNParserComponentTest {
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDCPNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CPNNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -894,8 +896,8 @@ public class PNMLCPNParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void boundedCPNWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void boundedCPNWithValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CPNBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -908,7 +910,7 @@ public class PNMLCPNParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalCPN);
 
-		assertTrue(abstrNet.getPetriNet().getBoundedness().equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -916,8 +918,8 @@ public class PNMLCPNParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void boundedCPNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void boundedCPNWithoutValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CPNBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -930,7 +932,7 @@ public class PNMLCPNParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalCPN);
 
-		assertTrue(abstrNet.getPetriNet().getBoundedness().equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -958,7 +960,7 @@ public class PNMLCPNParserComponentTest {
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteTokencolorsCPNWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(CPNIncompleteTokencolorsResource.getFile(), true, false);
 		} catch (ParameterException e) {

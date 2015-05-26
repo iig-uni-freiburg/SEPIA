@@ -22,6 +22,8 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.RegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
+import de.uni.freiburg.iig.telematik.sepia.property.boundedness.BoundednessCheck;
+import de.uni.freiburg.iig.telematik.sepia.property.boundedness.BoundednessException;
 
 /**
  * <p>
@@ -163,8 +165,8 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void validIFNetWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void validIFNetWithValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -190,7 +192,7 @@ public class PNMLIFNetParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(2, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(net.getPetriNet().getBoundedness().equals(Boundedness.UNKNOWN));
+		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -198,8 +200,8 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void validIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void validIFNetWithoutValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -225,7 +227,7 @@ public class PNMLIFNetParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(2, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(net.getPetriNet().getBoundedness().equals(Boundedness.UNKNOWN));
+		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -253,7 +255,7 @@ public class PNMLIFNetParserComponentTest {
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void noNetIDIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetNoNetIDResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -818,7 +820,7 @@ public class PNMLIFNetParserComponentTest {
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteAccessModesIFNetWithValidation() throws ParameterException {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetIncompleteAccessModesResource.getFile(), true, true);
 		} catch (ParameterException e) {
@@ -847,7 +849,7 @@ public class PNMLIFNetParserComponentTest {
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteAccessModesIFNetWithoutValidation() throws ParameterException {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetIncompleteAccessModesResource.getFile(), true, false);
 		} catch (ParameterException e) {
@@ -1101,8 +1103,8 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void boundedIFNetWithValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void boundedIFNetWithValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetBoundedResource.getFile(), true, true);
 		} catch (ParserException e) {
@@ -1115,7 +1117,7 @@ public class PNMLIFNetParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalIFNet);
 
-		assertTrue(abstrNet.getPetriNet().getBoundedness().equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -1123,8 +1125,8 @@ public class PNMLIFNetParserComponentTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
-	public void boundedIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+	public void boundedIFNetWithoutValidation() throws BoundednessException {
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetBoundedResource.getFile(), true, false);
 		} catch (ParserException e) {
@@ -1137,7 +1139,7 @@ public class PNMLIFNetParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalIFNet);
 
-		assertTrue(abstrNet.getPetriNet().getBoundedness().equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -1165,7 +1167,7 @@ public class PNMLIFNetParserComponentTest {
 	@SuppressWarnings("rawtypes")
 	@Test(timeout = VALIDATION_TIMEOUT)
 	public void incompleteTokencolorsIFNetWithoutValidation() {
-		AbstractGraphicalPN<?,?,?,?,?,?,?,?,?> abstrNet = null;
+		AbstractGraphicalPN<?,?,?,?,?,?,?> abstrNet = null;
 		try {
 			abstrNet = new PNMLParser().parse(IFNetIncompleteTokencolorsResource.getFile(), true, false);
 		} catch (ParameterException e) {

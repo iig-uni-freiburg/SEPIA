@@ -248,6 +248,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	public void checkValidity(CWNPropertyFlag... flags) throws PNValidationException {
 		super.checkValidity();
 		
+		// FIXME activate soundness check
 		System.out.println("before check cwn soundness");
 //		CWNProperties cwnProperties = CWNChecker.checkCWNSoundness(this, true, flags);
 //		if(!cwnProperties.isSoundCWN())

@@ -39,7 +39,6 @@ public class BoundednessCheck {
 	 * In case the marking graph of the net cannot be constructed with the maximum number of elements (see {@link MGConstruction#MAX_RG_CALCULATION_STEPS}),<br>
 	 * it is assumed to be unbounded; otherwise bounded.<br>
 	 * @param petriNet The basic Petri net for operation.
-	 * @return The marking graph of the given Petri net.
 	 * @throws BoundednessException
 	 */
 	public static <	P extends AbstractPlace<F,S>, 
@@ -58,8 +57,7 @@ public class BoundednessCheck {
 	 * Checks if the Petri net is bounded.<br>
 	 * In case the marking graph of the net cannot be constructed with the maximum number of elements (see {@link MGConstruction#MAX_RG_CALCULATION_STEPS}),<br>
 	 * it is assumed to be unbounded; otherwise bounded.<br>
-	 * @param petriNet The basic Petri net for operation.
-	 * @return The marking graph of the given Petri net.
+	 * @param generator The boundedness check generator.
 	 * @throws BoundednessException
 	 */
 	public static <	P extends AbstractPlace<F,S>, 
@@ -102,7 +100,7 @@ public class BoundednessCheck {
 	 * Checks if the Petri net is bounded.<br>
 	 * In case the marking graph of the net cannot be constructed with the maximum number of elements (see {@link MGConstruction#MAX_RG_CALCULATION_STEPS}),<br>
 	 * it is assumed to be unbounded; otherwise bounded.<br>
-	 * @param petriNet The basic Petri net for operation.
+	 * @param generator The boundedness check generator.
 	 * @return The marking graph of the given Petri net.
 	 * @throws BoundednessException
 	 */
