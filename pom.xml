@@ -1,15 +1,36 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uni.freiburg.iig.telematik.sepia</groupId>
 	<artifactId>SEPIA</artifactId>
 	<packaging>jar</packaging>
 	<version>0.1.5</version>
+
 	<name>SEPIA</name>
-	<url>http://maven.apache.org</url>
+	<description>SEPIA provides implementations for various types of Petri nets. Along Place/Transition-nets, it supports Petri nets with distinguishable token colors and defines coloured workflow nets, where coloured tokens are interpreted as data elements used during process execution. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modeling which enable users to assign security-levels (HIGH, LOW) to transitions, data elements and persons/agents participating in the process execution.</description>
+	<url>https://sourceforge.net/projects/sepiaframework/</url>
+	<organization>
+		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
+		<url>http://www.telematik.uni-freiburg.de/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>bsd_3</name>
+			<url>http://opensource.org/licenses/BSD-3-Clause</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>http://svn.code.sf.net/p/sepiaframework/code/trunk</url>
+	</scm>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.invation.code.toval</groupId>
@@ -38,11 +59,7 @@
 			<version>2013.6.1</version>
 		</dependency>
 	</dependencies>
-	<organization>
-		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
-		<url>http://www.telematik.uni-freiburg.de/</url>
-	</organization>
-	<description>SEPIA provides implementations for various types of Petri nets. Along Place/Transition-nets, it supports Petri nets with distinguishable token colors and defines coloured workflow nets, where coloured tokens are interpreted as data elements used during process execution. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modeling which enable users to assign security-levels (HIGH, LOW) to transitions, data elements and persons/agents participating in the process execution.</description>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -145,4 +162,5 @@
 			</build>
 		</profile>
 	</profiles>
+
 </project>
