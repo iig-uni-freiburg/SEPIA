@@ -12,5 +12,13 @@ public class PNValidationException extends PNException {
 	public PNValidationException(String message) {
 		super(message);
 	}
+
+	public PNValidationException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public PNValidationException(Throwable cause) {
+		super(cause);
+	}
 	
 }

@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
 import de.invation.code.toval.event.AbstractListenerSupport;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 
 public class FlowRelationListenerSupport<F extends AbstractFlowRelation<?,?,?>> extends AbstractListenerSupport<FlowRelationListener<F>>{
 

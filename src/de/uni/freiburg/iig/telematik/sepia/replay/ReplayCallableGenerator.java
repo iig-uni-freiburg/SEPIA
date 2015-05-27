@@ -6,15 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.overlap.OverlapCallableGenerator;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.property.AbstractCallableGenerator;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractCallableGenerator;
 import de.uni.freiburg.iig.telematik.sepia.replay.ReplayCallable.TerminationCriteria;
 import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
 import de.uni.freiburg.iig.telematik.sewol.log.LogTrace;
@@ -32,8 +30,7 @@ public class ReplayCallableGenerator< 	P extends AbstractPlace<F,S>,
 	protected List<List<String>> activitySequences = null;
 	protected List<LogTrace<E>> logTraces = null;
 	
-	public <X extends AbstractMarkingGraphState<M,S>,
-			Y extends AbstractMarkingGraphRelation<M,X,S>> ReplayCallableGenerator(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> overlapGenerator){
+	public ReplayCallableGenerator(OverlapCallableGenerator<P,T,F,M,S,E> overlapGenerator){
 		super(overlapGenerator);
 		this.transitionLabelRelation = overlapGenerator.getTransitionLabelRelation();
 		this.terminationCriteria = overlapGenerator.getTerminationCriteria();

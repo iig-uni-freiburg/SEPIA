@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.mg.abstr;
 
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 
 public abstract class AbstractMarkingGraphRelation<	M extends AbstractMarking<O>,
 													S extends AbstractMarkingGraphState<M,O>, 

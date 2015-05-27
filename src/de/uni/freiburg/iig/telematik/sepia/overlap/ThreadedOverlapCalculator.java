@@ -4,13 +4,11 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.property.AbstractThreadedPNPropertyChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
 
 public class ThreadedOverlapCalculator<P extends AbstractPlace<F,S>, 
@@ -18,23 +16,21 @@ public class ThreadedOverlapCalculator<P extends AbstractPlace<F,S>,
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
 										S extends Object,
-										X extends AbstractMarkingGraphState<M,S>,
-										Y extends AbstractMarkingGraphRelation<M,X,S>,
 										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,OverlapResult<E>>{
 	
-	protected ThreadedOverlapCalculator(OverlapCallableGenerator<P,T,F,M,S,X,Y,E> generator){
+	protected ThreadedOverlapCalculator(OverlapCallableGenerator<P,T,F,M,S,E> generator){
 		super(generator);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	protected OverlapCallableGenerator<P,T,F,M,S,X,Y,E> getGenerator() {
-		return (OverlapCallableGenerator<P,T,F,M,S,X,Y,E>) super.getGenerator();
+	protected OverlapCallableGenerator<P,T,F,M,S,E> getGenerator() {
+		return (OverlapCallableGenerator<P,T,F,M,S,E>) super.getGenerator();
 	}
 
 	@Override
 	protected AbstractCallable<OverlapResult<E>> getCallable() {
-		return new OverlapCallable<P,T,F,M,S,X,Y,E>(getGenerator());
+		return new OverlapCallable<P,T,F,M,S,E>(getGenerator());
 	}
 	
 	public void runCalculation(){

@@ -5,7 +5,7 @@ import java.util.Set;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.mg.ifnet.IFNetMarkingGraph;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 

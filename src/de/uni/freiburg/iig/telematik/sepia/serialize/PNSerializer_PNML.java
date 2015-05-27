@@ -11,11 +11,11 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphic
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_PNML;
 
 public abstract class PNSerializer_PNML<P extends AbstractPlace<F,S>, 

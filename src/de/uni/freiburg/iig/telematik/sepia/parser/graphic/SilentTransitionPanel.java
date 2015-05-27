@@ -20,7 +20,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.AbstractTableModel;
 
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 public class SilentTransitionPanel extends JPanel {

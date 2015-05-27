@@ -7,8 +7,8 @@ import de.invation.code.toval.misc.valuegeneration.StochasticValueGenerator;
 import de.invation.code.toval.misc.valuegeneration.ValueGenerationException;
 import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 /**
  * This flow control chooses the next transition to fire 

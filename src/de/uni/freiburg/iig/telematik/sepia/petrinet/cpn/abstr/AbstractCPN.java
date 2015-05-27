@@ -11,11 +11,10 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.RelationConstraintEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
 
 
@@ -282,27 +281,6 @@ public abstract class AbstractCPN<P extends AbstractCPNPlace<F>,
 
 	@Override
 	public void transitionFired(TransitionEvent<? extends AbstractTransition<F, Multiset<String>>> e) {}
-	
-	
-	//------- Soundness ---------------------------------------------------------------------
-	
-	/**
-	 * CPNs require relation effectiveness.<br>
-	 * Each relation must move at least one token from a place to a transition or vice versa.
-	 * 
-	 * @see AbstractPetriNet#checkValidity()
-	 * @throws PNValidationException 
-	 * @see AbstractCPNFlowRelation#hasConstraints()
-	 */
-	@Override 
-	public void checkValidity() throws PNValidationException {
-		super.checkValidity();
-		for(AbstractCPNFlowRelation<P,T> relation: relations.values()){
-			if(!relation.hasConstraints()){
-				throw new PNValidationException("Inoperative relation: " + relation.toString());
-			} 
-		}
-	} 
 	
 	//------- Firing Rules
 

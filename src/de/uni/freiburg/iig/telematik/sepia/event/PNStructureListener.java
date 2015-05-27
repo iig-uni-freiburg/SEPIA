@@ -1,9 +1,9 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 public interface PNStructureListener<P extends AbstractPlace<F,S>, 
 								   T extends AbstractTransition<F,S>, 

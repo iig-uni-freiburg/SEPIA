@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.mg.abstr;
 
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLTSState;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 
 public abstract class AbstractMarkingGraphState<M extends AbstractMarking<O>, O extends Object> extends AbstractLTSState<Event, M>{
 

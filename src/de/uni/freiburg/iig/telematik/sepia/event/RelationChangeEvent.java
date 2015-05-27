@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 
 import java.util.EventObject;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 
 
 public class RelationChangeEvent<F extends AbstractFlowRelation<?,?,?>> extends EventObject {

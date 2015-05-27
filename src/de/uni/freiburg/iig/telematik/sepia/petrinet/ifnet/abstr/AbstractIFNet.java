@@ -7,15 +7,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CWNChecker.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
@@ -235,121 +231,7 @@ public abstract class AbstractIFNet<P extends AbstractIFNetPlace<F>,
 	protected abstract R createNewRegularTransition(String name, String label, boolean isSilent);
 	
 	protected abstract D createNewDeclassificationTransition(String name, String label, boolean isSilent);
-	
-	
-	//------- Validation methods --------------------------------------------------------------------
 
-	@Override
-	public void checkValidity() throws PNValidationException {
-		checkValidity(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void checkValidity(CWNPropertyFlag... flags) throws PNValidationException {
-		super.checkValidity();
-		
-		// FIXME activate soundness check
-		System.out.println("before check cwn soundness");
-//		CWNProperties cwnProperties = CWNChecker.checkCWNSoundness(this, true, flags);
-//		if(!cwnProperties.isSoundCWN())
-//			throw new PNValidationException("The underlying CWN of this IF-Net is not sound.\nReason: " + cwnProperties.exception.getMessage());
-//		
-		System.out.println("after check cwn soundness");
-		// Check property 4 for declassification transitions: 
-		// For each declassification transition t, the following condition must hold:
-		// No other net transition creates a token with the same color than any of the produced colors of t
-		// (Either as regular transition with CREATE mode or as declassification transition)
-		for(D declassificationTransition: getDeclassificationTransitions()){
-			Set<T> otherNetTransitions = new HashSet<T>();
-			otherNetTransitions.addAll(getTransitions());
-			otherNetTransitions.remove(declassificationTransition);
-			for(T otherTransition: otherNetTransitions){
-				if(otherTransition.isDeclassificator()){
-					for(String color: declassificationTransition.getProducedAttributes()){
-						if(otherTransition.producesColor(color))
-							throw new PNValidationException("There is another declassification transition which produces color \""+color+"\"");
-					}
-				} else {
-					for(String color: declassificationTransition.getProducedAttributes()){
-						if(otherTransition.producesColor(color) && ((R) otherTransition).getAccessModes(color).contains(AccessMode.CREATE))
-							throw new PNValidationException("There is another net transition which creates tokens of color \""+color+"\"");
-					}
-				}
-			}
-		}
-		
-		checkAnalysisContextValidity();
-	}
-	
-	protected void checkAnalysisContextValidity() throws PNValidationException{
-		
-		if(getAnalysisContext() == null)
-			return;
-		
-		// Check if all token colors are contained in the analysis context in form of attributes.
-		for(String tokenColor: getTokenColors()){
-			if(tokenColor.equals(defaultTokenColor()))
-				continue;
-			if(!getAnalysisContext().getACModel().getContext().getObjects().contains(tokenColor))
-				throw new PNValidationException("Analysis context does not contain attribute: " + tokenColor);
-		}
-		
-		for(T transition: getTransitions(false)){
-			if(!getAnalysisContext().getACModel().getContext().getActivities().contains(transition.getLabel()))
-				throw new PNValidationException("Analysis context does not contain activity " + transition.getLabel());
-		}
-		
-		// Check if there is a subject descriptor for every transition
-		for (T transition : getTransitions()) {
-			try {
-				getAnalysisContext().getSubjectDescriptor(transition.getName());
-			} catch (ParameterException e) {
-				throw new PNValidationException("Transition without subject descriptor: " + transition.getName());
-			}
-		}
-
-		// Check security level consistency for regular transitions.
-		for(String attribute: getAnalysisContext().getACModel().getContext().getObjects()){
-			for(AbstractRegularIFNetTransition<F> transition: getRegularTransitions()){
-				if(transition.processesColor(attribute)){
-					// If the access modes of an activity contain CREATE for an attribute,
-					// the classification of the attribute must equal the clearance of the assigned subject.
-					try{
-					if(transition.getAccessModes(attribute).contains(AccessMode.CREATE)){
-						try {							
-							if(!getAnalysisContext().getLabeling().getAttributeClassification(attribute).equals(getAnalysisContext().getLabeling().getSubjectClearance(getAnalysisContext().getSubjectDescriptor(transition.getName()))))
-								throw new InconsistencyException("Security level of attribute \""+attribute+"\" does not match the security level of the subject creating it.");
-						} catch (ParameterException e) {
-							throw new PNValidationException("Inconsistency exception in assigned analysis context:\n" + e.getMessage());
-						}
-					}
-					}catch(ParameterException e){
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
-		
-		// Check security level consistency for declassification transitions
-		for(AbstractDeclassificationTransition<F> transition: getDeclassificationTransitions()){
-			
-			// Check property 6 for declassification transitions: 
-			// -> All produced colors must have label LOW
-			Set<String> producedColors = transition.getProducedColors();
-			producedColors.remove(CONTROL_FLOW_TOKEN_COLOR);
-			for(String outputColor: producedColors){
-				if(getAnalysisContext().getLabeling().getAttributeClassification(outputColor) != SecurityLevel.LOW)
-					throw new PNValidationException("Generated attributes of declassification transitions must be LOW");
-			}
-			
-			// Check property 7 for declassification transitions: 
-			// -> Transition is classified HIGH
-			if(getAnalysisContext().getLabeling().getActivityClassification(transition.getName()) != SecurityLevel.HIGH)
-				throw new PNValidationException("All declassification transitions must have classification HIGH.");
-		}
-		
-	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

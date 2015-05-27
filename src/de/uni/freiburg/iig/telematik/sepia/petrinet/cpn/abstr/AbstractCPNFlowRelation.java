@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 
 public abstract class AbstractCPNFlowRelation<P extends AbstractCPNPlace<? extends AbstractCPNFlowRelation<P,T>>, 
 											  T extends AbstractCPNTransition<? extends AbstractCPNFlowRelation<P,T>>> 

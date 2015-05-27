@@ -12,5 +12,14 @@ public class PNSoundnessException extends PNException {
 	public PNSoundnessException(String message) {
 		super(message);
 	}
+
+	public PNSoundnessException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public PNSoundnessException(Throwable cause) {
+		super(cause);
+	}
+	
 	
 }

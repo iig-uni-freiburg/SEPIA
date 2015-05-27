@@ -3,7 +3,7 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 import java.io.Serializable;
 import java.util.EventObject;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 
 
 public class RelationConstraintEvent<E extends AbstractFlowRelation<?,?,?>> extends EventObject implements Serializable{

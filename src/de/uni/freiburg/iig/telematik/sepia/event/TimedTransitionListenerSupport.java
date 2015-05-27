@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
 import de.invation.code.toval.event.AbstractListenerSupport;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 public class TimedTransitionListenerSupport<T extends AbstractTransition<?,?>> extends AbstractListenerSupport<TimedTransitionListener<T>>{
 	

@@ -1,6 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.overlap;
 
-import de.uni.freiburg.iig.telematik.sepia.property.sequences.MGTraversalResult;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.sequences.MGTraversalResult;
 import de.uni.freiburg.iig.telematik.sepia.replay.ReplayResult;
 import de.uni.freiburg.iig.telematik.sewol.log.LogEntry;
 

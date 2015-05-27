@@ -6,7 +6,7 @@ import java.util.List;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 
 public abstract class AbstractCPNMarking extends AbstractMarking<Multiset<String>> {
 

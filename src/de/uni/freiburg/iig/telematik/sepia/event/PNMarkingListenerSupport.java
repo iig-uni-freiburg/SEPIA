@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
 import de.invation.code.toval.event.AbstractListenerSupport;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 
 public class PNMarkingListenerSupport<S,M extends AbstractMarking<S>> extends AbstractListenerSupport<PNMarkingListener<S,M>>{
 

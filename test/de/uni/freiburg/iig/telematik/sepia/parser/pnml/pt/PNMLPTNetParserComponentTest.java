@@ -16,9 +16,9 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet.Boundedness;
-import de.uni.freiburg.iig.telematik.sepia.property.boundedness.BoundednessCheck;
-import de.uni.freiburg.iig.telematik.sepia.property.boundedness.BoundednessException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet.Boundedness;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.BoundednessCheck;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.BoundednessException;
 
 /**
  * <p>

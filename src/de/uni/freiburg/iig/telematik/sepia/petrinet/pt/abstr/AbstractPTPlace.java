@@ -4,7 +4,7 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 
 /**
  * Abstract class that defines general properties for places of place/transition nets (P/T Nets).<br>

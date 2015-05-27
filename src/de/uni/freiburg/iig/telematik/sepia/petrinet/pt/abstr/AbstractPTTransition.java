@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr;
 
 import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? extends AbstractPTPlace<E>, ? extends AbstractPTTransition<E>>> extends AbstractTransition<E,Integer>{
 	

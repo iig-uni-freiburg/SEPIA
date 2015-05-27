@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 
 import java.util.EventObject;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 
 public class TransitionChangeEvent<T extends AbstractTransition<?,?>> extends EventObject {

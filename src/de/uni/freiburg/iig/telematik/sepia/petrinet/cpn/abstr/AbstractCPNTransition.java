@@ -5,7 +5,7 @@ import java.util.Set;
 
 import de.invation.code.toval.types.Multiset;
 import de.invation.code.toval.validate.ParameterException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 
 public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractTransition<E, Multiset<String>> {

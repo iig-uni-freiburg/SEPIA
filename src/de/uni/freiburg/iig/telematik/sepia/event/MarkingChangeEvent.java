@@ -2,7 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.event;
 
 import java.util.EventObject;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 
 
 public class MarkingChangeEvent<S,M extends AbstractMarking<S>> extends EventObject {

@@ -11,7 +11,7 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.CapacityEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TokenEvent;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 
 
 public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? extends AbstractCPNPlace<E>, ? extends AbstractCPNTransition<E>>> extends AbstractPlace<E, Multiset<String>>{

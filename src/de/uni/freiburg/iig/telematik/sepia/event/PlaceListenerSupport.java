@@ -1,7 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.event;
 
 import de.invation.code.toval.event.AbstractListenerSupport;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 
 public class PlaceListenerSupport<P extends AbstractPlace<?,?>> extends AbstractListenerSupport<PlaceListener<P>>{
 	

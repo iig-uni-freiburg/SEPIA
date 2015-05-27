@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import de.invation.code.toval.validate.ParameterException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import de.uni.freiburg.iig.telematik.sewol.context.ProcessConstraintContext;
 import de.uni.freiburg.iig.telematik.sewol.context.ProcessContext;

@@ -29,12 +29,12 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.Error
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPetriNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 
 /**
  * <p>

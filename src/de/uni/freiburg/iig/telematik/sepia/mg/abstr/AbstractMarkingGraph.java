@@ -5,7 +5,7 @@ import java.util.Collection;
 import de.uni.freiburg.iig.telematik.jagal.ts.Event;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionRelation;
 import de.uni.freiburg.iig.telematik.jagal.ts.labeled.abstr.AbstractLabeledTransitionSystem;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 
 
 
@@ -43,8 +43,8 @@ public abstract class AbstractMarkingGraph<M extends AbstractMarking<O>, O exten
 		return initialState;
 	}
 
-	public void setInitialState(S initialState) {
-		this.initialState = initialState;
+	public void setInitialState(String name) {
+		this.initialState = getState(name);
 	}
 	
 	@Override
