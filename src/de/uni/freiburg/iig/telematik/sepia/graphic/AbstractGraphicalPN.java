@@ -135,8 +135,10 @@ public abstract class AbstractGraphicalPN<P extends AbstractPlace<F, S>,
 
 	@Override
 	public void relationRemoved(RelationChangeEvent<F> event) {
-		// TODO Auto-generated method stub
-		
+		if(petriNetGraphics != null){
+			petriNetGraphics.getArcGraphics().remove(event.relation.getName());
+			petriNetGraphics.getArcAnnotationGraphics().remove(event.relation.getName());
+		}
 	}
 	
 }
