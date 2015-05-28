@@ -14,11 +14,11 @@ import de.invation.code.toval.validate.ParameterException;
 public class Line extends AbstractAttribute {
 
 	/** Default color as CSS2 color string */
-	public static final String DEFAULT_COLOR = null;
+	public static final String DEFAULT_COLOR = "white";
 	/** Default line shape */
-	public static final Shape DEFAULT_SHAPE = null;
+	public static final Shape DEFAULT_SHAPE = Shape.LINE;
 	/** Default line style */
-	public static final Style DEFAULT_STYLE = null;
+	public static final Style DEFAULT_STYLE = Style.SOLID;
 	/** Default width of the line */
 	public static final double DEFAULT_WIDTH = 1.0;
 	/** Line color as CSS2 color string */
