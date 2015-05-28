@@ -1371,7 +1371,9 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public void initialMarkingChanged(MarkingChangeEvent<S, M> markingEvent) {}
 
 	@Override
-	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, S>> e) {}
+	public void relationConstraintChanged(RelationConstraintEvent<? extends AbstractFlowRelation<P, T, S>> e) {
+		structureListenerSupport.notifyStructureChange();
+	}
 
 	@Override
 	public void structureChanged() {}

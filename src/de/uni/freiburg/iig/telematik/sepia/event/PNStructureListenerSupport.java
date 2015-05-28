@@ -15,7 +15,7 @@ public class PNStructureListenerSupport<P extends AbstractPlace<F,S>,
 	
 	private static final long serialVersionUID = 2706896428707837624L;
 	
-	private void notifyStructureChange(){
+	public void notifyStructureChange(){
 		for(PNStructureListener<P,T,F,M,S> l: listeners)
 			l.structureChanged();
 	}

@@ -26,7 +26,7 @@ public class BoundednessCheckResult<P extends AbstractPlace<F,S>,
 		return boundedness;
 	}
 
-	public AbstractMarkingGraph<M, S, ?, ?> getMarkingGraph() {
+	public AbstractMarkingGraph<M,S,?,?> getMarkingGraph() {
 		return markingGraph;
 	}
 	
