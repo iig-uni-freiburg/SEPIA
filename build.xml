@@ -87,34 +87,11 @@
 	</path>
 
 	<!-- Package JARs -->
-	<target name="package" depends="compile,package-consistent" description="Packages the project to JAR files">
+	<target name="package" depends="compile" description="Packages the project to JAR files">
 		<echo message="${ant.project.name}: ${ant.file}" />
 		<echo>Deleting old JARs...</echo>
 		<delete file="${target.dir.jar}/${jar.file.name}.jar" />
 		<delete file="${target.dir.jar}/${jar.sources.file.name}.jar" />
-		<delete file="${target.dir.jar}/${jar.javadoc.file.name}.jar" />
-
-		<echo>Generating javadoc files...</echo>
-		<javadoc sourcepath="${src.dir}" destdir="${docs.temp.dir}">
-			<fileset dir="${src.dir}">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${TOVAL.location}/src">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${TOVAL.location}/res">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${JAGAL.location}/src">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${SEWOL.location}/src">
-				<include name="**/*.java" />
-			</fileset>
-			<fileset dir="${SEWOL.location}/ext">
-				<include name="**/*.java" />
-			</fileset>
-		</javadoc>
 
 		<echo>Creating new JARs...</echo>
 		<jar jarfile="${target.dir.jar}/${jar.file.name}.jar" basedir="${classes.target.dir}">
@@ -127,14 +104,6 @@
 				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
 		</jar>
-		<jar jarfile="${target.dir.jar}/${jar.javadoc.file.name}.jar" basedir="${docs.temp.dir}">
-			<manifest>
-				<attribute name="X-Date" value="${touch.time}" />
-			</manifest>
-		</jar>
-
-		<echo>Deleting temporary javadoc files...</echo>
-		<delete dir="${docs.temp.dir}" />
 	</target>
 
 	<!-- Package JARs -->
@@ -187,6 +156,41 @@
 			<src path="${test.dir}" />
 			<classpath refid="SEPIA.classpath" />
 		</javac>-->
+	</target>
+
+	<target name="package-javadoc" depends="compile" description="Generates Javadoc information">
+		<delete file="${target.dir.jar}/${jar.javadoc.file.name}.jar" />
+
+		<echo>Generating javadoc files...</echo>
+		<javadoc sourcepath="${src.dir}" destdir="${docs.temp.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/res">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${JAGAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+
+		<jar jarfile="${target.dir.jar}/${jar.javadoc.file.name}.jar" basedir="${docs.temp.dir}">
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+
+		<echo>Deleting temporary javadoc files...</echo>
+		<delete dir="${docs.temp.dir}" />
 	</target>
 
 	<target name="clean" description="Deletes the target files including current JARs. Old versions of the JARs stay untouched.">
