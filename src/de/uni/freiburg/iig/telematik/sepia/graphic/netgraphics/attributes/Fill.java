@@ -16,9 +16,9 @@ import de.invation.code.toval.validate.ParameterException;
 public class Fill extends AbstractAttribute {
 
 	/** Default color as CSS2 color string */
-	public static final String DEFAULT_COLOR = null;
+	public static final String DEFAULT_COLOR = "transparent";
 	/** Default gradient color as CSS2 color string */
-	public static final String DEFAULT_GRADIENT_COLOR = null;
+	public static final String DEFAULT_GRADIENT_COLOR = "black";
 	/** Default gradient rotation */
 	public static final GradientRotation DEFAULT_GRADIENT_ROTATION = null;
 	/** Default image */
