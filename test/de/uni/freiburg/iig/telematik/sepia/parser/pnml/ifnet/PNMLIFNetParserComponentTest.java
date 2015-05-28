@@ -192,7 +192,7 @@ public class PNMLIFNetParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(2, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).getBoundedness().equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -227,7 +227,7 @@ public class PNMLIFNetParserComponentTest {
 		assertEquals(1, net.getPetriNetGraphics().getTokenGraphics().size());
 		assertEquals(2, net.getPetriNetGraphics().getColors().size());
 
-		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(net.getPetriNet()).getBoundedness().equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -1117,7 +1117,7 @@ public class PNMLIFNetParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalIFNet);
 
-		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).getBoundedness().equals(Boundedness.BOUNDED));
 	}
 
 	/*
@@ -1139,7 +1139,7 @@ public class PNMLIFNetParserComponentTest {
 
 		assertTrue(abstrNet instanceof GraphicalIFNet);
 
-		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).equals(Boundedness.BOUNDED));
+		assertTrue(BoundednessCheck.getBoundedness(abstrNet.getPetriNet()).getBoundedness().equals(Boundedness.BOUNDED));
 	}
 
 	/*

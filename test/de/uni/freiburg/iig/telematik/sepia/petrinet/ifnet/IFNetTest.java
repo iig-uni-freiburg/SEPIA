@@ -18,12 +18,12 @@ import org.junit.Test;
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.CWNChecker.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.properties.validity.IFNetValidity;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 
 /**
@@ -206,7 +206,7 @@ public class IFNetTest {
 		ac.setLabeling(l);
 		ifNet.setAnalysisContext(ac);
 
-		ifNet.checkValidity();
+		IFNetValidity.checkValidity(ifNet);
 	}
 
 	/*
@@ -214,25 +214,7 @@ public class IFNetTest {
 	 */
 	@Test( expected = PNValidationException.class )
 	public void testCheckNonValidity() throws PNValidationException {
-		dSNet.checkValidity();
-	}
-
-	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where subjects are missing.
-	 */
-	@Test
-	public void testCheckValidityAnalysisContextMissingSubject() {
-		/*
-		 * an IFNet without an AnalysisContext is currently not seen as invalid
-		 */
-		IFNet net = IFNetTestUtil.createSimpleIFNetWithDeclassificationNoAC();
-		try {
-			net.checkValidity(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
-		} catch (PNValidationException e) {
-			System.out.println(e.getMessage());
-			System.out.println(net);
-			fail("An IF-net without analysis context should not be considered invalid!");
-		}
+		IFNetValidity.checkValidity(dSNet);
 	}
 
 	/*
@@ -243,7 +225,7 @@ public class IFNetTest {
 		// blue is created by transition t0. Both the transition and its subject (sh1) are high.
 		dSNet.getAnalysisContext().getLabeling().setAttributeClassification("blue", SecurityLevel.LOW);
 		try {
-			dSNet.checkValidity();
+			IFNetValidity.checkValidity(dSNet);
 			fail("An invalid ifNet is not detected!");
 		} catch (PNValidationException e) {
 		}
@@ -259,7 +241,7 @@ public class IFNetTest {
 		// blue is created by transition t0. Both the transition and its subject (sh1) are high.
 		dSNet.getAnalysisContext().getLabeling().setAttributeClassification("yellow", SecurityLevel.HIGH);
 		try {
-			dSNet.checkValidity();
+			IFNetValidity.checkValidity(dSNet);
 			fail("An invalid ifNet  is not detected!");
 		} catch (PNValidationException e) {
 		}

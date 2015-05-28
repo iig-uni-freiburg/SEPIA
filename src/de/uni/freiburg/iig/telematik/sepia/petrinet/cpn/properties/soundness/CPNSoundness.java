@@ -15,7 +15,7 @@ public class CPNSoundness extends PNSoundness {
 	  			   F extends AbstractCPNFlowRelation<P,T>, 
 	  			   M extends AbstractCPNMarking> 
 	
-		void checkSoundnedd(AbstractCPN<P,T,F,M> cpn) 
+		void checkSoundness(AbstractCPN<P,T,F,M> cpn) 
 				throws PNSoundnessException {
 		
 	} 

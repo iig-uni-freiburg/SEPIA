@@ -9,13 +9,14 @@ import org.junit.Test;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.soundness.PTNetSoundness;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.validity.PTNetValidity;
 
 /**
  * Tests for the {@link PTNet}.
@@ -88,7 +89,7 @@ public class PTNetTest {
 
 		// The standard net is valid
 		try {
-			ptnet.checkValidity();
+			PTNetValidity.checkValidity(ptnet);
 		} catch (PNValidationException e) {
 			fail("The standart Net is valid!");
 			e.printStackTrace();
@@ -120,13 +121,13 @@ public class PTNetTest {
 		PTNet ptnet = createPTNet();
 
 		try {
-			ptnet.checkSoundness();
+			PTNetSoundness.checkSoundness(ptnet, true);
 		} catch (PNValidationException e) {
-			fail("The standart net is sound!");
+			fail("The standard net is sound!");
 			e.printStackTrace();
-		} catch (PNSoundnessException e) {
-			fail("The standart net is sound!");
-			e.printStackTrace();
+//		} catch (PNSoundnessException e) {
+//			fail("The standard net is sound!");
+//			e.printStackTrace();
 		}
 	}
 

@@ -270,15 +270,16 @@ public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
 	
 	void checkEndStateProperty(M traversalMarking, String outputPlaceName) throws PNValidationException, InterruptedException{
 		// Check Option to complete property
-		if(!traversalMarking.contains(outputPlaceName))
-			throw new PNValidationException("Marking does not contain tokens for output place \"" + outputPlaceName + "\"");
+		if(!traversalMarking.contains(outputPlaceName)) {
+			throw new PNValidationException("Final marking \"" + traversalMarking + "\" does not contain tokens for output place \"" + outputPlaceName + "\"");
+		}
 		
 		String cfTokenColor = getGenerator().getPetriNet().defaultTokenColor();
 		if(AbstractIFNet.class.isAssignableFrom(getGenerator().getPetriNet().getClass())){
 			cfTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
 		}
 		if(!traversalMarking.get(outputPlaceName).support().contains(cfTokenColor))
-			throw new PNValidationException("Marking does not contain control flow token for output place \"" + outputPlaceName + "\"");
+			throw new PNValidationException("Final marking \"" + traversalMarking + "\" does not contain control flow token for output place \"" + outputPlaceName + "\"");
 		
 		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();

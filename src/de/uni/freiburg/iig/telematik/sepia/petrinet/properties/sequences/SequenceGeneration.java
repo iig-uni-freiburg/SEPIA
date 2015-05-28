@@ -1,8 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.properties.sequences;
 
 import de.invation.code.toval.thread.ExecutorListener;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphRelation;
-import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;

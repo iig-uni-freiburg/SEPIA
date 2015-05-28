@@ -18,6 +18,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.CPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.FiringRule;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.soundness.CPNSoundness;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.validity.CPNValidity;
 
 /**
  * @author boehr
@@ -98,7 +100,7 @@ public class CPNTest {
 
 		// The standard net is valid
 		try {
-			cpn.checkValidity();
+			CPNValidity.checkValidity(cpn);
 		} catch (PNValidationException e) {
 			fail("The standart Net is valid!");
 			e.printStackTrace();
@@ -152,12 +154,12 @@ public class CPNTest {
 		CPN cpn = createCPN();
 
 		try {
-			cpn.checkSoundness();
-		} catch (PNValidationException e) {
-			fail("The standart net is sound!");
-			e.printStackTrace();
+			CPNSoundness.checkSoundness(cpn);
+//		} catch (PNValidationException e) {
+//			fail("The standard net is sound!");
+//			e.printStackTrace();
 		} catch (PNSoundnessException e) {
-			fail("The standart net is sound!");
+			fail("The standard net is sound!");
 			e.printStackTrace();
 		}
 	}
@@ -277,7 +279,7 @@ public class CPNTest {
 		f.setConstraint(new Multiset<String>());
 
 		try {
-			cpn.checkValidity();
+			CPNValidity.checkValidity(cpn);
 			fail("A non effective relation was not detected.");
 		} catch (PNValidationException e) {
 		}

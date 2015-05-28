@@ -6,8 +6,6 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,9 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.DeclassificationTransi
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
-import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerialization;
-import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
-import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.properties.validity.IFNetValidity;
 
 /**
  * @author boehr
@@ -181,7 +177,7 @@ public class DeclassificationTransitionTest {
 		}
 
 		try {
-			dSNet.checkValidity();
+			IFNetValidity.checkValidity(dSNet);
 			fail("An invalid declassification transition is reported to be valid.");
 		} catch (PNValidationException e) {
 			System.out.println(e.getMessage());
@@ -254,7 +250,7 @@ public class DeclassificationTransitionTest {
 		dt2OutRel.setConstraint(dtOutRelation.getConstraint());
 
 		try {
-			dSNet.checkValidity();
+			IFNetValidity.checkValidity(dSNet);
 			fail("An invalid declassification transition is reported to be valid.");
 		} catch (PNValidationException e) {
 		}
