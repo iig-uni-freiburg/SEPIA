@@ -60,6 +60,7 @@ public class SequenceGenerationCallable<P extends AbstractPlace<F,S>,
 		if(TraversalUtils.hasCycle(getGenerator().getMarkingGraph()))
 			throw new SequenceGenerationException("Cannot generate sequences of Petri net whose markign graph contains cycles");
 		
+		@SuppressWarnings("unchecked")
 		M actualMarking = (M) getGenerator().getPetriNet().getMarking().clone();
 		Set<List<String>> sequences = new HashSet<List<String>>();
 		Set<List<String>> completeSequences = new HashSet<List<String>>();

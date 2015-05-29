@@ -29,5 +29,9 @@ public class BoundednessCheckResult<P extends AbstractPlace<F,S>,
 	public AbstractMarkingGraph<M,S,?,?> getMarkingGraph() {
 		return markingGraph;
 	}
-	
+
+	@Override
+	public String toString() {
+		return boundedness.toString();
+	}
 }

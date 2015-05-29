@@ -18,12 +18,14 @@ import org.junit.Test;
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.Labeling;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.SecurityLevel;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.properties.validity.IFNetValidity;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.properties.validity.IFNetValidityCheckingCallableGenerator;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 
 /**
@@ -212,9 +214,13 @@ public class IFNetTest {
 	/*
 	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Test( expected = PNValidationException.class )
 	public void testCheckNonValidity() throws PNValidationException {
-		IFNetValidity.checkValidity(dSNet);
+		IFNetValidityCheckingCallableGenerator generator = new IFNetValidityCheckingCallableGenerator(dSNet);
+		if (generator.getPropertyFlags().contains(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS))
+			generator.removePropertyFlag(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
+		IFNetValidity.checkValidity(generator);
 	}
 
 	/*

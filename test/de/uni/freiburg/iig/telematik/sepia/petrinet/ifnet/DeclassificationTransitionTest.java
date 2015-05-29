@@ -180,7 +180,7 @@ public class DeclassificationTransitionTest {
 			IFNetValidity.checkValidity(dSNet);
 			fail("An invalid declassification transition is reported to be valid.");
 		} catch (PNValidationException e) {
-			System.out.println(e.getMessage());
+//			System.out.println(e.getMessage());
 		}
 	}
 

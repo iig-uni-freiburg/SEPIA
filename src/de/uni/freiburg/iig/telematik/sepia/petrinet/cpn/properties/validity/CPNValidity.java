@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.validity;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPN;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
@@ -14,8 +13,7 @@ public class CPNValidity extends PNValidity{
 	/**
 	 * CPNs require relation effectiveness.<br>
 	 * Each relation must move at least one token from a place to a transition or vice versa.
-	 * 
-	 * @see AbstractPetriNet#checkValidity()
+	 *
 	 * @throws PNValidationException 
 	 * @see AbstractCPNFlowRelation#hasConstraints()
 	 */

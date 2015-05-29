@@ -103,7 +103,7 @@ public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
 			} catch (PNValidationException e1) {
 				result.optionToCompleteAndProperCompletion = PropertyCheckingResult.FALSE;
 				result.exception = e1;
-				throw new CWNException("Eception during option to complete and valid completion check.\nReason: " + e1.getMessage(),  e1, result);
+				throw new CWNException("Exception during option to complete and valid completion check.\nReason: " + e1.getMessage(),  e1, result);
 			}
 			
 			if (Thread.currentThread().isInterrupted()) {
@@ -264,7 +264,16 @@ public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
 		Set<AbstractMarkingGraphState<M,Multiset<String>>> otherVertexes = new HashSet<AbstractMarkingGraphState<M,Multiset<String>>>(getGenerator().getMarkingGraph().getVertices());
 		otherVertexes.removeAll(drains);
 		for (AbstractMarkingGraphState<M,Multiset<String>> otherVertex : otherVertexes) {
-			checkEndStateProperty(otherVertex.getElement(), outputPlaceName);
+			boolean throwException = false;
+			try {
+				checkEndStateProperty(otherVertex.getElement(), outputPlaceName);
+				throwException = true; // only reached if non-drain has end state properties
+			} catch (PNValidationException e) {
+				// must throw exception since non-drains shouldn't have end-state properties
+			}
+			if (throwException) {
+				throw new PNValidationException("Final marking \"" + otherVertex.getElement() + "\" contains tokens for non-output place \"" + outputPlaceName + "\"");
+			}
 		}
 	}
 	
