@@ -187,15 +187,24 @@ public abstract class AbstractCPNPlace<E extends AbstractCPNFlowRelation<? exten
 	}
 	
 	@Override
-	public void setEmptyState() {
-//		List<String> colors = new ArrayList<String>(state.support());
-//		try {
-//			for(String color: colors)
-//				removeTokens(color);
-//		} catch (ParameterException e) {}
-		state = new Multiset<String>();
+	public Multiset<String> getEmptyState() {
+		return new Multiset<String>();
+	}
+	
+	@Override
+	public boolean setEmptyState() {
+		Multiset<String> emptyState = getEmptyState();
+		if(getState().equals(emptyState))
+			return false;
+		
+		Multiset<String> oldState = getState();
+		this.state = emptyState;
 		numTokens = 0;
+		// Tell outgoing transitions to update their state.
 		initiateStateChecks();
+		// Call state-change method
+		stateChange(oldState, emptyState);
+		return true;
 	}
 	
 	@Override

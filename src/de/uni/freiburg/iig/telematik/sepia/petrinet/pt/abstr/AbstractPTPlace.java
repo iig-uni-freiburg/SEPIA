@@ -89,9 +89,8 @@ public abstract class AbstractPTPlace<E extends AbstractPTFlowRelation<? extends
 	}
 	
 	@Override
-	public void setEmptyState() {
-		setState(0);
-		initiateStateChecks();
+	public Integer getEmptyState() {
+		return 0;
 	}
 
 	@Override

@@ -265,8 +265,26 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 * Sets the state of the place in empty condition, i.e. removes all tokens from the place.<br>
 	 * Depending on the state representation this may require different check routines,<br>
 	 * which have to be implemented by subclasses.
+	 * @see #getEmptyState();
 	 */
-	public abstract void setEmptyState();
+	public boolean setEmptyState(){
+		S emptyState = getEmptyState();
+		if(getState().equals(emptyState))
+			return false;
+		
+		S oldState = getState();
+		this.state = emptyState;
+		// Tell outgoing transitions to update their state.
+		initiateStateChecks();
+		// Call state-change method
+		stateChange(oldState, emptyState);
+		return true;
+	}
+	
+	/**
+	 * Gets the state of the place in empty condition.
+	 */
+	public abstract S getEmptyState();
 
 	/**
 	 * This method is called by {@link #setState(Object)} in case of state changes.<br>
