@@ -1,7 +1,12 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness;
 
+import java.awt.BorderLayout;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JPanel;
+
+import de.invation.code.toval.graphic.component.DisplayFrame;
+import de.invation.code.toval.graphic.component.ExecutorLabel;
 import de.invation.code.toval.thread.AbstractCallable;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
@@ -11,6 +16,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.mg.StateSpaceException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
 
 public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>, 
 										T extends AbstractTransition<F,S>, 
@@ -57,13 +64,12 @@ public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>,
 			boundedness = Boundedness.UNBOUNDED;
 		}
 	}
-	
-	
+
 
 	@Override
 	public void callableFinished(AbstractMarkingGraph<M,S,?,?> result) {
-		super.callableFinished(result);
 		boundedness = Boundedness.BOUNDED;
+		super.callableFinished(result);
 	}
 
 	@Override

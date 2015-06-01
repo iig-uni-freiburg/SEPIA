@@ -72,22 +72,6 @@ public class ThreadedMGCalculator<	P extends AbstractPlace<F,S>,
 		return callableResult;
 	}
 	
-//	public static void main(String[] args) throws BoundednessException {
-//		PTNet net = new PTNet();
-//		net.addPlace("p0");
-//		net.addTransition("t0");
-//		net.addFlowRelationPT("p0", "t0");
-//		net.addFlowRelationTP("t0", "p0", 2);
-//		PTMarking marking = new PTMarking();
-//		marking.set("p0", 100);
-//		net.setInitialMarking(marking);
-////		System.out.println(net.getBoundedness());
-//		ExecutorLabel label = new ExecutorLabel();
-//		JPanel panel = new JPanel(new BorderLayout());
-//		panel.add(label, BorderLayout.CENTER);
-////		label.setExecutor(net.checkBoundedness());
-//		DisplayFrame frame = new DisplayFrame(panel, true, true);
-////		System.out.println(net.getBoundedness());
-//	}
+
 
 }
