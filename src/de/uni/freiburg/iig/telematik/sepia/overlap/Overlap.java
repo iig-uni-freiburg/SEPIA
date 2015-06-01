@@ -19,7 +19,7 @@ public class Overlap {
 		void 
 	
 		initiateOverlapCalculation( OverlapCallableGenerator<P,T,F,M,S,E> generator,
-									ExecutorListener listener)
+									ExecutorListener<OverlapResult<E>> listener)
 								
 		throws OverlapException {
 
@@ -43,7 +43,7 @@ public class Overlap {
 
 		ThreadedOverlapCalculator<P,T,F,M,S,E> calculator = new ThreadedOverlapCalculator<P,T,F,M,S,E>(generator);
 		calculator.runCalculation();
-		return calculator.getOverlapResult();
+		return calculator.getResult();
 	}
 
 }

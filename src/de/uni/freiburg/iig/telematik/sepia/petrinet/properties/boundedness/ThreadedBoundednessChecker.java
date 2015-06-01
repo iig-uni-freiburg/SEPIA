@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness;
 
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
@@ -17,7 +16,14 @@ public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>,
 										T extends AbstractTransition<F,S>, 
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
-										S extends Object> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,AbstractMarkingGraph<M,S,?,?>>{
+										S extends Object> 
+
+										extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,
+																				  AbstractMarkingGraph<M,S,?,?>,
+																				  BoundednessCheckResult<P,T,F,M,S>,
+																				  BoundednessException>{
+	
+	private Boundedness boundedness = Boundedness.UNKNOWN;
 	
 	public ThreadedBoundednessChecker(BoundednessCheckGenerator<P,T,F,M,S> generator){
 		super(generator);
@@ -29,33 +35,32 @@ public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>,
 	}
 	
 	@Override
-	protected AbstractCallable<AbstractMarkingGraph<M,S,?,?>> getCallable() {
+	protected AbstractCallable<AbstractMarkingGraph<M,S,?,?>> createCallable() {
 		return new BoundednessCheckCallable<P,T,F,M,S>(getGenerator());
 	}
-	
-	public void runCalculation(){
-		setUpAndRun();
+
+	@Override
+	protected BoundednessException createException(String message, Throwable cause) {
+		return new BoundednessException(message, cause);
 	}
 
-	public BoundednessCheckResult<P,T,F,M,S> getBoundedness() throws BoundednessException{
-		AbstractMarkingGraph<M,S,?,?> markingGraph = null;
-		Boundedness boundedness = null;
-		try {
-			markingGraph = getResult();
-			boundedness = Boundedness.BOUNDED;
-		} catch (CancellationException e) {
-			boundedness = Boundedness.UNKNOWN;
-		} catch (InterruptedException e) {
-			boundedness = Boundedness.UNKNOWN;
-		} catch (ExecutionException e) {
-			if(e.getCause() != null && e.getCause() instanceof StateSpaceException){
-				boundedness = Boundedness.UNBOUNDED;
-			}
-			throw new BoundednessException("Exception during marking graph construction", e);
-		} catch(Exception e){
-			throw new BoundednessException("Exception during marking graph construction", e);
+	@Override
+	protected BoundednessException executionException(ExecutionException e) {
+		if(e.getCause() instanceof BoundednessException)
+			return (BoundednessException) e.getCause();
+		return new BoundednessException("Exception during marking graph construction", e);
+	}
+
+	@Override
+	public void callableException(Exception e) {
+		if(e.getCause() != null && e.getCause() instanceof StateSpaceException){
+			boundedness = Boundedness.UNBOUNDED;
 		}
-		return new BoundednessCheckResult<P,T,F,M,S>(boundedness, markingGraph);
 	}
 
+	@Override
+	protected BoundednessCheckResult<P,T,F,M,S> getResultFromCallableResult(AbstractMarkingGraph<M,S,?,?> callableResult) throws Exception {
+		return new BoundednessCheckResult<P,T,F,M,S>(boundedness, callableResult);
+	}
+	
 }

@@ -14,7 +14,7 @@ public class CWNChecking {
 	 			   F extends AbstractCPNFlowRelation<P,T>, 
 	 			   M extends AbstractCPNMarking>
 
-	void initiateCWNPropertyCheck(CWNCheckingCallableGenerator<P,T,F,M> generator, ExecutorListener listener) 
+	void initiateCWNPropertyCheck(CWNCheckingCallableGenerator<P,T,F,M> generator, ExecutorListener<CWNProperties> listener) 
 			throws CWNException {
 		
 		ThreadedCWNChecker<P,T,F,M> calculator = new ThreadedCWNChecker<P,T,F,M>(generator);
@@ -33,7 +33,7 @@ public class CWNChecking {
 
 		ThreadedCWNChecker<P,T,F,M> calculator = new ThreadedCWNChecker<P,T,F,M>(generator);
 		calculator.runCalculation();
-		return calculator.getCWNProperties();
+		return calculator.getResult();
 	}
 	
 }

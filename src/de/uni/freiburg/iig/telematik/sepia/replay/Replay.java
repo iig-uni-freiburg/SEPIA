@@ -45,7 +45,7 @@ public class Replay {
 		void 
 					
 		initiateReplay(	ReplayCallableGenerator<P,T,F,M,S,E> generator,
-						ExecutorListener listener)
+						ExecutorListener<ReplayResult<E>> listener)
 												
 		throws ReplayException {
 
@@ -70,7 +70,7 @@ public class Replay {
 		ThreadedReplayer<P,T,F,M,S,E> calculator = new ThreadedReplayer<P,T,F,M,S,E>(generator);
 		calculator.runCalculation();
 
-		return calculator.getReplayResult();
+		return calculator.getResult();
 	}
 	
 	public static <	P extends AbstractPlace<F,S>, 

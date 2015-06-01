@@ -18,10 +18,10 @@ public interface MGCalculator<	P extends AbstractPlace<F,S>,
 	
 	public void runCalculation();
 	
-	public AbstractCallable<AbstractMarkingGraph<M,S,?,?>> getCallable();
+	public AbstractCallable<AbstractMarkingGraph<M,S,?,?>> createCallable();
 	
-	public void addExecutorListener(ExecutorListener listener);
+	public void addExecutorListener(ExecutorListener<AbstractMarkingGraph<M,S,?,?>> listener);
 	
-	public void removeExecutorListener(ExecutorListener listener);
+	public void removeExecutorListener(ExecutorListener<AbstractMarkingGraph<M,S,?,?>> listener);
 
 }

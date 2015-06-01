@@ -19,7 +19,7 @@ public class IFNetValidity {
 	   			   R extends AbstractRegularIFNetTransition<F>,
 	   			   D extends AbstractDeclassificationTransition<F>>
 
-	void initiateValidityCheck(AbstractIFNet<P,T,F,M,R,D> ifnet, ExecutorListener listener){
+	void initiateValidityCheck(AbstractIFNet<P,T,F,M,R,D> ifnet, ExecutorListener<Boolean> listener){
 
 		initiateValidityCheck(new IFNetValidityCheckingCallableGenerator<P,T,F,M,R,D>(ifnet), listener);
 	}
@@ -31,7 +31,7 @@ public class IFNetValidity {
 	   			   R extends AbstractRegularIFNetTransition<F>,
 	   			   D extends AbstractDeclassificationTransition<F>>
 	
-		void initiateValidityCheck(IFNetValidityCheckingCallableGenerator<P,T,F,M,R,D> generator, ExecutorListener listener){
+		void initiateValidityCheck(IFNetValidityCheckingCallableGenerator<P,T,F,M,R,D> generator, ExecutorListener<Boolean> listener){
 		
 		ThreadedIFNetValidityChecker<P,T,F,M,R,D> constructor = new ThreadedIFNetValidityChecker<P,T,F,M,R,D>(generator);
 		constructor.addExecutorListener(listener);
@@ -61,7 +61,7 @@ public class IFNetValidity {
 
 		ThreadedIFNetValidityChecker<P,T,F,M,R,D> constructor = new ThreadedIFNetValidityChecker<P,T,F,M,R,D>(generator);
 		constructor.runCalculation();
-		constructor.getValidationResult();
+		constructor.getResult();
 	}
 
 }

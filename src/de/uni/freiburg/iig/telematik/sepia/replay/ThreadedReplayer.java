@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.replay;
 
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
@@ -16,7 +15,12 @@ public class ThreadedReplayer<P extends AbstractPlace<F,S>,
 										F extends AbstractFlowRelation<P,T,S>, 
 										M extends AbstractMarking<S>, 
 										S extends Object,
-										E extends LogEntry> extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,ReplayResult<E>>{
+										E extends LogEntry> 
+
+										extends AbstractThreadedPNPropertyChecker<P,T,F,M,S,
+																				  ReplayResult<E>,
+																				  ReplayResult<E>,
+																				  ReplayException>{
 	
 	protected ThreadedReplayer(ReplayCallableGenerator<P,T,F,M,S,E> generator){
 		super(generator);
@@ -29,32 +33,25 @@ public class ThreadedReplayer<P extends AbstractPlace<F,S>,
 	}
 
 	@Override
-	protected AbstractCallable<ReplayResult<E>> getCallable() {
+	protected AbstractCallable<ReplayResult<E>> createCallable() {
 		return new ReplayCallable<P,T,F,M,S,E>(getGenerator());
 	}
 	
-	public void runCalculation(){
-		setUpAndRun();
+	@Override
+	protected ReplayException createException(String message, Throwable cause) {
+		return new ReplayException(message, cause);
+	}
+
+	@Override
+	protected ReplayException executionException(ExecutionException e) {
+		if(e.getCause() instanceof ReplayException)
+			return (ReplayException) e.getCause();
+		return new ReplayException("Exception during replay", e);
+	}
+
+	@Override
+	protected ReplayResult<E> getResultFromCallableResult(ReplayResult<E> callableResult) throws Exception {
+		return callableResult;
 	}
 	
-	public ReplayResult<E> getReplayResult() throws ReplayException{
-		try {
-			return getResult();
-		} catch (CancellationException e) {
-			throw new ReplayException("Replaying cancelled.", e);
-		} catch (InterruptedException e) {
-			throw new ReplayException("Replaying interrupted.", e);
-		} catch (ExecutionException e) {
-			Throwable cause = e.getCause();
-			if(cause == null){
-				throw new ReplayException("Exception during replay.\n" + e.getMessage(), e);
-			}
-			if(cause instanceof ReplayException){
-				throw (ReplayException) cause;
-			}
-			throw new ReplayException("Exception during replay.\n" + e.getMessage(), e);
-		} catch(Exception e){
-			throw new ReplayException("Exception during replay.\n" + e.getMessage(), e);
-		}
-	}
 }

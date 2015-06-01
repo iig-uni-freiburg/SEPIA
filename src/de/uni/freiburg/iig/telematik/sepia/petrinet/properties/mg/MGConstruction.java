@@ -25,7 +25,7 @@ public class MGConstruction {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-	void initiateMarkingGraphConstruction(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener listener) 
+	void initiateMarkingGraphConstruction(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener<AbstractMarkingGraph<M,S,?,?>> listener) 
 			throws MarkingGraphException {
 		
 		initiateMarkingGraphConstruction(new ThreadedMGCalculator<P,T,F,M,S>(petriNet), listener);
@@ -44,7 +44,7 @@ public class MGConstruction {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-	void initiateMarkingGraphConstruction(MGCalculator<P,T,F,M,S> calculator, ExecutorListener listener) 
+	void initiateMarkingGraphConstruction(MGCalculator<P,T,F,M,S> calculator, ExecutorListener<AbstractMarkingGraph<M,S,?,?>> listener) 
 			throws MarkingGraphException {
 		
 		calculator.addExecutorListener(listener);

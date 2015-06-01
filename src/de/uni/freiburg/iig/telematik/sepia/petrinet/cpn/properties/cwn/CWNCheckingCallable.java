@@ -73,7 +73,7 @@ public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
 					
 					BoundednessCheckResult<P,T,F,M,Multiset<String>> boundednessCheckResult = null;
 					try{
-						boundednessCheckResult = checker.getBoundedness();
+						boundednessCheckResult = checker.getResult();
 					} catch (BoundednessException e) {
 						throw new CWNException("Exception during boundedness check.\nReason: " + e.getMessage(), e, result);
 					}
@@ -119,7 +119,7 @@ public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
 			
 			DeadTransitionCheckResult deadTransitionCheckResult = null;
 			try{
-				deadTransitionCheckResult = checker.getTransitionCheckingResult();
+				deadTransitionCheckResult = checker.getResult();
 			} catch (Exception e) {
 				throw new CWNException("Exception during dead transition check.\nReason: " + e.getMessage(), e, result);
 			}

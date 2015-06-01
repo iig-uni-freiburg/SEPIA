@@ -1,6 +1,5 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn;
 
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import de.invation.code.toval.thread.AbstractCallable;
@@ -14,7 +13,12 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.Abstract
 public class ThreadedCWNChecker<P extends AbstractCPNPlace<F>,
 								T extends AbstractCPNTransition<F>, 
 								F extends AbstractCPNFlowRelation<P,T>, 
-								M extends AbstractCPNMarking> extends AbstractThreadedPNPropertyChecker<P,T,F,M,Multiset<String>,CWNProperties>{
+								M extends AbstractCPNMarking> 
+
+								extends AbstractThreadedPNPropertyChecker<P,T,F,M,Multiset<String>,
+																		  CWNProperties,
+																		  CWNProperties,
+																		  CWNException>{
 	
 	public ThreadedCWNChecker(CWNCheckingCallableGenerator<P,T,F,M> generator){
 		super(generator);
@@ -24,36 +28,30 @@ public class ThreadedCWNChecker<P extends AbstractCPNPlace<F>,
 	protected CWNCheckingCallableGenerator<P,T,F,M> getGenerator() {
 		return (CWNCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
 	}
-
-	public CWNProperties getCWNProperties() throws CWNException{
-		try {
-			return getResult();
-		} catch (CancellationException e) {
-			throw new CWNException("CWN property check cancelled.", e);
-		} catch (InterruptedException e) {
-			throw new CWNException("CWN property check interrupted.", e);
-		} catch (ExecutionException e) {
-			Throwable cause = e.getCause();
-			if(cause == null){
-				throw new CWNException("Exception during CWN property check.\n" + e.getMessage(), e);
-			}
-			if(cause instanceof CWNException){
-				throw (CWNException) cause;
-			}
-			throw new CWNException("Exception during CWN property check.\n" + e.getMessage(), e);
-		} catch(Exception e){
-			throw new CWNException("Exception during CWN property check.\n" + e.getMessage(), e);
-		}
-	}
 	
 	@Override
-	public AbstractCallable<CWNProperties> getCallable() {
+	public AbstractCallable<CWNProperties> createCallable() {
 		return new CWNCheckingCallable<P,T,F,M>(getGenerator());
 	}
-	
+
 	@Override
-	public void runCalculation() {
-		setUpAndRun();
+	protected CWNException createException(String message, Throwable cause) {
+		return new CWNException(message, cause);
 	}
+
+	@Override
+	protected CWNException executionException(ExecutionException e) {
+		if(e.getCause() instanceof CWNException)
+			return (CWNException) e.getCause();
+		return new CWNException("Exception during CW check", e);
+	}
+
+	@Override
+	protected CWNProperties getResultFromCallableResult(CWNProperties callableResult) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

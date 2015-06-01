@@ -53,7 +53,7 @@ public class IFNetValidityCheckingCallable<P extends AbstractIFNetPlace<F>,
 		ThreadedCWNChecker<P,T,F,M> cwnChecker = new ThreadedCWNChecker<P,T,F,M>(getGenerator());
 		try {
 			cwnChecker.runCalculation();
-			cwnChecker.getCWNProperties();
+			cwnChecker.getResult();
 		} catch (CWNException e) {
 			throw new PNValidationException("Exception during CWN check", e);
 		}

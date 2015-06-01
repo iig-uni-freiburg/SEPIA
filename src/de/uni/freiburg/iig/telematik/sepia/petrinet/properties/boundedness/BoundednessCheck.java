@@ -44,7 +44,7 @@ public class BoundednessCheck {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-	void initiateBoundednessCheck(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener listener) throws BoundednessException{
+	void initiateBoundednessCheck(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener<BoundednessCheckResult<P,T,F,M,S>> listener) throws BoundednessException{
 		initiateBoundednessCheck(new BoundednessCheckGenerator<P,T,F,M,S>(petriNet), listener);
 	}
 
@@ -61,7 +61,7 @@ public class BoundednessCheck {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-	void initiateBoundednessCheck(BoundednessCheckGenerator<P,T,F,M,S> generator, ExecutorListener listener) throws BoundednessException{
+	void initiateBoundednessCheck(BoundednessCheckGenerator<P,T,F,M,S> generator, ExecutorListener<BoundednessCheckResult<P,T,F,M,S>> listener) throws BoundednessException{
 		
 		ThreadedBoundednessChecker<P,T,F,M,S> checker = new ThreadedBoundednessChecker<P,T,F,M,S>(generator);
 		checker.addExecutorListener(listener);
@@ -108,7 +108,7 @@ public class BoundednessCheck {
 		
 		BoundednessCheckResult<P,T,F,M,S> boundednessCheckResult = null;
 		try{
-			boundednessCheckResult = checker.getBoundedness();
+			boundednessCheckResult = checker.getResult();
 		} catch (BoundednessException e) {
 			throw new BoundednessException("Exception during marking graph construction.\nReason: " + e.getMessage(), e);
 		}

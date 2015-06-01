@@ -15,7 +15,7 @@ public class DeadTransitionCheck {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-					void initiateDeadTransitionCheck(DeadTransitionCheckCallableGenerator<P,T,F,M,S> generator, ExecutorListener listener)
+					void initiateDeadTransitionCheck(DeadTransitionCheckCallableGenerator<P,T,F,M,S> generator, ExecutorListener<DeadTransitionCheckResult> listener)
 							throws DeadTransitionCheckException {
 
 		ThreadedDeadTransitionsChecker<P,T,F,M,S> calculator = new ThreadedDeadTransitionsChecker<P,T,F,M,S>(generator);
@@ -29,7 +29,7 @@ public class DeadTransitionCheck {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-					void initiateDeadTransitionCheck(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener listener)
+					void initiateDeadTransitionCheck(AbstractPetriNet<P,T,F,M,S> petriNet, ExecutorListener<DeadTransitionCheckResult> listener)
 							throws DeadTransitionCheckException {
 
 		initiateDeadTransitionCheck(new DeadTransitionCheckCallableGenerator<P,T,F,M,S>(petriNet), listener);
@@ -47,7 +47,7 @@ public class DeadTransitionCheck {
 		ThreadedDeadTransitionsChecker<P,T,F,M,S> calculator = new ThreadedDeadTransitionsChecker<P,T,F,M,S>(generator);
 		calculator.runCalculation();
 
-		return calculator.getTransitionCheckingResult();
+		return calculator.getResult();
 	}
 
 	public static <	P extends AbstractPlace<F,S>, 

@@ -16,7 +16,7 @@ public class SequenceGeneration {
 					M extends AbstractMarking<S>, 
 					S extends Object>
 
-					void initiateSequenceGeneration(SequenceGenerationCallableGenerator<P,T,F,M,S> generator, ExecutorListener listener)
+					void initiateSequenceGeneration(SequenceGenerationCallableGenerator<P,T,F,M,S> generator, ExecutorListener<MGTraversalResult> listener)
 							throws SequenceGenerationException {
 
 		ThreadedSequencesGenerator<P,T,F,M,S> calculator = new ThreadedSequencesGenerator<P,T,F,M,S>(generator);
@@ -36,7 +36,7 @@ public class SequenceGeneration {
 		ThreadedSequencesGenerator<P,T,F,M,S> calculator = new ThreadedSequencesGenerator<P,T,F,M,S>(generator);
 		calculator.runCalculation();
 		
-		return calculator.getSequences();
+		return calculator.getResult();
 	}
 
 }

@@ -12,7 +12,7 @@ public abstract class AbstractThreadedPNPropertyChecker<P extends AbstractPlace<
 														F extends AbstractFlowRelation<P,T,S>, 
 														M extends AbstractMarking<S>, 
 														S extends Object,
-														Z> extends SingleThreadExecutorService<Z>{
+														V,Z,E extends Exception> extends SingleThreadExecutorService<V,Z,E>{
 	
 	private AbstractCallableGenerator<P,T,F,M,S> generator = null;
 	
@@ -26,7 +26,7 @@ public abstract class AbstractThreadedPNPropertyChecker<P extends AbstractPlace<
 		return generator;
 	}
 	
-	public void runCalculation() {
+	public final void runCalculation() {
 		setUpAndRun();
 	}
 
