@@ -57,6 +57,14 @@ public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>,
 			boundedness = Boundedness.UNBOUNDED;
 		}
 	}
+	
+	
+
+	@Override
+	public void callableFinished(AbstractMarkingGraph<M,S,?,?> result) {
+		super.callableFinished(result);
+		boundedness = Boundedness.BOUNDED;
+	}
 
 	@Override
 	protected BoundednessCheckResult<P,T,F,M,S> getResultFromCallableResult(AbstractMarkingGraph<M,S,?,?> callableResult) throws Exception {
