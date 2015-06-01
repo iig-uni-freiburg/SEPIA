@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.properties.validity;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNCheckingCallableGenerator;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetFlowRelation;
@@ -19,7 +18,6 @@ public class IFNetValidityCheckingCallableGenerator<P extends AbstractIFNetPlace
 
 	public IFNetValidityCheckingCallableGenerator(AbstractIFNet<P,T,F,M,R,D> ifnet) {
 		super(ifnet);
-		addPropertyFlag(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
 	}
 
 	@SuppressWarnings("unchecked")

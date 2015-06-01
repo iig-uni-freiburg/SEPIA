@@ -53,7 +53,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#removeTransition(java.lang.String)}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#removeTransition(java.lang.String)}.
 	 */
 	@Test
 	public void testRemoveTransition() {
@@ -66,7 +68,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#checkValidity()}.
 	 */
 	@SuppressWarnings("unused")
 	@Test
@@ -181,7 +185,7 @@ public class IFNetTest {
 		ac.setSubjectDescriptor("td", "sh2");
 		ac.setSubjectDescriptor("t1", "sh3");
 		ac.setSubjectDescriptor("tOut", "sl0");
-		
+
 		Labeling l = new Labeling("l", ac);
 
 		// Set subject clearance
@@ -212,23 +216,30 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#checkValidity()}.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Test( expected = PNValidationException.class )
+	@Test(expected = PNValidationException.class)
 	public void testCheckNonValidity() throws PNValidationException {
 		IFNetValidityCheckingCallableGenerator generator = new IFNetValidityCheckingCallableGenerator(dSNet);
 		if (generator.getPropertyFlags().contains(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS))
-			generator.removePropertyFlag(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS);
+			fail("By default, IF-nets should not accept remaining control flow tokens.");
 		IFNetValidity.checkValidity(generator);
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where subjects CREATEs a token with a classification different from the subjects clearance.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#checkValidity()}. Try to set an invalid analysis context where
+	 * subjects CREATEs a token with a classification different from the
+	 * subjects clearance.
 	 */
 	@Test
 	public void testCheckValidityAnalysisContextNonMatchingSecLevels() {
-		// blue is created by transition t0. Both the transition and its subject (sh1) are high.
+		// blue is created by transition t0. Both the transition and its subject
+		// (sh1) are high.
 		dSNet.getAnalysisContext().getLabeling().setAttributeClassification("blue", SecurityLevel.LOW);
 		try {
 			IFNetValidity.checkValidity(dSNet);
@@ -238,13 +249,18 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#checkValidity()}. Try to set an invalid analysis context where the classification of a color created from a declassificationtransition is high.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#checkValidity()}. Try to set an invalid analysis context where the
+	 * classification of a color created from a declassificationtransition is
+	 * high.
 	 */
 	@SuppressWarnings("unused")
 	@Test
 	public void testCheckValidityAnalysisContextDeclassificationTransCreatesHighColor() {
 
-		// blue is created by transition t0. Both the transition and its subject (sh1) are high.
+		// blue is created by transition t0. Both the transition and its subject
+		// (sh1) are high.
 		dSNet.getAnalysisContext().getLabeling().setAttributeClassification("yellow", SecurityLevel.HIGH);
 		try {
 			IFNetValidity.checkValidity(dSNet);
@@ -252,7 +268,8 @@ public class IFNetTest {
 		} catch (PNValidationException e) {
 		}
 
-		// create an declassification transition which creates a color for which no label is set
+		// create an declassification transition which creates a color for which
+		// no label is set
 		IFNetFlowRelation tdOutRel = null;
 		IFNetFlowRelation tdInRel = null;
 		for (IFNetFlowRelation f : dSNet.getFlowRelations()) {
@@ -267,7 +284,8 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#SNet()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#SNet()}.
 	 */
 	@Test
 	public void testSNet() {
@@ -278,7 +296,10 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#SNet(java.util.Set, java.util.Set, de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking)}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#SNet(java.util.Set, java.util.Set,
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNetMarking)}.
 	 */
 	@Test
 	public void testSNetSetOfStringSetOfStringSNetMarking() {
@@ -312,7 +333,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#getRegularTransitions()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#getRegularTransitions()}.
 	 */
 	@Test
 	public void testGetRegularTransitions() {
@@ -337,7 +360,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#getDeclassificationTransitions()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#getDeclassificationTransitions()}.
 	 */
 	@Test
 	public void testGetDeclassificationTransitions() {
@@ -353,7 +378,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#addDeclassificationTransition(java.lang.String)}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#addDeclassificationTransition(java.lang.String)}.
 	 */
 	@Test
 	public void testAddDeclassificationTransitionString() {
@@ -370,7 +397,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#getSubjectDescriptors()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#getSubjectDescriptors()}.
 	 */
 	@Test
 	public void testGetSubjectDescriptors() {
@@ -384,7 +413,9 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#getAnalysisContext()}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#getAnalysisContext()}.
 	 */
 	@Test
 	public void testGetAnalysisContext() {
@@ -396,7 +427,10 @@ public class IFNetTest {
 	}
 
 	/*
-	 * Test method for {@link de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet#setAnalysisContext(de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext)}.
+	 * Test method for {@link
+	 * de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.
+	 * IFNet#setAnalysisContext
+	 * (de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.AnalysisContext)}.
 	 */
 	@Test
 	public void testSetAnalysisContext() {
@@ -423,7 +457,7 @@ public class IFNetTest {
 		ac.setSubjectDescriptor("tOut", "sh2");
 		ac.setSubjectDescriptor("td", "sh3");
 		ac.setSubjectDescriptor("t1", "sl0");
-		
+
 		Labeling l = new Labeling("l", ac);
 
 		// Set subject clearance
@@ -464,7 +498,8 @@ public class IFNetTest {
 		IFNet ifnet1 = IFNetTestUtil.createSimpleIFNet();
 		IFNet ifnet1clone = (IFNet) ifnet1.clone();
 		assertNotSame(ifnet1, ifnet1clone);
-		// Can't just test equality because of the different order of same lists.
+		// Can't just test equality because of the different order of same
+		// lists.
 		// assertEquals(ifnet1, ifnet1clone);
 		// Check equality for places
 		assertEquals(ifnet1.getPlaces().size(), ifnet1clone.getPlaces().size());
