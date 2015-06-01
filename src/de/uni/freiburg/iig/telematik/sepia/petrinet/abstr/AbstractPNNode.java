@@ -434,10 +434,11 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		AbstractPNNode<E> result = newInstance(getName());
 		result.setLabel(getLabel());
 		result.setType(getPNNodeType());
-		for (E incomingRelation: getIncomingRelations())
-			result.addIncomingRelation(incomingRelation);
-		for (E outgoingRelation: getOutgoingRelations())
-			result.addOutgoingRelation(outgoingRelation);
+//		for (E incomingRelation: getIncomingRelations())
+//			result.addIncomingRelation(incomingRelation);
+//		for (E outgoingRelation: getOutgoingRelations())
+//			result.addOutgoingRelation(outgoingRelation);
+//		-> Is done in AbstractPetriNet.clone()
 		return result;
 	}
 	
