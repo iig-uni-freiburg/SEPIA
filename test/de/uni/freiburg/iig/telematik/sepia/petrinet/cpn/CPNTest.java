@@ -154,7 +154,7 @@ public class CPNTest {
 		CPN cpn = createCPN();
 
 		try {
-			CPNSoundness.checkSoundness(cpn);
+			CPNSoundness.checkSoundness(cpn, true);
 //		} catch (PNValidationException e) {
 //			fail("The standard net is sound!");
 //			e.printStackTrace();

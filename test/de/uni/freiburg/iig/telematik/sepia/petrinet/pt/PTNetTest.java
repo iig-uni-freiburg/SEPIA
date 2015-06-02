@@ -1,6 +1,10 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,12 +13,8 @@ import org.junit.Test;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.soundness.PTNetSoundness;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.validity.PTNetValidity;
 
@@ -122,7 +122,7 @@ public class PTNetTest {
 
 		try {
 			PTNetSoundness.checkSoundness(ptnet, true);
-		} catch (PNValidationException e) {
+		} catch (PNSoundnessException e) {
 			fail("The standard net is sound!");
 			e.printStackTrace();
 //		} catch (PNSoundnessException e) {
