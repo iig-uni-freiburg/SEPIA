@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.soundness;
 
+import de.uni.freiburg.iig.telematik.sepia.exception.PNSoundnessException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
@@ -25,9 +26,14 @@ public class PTNetSoundness {
 	   			   M extends AbstractPTMarking>
 
 		void checkSoundness(AbstractPTNet<P,T,F,M> petriNet, boolean checkValidity) 
-				throws PNValidationException{
-		if(checkValidity)
-			PTNetValidity.checkValidity(petriNet);
+				throws PNSoundnessException{
+		if(checkValidity){
+			try {
+				PTNetValidity.checkValidity(petriNet);
+			} catch (PNValidationException e) {
+				throw new PNSoundnessException("Underlying net is not valid.\nReason: " + e.getMessage(), e);
+			}
+		}
 	}
 	
 }
