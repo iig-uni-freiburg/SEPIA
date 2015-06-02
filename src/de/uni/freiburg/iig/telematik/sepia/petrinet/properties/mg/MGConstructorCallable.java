@@ -38,7 +38,7 @@ public class MGConstructorCallable< P extends AbstractPlace<F,S>,
 		try{
 			markingGraph = (AbstractMarkingGraph<M,S,?,?>) getGenerator().getPetriNet().getMarkingGraphClass().newInstance();
 		} catch (Exception e) {
-			throw new MarkingGraphException("Cannot create new instance of markign graph class", e);
+			throw new MarkingGraphException("Cannot create new instance of marking graph class", e);
 		}
 		int stateCount = 0;
 		Map<String, String> stateNames = new HashMap<String, String>();

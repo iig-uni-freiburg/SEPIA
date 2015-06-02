@@ -58,22 +58,22 @@ public class CPN extends AbstractCPN<CPNPlace, CPNTransition, CPNFlowRelation, C
 		return new CPNFlowRelation(transition, place);
 	}
 
-	@Override
-	public CPNMarking fireCheck(String transitionName) throws PNException {
-		validateFireTransition(transitionName);
-		CPNMarking newMarking = cloneMarking();
-		CPNTransition transition = getTransition(transitionName);
-		for(CPNFlowRelation relation: transition.getIncomingRelations()){
-			String inputPlaceName = relation.getPlace().getName();
-			newMarking.set(inputPlaceName, newMarking.get(inputPlaceName).difference(relation.getConstraint()));
-		}
-		for(CPNFlowRelation relation: transition.getOutgoingRelations()){
-			String outputPlaceName = relation.getPlace().getName();
-			Multiset<String> oldState = (newMarking.get(outputPlaceName) == null ? new Multiset<String>() : newMarking.get(outputPlaceName).clone());
-			newMarking.set(outputPlaceName, oldState.sum(relation.getConstraint()));
-		}
-		return newMarking;
-	}
+//	@Override
+//	public CPNMarking fireCheck(String transitionName) throws PNException {
+//		validateFireTransition(transitionName);
+//		CPNMarking newMarking = cloneMarking();
+//		CPNTransition transition = getTransition(transitionName);
+//		for(CPNFlowRelation relation: transition.getIncomingRelations()){
+//			String inputPlaceName = relation.getPlace().getName();
+//			newMarking.set(inputPlaceName, newMarking.get(inputPlaceName).difference(relation.getConstraint()));
+//		}
+//		for(CPNFlowRelation relation: transition.getOutgoingRelations()){
+//			String outputPlaceName = relation.getPlace().getName();
+//			Multiset<String> oldState = (newMarking.get(outputPlaceName) == null ? new Multiset<String>() : newMarking.get(outputPlaceName).clone());
+//			newMarking.set(outputPlaceName, oldState.sum(relation.getConstraint()));
+//		}
+//		return newMarking;
+//	}
 	
 	@Override
 	public CPN newInstance() {

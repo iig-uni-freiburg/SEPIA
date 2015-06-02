@@ -67,5 +67,5 @@ public abstract class PNValidity {
 			transition.checkValidity();
 		}
 	}
-
+	
 }
