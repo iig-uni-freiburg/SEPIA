@@ -91,37 +91,31 @@ public class PTTransitionTest {
 		// create a P/T-net
 		PTNet ptnet = null;
 
-		try {
-			// Create places
-			Set<String> places = new HashSet<String>();
-			places.add("pre1");
-			places.add("pre2");
-			places.add("post1");
-			places.add("post2");
+		// Create places
+		Set<String> places = new HashSet<String>();
+		places.add("pre1");
+		places.add("pre2");
+		places.add("post1");
+		places.add("post2");
 
-			// create transitions
-			Set<String> transitions = new HashSet<String>();
-			transitions.add("t0");
+		// create transitions
+		Set<String> transitions = new HashSet<String>();
+		transitions.add("t0");
 
-			// create the initial marking
-			PTMarking marking = new PTMarking();
-			marking.set("pre1", 3);
-			marking.set("pre2", 1);
+		// create the initial marking
+		PTMarking marking = new PTMarking();
+		marking.set("pre1", 3);
+		marking.set("pre2", 1);
 
-			// create the P/T-net
-			ptnet = new PTNet(places, transitions, marking);
+		// create the P/T-net
+		ptnet = new PTNet(places, transitions, marking);
 
-			// Add the flow relation
-			ptnet.addFlowRelationPT("pre1", "t0", 2);
-			ptnet.addFlowRelationPT("pre2", "t0", 3);
-			ptnet.addFlowRelationTP("t0", "post1", 4);
-			ptnet.addFlowRelationTP("t0", "post2", 5);
+		// Add the flow relation
+		ptnet.addFlowRelationPT("pre1", "t0", 2);
+		ptnet.addFlowRelationPT("pre2", "t0", 3);
+		ptnet.addFlowRelationTP("t0", "post1", 4);
+		ptnet.addFlowRelationTP("t0", "post2", 5);
 
-			return ptnet.getTransition("t0");
-		} catch (ParameterException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return ptnet.getTransition("t0");
 	}
 }

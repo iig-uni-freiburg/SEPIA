@@ -372,21 +372,21 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		}
 		@SuppressWarnings("rawtypes")
 		AbstractPNNode other = (AbstractPNNode) obj;
-		if (incomingRelations == null) {
-			if (other.incomingRelations != null) {
-				return false;
-			}
-		} else if (!incomingRelations.equals(other.incomingRelations)) {
-			if (incomingRelations.size() == other.incomingRelations.size()) {
-				for (E incomingRelation : incomingRelations) {
-					if (!other.incomingRelations.contains(incomingRelation)) {
-						return false;
-					}
-				}
-				return true;
-			}
-			return false;
-		}
+//		if (incomingRelations == null) {
+//			if (other.incomingRelations != null) {
+//				return false;
+//			}
+//		} else if (!incomingRelations.equals(other.incomingRelations)) {
+//			if (incomingRelations.size() == other.incomingRelations.size()) {
+//				for (E incomingRelation : incomingRelations) {
+//					if (!other.incomingRelations.contains(incomingRelation)) {
+//						return false;
+//					}
+//				}
+//				return true;
+//			}
+//			return false;
+//		}
 		if (label == null) {
 			if (other.label != null) {
 				return false;
@@ -401,21 +401,21 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		if (outgoingRelations == null) {
-			if (other.outgoingRelations != null) {
-				return false;
-			}
-		} else if (!outgoingRelations.equals(other.outgoingRelations)) {
-			if (outgoingRelations.size() == other.outgoingRelations.size()) {
-				for (E outgoingRelation : outgoingRelations) {
-					if (!other.outgoingRelations.contains(outgoingRelation)) {
-						return false;
-					}
-				}
-				return true;
-			}
-			return false;
-		}
+//		if (outgoingRelations == null) {
+//			if (other.outgoingRelations != null) {
+//				return false;
+//			}
+//		} else if (!outgoingRelations.equals(other.outgoingRelations)) {
+//			if (outgoingRelations.size() == other.outgoingRelations.size()) {
+//				for (E outgoingRelation : outgoingRelations) {
+//					if (!other.outgoingRelations.contains(outgoingRelation)) {
+//						return false;
+//					}
+//				}
+//				return true;
+//			}
+//			return false;
+//		}
 		if (toStringFormat == null) {
 			if (other.toStringFormat != null) {
 				return false;
