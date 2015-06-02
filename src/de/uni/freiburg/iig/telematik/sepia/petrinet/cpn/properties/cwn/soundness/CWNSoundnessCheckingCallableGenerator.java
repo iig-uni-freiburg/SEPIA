@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.soundness;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractCallableGenerator;
 
-public class CWNCheckingCallableGenerator<P extends AbstractCPNPlace<F>,
+public class CWNSoundnessCheckingCallableGenerator<P extends AbstractCPNPlace<F>,
 										  T extends AbstractCPNTransition<F>, 
 										  F extends AbstractCPNFlowRelation<P,T>, 
 										  M extends AbstractCPNMarking> extends AbstractCallableGenerator<P,T,F,M,Multiset<String>> {
@@ -27,7 +27,7 @@ public class CWNCheckingCallableGenerator<P extends AbstractCPNPlace<F>,
 	private Set<CWNPropertyFlag> propertyFlags = new HashSet<CWNPropertyFlag>();
 	private AbstractMarkingGraph<M,Multiset<String>,?,?> markingGraph = null;
 	
-	public CWNCheckingCallableGenerator(AbstractCPN<P,T,F,M> cpn) {
+	public CWNSoundnessCheckingCallableGenerator(AbstractCPN<P,T,F,M> cpn) {
 		super(cpn);
 	}
 

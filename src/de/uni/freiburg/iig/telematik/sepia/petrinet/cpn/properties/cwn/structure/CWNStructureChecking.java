@@ -1,12 +1,13 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure;
 
 import de.invation.code.toval.thread.ExecutorListener;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
 
-public class CWNChecking {
+public class CWNStructureChecking {
 	
 	
 	public static <P extends AbstractCPNPlace<F>,
@@ -14,10 +15,10 @@ public class CWNChecking {
 	 			   F extends AbstractCPNFlowRelation<P,T>, 
 	 			   M extends AbstractCPNMarking>
 
-	void initiateCWNPropertyCheck(CWNCheckingCallableGenerator<P,T,F,M> generator, ExecutorListener<CWNProperties> listener) 
+	void initiateCWNPropertyCheck(CWNStructureCheckingCallableGenerator<P,T,F,M> generator, ExecutorListener<CWNStructureProperties> listener) 
 			throws CWNException {
 		
-		ThreadedCWNChecker<P,T,F,M> calculator = new ThreadedCWNChecker<P,T,F,M>(generator);
+		ThreadedCWNStructureChecker<P,T,F,M> calculator = new ThreadedCWNStructureChecker<P,T,F,M>(generator);
 		calculator.addExecutorListener(listener);
 		calculator.runCalculation();
 	}
@@ -28,10 +29,10 @@ public class CWNChecking {
 	   			   F extends AbstractCPNFlowRelation<P,T>, 
 	   			   M extends AbstractCPNMarking>
 
-	CWNProperties checkCWNProperty(CWNCheckingCallableGenerator<P,T,F,M> generator) 
+	CWNStructureProperties checkCWNProperty(CWNStructureCheckingCallableGenerator<P,T,F,M> generator) 
 			throws CWNException {
 
-		ThreadedCWNChecker<P,T,F,M> calculator = new ThreadedCWNChecker<P,T,F,M>(generator);
+		ThreadedCWNStructureChecker<P,T,F,M> calculator = new ThreadedCWNStructureChecker<P,T,F,M>(generator);
 		calculator.runCalculation();
 		return calculator.getResult();
 	}

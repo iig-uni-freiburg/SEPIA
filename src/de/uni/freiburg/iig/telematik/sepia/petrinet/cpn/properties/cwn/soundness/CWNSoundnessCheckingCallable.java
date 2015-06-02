@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.soundness;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +10,10 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRel
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureCheckingCallable;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureCheckingCallableGenerator;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
@@ -23,32 +27,37 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.ThreadedDead
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.mg.ThreadedMGCalculator;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractPNPropertyCheckerCallable;
 
-public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
+public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 								 T extends AbstractCPNTransition<F>, 
 								 F extends AbstractCPNFlowRelation<P,T>, 
-								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNProperties> {
+								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNSoundnessProperties> {
 		
-	public CWNCheckingCallable(CWNCheckingCallableGenerator<P,T,F,M> generator){
+	public CWNSoundnessCheckingCallable(CWNSoundnessCheckingCallableGenerator<P,T,F,M> generator){
 		super(generator);
 	}
 	
 	@Override
-	protected CWNCheckingCallableGenerator<P,T,F,M> getGenerator() {
-		return (CWNCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
+	protected CWNSoundnessCheckingCallableGenerator<P,T,F,M> getGenerator() {
+		return (CWNSoundnessCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
 	}
 
 	@Override
-	public CWNProperties callRoutine() throws CWNException, InterruptedException {
-		CWNProperties result = null;
+	public CWNSoundnessProperties callRoutine() throws CWNException, InterruptedException {
+		CWNSoundnessProperties result = null;
 		try {
 			if (getGenerator().isCheckCWNStructure()) {
-				result = checkCWNStructure();
-				if(result.exception != null)
-					throw new CWNException("Exception during cwn structure check", result.exception, result);
+				CWNStructureProperties structureProperties = null;
+				try {
+					CWNStructureCheckingCallableGenerator<P,T,F,M> generator = new CWNStructureCheckingCallableGenerator<P,T,F,M>(getGenerator().getPetriNet());
+					CWNStructureCheckingCallable<P,T,F,M> structureCheckCallable = new CWNStructureCheckingCallable<P,T,F,M>(generator);
+					structureProperties = structureCheckCallable.callRoutine();
+				} catch(InterruptedException e){
+					throw e;
+				}
+				if(structureProperties.exception != null)
+					throw new CWNException("Exception during cwn structure check", structureProperties.exception, new CWNSoundnessProperties(structureProperties));
 			} else {
-				result = new CWNProperties();
-				if(result.exception != null)
-					throw new CWNException(result.exception, result);
+				result = new CWNSoundnessProperties();
 				try {
 					result.inOutPlaces = PNProperties.validateInputOutputPlace(getGenerator().getPetriNet());
 					result.validInOutPlaces = PropertyCheckingResult.TRUE;
@@ -137,106 +146,6 @@ public class CWNCheckingCallable<P extends AbstractCPNPlace<F>,
 			throw new CWNException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
 		}
 		return result;
-	}
-	
-	private CWNProperties checkCWNStructure() throws InterruptedException {
-		CWNProperties result = new CWNProperties();
-
-		// Check if there is only one input/output place
-		try {
-			result.inOutPlaces = PNProperties.validateInputOutputPlace(getGenerator().getPetriNet());
-		} catch (PNValidationException e) {
-			result.exception = e;
-			result.validInOutPlaces = PropertyCheckingResult.FALSE;
-			result.hasCWNStructure = PropertyCheckingResult.FALSE;
-			return result;
-		}
-		P input = getGenerator().getPetriNet().getPlace(result.inOutPlaces.getInput());
-		result.validInOutPlaces = PropertyCheckingResult.TRUE;
-		
-		if (Thread.currentThread().isInterrupted()) {
-			throw new InterruptedException();
-		}
-
-		// Check strongly connectedness of short-circuited net
-		try {
-			PNProperties.validateStrongConnectedness(getGenerator().getPetriNet(), result.inOutPlaces);
-		} catch (PNValidationException e) {
-			result.exception = e;
-			result.strongConnectedness = PropertyCheckingResult.FALSE;
-			result.hasCWNStructure = PropertyCheckingResult.FALSE;
-			return result;
-		}
-		result.strongConnectedness = PropertyCheckingResult.TRUE;
-		
-		if (Thread.currentThread().isInterrupted()) {
-			throw new InterruptedException();
-		}
-
-		// Check initial marking
-		try {
-			checkSingleCFTokenInInitialMarking(input.getName());
-		} catch (PNValidationException e) {
-			result.exception = e;
-			result.validInitialMarking = PropertyCheckingResult.FALSE;
-			result.hasCWNStructure = PropertyCheckingResult.FALSE;
-			return result;
-		}
-		result.validInitialMarking = PropertyCheckingResult.TRUE;
-		
-		if (Thread.currentThread().isInterrupted()) {
-			throw new InterruptedException();
-		}
-
-		// Check control flow dependency
-		try {
-			String CFTokenColor = getGenerator().getPetriNet().defaultTokenColor();
-			if (AbstractIFNet.class.isAssignableFrom(getGenerator().getPetriNet().getClass())) {
-				CFTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
-			}
-			for (T transition : getGenerator().getPetriNet().getTransitions()) {
-				
-				if (Thread.currentThread().isInterrupted()) {
-					throw new InterruptedException();
-				}
-				
-				if (!transition.getConsumedColors().contains(CFTokenColor))
-					throw new PNValidationException("Transition \"" + transition + "\" does not consume control flow token");
-				if (!transition.getProducedColors().contains(CFTokenColor))
-					throw new PNValidationException("Transition \"" + transition + "\" does not produce control flow token");
-			}
-		} catch (PNValidationException e) {
-			result.exception = e;
-			result.controlFlowDependency = PropertyCheckingResult.FALSE;
-			result.hasCWNStructure = PropertyCheckingResult.FALSE;
-			return result;
-		}
-		result.controlFlowDependency = PropertyCheckingResult.TRUE;
-
-		result.hasCWNStructure = PropertyCheckingResult.TRUE;
-		return result;
-	}
-	
-	private void checkSingleCFTokenInInitialMarking(String placeName) throws PNValidationException{
-		if(!getGenerator().getPetriNet().containsPlace(placeName))
-			throw new PNValidationException("Petri net does not contain place " + placeName);
-		
-		P place = getGenerator().getPetriNet().getPlace(placeName);
-		String cfTokenColor = getGenerator().getPetriNet().defaultTokenColor();
-		if(AbstractIFNet.class.isAssignableFrom(getGenerator().getPetriNet().getClass())){
-			cfTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
-		}
-		M initialMarking = getGenerator().getPetriNet().getInitialMarking();
-		if(!initialMarking.contains(place.getName()))
-			throw new PNValidationException("Initial marking must contain input place " + place);
-		if(initialMarking.places().size() > 1)
-			throw new PNValidationException("Initial marking must only contain input place " + place);
-	
-		Multiset<String> tokensInitialPlace = initialMarking.get(place.getName());
-		if(!tokensInitialPlace.contains(cfTokenColor))
-			throw new PNValidationException("Initial marking must contain at least one control flow token for input place " + place);
-		if(tokensInitialPlace.support().size() > 1)
-			throw new PNValidationException("Initial marking must contain at least one control flow token for input place " + place);
 	}
 	
 	private void checkValidCompletion(String outputPlaceName) throws PNValidationException, InterruptedException {

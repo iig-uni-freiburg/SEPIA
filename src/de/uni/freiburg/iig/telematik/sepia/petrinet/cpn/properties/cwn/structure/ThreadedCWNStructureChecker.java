@@ -1,4 +1,4 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure;
 
 import java.util.concurrent.ExecutionException;
 
@@ -8,30 +8,31 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRel
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 
-public class ThreadedCWNChecker<P extends AbstractCPNPlace<F>,
+public class ThreadedCWNStructureChecker<P extends AbstractCPNPlace<F>,
 								T extends AbstractCPNTransition<F>, 
 								F extends AbstractCPNFlowRelation<P,T>, 
 								M extends AbstractCPNMarking> 
 
 								extends AbstractThreadedPNPropertyChecker<P,T,F,M,Multiset<String>,
-																		  CWNProperties,
-																		  CWNProperties,
+																		  CWNStructureProperties,
+																		  CWNStructureProperties,
 																		  CWNException>{
 	
-	public ThreadedCWNChecker(CWNCheckingCallableGenerator<P,T,F,M> generator){
+	public ThreadedCWNStructureChecker(CWNStructureCheckingCallableGenerator<P,T,F,M> generator){
 		super(generator);
 	}
 	
 	@Override
-	protected CWNCheckingCallableGenerator<P,T,F,M> getGenerator() {
-		return (CWNCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
+	protected CWNStructureCheckingCallableGenerator<P,T,F,M> getGenerator() {
+		return (CWNStructureCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
 	}
 	
 	@Override
-	public AbstractCallable<CWNProperties> createCallable() {
-		return new CWNCheckingCallable<P,T,F,M>(getGenerator());
+	public AbstractCallable<CWNStructureProperties> createCallable() {
+		return new CWNStructureCheckingCallable<P,T,F,M>(getGenerator());
 	}
 
 	@Override
@@ -47,9 +48,8 @@ public class ThreadedCWNChecker<P extends AbstractCPNPlace<F>,
 	}
 
 	@Override
-	protected CWNProperties getResultFromCallableResult(CWNProperties callableResult) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	protected CWNStructureProperties getResultFromCallableResult(CWNStructureProperties callableResult) throws Exception {
+		return callableResult;
 	}
 	
 	
