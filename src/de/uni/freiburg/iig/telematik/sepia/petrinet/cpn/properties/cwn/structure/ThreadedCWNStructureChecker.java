@@ -45,7 +45,7 @@ public class ThreadedCWNStructureChecker<P extends AbstractCPNPlace<F>,
 	protected CWNException executionException(ExecutionException e) {
 		if(e.getCause() instanceof CWNException)
 			return (CWNException) e.getCause();
-		return new CWNException("Exception during CW check", e);
+		return new CWNException("Exception during CWN structure check", e);
 	}
 
 	@Override

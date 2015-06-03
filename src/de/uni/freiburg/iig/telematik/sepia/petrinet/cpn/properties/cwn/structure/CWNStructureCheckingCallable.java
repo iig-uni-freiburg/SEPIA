@@ -104,6 +104,8 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 		} catch(InterruptedException e){
 			throw e;
 		} catch (Exception e) {
+			if(e instanceof CWNException)
+				throw e;
 			throw new CWNException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
 		}
 		return result;

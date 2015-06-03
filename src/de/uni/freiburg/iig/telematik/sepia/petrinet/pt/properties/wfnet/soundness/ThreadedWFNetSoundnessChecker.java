@@ -44,7 +44,7 @@ public class ThreadedWFNetSoundnessChecker<P extends AbstractPTPlace<F>,
 	protected WFNetException executionException(ExecutionException e) {
 		if(e.getCause() instanceof WFNetException)
 			return (WFNetException) e.getCause();
-		return new WFNetException("Exception during CW check", e);
+		return new WFNetException("Exception during WFNet soundness check", e);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn;
 
+import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraph;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.NetCheckingProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PNProperties.InOutPlaces;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
@@ -16,6 +17,7 @@ public class CWNProperties extends NetCheckingProperties {
 	public PropertyCheckingResult isBounded = PropertyCheckingResult.UNKNOWN;
 	public PropertyCheckingResult isSoundCWN = PropertyCheckingResult.UNKNOWN;
 	public InOutPlaces inOutPlaces = null;
+	public AbstractMarkingGraph markingGraph = null;
 	
 	public boolean hasCWNStructure(){
 		return hasCWNStructure.equals(PropertyCheckingResult.TRUE);
