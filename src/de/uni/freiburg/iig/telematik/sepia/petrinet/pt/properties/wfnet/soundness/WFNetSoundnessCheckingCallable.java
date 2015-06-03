@@ -140,8 +140,6 @@ public class WFNetSoundnessCheckingCallable<P extends AbstractPTPlace<F>,
 		} catch(InterruptedException e){
 			throw e;
 		} catch (Exception e) {
-			if(e instanceof WFNetException)
-				throw e;
 			throw new WFNetException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
 		}
 		return result;
