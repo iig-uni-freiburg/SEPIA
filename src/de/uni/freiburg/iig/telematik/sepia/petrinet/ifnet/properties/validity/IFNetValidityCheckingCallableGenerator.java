@@ -1,6 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.properties.validity;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNCheckingCallableGenerator;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.soundness.CWNSoundnessCheckingCallableGenerator;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetFlowRelation;
@@ -14,7 +14,7 @@ public class IFNetValidityCheckingCallableGenerator<P extends AbstractIFNetPlace
 												   F extends AbstractIFNetFlowRelation<P,T>, 
 												   M extends AbstractIFNetMarking,
 												   R extends AbstractRegularIFNetTransition<F>,
-												   D extends AbstractDeclassificationTransition<F>> extends CWNCheckingCallableGenerator<P,T,F,M> {
+												   D extends AbstractDeclassificationTransition<F>> extends CWNSoundnessCheckingCallableGenerator<P,T,F,M> {
 
 	public IFNetValidityCheckingCallableGenerator(AbstractIFNet<P,T,F,M,R,D> ifnet) {
 		super(ifnet);
@@ -25,7 +25,5 @@ public class IFNetValidityCheckingCallableGenerator<P extends AbstractIFNetPlace
 	public AbstractIFNet<P,T,F,M,R,D> getPetriNet() {
 		return (AbstractIFNet<P,T,F,M,R,D>) super.getPetriNet();
 	}
-	
-	
 
 }

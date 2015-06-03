@@ -128,7 +128,7 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 		if(!tokensInitialPlace.contains(cfTokenColor))
 			throw new PNValidationException("Initial marking must contain at least one control flow token for input place " + place);
 		if(tokensInitialPlace.support().size() > 1)
-			throw new PNValidationException("Initial marking must contain at least one control flow token for input place " + place);
+			throw new PNValidationException("Initial marking must contain exactly one control flow token for input place " + place);
 	}
 
 }

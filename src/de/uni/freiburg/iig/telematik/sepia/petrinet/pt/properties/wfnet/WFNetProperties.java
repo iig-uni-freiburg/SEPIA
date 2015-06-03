@@ -9,9 +9,16 @@ public class WFNetProperties extends NetCheckingProperties {
 	public PropertyCheckingResult hasWFNetStructure = PropertyCheckingResult.UNKNOWN;
 	public PropertyCheckingResult validInOutPlaces = PropertyCheckingResult.UNKNOWN;
 	public PropertyCheckingResult strongConnectedness = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult safeness = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult optionToCompleteAndProperCompletion = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult isSoundWFNet = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult isStructuredWFNet = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult noDeadTransitions = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult validInitialMarking = PropertyCheckingResult.UNKNOWN;
+	public PropertyCheckingResult isBounded = PropertyCheckingResult.UNKNOWN;
 	public InOutPlaces inOutPlaces = null;
 	
-	public boolean isSoundWFNet(){
+	public boolean isWFNet(){
 		return exception == null;
 	}
 }

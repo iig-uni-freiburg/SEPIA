@@ -22,7 +22,7 @@ public class DeadTransitionCheckingCallable<P extends AbstractPlace<F,S>,
 											M extends AbstractMarking<S>, 
 											S extends Object> extends AbstractPNPropertyCheckerCallable<P,T,F,M,S,DeadTransitionCheckResult> {
 
-	protected DeadTransitionCheckingCallable(DeadTransitionCheckCallableGenerator<P,T,F,M,S> generator) {
+	public DeadTransitionCheckingCallable(DeadTransitionCheckCallableGenerator<P,T,F,M,S> generator) {
 		super(generator);
 	}
 	
@@ -34,7 +34,7 @@ public class DeadTransitionCheckingCallable<P extends AbstractPlace<F,S>,
 
 
 	@Override
-	protected DeadTransitionCheckResult callRoutine() throws DeadTransitionCheckException, InterruptedException {
+	public DeadTransitionCheckResult callRoutine() throws DeadTransitionCheckException, InterruptedException {
 		// Check if marking graph is available and construct it in case it is not
 		if(getGenerator().getMarkingGraph() == null){
 			MGConstructorCallableGenerator<P,T,F,M,S> generator = new MGConstructorCallableGenerator<P,T,F,M,S>(getGenerator().getPetriNet());

@@ -8,7 +8,7 @@ import de.invation.code.toval.validate.InconsistencyException;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.ThreadedCWNChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.soundness.ThreadedCWNSoundnessChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.validity.CPNValidity;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractDeclassificationTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
@@ -50,7 +50,7 @@ public class IFNetValidityCheckingCallable<P extends AbstractIFNetPlace<F>,
 			throw new InterruptedException();
 		}
 		
-		ThreadedCWNChecker<P,T,F,M> cwnChecker = new ThreadedCWNChecker<P,T,F,M>(getGenerator());
+		ThreadedCWNSoundnessChecker<P,T,F,M> cwnChecker = new ThreadedCWNSoundnessChecker<P,T,F,M>(getGenerator());
 		try {
 			cwnChecker.runCalculation();
 			cwnChecker.getResult();

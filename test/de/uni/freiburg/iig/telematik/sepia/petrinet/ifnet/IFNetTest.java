@@ -18,7 +18,7 @@ import org.junit.Test;
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNPropertyFlag;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.soundness.CWNSoundnessPropertyFlag;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -224,7 +224,7 @@ public class IFNetTest {
 	@Test(expected = PNValidationException.class)
 	public void testCheckNonValidity() throws PNValidationException {
 		IFNetValidityCheckingCallableGenerator generator = new IFNetValidityCheckingCallableGenerator(dSNet);
-		if (generator.getPropertyFlags().contains(CWNPropertyFlag.ACCEPT_REMAINING_CF_TOKENS))
+		if (generator.getPropertyFlags().contains(CWNSoundnessPropertyFlag.ACCEPT_REMAINING_CF_TOKENS))
 			fail("By default, IF-nets should not accept remaining control flow tokens.");
 		IFNetValidity.checkValidity(generator);
 	}

@@ -24,7 +24,8 @@ public class CWNSoundnessCheckingCallableGenerator<P extends AbstractCPNPlace<F>
 	
 	private boolean checkCWNStructure = DEFAULT_CHECK_CWN_STRUCTURE;
 	private boolean checkBoundedness = DEFAULT_CHECK_BOUNDEDNESS;
-	private Set<CWNPropertyFlag> propertyFlags = new HashSet<CWNPropertyFlag>();
+	
+	private Set<CWNSoundnessPropertyFlag> propertyFlags = new HashSet<CWNSoundnessPropertyFlag>();
 	private AbstractMarkingGraph<M,Multiset<String>,?,?> markingGraph = null;
 	
 	public CWNSoundnessCheckingCallableGenerator(AbstractCPN<P,T,F,M> cpn) {
@@ -52,17 +53,17 @@ public class CWNSoundnessCheckingCallableGenerator<P extends AbstractCPNPlace<F>
 		this.checkBoundedness = checkBoundedness;
 	}
 	
-	public void addPropertyFlag(CWNPropertyFlag flag){
+	public void addPropertyFlag(CWNSoundnessPropertyFlag flag){
 		Validate.notNull(flag);
 		propertyFlags.add(flag);
 	}
 	
-	public void removePropertyFlag(CWNPropertyFlag flag){
+	public void removePropertyFlag(CWNSoundnessPropertyFlag flag){
 		Validate.notNull(flag);
 		propertyFlags.remove(flag);
 	}
 	
-	public boolean containsPropertyFlag(CWNPropertyFlag flag){
+	public boolean containsPropertyFlag(CWNSoundnessPropertyFlag flag){
 		Validate.notNull(flag);
 		return propertyFlags.contains(flag);
 	}
@@ -79,7 +80,7 @@ public class CWNSoundnessCheckingCallableGenerator<P extends AbstractCPNPlace<F>
 		return !propertyFlags.isEmpty();
 	}
 	
-	public Set<CWNPropertyFlag> getPropertyFlags(){
+	public Set<CWNSoundnessPropertyFlag> getPropertyFlags(){
 		return Collections.unmodifiableSet(propertyFlags);
 	}
 	

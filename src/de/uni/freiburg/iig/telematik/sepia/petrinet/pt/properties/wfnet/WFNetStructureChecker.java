@@ -9,7 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 
-public class WFNetChecker {
+public class WFNetStructureChecker {
 
 	public static 	<P extends AbstractPTPlace<F>, 
 	 				 T extends AbstractPTTransition<F>, 

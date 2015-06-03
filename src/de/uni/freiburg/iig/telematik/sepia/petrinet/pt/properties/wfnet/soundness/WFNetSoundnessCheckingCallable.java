@@ -1,20 +1,10 @@
-package de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.soundness;
+package de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.soundness;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.mg.abstr.AbstractMarkingGraphState;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureCheckingCallable;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureCheckingCallableGenerator;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.BoundednessCheckGenerator;
@@ -27,47 +17,55 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.DeadTransiti
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.DeadTransitionCheckingCallable;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.mg.ThreadedMGCalculator;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractPNPropertyCheckerCallable;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.WFNetProperties;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.structure.WFNetStructureCheckingCallable;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.properties.wfnet.structure.WFNetStructureCheckingCallableGenerator;
 
-public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
-								 T extends AbstractCPNTransition<F>, 
-								 F extends AbstractCPNFlowRelation<P,T>, 
-								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNProperties> {
+public class WFNetSoundnessCheckingCallable<P extends AbstractPTPlace<F>,
+								 		  T extends AbstractPTTransition<F>, 
+								 		  F extends AbstractPTFlowRelation<P,T>, 
+								 		  M extends AbstractPTMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Integer,WFNetProperties> {
 		
-	public CWNSoundnessCheckingCallable(CWNSoundnessCheckingCallableGenerator<P,T,F,M> generator){
+	public WFNetSoundnessCheckingCallable(WFNetSoundnessCheckingCallableGenerator<P,T,F,M> generator){
 		super(generator);
 	}
 	
 	@Override
-	protected CWNSoundnessCheckingCallableGenerator<P,T,F,M> getGenerator() {
-		return (CWNSoundnessCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
+	protected WFNetSoundnessCheckingCallableGenerator<P,T,F,M> getGenerator() {
+		return (WFNetSoundnessCheckingCallableGenerator<P,T,F,M>) super.getGenerator();
 	}
 
 	@Override
-	public CWNProperties callRoutine() throws CWNException, InterruptedException {
-		CWNProperties result = null;
+	public WFNetProperties callRoutine() throws WFNetException, InterruptedException {
+		WFNetProperties result = null;
 		try {
 			if (getGenerator().isCheckCWNStructure()) {
 				try{
-					CWNStructureCheckingCallableGenerator<P,T,F,M> generator = new CWNStructureCheckingCallableGenerator<P,T,F,M>(getGenerator().getPetriNet());
-					CWNStructureCheckingCallable<P,T,F,M> structureCheckCallable = new CWNStructureCheckingCallable<P,T,F,M>(generator);
+					WFNetStructureCheckingCallableGenerator<P,T,F,M> generator = new WFNetStructureCheckingCallableGenerator<P,T,F,M>(getGenerator().getPetriNet());
+					WFNetStructureCheckingCallable<P,T,F,M> structureCheckCallable = new WFNetStructureCheckingCallable<P,T,F,M>(generator);
 					result = structureCheckCallable.callRoutine();
-				} catch(CWNException e){
-					e.getProperties().isSoundCWN = PropertyCheckingResult.FALSE;
-					throw new CWNException("Exception during cwn structure check.", e, e.getProperties());
+				} catch(WFNetException e){
+					e.getProperties().isSoundWFNet = PropertyCheckingResult.FALSE;
+					throw new WFNetException("Exception during cwn structure check.", e, e.getProperties());
 				}
 			} else {
-				result = new CWNProperties();
+				result = new WFNetProperties();
 				try {
 					result.inOutPlaces = PNProperties.validateInputOutputPlace(getGenerator().getPetriNet());
 					result.validInOutPlaces = PropertyCheckingResult.TRUE;
 				} catch(PNValidationException e){
 					result.validInOutPlaces = PropertyCheckingResult.FALSE;
-					result.isSoundCWN = PropertyCheckingResult.FALSE;
+					result.isSoundWFNet = PropertyCheckingResult.FALSE;
 					result.exception = e;
-					throw new CWNException("Exception during input/output place check.", e, result);
+					throw new WFNetException("Exception during input/output place check.", e, result);
 				}
 			}
-			result.isSoundCWN = PropertyCheckingResult.FALSE;
+			result.isSoundWFNet = PropertyCheckingResult.FALSE;
 			
 			if (Thread.currentThread().isInterrupted()) {
 				throw new InterruptedException();
@@ -77,15 +75,15 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 				if(getGenerator().getMarkingGraph() != null){
 					result.isBounded = PropertyCheckingResult.TRUE;
 				} else {
-					BoundednessCheckGenerator<P,T,F,M,Multiset<String>> generator = new BoundednessCheckGenerator<P,T,F,M,Multiset<String>>(getGenerator().getPetriNet());
-					ThreadedBoundednessChecker<P,T,F,M,Multiset<String>> checker = new ThreadedBoundednessChecker<P,T,F,M,Multiset<String>>(generator);
+					BoundednessCheckGenerator<P,T,F,M,Integer> generator = new BoundednessCheckGenerator<P,T,F,M,Integer>(getGenerator().getPetriNet());
+					ThreadedBoundednessChecker<P,T,F,M,Integer> checker = new ThreadedBoundednessChecker<P,T,F,M,Integer>(generator);
 					checker.runCalculation();
 					
-					BoundednessCheckResult<P,T,F,M,Multiset<String>> boundednessCheckResult = null;
+					BoundednessCheckResult<P,T,F,M,Integer> boundednessCheckResult = null;
 					try{
 						boundednessCheckResult = checker.getResult();
 					} catch (BoundednessException e) {
-						throw new CWNException("Exception during boundedness check.", e, result);
+						throw new WFNetException("Exception during boundedness check.", e, result);
 					}
 					switch(boundednessCheckResult.getBoundedness()){
 					case BOUNDED:
@@ -93,10 +91,10 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 						break;
 					case UNBOUNDED:
 						result.isBounded = PropertyCheckingResult.FALSE;
-						throw new CWNException("Net is unbounded.", result);
+						throw new WFNetException("Net is unbounded.", result);
 					default:
 						result.isBounded = PropertyCheckingResult.UNKNOWN;
-						throw new CWNException("Unknown boundedness of net, calculation cancelled?.", result);
+						throw new WFNetException("Unknown boundedness of net, calculation cancelled?.", result);
 					}
 					getGenerator().setMarkingGraph(boundednessCheckResult.getMarkingGraph());
 				}
@@ -113,7 +111,7 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			} catch (PNValidationException e) {
 				result.optionToCompleteAndProperCompletion = PropertyCheckingResult.FALSE;
 				result.exception = e;
-				throw new CWNException("Exception during option to complete and proper completion check.", e, result);
+				throw new WFNetException("Exception during option to complete and proper completion check.", e, result);
 			}
 			
 			if (Thread.currentThread().isInterrupted()) {
@@ -121,27 +119,27 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			}
 			
 			// Requirement 2: No dead transitions
-			DeadTransitionCheckCallableGenerator<P,T,F,M,Multiset<String>> generator = new DeadTransitionCheckCallableGenerator<P,T,F,M,Multiset<String>>(getGenerator().getPetriNet());
+			DeadTransitionCheckCallableGenerator<P,T,F,M,Integer> generator = new DeadTransitionCheckCallableGenerator<P,T,F,M,Integer>(getGenerator().getPetriNet());
 			if(getGenerator().getMarkingGraph() != null)
 				generator.setMarkingGraph(getGenerator().getMarkingGraph());
 			
-			DeadTransitionCheckingCallable<P,T,F,M,Multiset<String>> deadCallable = new DeadTransitionCheckingCallable<P,T,F,M,Multiset<String>>(generator);
+			DeadTransitionCheckingCallable<P,T,F,M,Integer> deadCallable = new DeadTransitionCheckingCallable<P,T,F,M,Integer>(generator);
 			DeadTransitionCheckResult deadTransitionCheckResult = null;
 			try {
 				deadTransitionCheckResult = deadCallable.callRoutine();
 			} catch(DeadTransitionCheckException e){
 				result.noDeadTransitions = PropertyCheckingResult.FALSE;
-				throw new CWNException("Exception during dead transition check.", e, result);
+				throw new WFNetException("Exception during dead transition check.", e, result);
 			}
 			
 			result.noDeadTransitions = deadTransitionCheckResult.existDeadTransitions() ? PropertyCheckingResult.FALSE : PropertyCheckingResult.TRUE;
 			
-			result.isSoundCWN = PropertyCheckingResult.TRUE;
+			result.isSoundWFNet = PropertyCheckingResult.TRUE;
 
 		} catch(InterruptedException e){
 			throw e;
 		} catch (Exception e) {
-			throw new CWNException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
+			throw new WFNetException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
 		}
 		return result;
 	}
@@ -151,7 +149,7 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			throw new PNValidationException("CPN does not contain a place with name \"" + outputPlaceName + "\"");
 
 		if(getGenerator().getMarkingGraph() == null){
-			ThreadedMGCalculator<P,T,F,M,Multiset<String>> checker = new ThreadedMGCalculator<P,T,F,M,Multiset<String>>(getGenerator().getPetriNet());
+			ThreadedMGCalculator<P,T,F,M,Integer> checker = new ThreadedMGCalculator<P,T,F,M,Integer>(getGenerator().getPetriNet());
 			checker.runCalculation();
 			try{
 				getGenerator().setMarkingGraph(checker.getMarkingGraph());
@@ -164,13 +162,13 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			throw new InterruptedException();
 		}
 		
-		Set<AbstractMarkingGraphState<M,Multiset<String>>> drains = new HashSet<AbstractMarkingGraphState<M,Multiset<String>>>(getGenerator().getMarkingGraph().getDrains());
-		for (AbstractMarkingGraphState<M,Multiset<String>> drainVertex : drains) {
+		Set<AbstractMarkingGraphState<M,Integer>> drains = new HashSet<AbstractMarkingGraphState<M,Integer>>(getGenerator().getMarkingGraph().getDrains());
+		for (AbstractMarkingGraphState<M,Integer> drainVertex : drains) {
 			checkEndStateProperty(drainVertex.getElement(), outputPlaceName);
 		}
-		Set<AbstractMarkingGraphState<M,Multiset<String>>> otherVertexes = new HashSet<AbstractMarkingGraphState<M,Multiset<String>>>(getGenerator().getMarkingGraph().getVertices());
+		Set<AbstractMarkingGraphState<M,Integer>> otherVertexes = new HashSet<AbstractMarkingGraphState<M,Integer>>(getGenerator().getMarkingGraph().getVertices());
 		otherVertexes.removeAll(drains);
-		for (AbstractMarkingGraphState<M,Multiset<String>> otherVertex : otherVertexes) {
+		for (AbstractMarkingGraphState<M,Integer> otherVertex : otherVertexes) {
 			boolean throwException = false;
 			try {
 				checkEndStateProperty(otherVertex.getElement(), outputPlaceName);
@@ -190,12 +188,11 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			throw new PNValidationException("Final marking \"" + traversalMarking + "\" does not contain output place \"" + outputPlaceName + "\"");
 		}
 		
-		String cfTokenColor = getGenerator().getPetriNet().defaultTokenColor();
-		if(AbstractIFNet.class.isAssignableFrom(getGenerator().getPetriNet().getClass())){
-			cfTokenColor = AbstractIFNet.CONTROL_FLOW_TOKEN_COLOR;
-		}
-		if(!traversalMarking.get(outputPlaceName).support().contains(cfTokenColor))
-			throw new PNValidationException("Final marking \"" + traversalMarking + "\" does not contain control flow token for output place \"" + outputPlaceName + "\"");
+		if(traversalMarking.get(outputPlaceName) == 0)
+			throw new PNValidationException("Final marking \"" + traversalMarking + "\" does not contain token in output place \"" + outputPlaceName + "\"");
+		
+		if(traversalMarking.get(outputPlaceName) > 1)
+			throw new PNValidationException("Final marking \"" + traversalMarking + "\" does contain more than one token in output place \"" + outputPlaceName + "\"");
 		
 		if (Thread.currentThread().isInterrupted()) {
 			throw new InterruptedException();
@@ -203,8 +200,8 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 		
 		boolean checkRemainingCFTokens = true;
 		if(getGenerator().containsPropertyFlags()){
-			for(CWNSoundnessPropertyFlag flag: getGenerator().getPropertyFlags()){
-				if(flag == CWNSoundnessPropertyFlag.ACCEPT_REMAINING_CF_TOKENS){
+			for(WFNetSoundnessPropertyFlag flag: getGenerator().getPropertyFlags()){
+				if(flag == WFNetSoundnessPropertyFlag.ACCEPT_REMAINING_TOKENS){
 					checkRemainingCFTokens = false;
 				}
 			}
@@ -217,7 +214,7 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			if(place.getName().equals(outputPlaceName))
 				continue;
 			if(traversalMarking.contains(place.getName())){
-				if(traversalMarking.get(place.getName()).support().contains(cfTokenColor))
+				if(traversalMarking.get(place.getName()) > 0)
 					throw new PNValidationException("Remaining control flow token in place \"" + place.getName() + "\"");
 			}
 			
