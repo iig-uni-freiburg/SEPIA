@@ -9,6 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractThreadedPNPropertyChecker;
 
 public class ThreadedCWNSoundnessChecker<P extends AbstractCPNPlace<F>,
@@ -17,8 +18,8 @@ public class ThreadedCWNSoundnessChecker<P extends AbstractCPNPlace<F>,
 										 M extends AbstractCPNMarking> 
 
 										extends AbstractThreadedPNPropertyChecker<P,T,F,M,Multiset<String>,
-																		  		  CWNSoundnessProperties,
-																		  		  CWNSoundnessProperties,
+																		  		  CWNProperties,
+																		  		  CWNProperties,
 																		  		  CWNException>{
 	
 	public ThreadedCWNSoundnessChecker(CWNSoundnessCheckingCallableGenerator<P,T,F,M> generator){
@@ -31,7 +32,7 @@ public class ThreadedCWNSoundnessChecker<P extends AbstractCPNPlace<F>,
 	}
 	
 	@Override
-	public AbstractCallable<CWNSoundnessProperties> createCallable() {
+	public AbstractCallable<CWNProperties> createCallable() {
 		return new CWNSoundnessCheckingCallable<P,T,F,M>(getGenerator());
 	}
 
@@ -48,7 +49,7 @@ public class ThreadedCWNSoundnessChecker<P extends AbstractCPNPlace<F>,
 	}
 
 	@Override
-	protected CWNSoundnessProperties getResultFromCallableResult(CWNSoundnessProperties callableResult) throws Exception {
+	protected CWNProperties getResultFromCallableResult(CWNProperties callableResult) throws Exception {
 		return callableResult;
 	}
 	

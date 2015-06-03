@@ -11,9 +11,9 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureCheckingCallable;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureCheckingCallableGenerator;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.structure.CWNStructureProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
@@ -22,15 +22,16 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.Bound
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.BoundednessException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.boundedness.ThreadedBoundednessChecker;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.DeadTransitionCheckCallableGenerator;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.DeadTransitionCheckException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.DeadTransitionCheckResult;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.ThreadedDeadTransitionsChecker;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.dead.DeadTransitionCheckingCallable;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.mg.ThreadedMGCalculator;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.AbstractPNPropertyCheckerCallable;
 
 public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 								 T extends AbstractCPNTransition<F>, 
 								 F extends AbstractCPNFlowRelation<P,T>, 
-								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNSoundnessProperties> {
+								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNProperties> {
 		
 	public CWNSoundnessCheckingCallable(CWNSoundnessCheckingCallableGenerator<P,T,F,M> generator){
 		super(generator);
@@ -42,31 +43,31 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 	}
 
 	@Override
-	public CWNSoundnessProperties callRoutine() throws CWNException, InterruptedException {
-		CWNSoundnessProperties result = null;
+	public CWNProperties callRoutine() throws CWNException, InterruptedException {
+		CWNProperties result = null;
 		try {
 			if (getGenerator().isCheckCWNStructure()) {
-				CWNStructureProperties structureProperties = null;
-				try {
+				try{
 					CWNStructureCheckingCallableGenerator<P,T,F,M> generator = new CWNStructureCheckingCallableGenerator<P,T,F,M>(getGenerator().getPetriNet());
 					CWNStructureCheckingCallable<P,T,F,M> structureCheckCallable = new CWNStructureCheckingCallable<P,T,F,M>(generator);
-					structureProperties = structureCheckCallable.callRoutine();
-				} catch(InterruptedException e){
-					throw e;
+					result = structureCheckCallable.callRoutine();
+				} catch(CWNException e){
+					e.getProperties().isSoundCWN = PropertyCheckingResult.FALSE;
+					throw new CWNException("Exception during cwn structure check.", e, e.getProperties());
 				}
-				if(structureProperties.exception != null)
-					throw new CWNException("Exception during cwn structure check", structureProperties.exception, new CWNSoundnessProperties(structureProperties));
 			} else {
-				result = new CWNSoundnessProperties();
+				result = new CWNProperties();
 				try {
 					result.inOutPlaces = PNProperties.validateInputOutputPlace(getGenerator().getPetriNet());
 					result.validInOutPlaces = PropertyCheckingResult.TRUE;
 				} catch(PNValidationException e){
 					result.validInOutPlaces = PropertyCheckingResult.FALSE;
+					result.isSoundCWN = PropertyCheckingResult.FALSE;
 					result.exception = e;
-					throw new CWNException("Exception during inout/output place check", result.exception, result);
+					throw new CWNException("Exception during input/output place check.", e, result);
 				}
 			}
+			result.isSoundCWN = PropertyCheckingResult.FALSE;
 			
 			if (Thread.currentThread().isInterrupted()) {
 				throw new InterruptedException();
@@ -84,7 +85,7 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 					try{
 						boundednessCheckResult = checker.getResult();
 					} catch (BoundednessException e) {
-						throw new CWNException("Exception during boundedness check.\nReason: " + e.getMessage(), e, result);
+						throw new CWNException("Exception during boundedness check.", e, result);
 					}
 					switch(boundednessCheckResult.getBoundedness()){
 					case BOUNDED:
@@ -92,7 +93,7 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 						break;
 					case UNBOUNDED:
 						result.isBounded = PropertyCheckingResult.FALSE;
-						throw new CWNException("Net is not bounded.", result);
+						throw new CWNException("Net is unbounded.", result);
 					default:
 						result.isBounded = PropertyCheckingResult.UNKNOWN;
 						throw new CWNException("Unknown boundedness of net, calculation cancelled?.", result);
@@ -109,10 +110,10 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			try {
 				checkValidCompletion(result.inOutPlaces.getOutput());
 				result.optionToCompleteAndProperCompletion = PropertyCheckingResult.TRUE;
-			} catch (PNValidationException e1) {
+			} catch (PNValidationException e) {
 				result.optionToCompleteAndProperCompletion = PropertyCheckingResult.FALSE;
-				result.exception = e1;
-				throw new CWNException("Exception during option to complete and valid completion check.\nReason: " + e1.getMessage(),  e1, result);
+				result.exception = e;
+				throw new CWNException("Exception during option to complete and proper completion check.", e, result);
 			}
 			
 			if (Thread.currentThread().isInterrupted()) {
@@ -123,22 +124,19 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 			DeadTransitionCheckCallableGenerator<P,T,F,M,Multiset<String>> generator = new DeadTransitionCheckCallableGenerator<P,T,F,M,Multiset<String>>(getGenerator().getPetriNet());
 			if(getGenerator().getMarkingGraph() != null)
 				generator.setMarkingGraph(getGenerator().getMarkingGraph());
-			ThreadedDeadTransitionsChecker<P,T,F,M,Multiset<String>> checker = new ThreadedDeadTransitionsChecker<P,T,F,M,Multiset<String>>(generator);
-			checker.runCalculation();
 			
+			DeadTransitionCheckingCallable<P,T,F,M,Multiset<String>> deadCallable = new DeadTransitionCheckingCallable<P,T,F,M,Multiset<String>>(generator);
 			DeadTransitionCheckResult deadTransitionCheckResult = null;
-			try{
-				deadTransitionCheckResult = checker.getResult();
-			} catch (Exception e) {
-				throw new CWNException("Exception during dead transition check.\nReason: " + e.getMessage(), e, result);
+			try {
+				deadTransitionCheckResult = deadCallable.callRoutine();
+			} catch(DeadTransitionCheckException e){
+				result.noDeadTransitions = PropertyCheckingResult.FALSE;
+				throw new CWNException("Exception during dead transition check.", e, result);
 			}
 			
-			if(!deadTransitionCheckResult.existDeadTransitions()){
-				result.noDeadTransitions = PropertyCheckingResult.TRUE;
-			} else {
-				result.noDeadTransitions = PropertyCheckingResult.FALSE;
-				throw new CWNException("Net contains dead transitions", result);
-			}
+			result.noDeadTransitions = deadTransitionCheckResult.existDeadTransitions() ? PropertyCheckingResult.FALSE : PropertyCheckingResult.TRUE;
+			
+			result.isSoundCWN = PropertyCheckingResult.TRUE;
 
 		} catch(InterruptedException e){
 			throw e;

@@ -6,6 +6,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 
 public class CWNStructureChecking {
 	
@@ -15,7 +16,7 @@ public class CWNStructureChecking {
 	 			   F extends AbstractCPNFlowRelation<P,T>, 
 	 			   M extends AbstractCPNMarking>
 
-	void initiateCWNPropertyCheck(CWNStructureCheckingCallableGenerator<P,T,F,M> generator, ExecutorListener<CWNStructureProperties> listener) 
+	void initiateCWNPropertyCheck(CWNStructureCheckingCallableGenerator<P,T,F,M> generator, ExecutorListener<CWNProperties> listener) 
 			throws CWNException {
 		
 		ThreadedCWNStructureChecker<P,T,F,M> calculator = new ThreadedCWNStructureChecker<P,T,F,M>(generator);
@@ -29,7 +30,7 @@ public class CWNStructureChecking {
 	   			   F extends AbstractCPNFlowRelation<P,T>, 
 	   			   M extends AbstractCPNMarking>
 
-	CWNStructureProperties checkCWNProperty(CWNStructureCheckingCallableGenerator<P,T,F,M> generator) 
+	CWNProperties checkCWNProperty(CWNStructureCheckingCallableGenerator<P,T,F,M> generator) 
 			throws CWNException {
 
 		ThreadedCWNStructureChecker<P,T,F,M> calculator = new ThreadedCWNStructureChecker<P,T,F,M>(generator);

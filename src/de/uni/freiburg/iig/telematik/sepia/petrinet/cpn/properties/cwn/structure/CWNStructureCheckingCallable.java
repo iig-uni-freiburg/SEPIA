@@ -7,6 +7,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.properties.cwn.CWNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PNProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.PropertyCheckingResult;
@@ -15,7 +16,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.properties.threaded.Abstract
 public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 								 T extends AbstractCPNTransition<F>, 
 								 F extends AbstractCPNFlowRelation<P,T>, 
-								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNStructureProperties> {
+								 M extends AbstractCPNMarking>  extends AbstractPNPropertyCheckerCallable<P,T,F,M,Multiset<String>,CWNProperties> {
 		
 	public CWNStructureCheckingCallable(CWNStructureCheckingCallableGenerator<P,T,F,M> generator){
 		super(generator);
@@ -27,8 +28,9 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 	}
 
 	@Override
-	public CWNStructureProperties callRoutine() throws CWNException, InterruptedException {
-		CWNStructureProperties result = new CWNStructureProperties();
+	public CWNProperties callRoutine() throws CWNException, InterruptedException {
+		CWNProperties result = new CWNProperties();
+		result.hasCWNStructure = PropertyCheckingResult.FALSE;
 		try {
 			// Check if there is only one input/output place
 			try {
@@ -36,7 +38,7 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 			} catch (PNValidationException e) {
 				result.exception = e;
 				result.validInOutPlaces = PropertyCheckingResult.FALSE;
-				return result;
+				throw new CWNException("Exception while checking input/output place property", e, result);
 			}
 			P input = getGenerator().getPetriNet().getPlace(result.inOutPlaces.getInput());
 			result.validInOutPlaces = PropertyCheckingResult.TRUE;
@@ -51,7 +53,7 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 			} catch (PNValidationException e) {
 				result.exception = e;
 				result.strongConnectedness = PropertyCheckingResult.FALSE;
-				return result;
+				throw new CWNException("Exception while checking strong connectedness", e, result);
 			}
 			result.strongConnectedness = PropertyCheckingResult.TRUE;
 			
@@ -65,7 +67,7 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 			} catch (PNValidationException e) {
 				result.exception = e;
 				result.validInitialMarking = PropertyCheckingResult.FALSE;
-				return result;
+				throw new CWNException("Exception while checking initial marking", e, result);
 			}
 			result.validInitialMarking = PropertyCheckingResult.TRUE;
 			
@@ -93,9 +95,11 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 			} catch (PNValidationException e) {
 				result.exception = e;
 				result.controlFlowDependency = PropertyCheckingResult.FALSE;
-				return result;
+				throw new CWNException("Exception while checking control flow dependency", e, result);
 			}
 			result.controlFlowDependency = PropertyCheckingResult.TRUE;
+			
+			result.hasCWNStructure = PropertyCheckingResult.TRUE;
 
 		} catch(InterruptedException e){
 			throw e;
