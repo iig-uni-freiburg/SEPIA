@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SEPIA.package" default="package" basedir=".">
+
+	<!--
+	Apache Ant build file for the SEPIA project
+	
+	This build file generates three JAR-files from the project:
+	- sepia-0.1.5.jar
+	- sepia-0.1.5-sources.jar
+	- sepia-0.1.5-javadoc.jar
+	- sepia-0.1.5-consistent.jar
+	
+	The building process starts with cleaning all target files including compiles
+	java classes, compiled tests, and test reports (see #clean). Afterwards a
+	timestamp is generated and the target directory structure is created (see #init).
+	Then the project gets compiled (see #compile) and all unit tests are performed
+	(see #test). If the compilation ran without errors, the JARs are packaged (see #package).
+	
+	SEPIA depends on the projects TOVAL and JAGAL, which compiled classes must be
+	present under the specified paths.
+	
+	author: Adrian Lange
+	 -->
+
+	<!-- Project details -->
+	<property name="artifact.name" value="sepia" />
+	<property name="version.name" value="0.1.5" />
+
+	<!-- Names for generated files -->
+	<property name="jar.file.name" value="${artifact.name}-${version.name}" />
+	<property name="jar.sources.file.name" value="${jar.file.name}-sources" />
+	<property name="jar.javadoc.file.name" value="${jar.file.name}-javadoc" />
+
+	<!-- Source and destination directories -->
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="test.dir" value="${basedir}/test" />
+	<property name="target.dir" value="${basedir}/bin" />
+	<property name="target.dir.jar" value="${target.dir}/${artifact.name}-${version.name}" />
+	<property name="libs.dir" value="${basedir}/lib" />
+	<property name="classes.target.dir" value="${target.dir}/classes-ant" />
+	<property name="tests.target.dir" value="${target.dir}/tests-ant" />
+	<property name="docs.temp.dir" value="${target.dir}/docs" />
+	<property name="testreport.dir" value="${target.dir}/test-report" />
+
+	<!-- Define classpath -->
+	<property name="TOVAL.location" value="../TOVAL" />
+	<property name="JAGAL.location" value="../JAGAL" />
+	<property name="SEWOL.location" value="../SEWOL" />
+
+	<path id="TOVAL.classpath">
+		<pathelement location="${TOVAL.location}/bin/classes-ant" />
+	</path>
+	
+	<path id="JAGAL.classpath">
+		<pathelement location="${JAGAL.location}/bin/classes-ant" />
+		<path refid="TOVAL.classpath" />
+		<pathelement location="${JAGAL.location}/lib/junit/junit-4.11.jar" />
+		<pathelement location="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+	</path>
+	
+	<path id="SEWOL.classpath">
+		<pathelement location="${SEWOL.location}/bin/classes-ant" />
+		<path refid="TOVAL.classpath" />
+		<path refid="JAGAL.classpath" />
+		<pathelement location="${SEWOL.location}/lib/guava-16.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/collections-generic-4.01.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+		<pathelement location="${SEWOL.location}/lib/xstream-1.4.8.jar" />
+	</path>
+	
+	<path id="SEPIA.classpath">
+		<pathelement location="${classes.target.dir}" />
+		<pathelement location="${tests.target.dir}" />
+		<path refid="TOVAL.classpath" />
+		<path refid="JAGAL.classpath" />
+		<path refid="SEWOL.classpath" />
+		<pathelement location="lib/junit/junit-4.11.jar" />
+		<pathelement location="lib/hamcrest/hamcrest-core-1.3.jar" />
+		<pathelement location="lib/isorelax/isorelax.jar" />
+		<pathelement location="lib/msv/msv-core-2013.6.1.jar" />
+		<pathelement location="lib/relaxngDatatype/relaxngDatatype-20020414.jar" />
+		<pathelement location="lib/xsdlib/xsdlib-2.2.jar" />
+		<pathelement location="lib/xsom/xsom-20110101-SNAPSHOT.jar" />
+	</path>
+
+	<!-- Package JARs -->
+	<target name="package" depends="compile" description="Packages the project to JAR files">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<echo>Deleting old JARs...</echo>
+		<delete file="${target.dir.jar}/${jar.file.name}.jar" />
+		<delete file="${target.dir.jar}/${jar.sources.file.name}.jar" />
+
+		<echo>Creating new JARs...</echo>
+		<jar jarfile="${target.dir.jar}/${jar.file.name}.jar" basedir="${classes.target.dir}">
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+		<jar jarfile="${target.dir.jar}/${jar.sources.file.name}.jar" includes="**/*.java,*.txt" basedir="${src.dir}">
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- Package JARs -->
+	<target name="package-consistent" depends="compile" description="Packages the project to a consistent JAR file">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<echo>Deleting old JAR...</echo>
+		<delete file="${target.dir.jar}/${jar.file.name}-consistent.jar" />
+
+		<echo>Creating new JAR...</echo>
+		<jar jarfile="${target.dir.jar}/${jar.file.name}-consistent.jar" basedir="${classes.target.dir}">
+			<manifest>
+				<attribute name="Class-Path" value="." />
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+			<fileset dir="${classes.target.dir}" />
+			<fileset dir="${TOVAL.location}/bin/classes-ant" />
+			<fileset dir="${JAGAL.location}/bin/classes-ant" />
+			<fileset dir="${SEWOL.location}/bin/classes-ant" />
+			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-api-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-graph-impl-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-visualization-2.0.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/xstream-1.4.8.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/hamcrest/hamcrest-core-1.3.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/isorelax/isorelax.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/msv/msv-core-2013.6.1.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/relaxngDatatype/relaxngDatatype-20020414.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/xsdlib/xsdlib-2.2.jar" />
+			<zipfileset excludes="META-INF/*.SF,*.properties" src="${libs.dir}/xsom/xsom-20110101-SNAPSHOT.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/hamcrest/hamcrest-core-1.3.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${libs.dir}/xsom/xsom-20110101-SNAPSHOT.jar" />
+			
+		</jar>
+	</target>
+
+	<target name="compile" depends="init" description="Compiles the source and the test files">
+		<echo>Compile classes...</echo>
+		<javac destdir="${classes.target.dir}" includeantruntime="false" verbose="true">
+			<src path="${src.dir}" />
+			<classpath refid="SEPIA.classpath" />
+		</javac>
+		<copy includeemptydirs="false" todir="${classes.target.dir}">
+			<fileset file="${basedir}/LICENSE.txt" />
+		</copy>
+<!--		<echo>Compile tests...</echo>
+		<javac destdir="${tests.target.dir}" includeantruntime="false">
+			<src path="${test.dir}" />
+			<classpath refid="SEPIA.classpath" />
+		</javac>-->
+	</target>
+
+	<target name="package-javadoc" depends="compile" description="Generates Javadoc information">
+		<delete file="${target.dir.jar}/${jar.javadoc.file.name}.jar" />
+
+		<echo>Generating javadoc files...</echo>
+		<javadoc sourcepath="${src.dir}" destdir="${docs.temp.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${TOVAL.location}/res">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${JAGAL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/src">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${SEWOL.location}/ext">
+				<include name="**/*.java" />
+			</fileset>
+		</javadoc>
+
+		<jar jarfile="${target.dir.jar}/${jar.javadoc.file.name}.jar" basedir="${docs.temp.dir}">
+			<manifest>
+				<attribute name="X-Date" value="${touch.time}" />
+			</manifest>
+		</jar>
+
+		<echo>Deleting temporary javadoc files...</echo>
+		<delete dir="${docs.temp.dir}" />
+	</target>
+
+	<target name="clean" description="Deletes the target files including current JARs. Old versions of the JARs stay untouched.">
+		<echo>Delete target files...</echo>
+		<!-- Delete compiled classes and tests -->
+		<delete dir="${classes.target.dir}" />
+		<delete dir="${tests.target.dir}" />
+		<!-- Delete test reports -->
+		<delete dir="${testreport.dir}" />
+	</target>
+
+	<target name="init" depends="clean" description="Creates the target directory structure">
+		<echo>Create timestamp...</echo>
+		<tstamp>
+			<format property="touch.time" pattern="dd/MM/yyyy hh:mm aa" />
+		</tstamp>
+		<echo>Prepare directories...</echo>
+		<mkdir dir="${classes.target.dir}" />
+		<mkdir dir="${tests.target.dir}" />
+		<copy includeemptydirs="false" todir="${classes.target.dir}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<copy includeemptydirs="false" todir="${tests.target.dir}">
+			<fileset dir="${test.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="test" description="Performs all unit tests">
+		<echo>Perform unit tests...</echo>
+		<mkdir dir="${testreport.dir}" />
+		<junit fork="yes" printsummary="withOutAndErr">
+			<formatter type="xml" />
+			<test name="de.uni.freiburg.iig.telematik.sepia.AllTests" todir="${testreport.dir}" />
+			<classpath refid="SEPIA.classpath" />
+		</junit>
+	</target>
+
+</project>
