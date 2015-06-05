@@ -51,7 +51,6 @@ public abstract class AbstractRegularIFNetTransition<E extends AbstractIFNetFlow
 		return dataContainer;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setGuardDataContainer(GuardDataContainer dataContainer) {
 		Validate.notNull(dataContainer);
 

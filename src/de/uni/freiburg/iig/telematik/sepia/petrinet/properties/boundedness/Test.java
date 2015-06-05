@@ -20,7 +20,7 @@ public class Test implements ExecutorListener<BoundednessCheckResult<PTPlace,PTT
 	}
 
 	@Override
-	public void executorFinished(BoundednessCheckResult result) {
+	public void executorFinished(@SuppressWarnings("rawtypes") BoundednessCheckResult result) {
 		System.out.println(result.getBoundedness());
 	}
 
@@ -44,5 +44,4 @@ public class Test implements ExecutorListener<BoundednessCheckResult<PTPlace,PTT
 		
 		BoundednessCheck.initiateBoundednessCheck(net, new Test());
 	}
-
 }

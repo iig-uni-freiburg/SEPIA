@@ -71,6 +71,6 @@ public class AnalysisContextSerializer {
 		serializer.serialize("/Users/stocker/Desktop/", "test");
 		
 		AnalysisContext parsedContext = AnalysisContextParser.parse("/Users/stocker/Desktop/test.acon", true, Arrays.asList(acl));
-
+		System.out.println(parsedContext);
 	}
 }

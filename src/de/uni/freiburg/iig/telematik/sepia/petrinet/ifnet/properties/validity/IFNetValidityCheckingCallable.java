@@ -38,6 +38,7 @@ public class IFNetValidityCheckingCallable<P extends AbstractIFNetPlace<F>,
 		return (IFNetValidityCheckingCallableGenerator<P,T,F,M,R,D>) super.getGenerator();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean callRoutine() throws PNValidationException, InterruptedException {
 		try {

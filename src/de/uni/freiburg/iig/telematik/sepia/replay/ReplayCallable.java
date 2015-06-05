@@ -65,6 +65,7 @@ public class ReplayCallable< P extends AbstractPlace<F,S>,
 		return new ReplayResult<E>(fittingTraces, nonFittingTraces, fittingSequences, nonFittingSequences);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private synchronized boolean isReplayableRecursive(List<String> path, List<String> remainingActivities) throws PNException, InterruptedException{
 //		System.out.println("REC: " + path + ", " + remainingActivities);
 		getGenerator().getPetriNet().reset();
@@ -131,6 +132,7 @@ public class ReplayCallable< P extends AbstractPlace<F,S>,
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean escapableWithSilentTransitions(List<T> enabledTransitions, M marking) throws PNException, InterruptedException{
 		if(enabledTransitions.isEmpty())
 			return true;

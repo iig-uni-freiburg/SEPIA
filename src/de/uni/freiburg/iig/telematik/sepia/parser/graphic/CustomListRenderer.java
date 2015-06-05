@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+	@SuppressWarnings("rawtypes")
 	public class CustomListRenderer extends JLabel implements ListCellRenderer {
 		public static final long serialVersionUID = 1L;
 		

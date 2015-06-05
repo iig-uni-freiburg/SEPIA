@@ -96,7 +96,7 @@ public class LabelingSerializer {
 		serializer.serialize("/Users/stocker/Desktop/", "test");
 		
 		Labeling parsedLabeling = LabelingParser.parse("/Users/stocker/Desktop/test.labeling", Arrays.asList(analysisContext));
-		
+		System.out.println(parsedLabeling);
 //		AnalysisContext parsedLabeling = PNMLIFNetAnalysisContextParser.parse("/Users/stocker/Desktop/test.labeling", false);
 
 	}

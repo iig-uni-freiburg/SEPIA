@@ -37,6 +37,7 @@ public class PNParserDialog extends JDialog {
 
 	private static final long serialVersionUID = -1556400321094068143L;
 
+	@SuppressWarnings("rawtypes")
 	private JComboBox formatBox = null;
 	private JTextField pnPathField = null;
 	@SuppressWarnings("rawtypes")
@@ -224,6 +225,7 @@ public class PNParserDialog extends JDialog {
 		return pnPathField;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private JComboBox getFormatBox(){
 		if(formatBox == null){
 			formatBox = new JComboBox(PNParsingFormat.values());

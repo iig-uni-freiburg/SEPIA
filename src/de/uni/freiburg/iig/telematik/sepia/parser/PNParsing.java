@@ -159,7 +159,7 @@ public class PNParsing {
 	 * @param file
 	 *            File to parse
 	 * @return Returns the for the file's extension suitable parser or <code>null</code> if no suitable parser could be found
-	 * @throws IOException
+	 * @throws ParserException
 	 *             If the file can't be found
 	 */
 	@SuppressWarnings("rawtypes")

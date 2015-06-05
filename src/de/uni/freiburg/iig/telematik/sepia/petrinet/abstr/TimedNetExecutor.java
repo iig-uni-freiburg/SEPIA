@@ -1,7 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.abstr;
 
 import java.util.List;
-import java.util.Random;
 
 import de.uni.freiburg.iig.telematik.sepia.event.TimedTransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.event.TimedTransitionListener;
@@ -19,9 +18,8 @@ public abstract class TimedNetExecutor<P extends AbstractPlace<F,S>,
 							  X extends AbstractMarkingGraphState<M,S>, 
 							  Y extends AbstractMarkingGraphRelation<M,X,S>> {
 	
-	private static final int MAX_FIRE_TRANSITIONS = 2;
+	protected static final int MAX_FIRE_TRANSITIONS = 2;
 
-	private Random rand = new Random();
 	private AbstractPetriNet<P,T,F,M,S> petriNet = null;
 	private PNTraverser<T> traverser = null;
 	private TimeMachine<P,T,F,M,S> timeMachine = null;
@@ -70,9 +68,10 @@ public abstract class TimedNetExecutor<P extends AbstractPlace<F,S>,
 		if(firstEnabledTransitions.isEmpty())
 			throw new PNException("No enabled transitions to fire");
 		
-		int firedTransitions = 0;
+//		int firedTransitions = 0;
 		boolean continueFiring = true;
-		int targetFireTransitions = rand.nextInt(MAX_FIRE_TRANSITIONS) + 1;
+//		Random rand = new Random();
+//		int targetFireTransitions = rand.nextInt(MAX_FIRE_TRANSITIONS) + 1;
 		while(continueFiring){
 			enabledTransitions = petriNet.getEnabledTransitions();
 			enabledTransitions.retainAll(firstEnabledTransitions);

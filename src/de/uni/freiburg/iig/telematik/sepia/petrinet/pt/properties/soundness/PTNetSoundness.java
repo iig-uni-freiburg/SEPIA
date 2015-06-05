@@ -18,7 +18,7 @@ public class PTNetSoundness {
 	 * Soundness implies validity.<br>
 	 * 
 	 * @param checkValidity Indicates, if the method also checks the validity of the net as a precondition.
-	 * @throws PNValidationException
+	 * @throws PNSoundnessException If the checked Petri net is not sound
 	 */
 	public static <P extends AbstractPTPlace<F>, 
 	   			   T extends AbstractPTTransition<F>, 
