@@ -51,7 +51,7 @@ public class WFNetSoundnessCheckingCallable<P extends AbstractPTPlace<F>,
 					result = structureCheckCallable.callRoutine();
 				} catch(WFNetException e){
 					e.getProperties().isSoundWFNet = PropertyCheckingResult.FALSE;
-					throw new WFNetException("Exception during cwn structure check.", e, e.getProperties());
+					throw new WFNetException("Exception during WF-Net structure check.", e, e.getProperties());
 				}
 			} else {
 				result = new WFNetProperties();
@@ -140,7 +140,7 @@ public class WFNetSoundnessCheckingCallable<P extends AbstractPTPlace<F>,
 		} catch(InterruptedException e){
 			throw e;
 		} catch (Exception e) {
-			throw new WFNetException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
+			throw new WFNetException("Exception during WF-Net property checks.", e, result);
 		}
 		return result;
 	}
@@ -155,7 +155,7 @@ public class WFNetSoundnessCheckingCallable<P extends AbstractPTPlace<F>,
 			try{
 				getGenerator().setMarkingGraph(checker.getMarkingGraph());
 			} catch (Exception e) {
-				throw new PNValidationException("Exception during marking graph calculation.\nReason: " + e.getMessage(), e);
+				throw new PNValidationException("Exception during marking graph calculation.", e);
 			}
 		}
 		

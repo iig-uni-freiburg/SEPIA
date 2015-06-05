@@ -74,11 +74,10 @@ public class WFNetStructureCheckingCallable<P extends AbstractPTPlace<F>,
 			}
 			
 			result.hasWFNetStructure = PropertyCheckingResult.TRUE;
-
 		} catch(InterruptedException e){
 			throw e;
 		} catch (Exception e) {
-			throw new WFNetException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
+			throw new WFNetException("Exception during WF-Net property checks.", e, result);
 		}
 		return result;
 	}

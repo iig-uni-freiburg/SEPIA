@@ -104,7 +104,7 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 		} catch(InterruptedException e){
 			throw e;
 		} catch (Exception e) {
-			throw new CWNException("Exception during cwn property checks.<br>Reason: " + e.getMessage(), e, result);
+			throw new CWNException("Exception during cwn property checks", e, result);
 		}
 		return result;
 	}
@@ -128,7 +128,7 @@ public class CWNStructureCheckingCallable<P extends AbstractCPNPlace<F>,
 		if(!tokensInitialPlace.contains(cfTokenColor))
 			throw new PNValidationException("Initial marking must contain at least one control flow token for input place " + place);
 		if(tokensInitialPlace.support().size() > 1)
-			throw new PNValidationException("Initial marking must contain exactly one control flow token for input place " + place);
+			throw new PNValidationException("Initial marking must contain exactly one control flow token (and no other tokens) for input place " + place);
 	}
 
 }
