@@ -57,6 +57,7 @@ public class CWNSoundnessCheckingCallable<P extends AbstractCPNPlace<F>,
 				}
 			} else {
 				result = new CWNProperties();
+				result.hasCWNStructure = PropertyCheckingResult.TRUE;
 				try {
 					result.inOutPlaces = PNProperties.validateInputOutputPlace(getGenerator().getPetriNet());
 					result.validInOutPlaces = PropertyCheckingResult.TRUE;
