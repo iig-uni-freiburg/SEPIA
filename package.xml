@@ -55,7 +55,7 @@
 		<pathelement location="${JAGAL.location}/bin/classes-ant" />
 		<path refid="TOVAL.classpath" />
 		<pathelement location="${JAGAL.location}/lib/junit/junit-4.11.jar" />
-		<pathelement location="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+		<pathelement location="${JAGAL.location}/lib/jgraphx-3_1_2_1.jar" />
 	</path>
 	
 	<path id="SEWOL.classpath">
@@ -122,7 +122,7 @@
 			<fileset dir="${TOVAL.location}/bin/classes-ant" />
 			<fileset dir="${JAGAL.location}/bin/classes-ant" />
 			<fileset dir="${SEWOL.location}/bin/classes-ant" />
-			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphXwithsources.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphx-3_1_2_1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/jung-algorithms-2.0.1.jar" />
