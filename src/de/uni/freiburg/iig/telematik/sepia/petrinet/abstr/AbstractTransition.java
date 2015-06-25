@@ -240,10 +240,10 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 		}
 		
 
-		for (E r : incomingRelations) {
+		for (E r : incomingRelations.values()) {
 			r.getPlace().removeTokens(r.getConstraint());
 		}
-		for (E r : outgoingRelations) {
+		for (E r : outgoingRelations.values()) {
 			r.getPlace().addTokens(r.getConstraint());
 		}
 		notifyFiring();

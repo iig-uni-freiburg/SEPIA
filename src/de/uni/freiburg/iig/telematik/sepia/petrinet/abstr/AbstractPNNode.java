@@ -8,6 +8,8 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -42,11 +44,11 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	/**
 	 * Incoming relations of the Petri net node.
 	 */
-	protected Set<E> incomingRelations = new HashSet<E>();
+	protected Map<String,E> incomingRelations = new HashMap<String,E>();
 	/**
 	 * Outgoing relations of the Petri net node.
 	 */
-	protected Set<E> outgoingRelations = new HashSet<E>();
+	protected Map<String,E> outgoingRelations = new HashMap<String,E>();
 	/**
 	 * The name of the Petri net node.<br>
 	 * Node names must be unique within a Petri net and are used for distinction.<br>
@@ -157,7 +159,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	@SuppressWarnings("unchecked")
 	public Set<AbstractPNNode<E>> getParents(){
 		Set<AbstractPNNode<E>> result = new HashSet<AbstractPNNode<E>>();
-		for(E relation: incomingRelations){
+		for(E relation: incomingRelations.values()){
 			result.add((AbstractPNNode<E>) relation.getSource());
 		}
 		return result;
@@ -170,7 +172,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	@SuppressWarnings("unchecked")
 	public Set<AbstractPNNode<E>> getChildren(){
 		Set<AbstractPNNode<E>> result = new HashSet<AbstractPNNode<E>>();
-		for(E relation: outgoingRelations){
+		for(E relation: outgoingRelations.values()){
 			result.add((AbstractPNNode<E>) relation.getTarget());
 		}
 		return result;
@@ -183,7 +185,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @return A list of all incoming relations.
 	 */
 	public List<E> getIncomingRelations(){
-		return new ArrayList<E>(incomingRelations);
+		return new ArrayList<E>(incomingRelations.values());
 	}
 	
 	/**
@@ -191,7 +193,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @return A list of all outgoing relations.
 	 */
 	public List<E> getOutgoingRelations(){
-		return new ArrayList<E>(outgoingRelations);
+		return new ArrayList<E>(outgoingRelations.values());
 	}
 	
 	/**
@@ -205,7 +207,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	protected boolean addIncomingRelation(E relation){
 		Validate.notNull(relation);
-		return incomingRelations.add(relation);
+		return (incomingRelations.put(relation.getName(), relation)) == null;
 	}
 	
 	/**
@@ -219,7 +221,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	protected boolean addOutgoingRelation(E relation){
 		Validate.notNull(relation);
-		return outgoingRelations.add(relation);
+		return (outgoingRelations.put(relation.getName(), relation)) == null;
 	}
 	
 	/**
@@ -246,7 +248,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	protected boolean removeIncomingRelation(E relation){
 		Validate.notNull(relation);
-		return incomingRelations.remove(relation);
+		return (incomingRelations.remove(relation.getName())) != null;
 	}
 	
 	/**
@@ -258,7 +260,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	protected boolean removeOutgoingRelation(E relation){
 		Validate.notNull(relation);
-		return outgoingRelations.remove(relation);
+		return (outgoingRelations.remove(relation.getName())) != null;
 	}
 	
 	/**
@@ -271,7 +273,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	public <N extends AbstractPNNode<E>> E getRelationFrom(N node){
 		Validate.notNull(node);
-		for(E incomingRelation: incomingRelations){
+		for(E incomingRelation: incomingRelations.values()){
 			if(incomingRelation.getSource().equals(node)){
 				return incomingRelation;
 			}
@@ -289,7 +291,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 */
 	public <N extends AbstractPNNode<E>> E getRelationTo(N node){
 		Validate.notNull(node);
-		for(E outgoingRelation: outgoingRelations){
+		for(E outgoingRelation: outgoingRelations.values()){
 			if(outgoingRelation.getTarget().equals(node)){
 				return outgoingRelation;
 			}

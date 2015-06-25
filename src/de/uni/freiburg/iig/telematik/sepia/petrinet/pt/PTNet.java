@@ -95,6 +95,7 @@ public class PTNet extends AbstractPTNet<PTPlace, PTTransition, PTFlowRelation, 
 		System.out.println(rel);
 		System.out.println(net);
 		System.out.println(net.getPlace("p1").getOutgoingRelations().size());
+                
 	}
 	
 }

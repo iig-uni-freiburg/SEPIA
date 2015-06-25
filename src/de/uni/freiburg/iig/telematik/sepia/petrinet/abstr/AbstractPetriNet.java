@@ -923,11 +923,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	 */
 	protected boolean addFlowRelation(F relation, boolean notifyListeners){
 		Validate.notNull(relation);
-		for(F existingRelation: getFlowRelations()){
-			if(existingRelation.equals(relation)){
-				return false;
-			}
-		}
+                if(containsFlowRelation(relation))
+                    return false;
 		
 		if(relation.getDirectionPT()){
 			relation.getPlace().addOutgoingRelation(relation);
@@ -949,6 +946,15 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 	public boolean containsFlowRelation(String relationName){
 		return relations.keySet().contains(relationName);
 	}
+        
+        protected boolean containsFlowRelation(F relation){
+            for(F existingRelation: getFlowRelations()){
+			if(existingRelation.equals(relation)){
+				return true;
+			}
+		}
+            return false;
+        }
 	
 	public boolean containsRelationPT(String placeName, String transitionName){
 		validatePlace(placeName);

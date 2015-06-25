@@ -152,7 +152,7 @@ public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? 
 	
 	@Override
 	protected boolean enoughTokensInInputPlaces(){
-		for(E r: incomingRelations) {
+		for(E r: incomingRelations.values()) {
 			Multiset<String> tokenConstraints = r.getConstraint();
 			for(String color: tokenConstraints.support()){
 				try {
@@ -167,7 +167,7 @@ public abstract class AbstractCPNTransition<E extends AbstractCPNFlowRelation<? 
 	
 	@Override
 	protected boolean enoughSpaceInOutputPlaces(){
-		for(E r: outgoingRelations) {
+		for(E r: outgoingRelations.values()) {
 			Multiset<String> tokenConstraints = r.getConstraint();
 			for(String color: tokenConstraints.support()){
 				try {

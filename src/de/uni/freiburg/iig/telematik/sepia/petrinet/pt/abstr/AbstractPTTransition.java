@@ -31,7 +31,7 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 	public void checkState() {
 		boolean oldEnabledState = enabled;
 		enabled = true;
-		for(E r: incomingRelations) {
+		for(E r: incomingRelations.values()) {
 			if(r.getPlace().getState() < r.getWeight()){
 				enabled = false;
 				break;
@@ -47,7 +47,7 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 	
 	@Override
 	public boolean enoughTokensInInputPlaces() {
-		for(E r: incomingRelations) {
+		for(E r: incomingRelations.values()) {
 			if(r.getPlace().getState() < r.getWeight()){
 				return false;
 			}
@@ -57,7 +57,7 @@ public abstract class AbstractPTTransition<E extends AbstractPTFlowRelation<? ex
 
 	@Override
 	public boolean enoughSpaceInOutputPlaces() {
-		for(E r: outgoingRelations) {
+		for(E r: outgoingRelations.values()) {
 			if(!r.getPlace().isBounded()){
 				continue;
 			}

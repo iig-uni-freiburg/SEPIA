@@ -303,11 +303,11 @@ public abstract class AbstractPlace<E extends AbstractFlowRelation<? extends Abs
 	 */
 	protected void initiateStateChecks() {
 
-		for (AbstractFlowRelation<? extends AbstractPlace<E, S>, ? extends AbstractTransition<E, S>, S> r : outgoingRelations) {
+		for (AbstractFlowRelation<? extends AbstractPlace<E, S>, ? extends AbstractTransition<E, S>, S> r : outgoingRelations.values()) {
 
 			r.getTransition().checkState();
 		}
-		for (AbstractFlowRelation<? extends AbstractPlace<E, S>, ? extends AbstractTransition<E, S>, S> r : incomingRelations) {
+		for (AbstractFlowRelation<? extends AbstractPlace<E, S>, ? extends AbstractTransition<E, S>, S> r : incomingRelations.values()) {
 
 			r.getTransition().checkState();
 		}
