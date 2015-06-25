@@ -197,7 +197,7 @@ public class PNSerialization {
 
 		Validate.notNull(fileName);
 		File file = new File(fileName);
-		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
+		serialize(net, format, FileUtils.getPath(file), FileUtils.separateFileNameFromEnding(file));
 	}
 
 	public static <P extends AbstractPlace<F, S>, T extends AbstractTransition<F, S>, F extends AbstractFlowRelation<P, T, S>, M extends AbstractMarking<S>, S extends Object, N extends AbstractPetriNet<P, T, F, M, S>, G extends AbstractPNGraphics<P, T, F, M, S>>
@@ -255,7 +255,7 @@ public class PNSerialization {
 	serialize(N net, PNSerializationFormat format, String fileName) throws SerializationException, IOException {
 		Validate.notNull(fileName);
 		File file = new File(fileName);
-		serialize(net, format, FileUtils.getPath(file), FileUtils.getName(file));
+		serialize(net, format, FileUtils.getPath(file), FileUtils.separateFileNameFromEnding(file));
 	}
 	
 	public static void main(String[] args) throws SerializationException, IOException {

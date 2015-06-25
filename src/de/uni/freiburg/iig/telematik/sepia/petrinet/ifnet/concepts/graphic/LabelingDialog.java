@@ -157,10 +157,11 @@ public class LabelingDialog extends AbstractEditCreateDialog<Labeling> {
 	}
 
 	@Override
-	protected void validateAndSetFieldValues() throws Exception {
+	protected boolean validateAndSetFieldValues() throws Exception {
 		if(txtName.getText() == null || txtName.getText().isEmpty())
 			throw new ParameterException("Empty labeling name.");
 		getDialogObject().setName(txtName.getText());
+                return true;
 	}
 
 	@Override

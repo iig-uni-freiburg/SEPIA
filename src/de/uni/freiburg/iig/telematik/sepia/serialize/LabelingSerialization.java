@@ -18,7 +18,7 @@ public class LabelingSerialization {
 		Validate.noDirectory(fileName);
 
 		File file = new File(fileName);
-		serialize(labeling, FileUtils.getPath(file), FileUtils.getName(file));
+		serialize(labeling, FileUtils.getPath(file), FileUtils.separateFileNameFromEnding(file));
 	}
 
 	public static void serialize(Labeling labeling, String path, String fileName) throws SerializationException, IOException {

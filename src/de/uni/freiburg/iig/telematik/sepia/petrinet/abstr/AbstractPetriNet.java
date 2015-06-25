@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.abstr;
 
 
+import de.invation.code.toval.misc.NamedComponent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +78,8 @@ public abstract class AbstractPetriNet<P extends AbstractPlace<F,S>,
 							PlaceListener<AbstractPlace<F,S>>,
 							PNStructureListener<P,T,F,M,S>,
 							PNMarkingListener<S,M>,
-							Serializable{
+							Serializable,
+                                                        NamedComponent{
 	
 	private static final long serialVersionUID = 7324151598039390349L;
 	

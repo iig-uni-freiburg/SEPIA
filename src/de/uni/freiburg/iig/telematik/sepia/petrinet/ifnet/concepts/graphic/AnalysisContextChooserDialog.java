@@ -117,7 +117,7 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 					try {
 						newAnalysisContext = AnalysisContextDialog.showDialog(AnalysisContextChooserDialog.this, acModel);
 					} catch (Exception ex) {
-						internalExceptionMessage("Cannot launch AnalysisContextDialog: " + ex.getMessage());
+						internalException("Cannot launch AnalysisContextDialog", ex);
 						return;
 					}
 					if (newAnalysisContext == null)
@@ -146,7 +146,7 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 				try {
 					AnalysisContextDialog.showDialog(AnalysisContextChooserDialog.this, newAnalysisContext);
 				} catch (Exception e2) {
-					internalExceptionMessage("Cannot launch AnalysisContextDialog: " + e2.getMessage());
+					internalException("Cannot launch AnalysisContextDialog.", e2);
 					return false;
 				}
 			}
@@ -170,7 +170,7 @@ public class AnalysisContextChooserDialog extends AbstractDialog<AnalysisContext
 					try {
 						AnalysisContextDialog.showDialog(AnalysisContextChooserDialog.this, getSelectedAnalysisContext());
 					} catch (Exception ex) {
-						internalExceptionMessage("Cannot launch ACModelDialog: " + ex.getMessage());
+						internalException("Cannot launch ACModelDialog.", ex);
 						return;
 					}
 					if (ensureValidAnalysisContext(getSelectedAnalysisContext()))

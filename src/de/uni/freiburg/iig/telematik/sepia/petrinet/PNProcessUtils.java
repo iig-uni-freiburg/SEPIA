@@ -6,8 +6,8 @@ import java.util.List;
 import de.invation.code.toval.validate.ParameterException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
-import de.uni.freiburg.iig.telematik.sewol.context.ProcessConstraintContext;
-import de.uni.freiburg.iig.telematik.sewol.context.ProcessContext;
+import de.uni.freiburg.iig.telematik.sewol.context.constraint.ConstraintContext;
+import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
 
 public class PNProcessUtils {
 
@@ -17,8 +17,8 @@ public class PNProcessUtils {
 	 * @param transitions Petri net transitions to be used as basis for activity names.
 	 * @throws ParameterException If activity list is <code>null</code> or empty.
 	 */
-	public static ProcessConstraintContext createProcessContext(String name, Collection<AbstractTransition<?,?>> transitions){
-		ProcessConstraintContext context = new ProcessConstraintContext(name);
+	public static ConstraintContext createProcessContext(String name, Collection<AbstractTransition<?,?>> transitions){
+		ConstraintContext context = new ConstraintContext(name);
 		context.setActivities(PNUtils.getLabelSetFromTransitions(transitions, false));
 		return context;
 	}
@@ -34,10 +34,10 @@ public class PNProcessUtils {
 	 * @return A new randomly generated Context.
 	 * @throws ParameterException 
 	 */
-	public static ProcessConstraintContext createRandomContext(Collection<AbstractTransition<?,?>> transitions, int originatorCount, List<String> roles){
+	public static ConstraintContext createRandomContext(Collection<AbstractTransition<?,?>> transitions, int originatorCount, List<String> roles){
 		ProcessContext duContext = ProcessContext.createRandomContext(PNUtils.getLabelSetFromTransitions(transitions, false), originatorCount, roles);
 		try {
-			return new ProcessConstraintContext(duContext);
+			return new ConstraintContext(duContext);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

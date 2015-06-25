@@ -18,7 +18,7 @@ public class AnalysisContextSerialization {
 		Validate.noDirectory(fileName);
 
 		File file = new File(fileName);
-		serialize(analysisContext, FileUtils.getPath(file), FileUtils.getName(file));
+		serialize(analysisContext, FileUtils.getPath(file), FileUtils.separateFileNameFromEnding(file));
 	}
 
 	public static void serialize(AnalysisContext analysisContext, String path, String fileName) throws SerializationException, IOException {
