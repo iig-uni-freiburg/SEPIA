@@ -239,7 +239,6 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 			throw new PNException("Cannot fire transition "+this+": not in valid state ["+e.getMessage()+"]");
 		}
 		
-
 		for (E r : incomingRelations.values()) {
 			r.getPlace().removeTokens(r.getConstraint());
 		}

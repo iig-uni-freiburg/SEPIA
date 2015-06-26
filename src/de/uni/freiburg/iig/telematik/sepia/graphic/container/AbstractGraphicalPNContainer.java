@@ -37,7 +37,7 @@ import java.util.Set;
  * @param <G>
  * @param <X>
  */
-public abstract class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>, 
+public class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>, 
                                                    T extends AbstractTransition<F, S>, 
                                                    F extends AbstractFlowRelation<P, T, S>, 
                                                    M extends AbstractMarking<S>, S extends Object, 
@@ -49,6 +49,8 @@ public abstract class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>
     public static final boolean DEFAULT_IGNORE_INCOMPATIBLE_FILES = true;
     protected static final String PNML_FILE_ENDING = new PNFF_PNML().getFileExtension();
     protected static final String PETRIFY_FILE_ENDING = new PNFF_Petrify().getFileExtension();
+    
+    public static final String COMPONENT_DESCRIPTOR = "Petri net";
     
     protected PNSerializationFormat serializationFormat = DEFAULT_SERIALIZATION_FORMAT;
     protected boolean ignoreIncompatibleFiles = DEFAULT_IGNORE_INCOMPATIBLE_FILES;
@@ -75,18 +77,20 @@ public abstract class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>
         return new HashSet<>(Arrays.asList(PNML_FILE_ENDING, PETRIFY_FILE_ENDING));
     }
 
-    protected abstract NetType getExpectedNetType();
+    protected NetType getExpectedNetType(){
+        return null;
+    }
 
     @Override
     protected X loadComponentFromFile(String file) throws Exception {
         AbstractGraphicalPN parsedPN = PNParsing.parse(file, PNParsing.guessFormat(file));
         if (parsedPN == null) {
-            throw new Exception("Unable to parse " + getExpectedNetType() + ": Parsed Petri net is NULL");
+            throw new Exception("Unable to parse " + getComponentDescriptor() + ": NULL");
         }
         if (parsedPN.getPetriNet() == null) {
-            throw new Exception("Unable to parse " + getExpectedNetType() + ": Parsed Petri net is NULL");
+            throw new Exception("Unable to parse " + getComponentDescriptor() + ": NULL");
         }
-        if ((parsedPN.getPetriNet().getNetType() != getExpectedNetType())) {
+        if ((getExpectedNetType() != null) && (parsedPN.getPetriNet().getNetType() != getExpectedNetType())) {
             if(ignoreIncompatibleFiles){
                 return null;
             }
@@ -98,6 +102,11 @@ public abstract class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>
      @Override
     protected void serializeComponent(X component, String serializationPath, String fileName) throws Exception {
         PNSerialization.serialize(component, serializationFormat, serializationPath.concat(fileName));
+    }
+
+    @Override
+    public String getComponentDescriptor() {
+        return COMPONENT_DESCRIPTOR;
     }
 
 }
