@@ -109,4 +109,11 @@ public class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>,
         return COMPONENT_DESCRIPTOR;
     }
 
+    @Override
+    protected String getFileEndingForComponent(X component) {
+        return PNML_FILE_ENDING;
+    }
+    
+    
+
 }

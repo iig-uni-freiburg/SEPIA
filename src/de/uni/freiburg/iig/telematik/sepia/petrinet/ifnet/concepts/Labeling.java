@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import de.invation.code.toval.graphic.dialog.DialogObject;
+import de.invation.code.toval.misc.NamedComponent;
 import de.invation.code.toval.misc.soabase.SOABaseChangeReply;
 import de.invation.code.toval.misc.soabase.SOABaseListener;
 import de.invation.code.toval.validate.Validate;
 
 
 
-public class Labeling implements SOABaseListener, AnalysisContextListener, Cloneable, DialogObject<Labeling> {
+public class Labeling implements SOABaseListener, AnalysisContextListener, Cloneable, DialogObject<Labeling>, NamedComponent {
 	
 	/**
 	 * Default security level used for initializing classification-, clearance- and labeling-maps.<br>

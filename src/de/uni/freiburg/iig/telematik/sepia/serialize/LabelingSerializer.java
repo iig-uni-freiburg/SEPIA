@@ -15,6 +15,7 @@ import de.uni.freiburg.iig.telematik.sewol.accesscontrol.acl.ACLModel;
 public class LabelingSerializer {
 	
 	public static final String TYPE_URI = "http://ifnml.process-security.de/grammar/v1.0/labeling";
+        public static final String LABELING_FILE_EXTENSION = "labeling";
 	
 	private Labeling labeling = null;
 	private XMLSerializationSupport support = null;
@@ -80,7 +81,7 @@ public class LabelingSerializer {
 	}
 	
 	protected String getFileExtension(){
-		return "labeling";
+		return LABELING_FILE_EXTENSION;
 	}
 	
 	public static void main(String[] args) throws Exception {

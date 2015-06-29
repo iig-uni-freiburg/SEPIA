@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.invation.code.toval.graphic.dialog.DialogObject;
+import de.invation.code.toval.misc.NamedComponent;
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.invation.code.toval.types.DataUsage;
 import de.invation.code.toval.validate.ParameterException;
@@ -29,7 +30,7 @@ import de.uni.freiburg.iig.telematik.sewol.accesscontrol.event.ACModelListener;
  * <li>Subject descriptors: Subjects assigned to process activities.</li>
  * </ul>
  */
-public class AnalysisContext implements ACModelListener, Cloneable, DialogObject<AnalysisContext> {
+public class AnalysisContext implements ACModelListener, Cloneable, DialogObject<AnalysisContext>, NamedComponent {
 
 	private static final String DEFAULT_LABELING_NAME = "defaultLabeling";
 	private static final String DEFAULT_NAME = "AnalysisContext";
