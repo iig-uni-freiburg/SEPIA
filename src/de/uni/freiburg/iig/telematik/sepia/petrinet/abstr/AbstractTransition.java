@@ -1,3 +1,33 @@
+/* 
+ * Copyright (c) 2015, IIG Telematics, Uni Freiburg
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted (subject to the limitations in the disclaimer
+ * below) provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ * * Neither the name of IIG Telematics, Uni Freiburg nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
+ * THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ * CONTRIBUTORS BELIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.abstr;
 
 import java.io.Serializable;
@@ -29,6 +59,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
  * @author Thomas Stocker
  *
  * @param <E> The type of flow relations connected to the transition.
+ * @param <S> 
  */
 public abstract class AbstractTransition<	E extends AbstractFlowRelation<? extends AbstractPlace<E,S>, 
 											? extends AbstractTransition<E, S>, S>, S extends Object> 
@@ -39,7 +70,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	/**
 	 * Support class for {@link TransitionListener} handling.
 	 */
-	protected TransitionListenerSupport<AbstractTransition<E,S>> listenerSupport = new TransitionListenerSupport<AbstractTransition<E,S>>();
+	protected TransitionListenerSupport<AbstractTransition<E,S>> listenerSupport = new TransitionListenerSupport<>();
 	/**
 	 * Indicates the silent-state of the transition.<br>
 	 * If <code>true</code>, the transition is treated as silent transition.
@@ -103,24 +134,42 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	
 	//------- Basic properties -----------------------------------------------------------------------
 	
-	@Override
-	protected boolean addIncomingRelation(E relation){
-		if(super.addIncomingRelation(relation)){
-			checkState();
-			return true;
-		}
-		return false;
-	}
+        @Override
+        protected boolean addIncomingRelation(E relation) {
+            if (super.addIncomingRelation(relation)) {
+                checkState();
+                return true;
+            }
+            return false;
+        }
 
-	@Override
-	protected boolean addOutgoingRelation(E relation){
-		if(super.addOutgoingRelation(relation)){
-			checkState();
-			return true;
-		}
-		return false;
-	}
-	
+        @Override
+        protected boolean addOutgoingRelation(E relation) {
+            if (super.addOutgoingRelation(relation)) {
+                checkState();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        protected boolean removeIncomingRelation(E relation) {
+            if (super.removeIncomingRelation(relation)) {
+                checkState();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        protected boolean removeOutgoingRelation(E relation) {
+            if (super.removeOutgoingRelation(relation)) {
+                checkState();
+                return true;
+            }
+            return false;
+        }
+
 	/**
 	 * Indicates if the transition is silent.<br>
 	 * @return <code>true</code> if the transition is silent;<br>
@@ -199,9 +248,9 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 		}
 		
 		if(enabled && !oldEnabledState){
-			listenerSupport.notifyEnabling(new TransitionEvent<AbstractTransition<E,S>>(this));
+			listenerSupport.notifyEnabling(new TransitionEvent<>(this));
 		} else if(!enabled && oldEnabledState){
-			listenerSupport.notifyDisabling(new TransitionEvent<AbstractTransition<E,S>>(this));
+			listenerSupport.notifyDisabling(new TransitionEvent<>(this));
 		}
 	}
 	
@@ -249,7 +298,7 @@ public abstract class AbstractTransition<	E extends AbstractFlowRelation<? exten
 	}
 	
 	protected void notifyFiring(){
-		listenerSupport.notifyFiring(new TransitionEvent<AbstractTransition<E, S>>(this));
+		listenerSupport.notifyFiring(new TransitionEvent<>(this));
 	}
 	
 	
