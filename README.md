@@ -28,3 +28,25 @@ SEPIA builds upon the following tools and encloses them.
 ### Documentation
 
 A detailled documentation of SEPIA can be found under [http://doku.telematik.uni-freiburg.de/sepia](http://doku.telematik.uni-freiburg.de/sepia "http://doku.telematik.uni-freiburg.de/sepia").
+
+### Latest Release
+
+The most recent release is SEPIA 1.0.0, released July 29, 2015.
+
+* [sepia-1.0.0.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0.jar)
+* [sepia-1.0.0-sources.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0-sources.jar)
+* [sepia-1.0.0-javadoc.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0-javadoc.jar)
+
+To add a dependency on SEPIA using Maven, use the following:
+
+```xml
+<dependency>
+  <groupId>de.uni.freiburg.iig.telematik</groupId>
+  <artifactId>SEPIA</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+### Older Releases
+
+Older releases can be found under [https://github.com/iig-uni-freiburg/SEPIA/releases](https://github.com/iig-uni-freiburg/SEPIA/releases).

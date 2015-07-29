@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>de.uni.freiburg.iig.telematik</groupId>
 		<artifactId>tools</artifactId>
-		<version>0.1.6-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>SEPIA</artifactId>
 	<packaging>jar</packaging>
 
 	<name>SEPIA: Security-oriented PN Framework</name>
 	<description>SEPIA provides implementations for various types of Petri nets. Along Place/Transition-nets, it supports Petri nets with distinguishable token colors and defines coloured workflow nets, where coloured tokens are interpreted as data elements used during process execution. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modeling which enable users to assign security-levels (HIGH, LOW) to transitions, data elements and persons/agents participating in the process execution.</description>
-	<url>https://sourceforge.net/projects/sepiaframework/</url>
+	<url>https://github.com/iig-uni-freiburg/SEPIA</url>
 	<organization>
 		<name>Institute of Computer Science and Social Studies, Department of Telematics</name>
 		<url>http://www.telematik.uni-freiburg.de/</url>
@@ -27,7 +27,7 @@
 	</licenses>
 
 	<scm>
-		<url>http://svn.code.sf.net/p/sepiaframework/code/trunk</url>
+		<url>https://github.com/iig-uni-freiburg/SEPIA.git</url>
 	</scm>
 
 	<properties>
@@ -38,17 +38,17 @@
 		<dependency>
 			<groupId>de.uni.freiburg.iig.telematik</groupId>
 			<artifactId>TOVAL</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.uni.freiburg.iig.telematik</groupId>
 			<artifactId>JAGAL</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>de.uni.freiburg.iig.telematik</groupId>
 			<artifactId>SEWOL</artifactId>
-			<version>0.1.6-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.msv</groupId>
