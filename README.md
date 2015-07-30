@@ -5,7 +5,7 @@ Petri net framework for security related modeling and reasoning
 
 ### About
 
-SEPIA stands for "Security-oriented Petri Net Framework" and provides implementations for various types of Petri nets. Along Place/Transition-Nets, it supports Petri nets with distinguishable token colors. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modelling, which enable users to assign security-levels (high, low) to transitions, data elements and persons/agents participating in the process execution.
+<img align="right" src="http://iig-uni-freiburg.github.io/images/tools/sepia.png">SEPIA stands for "Security-oriented Petri Net Framework" and provides implementations for various types of Petri nets. Along Place/Transition-Nets, it supports Petri nets with distinguishable token colors. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modelling, which enable users to assign security-levels (high, low) to transitions, data elements and persons/agents participating in the process execution.
 
 For the usage in editors, Petri nets can be put in graphical containers, which hold visualization information. To preserve compatibility, Petri nets from other frameworks can be imported with the parser functionalities and also be exported for other frameworks using the serializing functionalities.
 
