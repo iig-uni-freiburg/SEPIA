@@ -55,6 +55,13 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
  * </ol>
  * 
  * @author Adrian Lange
+ * @param <P>
+ * @param <T>
+ * @param <F>
+ * @param <M>
+ * @param <S>
+ * @param <N>
+ * @param <G>
  */
 public class PNMLParser <P extends AbstractPlace<F, S>,
 						 T extends AbstractTransition<F, S>,
@@ -98,6 +105,8 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @param pnmlFile
 	 *            Path to the file to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
+         * @throws IOException
+         * @throws ParserException
 	 */
 	public AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile) throws IOException, ParserException {
 
@@ -114,6 +123,8 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @param verifySchema
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
+         * @throws IOException
+         * @throws ParserException
 	 */
 	public AbstractGraphicalPN<P,T,F,M,S,N,G> parse(String pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException{
 	File inputFile = new File(pnmlFile);
@@ -133,8 +144,9 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @param pnmlFile
 	 *            File to be parsed
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
+         * @throws IOException
+         * @throws ParserException
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile) throws IOException, ParserException {
 		return this.parse(pnmlFile, true, true);
@@ -150,8 +162,9 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @param verifySchema
 	 *            Set to <code>true</code> if the given file should be validated by the petri net type definition of the given file.
 	 * @return A {@link AbstractGraphicalPN}, acting as container for a petri net and its graphical information.
+         * @throws IOException
+         * @throws ParserException
 	 */
-	@SuppressWarnings("unchecked")
 	public AbstractGraphicalPN<P,T,F,M,S,N,G> parse(File pnmlFile, boolean requireNetType, boolean verifySchema) throws IOException, ParserException {
 
 		Validate.notNull(pnmlFile);
@@ -202,6 +215,8 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 * @param pnmlFile
 	 *            PNML file to read
 	 * @return Readable, well-formed and normalized PNML document
+         * @throws IOException
+         * @throws XMLParserException
 	 */
 	public static Document readRNGFile(File pnmlFile) throws IOException, XMLParserException {
 		Validate.notNull(pnmlFile);
@@ -235,6 +250,8 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 	 *            File to verify
 	 * @param pntdUrl
 	 *            {@link URL} of the petri net type definition
+         * @throws IOException
+         * @throws PNMLParserException
 	 */
 	public static void verifySchema(File pnmlFile, URL pntdUrl) throws IOException, PNMLParserException {
 		// Create verifier factory instance with PNML namespace
@@ -251,7 +268,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 		Verifier verifier = null;
 		try {
 			verifier = factory.newVerifier(in);
-		} catch (Exception e) {
+		} catch (VerifierConfigurationException | SAXException | IOException e) {
 			throw new PNMLParserException(ErrorCode.VALIDATION_CONFIGURATION_ERROR, e.getMessage());
 		}
 
