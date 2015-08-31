@@ -5,17 +5,17 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
 
 /**
  *
  * @author richard
  */
-class TimedTransition extends AbstractTimedTransition<TimedFlowRelation> {
+public class TimedTransition extends AbstractTimedTransition<TimedFlowRelation> {
 
-    public TimedTransition(String name, String label) {
+	private static final long serialVersionUID = 2596908252141084555L;
+
+	public TimedTransition(String name, String label) {
         super(name, label);
     }
 

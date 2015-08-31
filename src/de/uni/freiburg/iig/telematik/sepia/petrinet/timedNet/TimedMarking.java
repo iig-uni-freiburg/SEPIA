@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimed
  *
  * @author richard
  */
-class TimedMarking extends AbstractTimedMarking {
+public class TimedMarking extends AbstractTimedMarking {
     
     	@Override
 	public TimedMarking clone() {
