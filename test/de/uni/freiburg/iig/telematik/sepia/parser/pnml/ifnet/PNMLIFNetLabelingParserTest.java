@@ -30,22 +30,22 @@ public class PNMLIFNetLabelingParserTest {
 	@Test
 	public void testReadLabeling() throws ParameterException {
 
-		List<String> activities = new ArrayList<String>();
+		List<String> activities = new ArrayList<>();
 
 		// Correct labeling
 		Document labelingDocument = PNMLIFNetLabelingParserTestUtils.createLabeling("classifications", "classification", "activity");
 		Map<String, SecurityLevel> labeling = LabelingParser.readLabeling(labelingDocument, "classifications", "classification", "activity", activities);
 		assertEquals(5, labeling.size());
-		assertTrue(labeling.containsKey("first activity"));
-		assertTrue(labeling.containsKey("second activity"));
-		assertTrue(labeling.containsKey("third activity"));
-		assertTrue(labeling.containsKey("fourth activity"));
-		assertTrue(labeling.containsKey("fifth activity"));
-		assertEquals(SecurityLevel.LOW, labeling.get("first activity"));
-		assertEquals(SecurityLevel.LOW, labeling.get("second activity"));
-		assertEquals(SecurityLevel.HIGH, labeling.get("third activity"));
-		assertEquals(SecurityLevel.LOW, labeling.get("fourth activity"));
-		assertEquals(SecurityLevel.HIGH, labeling.get("fifth activity"));
+		assertTrue(labeling.containsKey("first_activity"));
+		assertTrue(labeling.containsKey("second_activity"));
+		assertTrue(labeling.containsKey("third_activity"));
+		assertTrue(labeling.containsKey("fourth_activity"));
+		assertTrue(labeling.containsKey("fifth_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.get("first_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.get("second_activity"));
+		assertEquals(SecurityLevel.HIGH, labeling.get("third_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.get("fourth_activity"));
+		assertEquals(SecurityLevel.HIGH, labeling.get("fifth_activity"));
 
 		// Wrong list name
 		// No labeling should be found

@@ -67,16 +67,16 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 	@Before
 	public void initialize() {
 		base = new SOABase("base");
-		base.addActivities(Arrays.asList("first activity", "second activity", "third activity", "fourth activity", "fifth activity"));
+		base.addActivities(Arrays.asList("first_activity", "second_activity", "third_activity", "fourth_activity", "fifth_activity"));
 		base.addObjects(Arrays.asList("blue", "green", "red", "pink", "yellow"));
 		base.addSubjects(Arrays.asList("subjectA", "subjectB", "subjectC", "subjectD", "subjectE"));
 
 		acm = new ACLModel("ACM", base);
-		acm.addActivityPermission("subjectA", "first activity");
-		acm.addActivityPermission("subjectB", "fourth activity");
-		acm.addActivityPermission("subjectC", "fifth activity");
-		acm.addActivityPermission("subjectD", "third activity");
-		acm.addActivityPermission("subjectE", "second activity");
+		acm.addActivityPermission("subjectA", "first_activity");
+		acm.addActivityPermission("subjectB", "fourth_activity");
+		acm.addActivityPermission("subjectC", "fifth_activity");
+		acm.addActivityPermission("subjectD", "third_activity");
+		acm.addActivityPermission("subjectE", "second_activity");
 	}
 
 	/*
@@ -111,18 +111,18 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 
 		// Activities
 		assertEquals(5, ac.getSubjectDescriptors().size());
-		assertTrue(ac.getSubjectDescriptors().containsKey("first activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("second activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("third activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("fourth activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("fifth activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("first_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("second_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("third_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("fourth_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("fifth_activity"));
 
 		// Activity descriptors
-		assertEquals("subjectA", ac.getSubjectDescriptor("first activity"));
-		assertEquals("subjectE", ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
+		assertEquals("subjectA", ac.getSubjectDescriptor("first_activity"));
+		assertEquals("subjectE", ac.getSubjectDescriptor("second_activity"));
+		assertEquals("subjectD", ac.getSubjectDescriptor("third_activity"));
+		assertEquals("subjectB", ac.getSubjectDescriptor("fourth_activity"));
+		assertEquals("subjectC", ac.getSubjectDescriptor("fifth_activity"));
 	}
 
 	/*
@@ -144,18 +144,18 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 
 		// Activities
 		assertEquals(5, ac.getSubjectDescriptors().size());
-		assertTrue(ac.getSubjectDescriptors().containsKey("first activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("second activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("third activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("fourth activity"));
-		assertTrue(ac.getSubjectDescriptors().containsKey("fifth activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("first_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("second_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("third_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("fourth_activity"));
+		assertTrue(ac.getSubjectDescriptors().containsKey("fifth_activity"));
 
 		// Activity descriptors
-		assertEquals("subjectA", ac.getSubjectDescriptor("first activity"));
-		assertEquals("subjectE", ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectD", ac.getSubjectDescriptor("third activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
+		assertEquals("subjectA", ac.getSubjectDescriptor("first_activity"));
+		assertEquals("subjectE", ac.getSubjectDescriptor("second_activity"));
+		assertEquals("subjectD", ac.getSubjectDescriptor("third_activity"));
+		assertEquals("subjectB", ac.getSubjectDescriptor("fourth_activity"));
+		assertEquals("subjectC", ac.getSubjectDescriptor("fifth_activity"));
 	}
 
 	/*
@@ -176,11 +176,11 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 		}
 
 		// Activity descriptors
-		assertEquals(null, ac.getSubjectDescriptor("first activity"));
-		assertEquals(null, ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals(null, ac.getSubjectDescriptor("third activity"));
+		assertEquals(null, ac.getSubjectDescriptor("first_activity"));
+		assertEquals(null, ac.getSubjectDescriptor("second_activity"));
+		assertEquals("subjectC", ac.getSubjectDescriptor("fifth_activity"));
+		assertEquals("subjectB", ac.getSubjectDescriptor("fourth_activity"));
+		assertEquals(null, ac.getSubjectDescriptor("third_activity"));
 	}
 
 	/*
@@ -201,11 +201,11 @@ public class PNMLIFNetAnalysisContextParserComponentTest {
 		}
 
 		// Activity descriptors
-		assertEquals(null, ac.getSubjectDescriptor("first activity"));
-		assertEquals(null, ac.getSubjectDescriptor("second activity"));
-		assertEquals("subjectC", ac.getSubjectDescriptor("fifth activity"));
-		assertEquals("subjectB", ac.getSubjectDescriptor("fourth activity"));
-		assertEquals(null, ac.getSubjectDescriptor("third activity"));
+		assertEquals(null, ac.getSubjectDescriptor("first_activity"));
+		assertEquals(null, ac.getSubjectDescriptor("second_activity"));
+		assertEquals("subjectC", ac.getSubjectDescriptor("fifth_activity"));
+		assertEquals("subjectB", ac.getSubjectDescriptor("fourth_activity"));
+		assertEquals(null, ac.getSubjectDescriptor("third_activity"));
 	}
 
 	/*

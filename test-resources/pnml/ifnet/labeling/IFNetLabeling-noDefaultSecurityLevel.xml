@@ -2,23 +2,23 @@
   <analysiscontext>AC</analysiscontext>
   <classifications>
     <classification>
-      <activity>first activity</activity>
+      <activity>first_activity</activity>
       <securitydomain>low</securitydomain>
     </classification>
     <classification>
-      <activity>second activity</activity>
+      <activity>second_activity</activity>
       <securitydomain>low</securitydomain>
     </classification>
     <classification>
-      <activity>third activity</activity>
+      <activity>third_activity</activity>
       <securitydomain>high</securitydomain>
     </classification>
     <classification>
-      <activity>fourth activity</activity>
+      <activity>fourth_activity</activity>
       <securitydomain>low</securitydomain>
     </classification>
     <classification>
-      <activity>fifth activity</activity>
+      <activity>fifth_activity</activity>
       <securitydomain>high</securitydomain>
     </classification>
   </classifications>
