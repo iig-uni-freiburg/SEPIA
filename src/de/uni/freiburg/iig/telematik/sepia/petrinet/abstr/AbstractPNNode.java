@@ -40,6 +40,8 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -69,6 +71,16 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	private static final long serialVersionUID = -809201554674739116L;
 
+        /**
+         * Pattern to define allowed node names.
+         */
+        public static final Pattern NODE_NAME_PATTERN = Pattern.compile("^([a-zA-Z][\\w-_\\.:]*)$");
+
+        /**
+         * Pattern to define forbidden node name characters.
+         */
+        public static final Pattern NODE_NAME_FORBIDDEN_CHARACTERS = Pattern.compile("([^\\w-_:\\.]+)");
+
 	protected final String toStringFormat = "%s[%s]";
 	
 	/**
@@ -84,7 +96,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * Node names must be unique within a Petri net and are used for distinction.<br>
 	 * Once added to a Petri net, the name property should not be changed to avoid conflicts.
 	 */
-	protected String name;
+	protected final String name;
 	/**
 	 * The label of the Petri net node.<br>
 	 * The label is not unique and can be altered, whenever convenient.
@@ -103,6 +115,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	/**
 	 * Creates a new Petri net node, using the given name.<br>
 	 * Ba default, the label of the node equals the name.
+	 * @param type The type of the Petri net node.
 	 * @param name The name for the Petri net node.
 	 * @throws ParameterException If the given name is <code>null</code>.
 	 */
@@ -113,6 +126,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	/**
 	 * Creates a new Petri net node, using the given name and label.
+	 * @param type The type of the Petri net node.
 	 * @param name The name for the Petri net node.
 	 * @param label The label for the Petri net node.
 	 * @throws ParameterException If some parameters are <code>null</code>.
@@ -120,6 +134,12 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	public AbstractPNNode(PNNodeType type, String name, String label){
 		Validate.notNull(name);
 		Validate.notNull(label);
+
+                Matcher nameMatcher = NODE_NAME_PATTERN.matcher(name);
+                if (!nameMatcher.matches()) {
+                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Node names must match the pattern \"" + NODE_NAME_PATTERN + "\".");
+                }
+
 		this.name = name;
 		setLabel(label);
 		this.type = type;
@@ -157,11 +177,11 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	 * @param label New label for the Petri net node.
 	 * @throws ParameterException If the given label is <code>null</code>.
 	 */
-	public void setLabel(String label){
+	public final void setLabel(String label){
 		Validate.notNull(label);
 		this.label = label;
 	}
-	
+
 	/**
 	 * Indicates if the Petri net node is a source, i.e.<br>
 	 * it has outgoing relations, but no incoming relations.
@@ -296,6 +316,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	/**
 	 * Returns the relation from the given Petri net node leading to this node.<br>
 	 * The method checks if there is an incoming relation with this property.
+	 * @param <N> Type of the node, subclass of \@link AbstractPNNode}.
 	 * @param node The source node of the relation of interest.
 	 * @return The incoming relation leading from the given node to this node;<br>
 	 * <code>null</code> if there is no such incoming relation.
@@ -314,6 +335,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	/**
 	 * Returns the relation from this node leading to the given Petri net node.<br>
 	 * The method checks if there is an outgoing relation with this property.
+	 * @param <N> Type of the node, subclass of \@link AbstractPNNode}.
 	 * @param node The target node of the relation of interest.
 	 * @return The outgoing relation leading from this node to the given node;<br>
 	 * <code>null</code> if there is no such outgoing relation.
@@ -331,6 +353,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	/**
 	 * Checks if there is an outgoing relation leading to the given Petri net node.
+	 * @param <N> Type of the node, subclass of \@link AbstractPNNode}.
 	 * @param node The node of interest.
 	 * @return <code>true</code> if there is an outgoing relation to the given node;<br>
 	 * <code>false</code> otherwise.
@@ -342,6 +365,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	
 	/**
 	 * Checks if there is an incoming relation from the given Petri net node.
+	 * @param <N> Type of the node, subclass of \@link AbstractPNNode}.
 	 * @param node The node of interest.
 	 * @return <code>true</code> if there is an incoming relation from the given node;<br>
 	 * <code>false</code> otherwise.
