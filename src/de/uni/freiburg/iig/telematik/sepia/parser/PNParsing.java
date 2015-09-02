@@ -220,6 +220,8 @@ public class PNParsing {
      * @return Sanitized element name.
      */
     public static String sanitizeElementName(String name, String leadingCharacters) {
+        Validate.notEmpty(leadingCharacters);
+
         // replace forbidden characters by "_"
         name = name.replaceAll(AbstractPetriNet.XML_ID_FORBIDDEN_CHARACTERS.pattern(), SANITIZE_INVALID_CHARACTER_REPLACEMENT);
         // check if first element is in range [a-zA-Z]
