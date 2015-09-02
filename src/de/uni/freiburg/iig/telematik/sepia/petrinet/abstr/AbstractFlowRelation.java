@@ -7,7 +7,6 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListener;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListenerSupport;
-import static de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPNNode.NODE_NAME_PATTERN;
 import java.util.regex.Matcher;
 
 /**
@@ -166,15 +165,17 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * If this method is used to explicitly set the flow relations' name,<br>
 	 * the caller is responsible to guarantee unique flow relation names.<br>
 	 * Name collisions can cause unintended or erroneous Petri net behavior.
-	 * @param name The name for the flow relation.
+	 * @param name The name for the flow relation. It must start with a
+         * character of the range [a-zA-Z] and must only contain alphanumerical
+         * characters and the symbols <code>-_.:</code>.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public void setName(String name){
 		Validate.notNull(name);
 
-                Matcher nameMatcher = NODE_NAME_PATTERN.matcher(name);
+                Matcher nameMatcher = AbstractPetriNet.XML_ID_PATTERN.matcher(name);
                 if (!nameMatcher.matches()) {
-                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Flow relation names must match the pattern \"" + NODE_NAME_PATTERN + "\".");
+                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Flow relation names must match the pattern \"" + AbstractPetriNet.XML_ID_PATTERN + "\".");
                 }
 
 		if(!relationListenerSupport.requestNameChangePermission(this, name))

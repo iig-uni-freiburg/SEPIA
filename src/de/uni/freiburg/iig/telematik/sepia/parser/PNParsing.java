@@ -34,6 +34,13 @@ public class PNParsing {
     /**
      * Parses the given file with the parser respective to the file extension.
      *
+     * @param <P> Place type
+     * @param <T> Transition type
+     * @param <F> Flow relation type
+     * @param <M> Marking type
+     * @param <S> Node value type
+     * @param <N> Petri net type
+     * @param <G> Petri net graphics type
      * @param file File to parse
      * @return A {@link AbstractGraphicalPN}
      * @throws IOException If the file can't be found or read
@@ -54,6 +61,13 @@ public class PNParsing {
     /**
      * Parses the given file with the parser respective to the file extension.
      *
+     * @param <P> Place type
+     * @param <T> Transition type
+     * @param <F> Flow relation type
+     * @param <M> Marking type
+     * @param <S> Node value type
+     * @param <N> Petri net type
+     * @param <G> Petri net graphics type
      * @param fileName File to parse
      * @return A {@link AbstractGraphicalPN}
      * @throws IOException If the file can't be found or read
@@ -69,7 +83,15 @@ public class PNParsing {
     /**
      * Parses the given file with the parser respective to the file extension.
      *
+     * @param <P> Place type
+     * @param <T> Transition type
+     * @param <F> Flow relation type
+     * @param <M> Marking type
+     * @param <S> Node value type
+     * @param <N> Petri net type
+     * @param <G> Petri net graphics type
      * @param file File to parse
+     * @param format Format to parse from
      * @return A {@link AbstractGraphicalPN}
      * @throws IOException If the file can't be found or read
      * @throws ParserException For exceptions caused by the parsing
@@ -86,7 +108,15 @@ public class PNParsing {
     /**
      * Parses the given file with the parser respective to the file extension.
      *
+     * @param <P> Place type
+     * @param <T> Transition type
+     * @param <F> Flow relation type
+     * @param <M> Marking type
+     * @param <S> Node value type
+     * @param <N> Petri net type
+     * @param <G> Petri net graphics type
      * @param fileName File to parse
+     * @param format Format to parse from
      * @return A {@link AbstractGraphicalPN}
      * @throws IOException If the file can't be found or read
      * @throws ParserException For exceptions caused by the parsing
@@ -118,6 +148,7 @@ public class PNParsing {
 
     /**
      * @param file File to parse
+     * @param format Format to parse from
      * @return Returns the for the file's extension suitable parser or
      * <code>null</code> if no suitable parser could be found
      * @throws ParserException If the file can't be found

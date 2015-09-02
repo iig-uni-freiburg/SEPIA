@@ -41,7 +41,6 @@ import de.invation.code.toval.validate.Validate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -70,16 +69,6 @@ import java.util.regex.Pattern;
 public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends AbstractPlace<E,?>, ? extends AbstractTransition<E,?>, ?>> implements Serializable{
 	
 	private static final long serialVersionUID = -809201554674739116L;
-
-        /**
-         * Pattern to define allowed node names.
-         */
-        public static final Pattern NODE_NAME_PATTERN = Pattern.compile("^([a-zA-Z][\\w-_\\.:]*)$");
-
-        /**
-         * Pattern to define forbidden node name characters.
-         */
-        public static final Pattern NODE_NAME_FORBIDDEN_CHARACTERS = Pattern.compile("([^\\w-_:\\.]+)");
 
 	protected final String toStringFormat = "%s[%s]";
 	
@@ -127,7 +116,9 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 	/**
 	 * Creates a new Petri net node, using the given name and label.
 	 * @param type The type of the Petri net node.
-	 * @param name The name for the Petri net node.
+	 * @param name The name for the Petri net node. It must start with a
+         * character of the range [a-zA-Z] and must only contain alphanumerical
+         * characters and the symbols <code>-_.:</code>.
 	 * @param label The label for the Petri net node.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
@@ -135,9 +126,9 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		Validate.notNull(name);
 		Validate.notNull(label);
 
-                Matcher nameMatcher = NODE_NAME_PATTERN.matcher(name);
+                Matcher nameMatcher = AbstractPetriNet.XML_ID_PATTERN.matcher(name);
                 if (!nameMatcher.matches()) {
-                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Node names must match the pattern \"" + NODE_NAME_PATTERN + "\".");
+                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Node names must match the pattern \"" + AbstractPetriNet.XML_ID_PATTERN + "\".");
                 }
 
 		this.name = name;
