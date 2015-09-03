@@ -21,6 +21,8 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerialization;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_PNML;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_Petrify;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -101,7 +103,7 @@ public class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>,
     
      @Override
     protected void serializeComponent(X component, String serializationPath, String fileName) throws Exception {
-        PNSerialization.serialize(component, serializationFormat, serializationPath.concat(fileName));
+        PNSerialization.serialize(component, serializationFormat, File.separator+serializationPath.concat(fileName));
     }
 
     @Override
