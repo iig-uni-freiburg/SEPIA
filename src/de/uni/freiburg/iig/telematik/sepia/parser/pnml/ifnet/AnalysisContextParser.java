@@ -16,7 +16,6 @@ import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AnalysisContext;
@@ -158,7 +157,7 @@ public class AnalysisContextParser {
                     String activity = null;
                     NodeList activityList = subjectDescriptorElement.getElementsByTagName("activity");
                     if (activityList.getLength() > 0) {
-                        activity = PNParsing.sanitizeElementName(((Element) activityList.item(0)).getTextContent(), "t");
+                        activity = ((Element) activityList.item(0)).getTextContent();
                     }
                     // read subject
                     String subject = null;

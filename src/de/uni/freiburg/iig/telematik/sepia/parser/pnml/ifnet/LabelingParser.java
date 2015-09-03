@@ -18,7 +18,6 @@ import org.w3c.dom.NodeList;
 import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.IFNet;
@@ -267,26 +266,19 @@ public class LabelingParser {
                     // read object descriptor
                     NodeList objectDescriptorList = labelingTypeElement.getElementsByTagName(objectDescriptorName);
                     if (objectDescriptorList.getLength() > 0) {
-                        if (objectDescriptorName.equals("activity")) {
-                            objectDescriptor = PNParsing.sanitizeElementName(((Element) objectDescriptorList.item(0)).getTextContent(), "t");
-                        } else {
-                            objectDescriptor = ((Element) objectDescriptorList.item(0)).getTextContent();
-                        }
+                        objectDescriptor = ((Element) objectDescriptorList.item(0)).getTextContent();
                     }
 
                     // read security level
                     NodeList securityLevelList = labelingTypeElement.getElementsByTagName("securitydomain");
                     if (securityLevelList.getLength() > 0) {
                         String securityLevelStr = ((Element) securityLevelList.item(0)).getTextContent();
-                        switch (securityLevelStr) {
-                            case "low":
-                                securityLevel = SecurityLevel.LOW;
-                                break;
-                            case "high":
-                                securityLevel = SecurityLevel.HIGH;
-                                break;
-                            default:
-                                throw new ParameterException("\"" + securityLevelStr + "\" is not a valid security level. Only \"low\" and \"high\" are allowed.");
+                        if (securityLevelStr.equals("low")) {
+                            securityLevel = SecurityLevel.LOW;
+                        } else if (securityLevelStr.equals("high")) {
+                            securityLevel = SecurityLevel.HIGH;
+                        } else {
+                            throw new ParameterException("\"" + securityLevelStr + "\" is not a valid security level. Only \"low\" and \"high\" are allowed.");
                         }
                     }
 
