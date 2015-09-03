@@ -7,6 +7,7 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListener;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListenerSupport;
+import java.util.regex.Matcher;
 
 /**
  * Abstract class that defines general properties for flow relations between Petri net places and transitions.<br>
@@ -100,7 +101,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	//------- Basic properties -----------------------------------------------------------------------
 	
 
-	public void setConstraint(S constraint){
+	public final void setConstraint(S constraint){
 		validateConstraint(constraint);
 		this.constraint = constraint;
 		relationListenerSupport.notifyCapacityChanged(this);
@@ -164,11 +165,19 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	 * If this method is used to explicitly set the flow relations' name,<br>
 	 * the caller is responsible to guarantee unique flow relation names.<br>
 	 * Name collisions can cause unintended or erroneous Petri net behavior.
-	 * @param name The name for the flow relation.
+	 * @param name The name for the flow relation. It must start with a
+         * character of the range [a-zA-Z] and must only contain alphanumerical
+         * characters and the symbols <code>-_.:</code>.
 	 * @throws ParameterException If some parameters are <code>null</code>.
 	 */
 	public void setName(String name){
 		Validate.notNull(name);
+
+                Matcher nameMatcher = AbstractPetriNet.XML_ID_PATTERN.matcher(name);
+                if (!nameMatcher.matches()) {
+                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Flow relation names must match the pattern \"" + AbstractPetriNet.XML_ID_PATTERN + "\".");
+                }
+
 		if(!relationListenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a relation with this name.\n Cancel renaming to avoid name clash.");
 		this.name = name;

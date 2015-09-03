@@ -18,6 +18,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGrap
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
+import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser;
@@ -35,225 +36,266 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
  * <p>
  * Parser for IF-nets.
  * </p>
- * 
+ *
+ * @version 1.0
  * @author Adrian Lange
+ *
+ * @param <P> Type of Petri net places
+ * @param <T> Type of Petri net transitions
+ * @param <F> Type of Petri net relations
+ * @param <M> Type of Petri net markings
+ * @param <R> Type of regular IF-net transitions
+ * @param <D> Type of declassification transitions
+ * @param <N> Type of the Petri net
+ * @param <G> Type of the Petri net graphics
  */
-public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>, 
-											  T extends AbstractIFNetTransition<F>, 
-											  F extends AbstractIFNetFlowRelation<P, T>, 
-											  M extends AbstractIFNetMarking, 
-											  R extends AbstractRegularIFNetTransition<F>, 
-											  D extends AbstractDeclassificationTransition<F>,
-											  N extends AbstractIFNet<P, T, F, M, R, D>, 
-											  G extends AbstractIFNetGraphics<P, T, F, M>>
+public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
+                                              T extends AbstractIFNetTransition<F>,
+                                              F extends AbstractIFNetFlowRelation<P, T>,
+                                              M extends AbstractIFNetMarking,
+                                              R extends AbstractRegularIFNetTransition<F>,
+                                              D extends AbstractDeclassificationTransition<F>,
+                                              N extends AbstractIFNet<P, T, F, M, R, D>,
+                                              G extends AbstractIFNetGraphics<P, T, F, M>>
+        extends AbstractPNMLCPNParser<P, T, F, M, N, G> {
 
-extends AbstractPNMLCPNParser<P, T, F, M, N, G> {
+    @Override
+    public void parseDocument(Document pnmlDocument) throws ParserException {
 
-	@Override
-	public void parseDocument(Document pnmlDocument) throws ParserException {
+        super.parseDocument(pnmlDocument);
 
-		super.parseDocument(pnmlDocument);
+        // read positions of the classification annotations for token labels and clearances
+        NodeList classificationPositionsNodes = pnmlDocument.getElementsByTagName("classificationpositions");
+        if (classificationPositionsNodes.getLength() > 0) {
+            Element classificationPositionsElement = (Element) classificationPositionsNodes.item(0);
+            // read clearances annotation position
+            NodeList clearancesList = classificationPositionsElement.getElementsByTagName("clearances");
+            if (clearancesList.getLength() > 0) {
+                Element clearancesElement = (Element) clearancesList.item(0);
+                NodeList clearancesPositionList = clearancesElement.getElementsByTagName("position");
+                if (clearancesPositionList.getLength() > 0) {
+                    Position clearancesPosition = readPosition((Element) clearancesPositionList.item(0));
+                    if (clearancesPosition != null) {
+                        getGraphics().setClearancesPosition(clearancesPosition);
+                    }
+                }
+            }
+            // read token labels annotation position
+            NodeList tokenLabelsList = classificationPositionsElement.getElementsByTagName("tokenlabels");
+            if (tokenLabelsList.getLength() > 0) {
+                Element tokenLabelsElement = (Element) tokenLabelsList.item(0);
+                NodeList tokenLabelsPositionList = tokenLabelsElement.getElementsByTagName("position");
+                if (tokenLabelsPositionList.getLength() > 0) {
+                    Position tokenLabelsPosition = readPosition((Element) tokenLabelsPositionList.item(0));
+                    if (tokenLabelsPosition != null) {
+                        getGraphics().setTokenLabelsPosition(tokenLabelsPosition);
+                    }
+                }
+            }
+        }
+    }
 
-		// read positions of the classification annotations for token labels and clearances
-		NodeList classificationPositionsNodes = pnmlDocument.getElementsByTagName("classificationpositions");
-		if (classificationPositionsNodes.getLength() > 0) {
-			Element classificationPositionsElement = (Element) classificationPositionsNodes.item(0);
-			// read clearances annotation position
-			NodeList clearancesList = classificationPositionsElement.getElementsByTagName("clearances");
-			if (clearancesList.getLength() > 0) {
-				Element clearancesElement = (Element) clearancesList.item(0);
-				NodeList clearancesPositionList = clearancesElement.getElementsByTagName("position");
-				if (clearancesPositionList.getLength() > 0) {
-					Position clearancesPosition = readPosition((Element) clearancesPositionList.item(0));
-					if (clearancesPosition != null)
-						getGraphics().setClearancesPosition(clearancesPosition);
-				}
-			}
-			// read token labels annotation position
-			NodeList tokenLabelsList = classificationPositionsElement.getElementsByTagName("tokenlabels");
-			if (tokenLabelsList.getLength() > 0) {
-				Element tokenLabelsElement = (Element) tokenLabelsList.item(0);
-				NodeList tokenLabelsPositionList = tokenLabelsElement.getElementsByTagName("position");
-				if (tokenLabelsPositionList.getLength() > 0) {
-					Position tokenLabelsPosition = readPosition((Element) tokenLabelsPositionList.item(0));
-					if (tokenLabelsPosition != null)
-						getGraphics().setTokenLabelsPosition(tokenLabelsPosition);
-				}
-			}
-		}
-	}
+    /**
+     * Reads all transitions given in a list of DOM nodes and adds them to the
+     * {@link GraphicalIFNet}.
+     *
+     * @throws ParserException
+     */
+    @Override
+    protected void readTransitions(NodeList transitionNodes) throws ParserException {
+        // read and add each transition
+        for (int t = 0; t < transitionNodes.getLength(); t++) {
+            if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
+                Element transition = (Element) transitionNodes.item(t);
+                // ID must be available in a valid net
+                String transitionName = PNParsing.sanitizeElementName(transition.getAttribute("id"), "t");
+                String transitionLabel = null;
+                // Check if there's a label
+                NodeList transitionLabels = transition.getElementsByTagName("name");
+                if (transitionLabels.getLength() == 1) {
+                    transitionLabel = readText(transitionLabels.item(0));
+                    if (transitionLabel != null && transitionLabel.length() == 0) {
+                        transitionLabel = null;
+                    }
+                    // annotation graphics
+                    AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
+                    if (transitionLabelAnnotationGraphics != null) {
+                        graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
+                    }
+                }
 
-	/**
-	 * Reads all transitions given in a list of DOM nodes and adds them to the {@link GraphicalIFNet}.
-	 */
-	@Override
-	protected void readTransitions(NodeList transitionNodes) throws ParserException {
-		// read and add each transition
-		for (int t = 0; t < transitionNodes.getLength(); t++) {
-			if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
-				Element transition = (Element) transitionNodes.item(t);
-				// ID must be available in a valid net
-				String transitionName = transition.getAttribute("id");
-				String transitionLabel = null;
-				// Check if there's a label
-				NodeList transitionLabels = transition.getElementsByTagName("name");
-				if (transitionLabels.getLength() == 1) {
-					transitionLabel = readText(transitionLabels.item(0));
-					if (transitionLabel != null && transitionLabel.length() == 0)
-						transitionLabel = null;
-					// annotation graphics
-					AnnotationGraphics transitionLabelAnnotationGraphics = readAnnotationGraphicsElement((Element) transitionLabels.item(0));
-					if (transitionLabelAnnotationGraphics != null)
-						graphics.getTransitionLabelAnnotationGraphics().put(transitionName, transitionLabelAnnotationGraphics);
-				}
+                N ifnet = net;
 
-				N ifnet = net;
+                // get transition type
+                String transitionType = readTransitionType(transition);
+                if (!transitionType.equals("regular") && !transitionType.equals("declassification")) {
+                    throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
+                }
+                if (transitionLabel != null) {
+                    switch (transitionType) {
+                        case "regular":
+                            ifnet.addTransition(transitionName, transitionLabel);
+                            break;
+                        case "declassification":
+                            ifnet.addDeclassificationTransition(transitionName, transitionLabel);
+                            break;
+                    }
+                } else {
+                    switch (transitionType) {
+                        case "regular":
+                            ifnet.addTransition(transitionName);
+                            break;
+                        case "declassification":
+                            ifnet.addDeclassificationTransition(transitionName);
+                            break;
+                    }
+                }
 
-				// get transition type
-				String transitionType = readTransitionType(transition);
-				if (!transitionType.equals("regular") && !transitionType.equals("declassification"))
-					throw new PNMLParserException(ErrorCode.VALIDATION_FAILED, "Couldn't determine the type of the transition " + transitionName + ".");
-				if (transitionLabel != null) {
-					if (transitionType.equals("regular"))
-						ifnet.addTransition(transitionName, transitionLabel);
-					else if (transitionType.equals("declassification"))
-						ifnet.addDeclassificationTransition(transitionName, transitionLabel);
-				} else {
-					if (transitionType.equals("regular"))
-						ifnet.addTransition(transitionName);
-					else if (transitionType.equals("declassification"))
-						ifnet.addDeclassificationTransition(transitionName);
-				}
+                if (readSilent(transition)) {
+                    ifnet.getTransition(transitionName).setSilent(true);
+                }
 
-				if (readSilent(transition)) {
-					ifnet.getTransition(transitionName).setSilent(true);
-				}
+                // read access modes
+                // ugly unbounded wildcard as work-around for bug JDK-6932571
+                Object transitionObject = ifnet.getTransition(transitionName);
+                if (transitionObject instanceof RegularIFNetTransition) {
+                    NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
+                    if (accessFunctionsNodes.getLength() > 0) {
+                        if (accessFunctionsNodes.item(0).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(0).getParentNode().equals(transition)) {
+                            Element accessFunctionsElement = (Element) accessFunctionsNodes.item(0);
+                            Map<String, Collection<AccessMode>> accessFunctions = readAccessFunctions(accessFunctionsElement);
+                            if (accessFunctions != null) {
+                                // get transition and add access functions
+                                RegularIFNetTransition currentTransition = (RegularIFNetTransition) transitionObject;
+                                Validate.notNull(currentTransition);
 
-				// read access modes
+                                for (Entry<String, Collection<AccessMode>> accessFunction : accessFunctions.entrySet()) {
+                                    String color = accessFunction.getKey();
+                                    Collection<AccessMode> accessModes = accessFunction.getValue();
+                                    currentTransition.addAccessMode(color, accessModes);
+                                }
 
-				// ugly unbounded wildcard as work-around for bug JDK-6932571
-				Object transitionObject = ifnet.getTransition(transitionName);
-				if (transitionObject instanceof RegularIFNetTransition) {
-					NodeList accessFunctionsNodes = transition.getElementsByTagName("accessfunctions");
-					if (accessFunctionsNodes.getLength() > 0) {
-						if (accessFunctionsNodes.item(0).getNodeType() == Node.ELEMENT_NODE && accessFunctionsNodes.item(0).getParentNode().equals(transition)) {
-							Element accessFunctionsElement = (Element) accessFunctionsNodes.item(0);
-							Map<String, Collection<AccessMode>> accessFunctions = readAccessFunctions(accessFunctionsElement);
-							if (accessFunctions != null) {
-								// get transition and add access functions
-								RegularIFNetTransition currentTransition = (RegularIFNetTransition) transitionObject;
-								Validate.notNull(currentTransition);
+                                // read access function graphics
+                                AnnotationGraphics accessFunctionsGraphics = readAnnotationGraphicsElement(accessFunctionsElement);
+                                if (accessFunctionsGraphics != null) {
+                                    getGraphics().getAccessFunctionGraphics().put(currentTransition.getName(), accessFunctionsGraphics);
+                                }
+                            }
+                        }
+                    }
+                }
 
-								for (Entry<String, Collection<AccessMode>> accessFunction : accessFunctions.entrySet()) {
-									String color = accessFunction.getKey();
-									Collection<AccessMode> accessModes = accessFunction.getValue();
-									currentTransition.addAccessMode(color, accessModes);
-								}
+                // read subject graphics
+                NodeList subjectgraphicsList = transition.getElementsByTagName("subjectgraphics");
+                if (subjectgraphicsList.getLength() > 0) {
+                    // read graphics
+                    AnnotationGraphics subjectgraphicsGraphics = readAnnotationGraphicsElement((Element) subjectgraphicsList.item(0));
+                    if (subjectgraphicsGraphics != null) {
+                        getGraphics().getSubjectGraphics().put(transitionName, subjectgraphicsGraphics);
+                    }
+                }
 
-								// read access function graphics
-								AnnotationGraphics accessFunctionsGraphics = readAnnotationGraphicsElement(accessFunctionsElement);
-								if (accessFunctionsGraphics != null)
-									getGraphics().getAccessFunctionGraphics().put(currentTransition.getName(), accessFunctionsGraphics);
-							}
-						}
-					}
-				}
+                // read graphical information
+                NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
+                if (transitionGraphics != null) {
+                    graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
+                }
+            }
+        }
+    }
 
-				// read subject graphics
-				NodeList subjectgraphicsList = transition.getElementsByTagName("subjectgraphics");
-				if (subjectgraphicsList.getLength() > 0) {
-					// read graphics
-					AnnotationGraphics subjectgraphicsGraphics = readAnnotationGraphicsElement((Element) subjectgraphicsList.item(0));
-					if (subjectgraphicsGraphics != null)
-						getGraphics().getSubjectGraphics().put(transitionName, subjectgraphicsGraphics);
-				}
+    /**
+     * Reads the access functions of a transition in an IF-net and returns a
+     * Map<tokenColorName, Map<accessmode, boolean>>.
+     *
+     * @param accessFunctionsElement
+     * @return Map of color names pointing on collections of access modes
+     */
+    public Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) {
+        Validate.notNull(accessFunctionsElement);
 
-				// read graphical information
-				NodeGraphics transitionGraphics = readNodeGraphicsElement(transition);
-				if (transitionGraphics != null)
-					graphics.getTransitionGraphics().put(transitionName, transitionGraphics);
-			}
-		}
-	}
+        Map<String, Collection<AccessMode>> accessFunctions = new HashMap<>();
 
-	/**
-	 * Reads the access functions of a transition in an IF-net and returns a Map<tokenColorName, Map<accessmode, boolean>>.
-	 */
-	public Map<String, Collection<AccessMode>> readAccessFunctions(Element accessFunctionsElement) {
-		Validate.notNull(accessFunctionsElement);
+        // iterate through all access functions
+        NodeList accessFunctionNodes = accessFunctionsElement.getElementsByTagName("accessfunction");
+        for (int af = 0; af < accessFunctionNodes.getLength(); af++) {
+            if (accessFunctionNodes.item(af).getNodeType() == Node.ELEMENT_NODE && accessFunctionNodes.item(af).getParentNode().equals(accessFunctionsElement)) {
+                Element accessFunctionElement = (Element) accessFunctionNodes.item(af);
 
-		Map<String, Collection<AccessMode>> accessFunctions = new HashMap<String, Collection<AccessMode>>();
+                // read the color element and create the access function or ignore the access function if the color can't be read
+                NodeList colorNodes = accessFunctionElement.getElementsByTagName("color");
+                if (colorNodes.getLength() > 0) {
+                    Element colorElement = (Element) colorNodes.item(0);
+                    if (colorElement.getTextContent().length() > 0) {
+                        String color = colorElement.getTextContent();
+                        Collection<AccessMode> accessModes = new HashSet<>();
 
-		// iterate through all access functions
-		NodeList accessFunctionNodes = accessFunctionsElement.getElementsByTagName("accessfunction");
-		for (int af = 0; af < accessFunctionNodes.getLength(); af++) {
-			if (accessFunctionNodes.item(af).getNodeType() == Node.ELEMENT_NODE && accessFunctionNodes.item(af).getParentNode().equals(accessFunctionsElement)) {
-				Element accessFunctionElement = (Element) accessFunctionNodes.item(af);
+                        // read access modes and write set not listed modes to false
+                        NodeList accessModesNodes = accessFunctionElement.getElementsByTagName("accessmodes");
+                        if (accessModesNodes.getLength() > 0) {
+                            Element accessModesElement = (Element) accessModesNodes.item(0);
+                            if (readAccessMode(accessModesElement.getElementsByTagName("read"))) {
+                                accessModes.add(AccessMode.READ);
+                            }
+                            if (readAccessMode(accessModesElement.getElementsByTagName("create"))) {
+                                accessModes.add(AccessMode.CREATE);
+                            }
+                            if (readAccessMode(accessModesElement.getElementsByTagName("write"))) {
+                                accessModes.add(AccessMode.WRITE);
+                            }
+                            if (readAccessMode(accessModesElement.getElementsByTagName("delete"))) {
+                                accessModes.add(AccessMode.DELETE);
+                            }
+                        }
 
-				// read the color element and create the access function or ignore the access function if the color can't be read
-				NodeList colorNodes = accessFunctionElement.getElementsByTagName("color");
-				if (colorNodes.getLength() > 0) {
-					Element colorElement = (Element) colorNodes.item(0);
-					if (colorElement.getTextContent().length() > 0) {
-						String color = colorElement.getTextContent();
-						Collection<AccessMode> accessModes = new HashSet<AccessMode>();
+                        // add access function
+                        accessFunctions.put(color, accessModes);
+                    }
+                }
+            }
+        }
 
-						// read access modes and write set not listed modes to false
-						NodeList accessModesNodes = accessFunctionElement.getElementsByTagName("accessmodes");
-						if (accessModesNodes.getLength() > 0) {
-							Element accessModesElement = (Element) accessModesNodes.item(0);
-							if (readAccessMode(accessModesElement.getElementsByTagName("read")))
-								accessModes.add(AccessMode.READ);
-							if (readAccessMode(accessModesElement.getElementsByTagName("create")))
-								accessModes.add(AccessMode.CREATE);
-							if (readAccessMode(accessModesElement.getElementsByTagName("write")))
-								accessModes.add(AccessMode.WRITE);
-							if (readAccessMode(accessModesElement.getElementsByTagName("delete")))
-								accessModes.add(AccessMode.DELETE);
-						}
+        // return null if there are no access functions
+        if (accessFunctions.isEmpty()) {
+            return null;
+        } else {
+            return accessFunctions;
+        }
+    }
 
-						// add access function
-						accessFunctions.put(color, accessModes);
-					}
-				}
-			}
-		}
+    /**
+     * Returns a boolean value for the given access mode nodes.
+     */
+    private boolean readAccessMode(NodeList accessModeNodes) {
+        if (accessModeNodes.getLength() > 0) {
+            Element accessModeElement = (Element) accessModeNodes.item(0);
+            if (accessModeElement.getTextContent().equals("true")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-		// return null if there are no access functions
-		if (accessFunctions.isEmpty())
-			return null;
-		else
-			return accessFunctions;
-	}
+    /**
+     * Reads the type of a transition of an IF-net. If there's no transition
+     * type, it returns the type "regular".
+     *
+     * @param transitionElement Transition element to read the type from
+     * @return Type of the transition
+     */
+    public String readTransitionType(Element transitionElement) {
+        Validate.notNull(transitionElement);
 
-	/**
-	 * Returns a boolean value for the given access mode nodes.
-	 */
-	private boolean readAccessMode(NodeList accessModeNodes) {
-		if (accessModeNodes.getLength() > 0) {
-			Element accessModeElement = (Element) accessModeNodes.item(0);
-			if (accessModeElement.getTextContent().equals("true"))
-				return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Reads the type of a transition of an IF-net. If there's no transition type, it returns the type "regular".
-	 */
-	public String readTransitionType(Element transitionElement) {
-		Validate.notNull(transitionElement);
-
-		NodeList transitionTypeNodes = transitionElement.getElementsByTagName("transitiontype");
-		if (transitionTypeNodes.getLength() > 0) {
-			// Iterate through all text nodes and take only that with the given node as parent
-			for (int i = 0; i < transitionTypeNodes.getLength(); i++) {
-				if (transitionTypeNodes.item(i).getNodeType() == Node.ELEMENT_NODE && transitionTypeNodes.item(i).getParentNode().equals(transitionElement)) {
-					Element transitionType = (Element) transitionTypeNodes.item(i);
-					return transitionType.getTextContent();
-				}
-			}
-		}
-		return "regular";
-	}
+        NodeList transitionTypeNodes = transitionElement.getElementsByTagName("transitiontype");
+        if (transitionTypeNodes.getLength() > 0) {
+            // Iterate through all text nodes and take only that with the given node as parent
+            for (int i = 0; i < transitionTypeNodes.getLength(); i++) {
+                if (transitionTypeNodes.item(i).getNodeType() == Node.ELEMENT_NODE && transitionTypeNodes.item(i).getParentNode().equals(transitionElement)) {
+                    Element transitionType = (Element) transitionTypeNodes.item(i);
+                    return transitionType.getTextContent();
+                }
+            }
+        }
+        return "regular";
+    }
 }

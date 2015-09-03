@@ -81,23 +81,23 @@ public class PNMLIFNetLabelingParserComponentTest {
 	@Before
 	public void initialize() {
 		base = new SOABase("base");
-		base.addActivities(Arrays.asList("first activity", "second activity", "third activity", "fourth activity", "fifth activity"));
+		base.addActivities(Arrays.asList("first_activity", "second_activity", "third_activity", "fourth_activity", "fifth_activity"));
 		base.addObjects(Arrays.asList("blue", "green", "red", "pink", "yellow"));
 		base.addSubjects(Arrays.asList("subjectA", "subjectB", "subjectC", "subjectD", "subjectE"));
 
 		acm = new ACLModel("ACM", base);
-		acm.addActivityPermission("subjectA", "first activity");
-		acm.addActivityPermission("subjectB", "fourth activity");
-		acm.addActivityPermission("subjectC", "fifth activity");
-		acm.addActivityPermission("subjectD", "third activity");
-		acm.addActivityPermission("subjectE", "second activity");
+		acm.addActivityPermission("subjectA", "first_activity");
+		acm.addActivityPermission("subjectB", "fourth_activity");
+		acm.addActivityPermission("subjectC", "fifth_activity");
+		acm.addActivityPermission("subjectD", "third_activity");
+		acm.addActivityPermission("subjectE", "second_activity");
 
 		ac = new AnalysisContext("AC", acm, true);
-		ac.setSubjectDescriptor("first activity", "subjectA");
-		ac.setSubjectDescriptor("second activity", "subjectE");
-		ac.setSubjectDescriptor("third activity", "subjectD");
-		ac.setSubjectDescriptor("fourth activity", "subjectB");
-		ac.setSubjectDescriptor("fifth activity", "subjectC");
+		ac.setSubjectDescriptor("first_activity", "subjectA");
+		ac.setSubjectDescriptor("second_activity", "subjectE");
+		ac.setSubjectDescriptor("third_activity", "subjectD");
+		ac.setSubjectDescriptor("fourth_activity", "subjectB");
+		ac.setSubjectDescriptor("fifth_activity", "subjectC");
 	}
 
 	/*
@@ -137,11 +137,11 @@ public class PNMLIFNetLabelingParserComponentTest {
 		assertEquals("AC", labeling.getAnalysisContext().getName());
 
 		// Activities
-		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("first activity"));
-		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("second activity"));
-		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("third activity"));
-		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("fourth activity"));
-		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("fifth activity"));
+		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("first_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("second_activity"));
+		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("third_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("fourth_activity"));
+		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("fifth_activity"));
 		// Attributes
 		assertEquals(SecurityLevel.HIGH, labeling.getAttributeClassification("blue"));
 		assertEquals(SecurityLevel.LOW, labeling.getAttributeClassification("green"));
@@ -176,11 +176,11 @@ public class PNMLIFNetLabelingParserComponentTest {
 		assertEquals("AC", labeling.getAnalysisContext().getName());
 
 		// Activities
-		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("first activity"));
-		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("second activity"));
-		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("third activity"));
-		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("fourth activity"));
-		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("fifth activity"));
+		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("first_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("second_activity"));
+		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("third_activity"));
+		assertEquals(SecurityLevel.LOW, labeling.getActivityClassification("fourth_activity"));
+		assertEquals(SecurityLevel.HIGH, labeling.getActivityClassification("fifth_activity"));
 		// Attributes
 		assertEquals(SecurityLevel.HIGH, labeling.getAttributeClassification("blue"));
 		assertEquals(SecurityLevel.LOW, labeling.getAttributeClassification("green"));

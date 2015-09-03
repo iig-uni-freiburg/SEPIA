@@ -2,23 +2,23 @@
   <acmodel>ACM</acmodel>
   <subjectdescriptors>
     <subjectdescriptor>
-      <activity>first activity</activity>
+      <activity>first_activity</activity>
       <subject>invalid subject</subject>
     </subjectdescriptor>
     <subjectdescriptor>
-      <activity>second activity</activity>
+      <activity>second_activity</activity>
       <subject>subjectE</subject>
     </subjectdescriptor>
     <subjectdescriptor>
-      <activity>third activity</activity>
+      <activity>third_activity</activity>
       <subject>subjectD</subject>
     </subjectdescriptor>
     <subjectdescriptor>
-      <activity>fourth activity</activity>
+      <activity>fourth_activity</activity>
       <subject>subjectB</subject>
     </subjectdescriptor>
     <subjectdescriptor>
-      <activity>fifth activity</activity>
+      <activity>fifth_activity</activity>
       <subject>subjectC</subject>
     </subjectdescriptor>
   </subjectdescriptors>
