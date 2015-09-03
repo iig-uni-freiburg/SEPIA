@@ -5,7 +5,7 @@ Petri net framework for security related modeling and reasoning
 
 ### About
 
-SEPIA stands for "Security-oriented Petri Net Framework" and provides implementations for various types of Petri nets. Along Place/Transition-Nets, it supports Petri nets with distinguishable token colors. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modelling, which enable users to assign security-levels (high, low) to transitions, data elements and persons/agents participating in the process execution.
+<img align="right" src="http://iig-uni-freiburg.github.io/images/tools/sepia.png">SEPIA stands for "Security-oriented Petri Net Framework" and provides implementations for various types of Petri nets. Along Place/Transition-Nets, it supports Petri nets with distinguishable token colors. To support information flow analysis of processes, SEPIA defines so-called IF-Nets, tailored for security-oriented workflow modelling, which enable users to assign security-levels (high, low) to transitions, data elements and persons/agents participating in the process execution.
 
 For the usage in editors, Petri nets can be put in graphical containers, which hold visualization information. To preserve compatibility, Petri nets from other frameworks can be imported with the parser functionalities and also be exported for other frameworks using the serializing functionalities.
 
@@ -28,3 +28,25 @@ SEPIA builds upon the following tools and encloses them.
 ### Documentation
 
 A detailled documentation of SEPIA can be found under [http://doku.telematik.uni-freiburg.de/sepia](http://doku.telematik.uni-freiburg.de/sepia "http://doku.telematik.uni-freiburg.de/sepia").
+
+### Latest Release
+
+The most recent release is SEPIA 1.0.0, released July 29, 2015.
+
+* [sepia-1.0.0.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0.jar)
+* [sepia-1.0.0-sources.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0-sources.jar)
+* [sepia-1.0.0-javadoc.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0-javadoc.jar)
+
+To add a dependency on SEPIA using Maven, use the following:
+
+```xml
+<dependency>
+  <groupId>de.uni.freiburg.iig.telematik</groupId>
+  <artifactId>SEPIA</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
+### Older Releases
+
+Older releases can be found under [https://github.com/iig-uni-freiburg/SEPIA/releases](https://github.com/iig-uni-freiburg/SEPIA/releases).

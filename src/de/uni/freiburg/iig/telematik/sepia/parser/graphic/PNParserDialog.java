@@ -1,5 +1,6 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.graphic;
 
+import de.invation.code.toval.parser.ParserException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -30,6 +31,7 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
+import java.io.IOException;
 
 
 
@@ -37,20 +39,18 @@ public class PNParserDialog extends JDialog {
 
 	private static final long serialVersionUID = -1556400321094068143L;
 
-	@SuppressWarnings("rawtypes")
 	private JComboBox formatBox = null;
 	private JTextField pnPathField = null;
-	@SuppressWarnings("rawtypes")
 	private AbstractGraphicalPN petriNet = null;
 	private JButton browseButton = null;
 	private JButton okButton = null;
 	private JButton parseButton = null;
 	private JPanel panelButtons = null;
 	private JPanel panelInput = null;
-	private JPanel centerPanel = new JPanel(new BorderLayout());
-	private JPanel parameterPanel = new JPanel(new BorderLayout());
-	private PNMLParameterPanel pnmlParameterPanel = new PNMLParameterPanel();
-	private SilentTransitionPanel transitionPanel = new SilentTransitionPanel();
+	private final JPanel centerPanel = new JPanel(new BorderLayout());
+	private final JPanel parameterPanel = new JPanel(new BorderLayout());
+	private final PNMLParameterPanel pnmlParameterPanel = new PNMLParameterPanel();
+	private final SilentTransitionPanel transitionPanel = new SilentTransitionPanel();
 	
 
 	/**
@@ -196,13 +196,12 @@ public class PNParserDialog extends JDialog {
 						//TODO
 						break;
 					case PNML:
-						@SuppressWarnings("rawtypes")
 						PNMLParser parser = new PNMLParser();
 						getPNFileName();
 						try {
 							petriNet = parser.parse(getPNFileName(), pnmlParameterPanel.requireNetType(), pnmlParameterPanel.validation());
 							transitionPanel.update(petriNet.getPetriNet());
-						} catch (Exception ex) {
+						} catch (IOException | ParserException ex) {
 							JOptionPane.showMessageDialog(PNParserDialog.this, "Exception in parsing procedure:\nReason: "+ex.getMessage(), "Parsing Exception", JOptionPane.ERROR_MESSAGE);						
 						}
 						break;
@@ -224,8 +223,7 @@ public class PNParserDialog extends JDialog {
 		}
 		return pnPathField;
 	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	private JComboBox getFormatBox(){
 		if(formatBox == null){
 			formatBox = new JComboBox(PNParsingFormat.values());

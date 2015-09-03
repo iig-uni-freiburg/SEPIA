@@ -20,11 +20,11 @@ public class PNMLIFNetLabelingParserTestUtils {
 		Element listElement = doc.createElement(labelingListTypeName);
 		doc.appendChild(listElement);
 		// add entries
-		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "first activity", "low"));
-		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "second activity", "low"));
-		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "third activity", "high"));
-		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "fourth activity", "low"));
-		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "fifth activity", "high"));
+		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "first_activity", "low"));
+		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "second_activity", "low"));
+		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "third_activity", "high"));
+		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "fourth_activity", "low"));
+		listElement.appendChild(createListEntry(doc, labelingTypeName, objectDescriptorName, "fifth_activity", "high"));
 
 		return doc;
 	}
