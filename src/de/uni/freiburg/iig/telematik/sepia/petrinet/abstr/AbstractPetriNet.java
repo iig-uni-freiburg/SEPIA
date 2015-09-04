@@ -34,7 +34,7 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionListener;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.PNComplexity;
-import java.util.regex.Pattern;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 /**
  * Abstract class for defining Petri nets and their properties.<br>
@@ -84,16 +84,6 @@ public abstract class AbstractPetriNet< P extends AbstractPlace<F, S>,
                     NamedComponent {
 
     private static final long serialVersionUID = 7324151598039390349L;
-
-    /**
-     * Pattern to define allowed node names.
-     */
-    public static final Pattern XML_ID_PATTERN = Pattern.compile("^([a-zA-Z][\\w-_\\.:]*)$");
-
-    /**
-     * Pattern to define forbidden node name characters.
-     */
-    public static final Pattern XML_ID_FORBIDDEN_CHARACTERS = Pattern.compile("([^\\w-_:\\.]+)");
 
     /**
      * Name of the Petri net.
@@ -210,6 +200,7 @@ public abstract class AbstractPetriNet< P extends AbstractPlace<F, S>,
     public final void setName(String name) {
         Validate.notNull(name);
 
+        PNUtils.validateElementName(name);
         this.name = name;
     }
 

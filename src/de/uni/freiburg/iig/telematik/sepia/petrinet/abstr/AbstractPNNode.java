@@ -38,9 +38,9 @@ import java.util.Set;
 
 import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 
 /**
@@ -126,10 +126,7 @@ public abstract class AbstractPNNode<E extends AbstractFlowRelation<? extends Ab
 		Validate.notNull(name);
 		Validate.notNull(label);
 
-                Matcher nameMatcher = AbstractPetriNet.XML_ID_PATTERN.matcher(name);
-                if (!nameMatcher.matches()) {
-                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Node names must match the pattern \"" + AbstractPetriNet.XML_ID_PATTERN + "\".");
-                }
+                PNUtils.validateElementName(name);
 
 		this.name = name;
 		setLabel(label);

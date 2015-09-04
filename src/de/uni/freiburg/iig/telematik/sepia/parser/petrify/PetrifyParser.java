@@ -12,10 +12,10 @@ import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTNet;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 public class PetrifyParser implements PNParserInterface {
 
@@ -58,16 +58,16 @@ public class PetrifyParser implements PNParserInterface {
     }
 
     private void addFlowRelation(PTNet net, String lineContent) {
-        String sourceName = PNParsing.sanitizeElementName(lineContent.substring(0, lineContent.indexOf(" ")), "p");
+        String sourceName = PNUtils.sanitizeElementName(lineContent.substring(0, lineContent.indexOf(" ")), "p");
         String targetName;
         int weight = 1;
         if (lineContent.contains("(")) {
-            targetName = PNParsing.sanitizeElementName(lineContent.substring(lineContent.indexOf(" ") + 1, lineContent.indexOf("(")), "p");
+            targetName = PNUtils.sanitizeElementName(lineContent.substring(lineContent.indexOf(" ") + 1, lineContent.indexOf("(")), "p");
             String weightString = lineContent.substring(lineContent.indexOf("(") + 1, lineContent.indexOf(")"));
             Validate.positiveInteger(weightString);
             weight = Integer.parseInt(weightString);
         } else {
-            targetName = PNParsing.sanitizeElementName(lineContent.substring(lineContent.indexOf(" ") + 1), "f");
+            targetName = PNUtils.sanitizeElementName(lineContent.substring(lineContent.indexOf(" ") + 1), "f");
         }
         if (net.containsTransition(sourceName)) {
             ensurePlace(net, targetName);
@@ -79,7 +79,7 @@ public class PetrifyParser implements PNParserInterface {
     }
 
     private void ensurePlace(PTNet net, String placeName) {
-        placeName = PNParsing.sanitizeElementName(placeName, "p");
+        placeName = PNUtils.sanitizeElementName(placeName, "p");
         if (!net.containsPlace(placeName)) {
             net.addPlace(placeName);
         }
@@ -92,12 +92,12 @@ public class PetrifyParser implements PNParserInterface {
         for (String token : getTokens(lineContent)) {
             int multiplicity;
             if (token.contains("=")) {
-                placeName = PNParsing.sanitizeElementName(token.substring(0, token.indexOf("=")), "p");
+                placeName = PNUtils.sanitizeElementName(token.substring(0, token.indexOf("=")), "p");
                 multiplicityString = token.substring(token.indexOf("=") + 1);
                 Validate.notNegativeInteger(multiplicityString);
                 multiplicity = Integer.parseInt(multiplicityString);
             } else {
-                placeName = PNParsing.sanitizeElementName(token, "p");
+                placeName = PNUtils.sanitizeElementName(token, "p");
                 multiplicity = 1;
             }
             if (!net.containsPlace(placeName)) {
@@ -112,7 +112,7 @@ public class PetrifyParser implements PNParserInterface {
         String placeName;
         String capacityString;
         for (String token : getTokens(lineContent)) {
-            placeName = PNParsing.sanitizeElementName(token.substring(0, token.indexOf("=")), "p");
+            placeName = PNUtils.sanitizeElementName(token.substring(0, token.indexOf("=")), "p");
             capacityString = token.substring(token.indexOf("=") + 1);
             Validate.notNegativeInteger(capacityString);
             if (!net.containsPlace(placeName)) {
@@ -124,7 +124,7 @@ public class PetrifyParser implements PNParserInterface {
 
     private void insertTransitions(PTNet net, String lineContent) {
         for (String token : getTokens(lineContent)) {
-            net.addTransition(PNParsing.sanitizeElementName(token, "t"));
+            net.addTransition(PNUtils.sanitizeElementName(token, "t"));
         }
     }
 

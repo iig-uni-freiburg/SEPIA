@@ -18,7 +18,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGrap
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.AbstractPNMLCPNParser;
@@ -31,6 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetPla
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.abstr.AbstractRegularIFNetTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.ifnet.concepts.AccessMode;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 /**
  * <p>
@@ -108,7 +108,7 @@ public abstract class AbstractPNMLIFNetParser<P extends AbstractIFNetPlace<F>,
             if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
                 Element transition = (Element) transitionNodes.item(t);
                 // ID must be available in a valid net
-                String transitionName = PNParsing.sanitizeElementName(transition.getAttribute("id"), "t");
+                String transitionName = PNUtils.sanitizeElementName(transition.getAttribute("id"), "t");
                 String transitionLabel = null;
                 // Check if there's a label
                 NodeList transitionLabels = transition.getElementsByTagName("name");

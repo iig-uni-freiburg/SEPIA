@@ -31,13 +31,13 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.S
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Line.Style;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Offset;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.attributes.Position;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 /**
  * Abstract super class of the PNML parsers containing methods to read elements
@@ -145,7 +145,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
             if (transitionNodes.item(t).getNodeType() == Node.ELEMENT_NODE) {
                 Element transition = (Element) transitionNodes.item(t);
                 // ID must be available in a valid net
-                String transitionName = PNParsing.sanitizeElementName(transition.getAttribute("id"), "t");
+                String transitionName = PNUtils.sanitizeElementName(transition.getAttribute("id"), "t");
                 String transitionLabel = null;
                 // Check if there's a label
                 NodeList transitionLabels = transition.getElementsByTagName("name");
@@ -586,7 +586,7 @@ public abstract class AbstractPNMLParser<P extends AbstractPlace<F, S>,
             if (netList.item(i).getNodeType() == Node.ELEMENT_NODE && netList.item(i).getParentNode().equals(pnmlDocument.getDocumentElement())) {
                 Element netElement = (Element) netList.item(i);
                 if (netElement.hasAttribute("id")) {
-                    String id = PNParsing.sanitizeElementName(netElement.getAttribute("id"), "n");
+                    String id = PNUtils.sanitizeElementName(netElement.getAttribute("id"), "n");
                     if (id.length() > 0) {
                         return id;
                     }

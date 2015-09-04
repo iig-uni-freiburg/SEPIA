@@ -32,12 +32,6 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 public class PNParsing {
 
     /**
-     * Replacement string for invalid character blocks while sanitizing element
-     * names.
-     */
-    public final static String SANITIZE_INVALID_CHARACTER_REPLACEMENT = "_";
-
-    /**
      * Parses the given file with the parser respective to the file extension.
      *
      * @param <P> Place type
@@ -207,27 +201,5 @@ public class PNParsing {
             }
         }
         return null;
-    }
-
-    /**
-     * Sanitizes element names by the XML ID datatype standard. Names must start
-     * with a character of the range [a-zA-Z] and must only contain alphanumeric
-     * characters and the symbols <code>-_.:</code>.
-     *
-     * @param name Name to sanitize.
-     * @param leadingCharacters String to prepend to the name if it has not a
-     * valid beginning.
-     * @return Sanitized element name.
-     */
-    public static String sanitizeElementName(String name, String leadingCharacters) {
-        Validate.notEmpty(leadingCharacters);
-
-        // replace forbidden characters by "_"
-        name = name.replaceAll(AbstractPetriNet.XML_ID_FORBIDDEN_CHARACTERS.pattern(), SANITIZE_INVALID_CHARACTER_REPLACEMENT);
-        // check if first element is in range [a-zA-Z]
-        if (name.length() == 0 || !name.substring(0, 1).matches("^[a-zA-Z]$")) {
-            name = leadingCharacters + name;
-        }
-        return name;
     }
 }
