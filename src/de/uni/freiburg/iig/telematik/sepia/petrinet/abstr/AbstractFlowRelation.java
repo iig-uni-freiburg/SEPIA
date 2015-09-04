@@ -7,7 +7,7 @@ import de.invation.code.toval.validate.ParameterException.ErrorCode;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListener;
 import de.uni.freiburg.iig.telematik.sepia.event.FlowRelationListenerSupport;
-import java.util.regex.Matcher;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 /**
  * Abstract class that defines general properties for flow relations between Petri net places and transitions.<br>
@@ -173,10 +173,7 @@ public abstract class AbstractFlowRelation<P extends AbstractPlace<? extends Abs
 	public void setName(String name){
 		Validate.notNull(name);
 
-                Matcher nameMatcher = AbstractPetriNet.XML_ID_PATTERN.matcher(name);
-                if (!nameMatcher.matches()) {
-                    throw new ParameterException("Given name \"" + name + "\" is not according to the guidelines. Flow relation names must match the pattern \"" + AbstractPetriNet.XML_ID_PATTERN + "\".");
-                }
+                PNUtils.validateElementName(name);
 
 		if(!relationListenerSupport.requestNameChangePermission(this, name))
 			throw new ParameterException(ErrorCode.INCONSISTENCY, "A connected Petri net already contains a relation with this name.\n Cancel renaming to avoid name clash.");

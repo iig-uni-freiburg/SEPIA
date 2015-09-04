@@ -21,7 +21,6 @@ import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AnnotationGraphic
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.ArcGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.NodeGraphics;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.TokenGraphics;
-import de.uni.freiburg.iig.telematik.sepia.parser.PNParsing;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.AbstractPNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
@@ -31,6 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRel
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
+import de.uni.freiburg.iig.telematik.sepia.util.PNUtils;
 
 /**
  * <p>
@@ -87,8 +87,8 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
             if (arcNodes.item(a).getNodeType() == Node.ELEMENT_NODE) {
                 Element arc = (Element) arcNodes.item(a);
                 // ID must be available in a valid net
-                String sourceName = PNParsing.sanitizeElementName(arc.getAttribute("source"), "p");
-                String targetName = PNParsing.sanitizeElementName(arc.getAttribute("target"), "p");
+                String sourceName = PNUtils.sanitizeElementName(arc.getAttribute("source"), "p");
+                String targetName = PNUtils.sanitizeElementName(arc.getAttribute("target"), "p");
 
                 // get inscriptions
                 int inscription = 0;
@@ -198,7 +198,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
                 }
 
                 // Check if there's a label
-                String arcName = PNParsing.sanitizeElementName(arc.getAttribute("id"), "f");
+                String arcName = PNUtils.sanitizeElementName(arc.getAttribute("id"), "f");
                 if (arcName != null && arcName.length() > 0) {
                     flowRelation.setName(arcName);
                 }
@@ -236,7 +236,7 @@ public abstract class AbstractPNMLCPNParser<P extends AbstractCPNPlace<F>,
                 Multiset<String> markingMultiset = new Multiset<>();
                 Element place = (Element) placeNode;
                 // ID must be available in a valid net
-                String placeName = PNParsing.sanitizeElementName(place.getAttribute("id"), "p");
+                String placeName = PNUtils.sanitizeElementName(place.getAttribute("id"), "p");
                 String placeLabel = null;
                 // Check if there's a label
                 NodeList placeLabels = place.getElementsByTagName("name");
