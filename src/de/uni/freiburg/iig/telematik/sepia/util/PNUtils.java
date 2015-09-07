@@ -35,12 +35,17 @@ public class PNUtils {
     /**
      * Pattern to define allowed node names.
      */
-    public static final Pattern XML_ID_PATTERN = Pattern.compile("^([a-zA-Z][\\w-_\\.:]*)$");
+    public static final Pattern XML_ID_PATTERN = Pattern.compile("^([a-zA-Z_][\\w-_\\.]*)$");
+
+    /**
+     * Pattern to define the first character in XML schema ID types.
+     */
+    public static final Pattern XML_ID_FIRST_CHARACTER = Pattern.compile("^[a-zA-Z_]$");
 
     /**
      * Pattern to define forbidden node name characters.
      */
-    public static final Pattern XML_ID_FORBIDDEN_CHARACTERS = Pattern.compile("([^\\w-_:\\.]+)");
+    public static final Pattern XML_ID_FORBIDDEN_CHARACTERS = Pattern.compile("([^\\w-_\\.]+)");
 
     /**
      * Transforms a collection of transitions into a set of activities by
@@ -222,8 +227,8 @@ public class PNUtils {
 
     /**
      * Sanitizes element names by the XML ID datatype standard. Names must start
-     * with a character of the range [a-zA-Z] and must only contain alphanumeric
-     * characters and the symbols <code>-_.:</code>.
+     * with a character of the range [a-zA-Z_] and must only contain alphanumeric
+     * characters and the symbols <code>-_.</code>.
      *
      * @param name Name to sanitize.
      * @param leadingCharacters String to prepend to the name if it has not a
@@ -236,7 +241,7 @@ public class PNUtils {
         // replace forbidden characters by "_"
         name = name.replaceAll(XML_ID_FORBIDDEN_CHARACTERS.pattern(), SANITIZE_INVALID_CHARACTER_REPLACEMENT);
         // check if first element is in range [a-zA-Z]
-        if (name.length() == 0 || !name.substring(0, 1).matches("^[a-zA-Z]$")) {
+        if (name.length() == 0 || !name.substring(0, 1).matches(XML_ID_FIRST_CHARACTER.pattern())) {
             name = leadingCharacters + name;
         }
         return name;
@@ -246,8 +251,8 @@ public class PNUtils {
      * Validates a given element name.
      *
      * @param name The name for the Petri net node. It must start with a
-     * character of the range [a-zA-Z] and must only contain alphanumerical
-     * characters and the symbols <code>-_.:</code>.
+     * character of the range [a-zA-Z_] and must only contain alphanumerical
+     * characters and the symbols <code>-_.</code>.
      */
     public static void validateElementName(String name) {
         Matcher nameMatcher = XML_ID_PATTERN.matcher(name);
