@@ -5,10 +5,10 @@
 	Apache Ant build file for the SEPIA project
 	
 	This build file generates three JAR-files from the project:
-	- sepia-1.0.0.jar
-	- sepia-1.0.0-sources.jar
-	- sepia-1.0.0-javadoc.jar
-	- sepia-1.0.0-consistent.jar
+	- sepia-1.0.1.jar
+	- sepia-1.0.1-sources.jar
+	- sepia-1.0.1-javadoc.jar
+	- sepia-1.0.1-consistent.jar
 	
 	The building process starts with cleaning all target files including compiles
 	java classes, compiled tests, and test reports (see #clean). Afterwards a
@@ -24,7 +24,7 @@
 
 	<!-- Project details -->
 	<property name="artifact.name" value="sepia" />
-	<property name="version.name" value="1.0.0" />
+	<property name="version.name" value="1.0.1" />
 
 	<!-- Names for generated files -->
 	<property name="jar.file.name" value="${artifact.name}-${version.name}" />

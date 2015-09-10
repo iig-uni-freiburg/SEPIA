@@ -31,11 +31,11 @@ A detailled documentation of SEPIA can be found under [http://doku.telematik.uni
 
 ### Latest Release
 
-The most recent release is SEPIA 1.0.0, released July 29, 2015.
+The most recent release is SEPIA 1.0.1, released September 10, 2015.
 
-* [sepia-1.0.0.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0.jar)
-* [sepia-1.0.0-sources.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0-sources.jar)
-* [sepia-1.0.0-javadoc.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.0/sepia-1.0.0-javadoc.jar)
+* [sepia-1.0.1.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.1/sepia-1.0.1.jar)
+* [sepia-1.0.1-sources.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.1/sepia-1.0.1-sources.jar)
+* [sepia-1.0.1-javadoc.jar](https://github.com/iig-uni-freiburg/SEPIA/releases/download/v1.0.1/sepia-1.0.1-javadoc.jar)
 
 To add a dependency on SEPIA using Maven, use the following:
 
@@ -43,7 +43,7 @@ To add a dependency on SEPIA using Maven, use the following:
 <dependency>
   <groupId>de.uni.freiburg.iig.telematik</groupId>
   <artifactId>SEPIA</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
