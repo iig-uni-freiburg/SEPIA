@@ -9,7 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimed
 public abstract class AbstractTimedNetGraphics<P extends AbstractTimedPlace<F>,
 T extends AbstractTimedTransition<F>, 
 F extends AbstractTimedFlowRelation<P,T>, 
-M extends AbstractTimedMarking> extends AbstractPNGraphics<P,T,F,M,Integer>{
+M extends AbstractTimedMarking> extends AbstractPTGraphics<P,T,F,M>{
 	
 	public AbstractTimedNetGraphics(){
 		super();

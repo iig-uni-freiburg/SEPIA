@@ -10,7 +10,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 
 public enum NetType {
 
-	PTNet, CPN, IFNet, Unknown;
+	PTNet, CPN, IFNet, TimedNet, Unknown;
 
 	public static final String OfficialPTNetURI = "http://www.pnml.org/version-2009/grammar/ptnet";
 	public static final String PTNetURI = "http://ifnml.process-security.de/grammar/v1.0/ptnet";

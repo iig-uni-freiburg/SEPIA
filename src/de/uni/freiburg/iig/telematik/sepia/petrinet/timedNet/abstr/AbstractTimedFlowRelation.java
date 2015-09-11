@@ -6,6 +6,7 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTFlowRelation;
 
 /**
  *
@@ -13,7 +14,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
  */
 public abstract class AbstractTimedFlowRelation<P extends AbstractTimedPlace<? extends AbstractTimedFlowRelation<P,T>>, 
 											  T extends AbstractTimedTransition<? extends AbstractTimedFlowRelation<P,T>>> 
-												extends AbstractFlowRelation<P, T, Integer> {
+												extends AbstractPTFlowRelation<P, T> {
 
     public AbstractTimedFlowRelation(P place, T transition) {
         super(place, transition);

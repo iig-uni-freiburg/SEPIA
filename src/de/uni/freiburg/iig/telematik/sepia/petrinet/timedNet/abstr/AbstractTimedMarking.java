@@ -6,12 +6,13 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 
 /**
  *
  * @author richard
  */
-public abstract class AbstractTimedMarking extends AbstractMarking<Integer> {
+public abstract class AbstractTimedMarking extends AbstractPTMarking {
 
     public AbstractTimedMarking() {
         super();

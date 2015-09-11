@@ -16,7 +16,7 @@ public interface AccessContext {
     
     public AccessContext getInstance(String contextName);
     
-    public boolean mayAcces(String subjekt, String transition);
+    public boolean mayAcces(String subject, String transition);
     
     public String getSubjectFor(String transition) throws AccessContextException;
     

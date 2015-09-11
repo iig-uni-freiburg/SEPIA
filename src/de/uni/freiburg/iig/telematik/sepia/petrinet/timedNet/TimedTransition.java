@@ -27,15 +27,6 @@ public class TimedTransition extends AbstractTimedTransition<TimedFlowRelation> 
         super(name, label, isSilent);
     }
 
-    @Override
-    protected boolean enoughTokensInInputPlaces() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    protected boolean enoughSpaceInOutputPlaces() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     protected TimedTransition newInstance(String name) {

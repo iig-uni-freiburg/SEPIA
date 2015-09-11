@@ -46,9 +46,5 @@ public class TimedFlowRelation extends AbstractTimedFlowRelation<TimedNetPlace,T
     public AbstractFlowRelation<TimedNetPlace, TimedTransition, Integer> clone(TimedNetPlace place, TimedTransition transition, boolean directionPT) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    public Integer getWeight() {
-      return getConstraint();
-    }
     
 }

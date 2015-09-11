@@ -10,12 +10,13 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTPlace;
 
 /**
  *
  * @author richard
  */
-public abstract class AbstractTimedPlace<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractPlace<E, Integer> {
+public abstract class AbstractTimedPlace<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractPTPlace<E> {
 
     public AbstractTimedPlace(String name) {
         super(name);

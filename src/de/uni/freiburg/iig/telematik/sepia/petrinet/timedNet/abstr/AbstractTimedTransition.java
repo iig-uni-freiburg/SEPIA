@@ -8,7 +8,10 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.AbstractACModel;
+import de.uni.freiburg.iig.telematik.sewol.accesscontrol.properties.ACModelProperties;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,8 +21,9 @@ import java.util.logging.Logger;
  *
  * @author richard
  */
-public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractTransition<E, Integer> {
+public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractPTTransition<E> {
     private AccessContext accessContext;
+    private AbstractACModel<ACModelProperties> test;
 
     public AbstractTimedTransition(String name, String label) {
         super(name, label);
@@ -27,6 +31,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
     @Override
     public synchronized void checkValidity() throws PNValidationException {
+    	
         try {
             super.checkValidity();
             String subject = accessContext.getSubjectFor(getLabel());

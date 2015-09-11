@@ -6,19 +6,23 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
+import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
 
 /**
  *
  * @author richard
  */
 public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extends AbstractTimedTransition<F>, F extends AbstractTimedFlowRelation<P, T>, M extends AbstractTimedMarking>
-        extends AbstractPetriNet<P, T, F, M, Integer> {
+        extends AbstractPTNet<P, T, F, M> {
 
     protected double clock = 0;
 
     private AccessContext accessContext;
+    
+    private ProcessContext accessControl;
 
     private TimeRessourceContext timeRessourceContext;
 
