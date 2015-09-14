@@ -1,6 +1,12 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.UserDataHandler;
 
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractIFNetGraphics;
@@ -43,16 +49,25 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 	
 	@Override
 	protected void addHeader() {
-		Element timeContext = getSupport().createElement("TimeContext");
+		// Add resource context name
+		Element resourceContextElement = getSupport().createElement("analysiscontext");
+		resourceContextElement.setTextContent(petriNet.getResourceContext().getName());
+		getSupport().getRootElement().appendChild(resourceContextElement);
 		
-	    Element tokenColorsElement = getSupport().createElement("tokencolors");
-//	    for(String colorName: getPetriNet().getTokenColors()){
-//	    	if(colorName.equals(getPetriNet().defaultTokenColor()))
-//	    		continue;
-//	    	tokenColorsElement.appendChild(createTokenColorElement(colorName));
-//	    }
-	    if(tokenColorsElement.getChildNodes().getLength() > 0)
-	    	getSupport().getNetElement().appendChild(tokenColorsElement);
+		// Add time context name
+		Element timeContextElement = getSupport().createElement("timecontext");
+		timeContextElement.setTextContent(petriNet.getTimeRessourceContext().getName());
+		getSupport().getRootElement().appendChild(timeContextElement);
+		
+		// Add processContext (AccessContext)
+		Element processContextElement = getSupport().createElement("processcontext");
+		processContextElement.setTextContent(petriNet.getAccessControl().getName());
+		getSupport().getRootElement().appendChild(processContextElement);
+
+		//Element contexts = getSupport().createElement("Contexts");
+		//contexts.setAttribute("ResourceContext", petriNet.getResourceContext().getName());
+		//contexts.setAttribute("ProcessContext", petriNet.getAccessControl().getName());
+		//contexts.setAttribute("TimeContext", petriNet.getTimeRessourceContext().getName());
 	}
 
 }

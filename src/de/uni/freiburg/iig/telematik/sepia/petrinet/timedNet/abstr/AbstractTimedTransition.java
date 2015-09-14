@@ -12,7 +12,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransitio
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.AbstractACModel;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.properties.ACModelProperties;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @author richard
  */
 public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractPTTransition<E> {
-    private AccessContext accessContext;
+    private ResourceContext accessContext;
     private AbstractACModel<ACModelProperties> test;
 
     public AbstractTimedTransition(String name, String label) {
@@ -53,11 +53,11 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
         super(name, label, isSilent);
     }
     
-    public void setAccessContext(AccessContext accessContext){
+    public void setAccessContext(ResourceContext accessContext){
         this.accessContext=accessContext;
     }
     
-    public AccessContext getAccessContext(){
+    public ResourceContext getAccessContext(){
         return accessContext;
     }
     

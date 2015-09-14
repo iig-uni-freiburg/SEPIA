@@ -7,7 +7,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPetriNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
 import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
 
@@ -20,11 +20,19 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
     protected double clock = 0;
 
-    private AccessContext accessContext;
+    private ResourceContext accessContext;
     
     private ProcessContext accessControl;
 
-    private TimeRessourceContext timeRessourceContext;
+    public ProcessContext getAccessControl() {
+		return accessControl;
+	}
+
+	public void setAccessControl(ProcessContext accessControl) {
+		this.accessControl = accessControl;
+	}
+
+	private TimeRessourceContext timeRessourceContext;
 
     public TimeRessourceContext getTimeRessourceContext() {
         return timeRessourceContext;
@@ -34,19 +42,15 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
         this.timeRessourceContext = timeRessourceContext;
     }
 
-    public void setAccessContext(AccessContext accessContext) {
+    public void setResourceContext(ResourceContext accessContext) {
         this.accessContext = accessContext;
         for (T transition : getTransitions()) {
             transition.setAccessContext(accessContext);
         }
     }
 
-    public AccessContext getAccessContext() {
+    public ResourceContext getResourceContext() {
         return accessContext;
-    }
-
-    public void AccessContext(AccessContext accessContext) {
-        this.accessContext = accessContext;
     }
 
     @Override

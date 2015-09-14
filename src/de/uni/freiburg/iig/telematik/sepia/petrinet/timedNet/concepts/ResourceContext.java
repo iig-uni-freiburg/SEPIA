@@ -10,14 +10,16 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
  *
  * @author richard
  */
-public interface AccessContext {
+public interface ResourceContext {
     
-    public abstract AccessContext getInstance();
+    public abstract ResourceContext getInstance();
     
-    public AccessContext getInstance(String contextName);
+    public ResourceContext getInstance(String contextName);
     
     public boolean mayAcces(String subject, String transition);
     
     public String getSubjectFor(String transition) throws AccessContextException;
+    
+    public String getName();
     
 }

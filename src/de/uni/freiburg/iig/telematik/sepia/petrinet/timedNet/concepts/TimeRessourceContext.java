@@ -25,4 +25,6 @@ public interface TimeRessourceContext<T extends ITimeBehaviour> {
     
     public void removeRessourceUsage(String activity, String... ressources);
     
+    public String getName();
+    
 }
