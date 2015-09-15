@@ -141,13 +141,13 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 
     @Override
     public NetType getNetType() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return NetType.RTPTnet;
     }
 
-    @Override
-    public void transitionFired(TransitionEvent<? extends AbstractTransition<TimedFlowRelation, Integer>> e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    public void transitionFired(TransitionEvent<? extends AbstractTransition<TimedFlowRelation, Integer>> e) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    }
 
 	private class TokenConstraint {
 		public String placeName = null;

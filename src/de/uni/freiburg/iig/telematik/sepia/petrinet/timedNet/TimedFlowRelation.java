@@ -5,6 +5,7 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet;
 
+import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
@@ -32,15 +33,16 @@ public class TimedFlowRelation extends AbstractTimedFlowRelation<TimedNetPlace,T
     }
     
 
-    @Override
-    protected Integer getDefaultConstraint() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    protected Integer getDefaultConstraint() {
+//        return 1;
+//    }
 
-    @Override
-    protected void validateConstraint(Integer constraint) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+//    @Override
+//    protected void validateConstraint(Integer constraint) {
+//        Validate.notNegative(constraint);
+//        Validate.notNull(constraint);
+//    }
 
     @Override
     public AbstractFlowRelation<TimedNetPlace, TimedTransition, Integer> clone(TimedNetPlace place, TimedTransition transition, boolean directionPT) {

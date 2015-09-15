@@ -22,6 +22,7 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalTimedNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
@@ -29,6 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.Error
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.timedNet.PNMLTimedNetParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
@@ -200,6 +202,10 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 		case IFNet:
 			PNMLIFNetParser ifnetParser = new PNMLIFNetParser();
 			graphicalPN = ifnetParser.parse(pnmlDocument);
+			break;
+		case RTPTnet:
+			PNMLTimedNetParser rtpnParser = new PNMLTimedNetParser();
+			graphicalPN = rtpnParser.parse(pnmlDocument);
 			break;
 		}
 

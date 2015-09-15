@@ -32,7 +32,7 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 	
 	@Override
 	public NetType acceptedNetType() {
-		return NetType.TimedNet;
+		return NetType.RTPTnet;
 	}
 	
 	@Override
