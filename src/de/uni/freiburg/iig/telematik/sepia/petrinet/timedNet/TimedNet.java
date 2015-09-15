@@ -39,13 +39,11 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 
 	public TimedNet() {
 		super();
-                //new IFNet().getTransition("bla").checkValidity();
 		time = 0.0;
 	}
 
-	public void main(String args[]) throws PNException {
+	public static void main(String args[]) throws PNException {
 		TimedNet test = new TimedNet();
-		test.fire("bla");
 	}
 
 	public double getCurrentTime() {

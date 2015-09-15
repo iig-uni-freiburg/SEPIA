@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml.timedNet;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import de.invation.code.toval.parser.ParserException;
@@ -24,17 +25,22 @@ G extends AbstractTimedNetGraphics<P, T, F, M>> extends AbstractPNMLPTNetParser<
 	    public void parseDocument(Document pnmlDocument) throws ParserException {
 	
 	        super.parseDocument(pnmlDocument);
-	
-	        // read positions of the classification annotations for token labels and clearances
-	        NodeList processNode = pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.processContext);
-	        net.setProcesContextName(processNode.item(0).getNodeValue());
 	        
-	        NodeList timeNode = pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.timeContext);
-	        net.setTimeContextName(timeNode.item(0).getNodeValue());
+	        //read context names
+	        net.setProcesContextName(getNodeContent(PNMLTimedNetSerializer.processContext, pnmlDocument));
+	        net.setTimeContextName(getNodeContent(PNMLTimedNetSerializer.timeContext, pnmlDocument));
+	        net.setResourceContextName(getNodeContent(PNMLTimedNetSerializer.resourceContext, pnmlDocument));
 	        
-	        NodeList ressourceNode = pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.resourceContext);
-	        net.setResourceContextName(ressourceNode.item(0).getNodeValue());
-	        
+	 }
+	 
+	 protected String getNodeContent(String tagName, Document pnmlDocument){
+		 try{
+			 NodeList nodes = pnmlDocument.getElementsByTagName(tagName);
+			 Node node = nodes.item(0);
+			 return node.getChildNodes().item(0).getNodeValue();
+		 } catch (Exception e){
+			 return "";
+		 }
 	 }
 	
 	

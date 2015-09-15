@@ -86,5 +86,11 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
         getTransition(transitionName).setAccessContext(accessContext);
         return result;
     }
+    
+    public String toString(){
+    	String result = super.toString();
+    	return result+"\r\n TimeContext: "+getTimeContextName()+" ResourceContext: "+getResourceContextName()+
+    			" ProcessContext: "+getProcesContextName();
+    }
 
 }
