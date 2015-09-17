@@ -78,7 +78,7 @@ class TestRessourceContest implements ResourceContext{
 
 	@Override
 	public String getName() {
-		return "Test Resource-Context Name";
+		return "idTestRessourceContext";
 	}
 	
 }

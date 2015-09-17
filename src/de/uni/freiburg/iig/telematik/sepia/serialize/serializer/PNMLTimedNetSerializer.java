@@ -1,6 +1,13 @@
 package de.uni.freiburg.iig.telematik.sepia.serialize.serializer;
 
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.UserDataHandler;
+
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractTimedNetGraphics;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
@@ -17,7 +24,7 @@ M extends AbstractTimedMarking,
 N extends AbstractTimedNet<P, T, F, M>,
 G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F, M, N , G> {
 	
-	public static final String resourceContext = "resourceContext";
+	public static final String resourceContext = "resourcecontext";
 	public static final String timeContext = "timecontext";
 	public static final String processContext = "processcontext";
 
@@ -40,22 +47,17 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 		// Add resource context name
 		Element resourceContextElement = getSupport().createElement(resourceContext);
 		resourceContextElement.setTextContent(petriNet.getResourceContext().getName());
-		getSupport().getRootElement().appendChild(resourceContextElement);
+		getSupport().getNetElement().appendChild(resourceContextElement);
 		
 		// Add time context name
 		Element timeContextElement = getSupport().createElement(timeContext);
 		timeContextElement.setTextContent(petriNet.getTimeRessourceContext().getName());
-		getSupport().getRootElement().appendChild(timeContextElement);
+		getSupport().getNetElement().appendChild(timeContextElement);
 		
 		// Add processContext (AccessContext)
 		Element processContextElement = getSupport().createElement(processContext);
 		processContextElement.setTextContent(petriNet.getAccessControl().getName());
-		getSupport().getRootElement().appendChild(processContextElement);
-
-		//Element contexts = getSupport().createElement("Contexts");
-		//contexts.setAttribute("ResourceContext", petriNet.getResourceContext().getName());
-		//contexts.setAttribute("ProcessContext", petriNet.getAccessControl().getName());
-		//contexts.setAttribute("TimeContext", petriNet.getTimeRessourceContext().getName());
+		getSupport().getNetElement().appendChild(processContextElement);
 	}
 
 }
