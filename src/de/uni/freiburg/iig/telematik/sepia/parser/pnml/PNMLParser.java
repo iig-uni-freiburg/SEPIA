@@ -182,7 +182,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 			netType = NetType.PTNet;
 		}
 
-		if (verifySchema) {
+		if (netType!=NetType.RTPTnet && verifySchema) { //as long as scheme file for rtpn is unavailable
 			verifySchema(pnmlFile, NetType.getVerificationURL(netType));
 		}
 

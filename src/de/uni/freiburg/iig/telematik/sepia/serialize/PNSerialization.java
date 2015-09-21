@@ -63,7 +63,7 @@ public class PNSerialization {
 				serializer = new PNMLPTNetSerializer((AbstractGraphicalPTNet) net);
 			}
 			if(netObject instanceof GraphicalTimedNet) {
-				//serializer = PNMLTimedNetSerializer((AbstractGraphicalTimedNet)net);
+				serializer = new PNMLTimedNetSerializer((AbstractGraphicalTimedNet)net);
 			}
 			
 			break;
