@@ -103,7 +103,7 @@ public class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>,
     }
     
     @Override
-    protected void serializeComponent(X component, String serializationPath, String fileName) throws Exception {
+    protected synchronized void serializeComponent(X component, String serializationPath, String fileName) throws Exception {
         PNSerialization.serialize(component, serializationFormat, serializationPath.concat(File.separator + fileName));
 
     }

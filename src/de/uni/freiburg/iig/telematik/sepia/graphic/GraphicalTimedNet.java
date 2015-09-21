@@ -14,7 +14,7 @@ public class GraphicalTimedNet extends AbstractGraphicalTimedNet<TimedNetPlace, 
 	}
 	
 	public GraphicalTimedNet(){
-		this(new TimedNet(),new TimedNetGraphics());
+		this(new TimedNet(),new TimedNetGraphics()); 
 	}
 
 }

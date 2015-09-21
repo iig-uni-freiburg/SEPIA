@@ -7,13 +7,11 @@ import java.util.List;
 import de.invation.code.toval.parser.ParserException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
-import de.uni.freiburg.iig.telematik.sepia.parser.pnml.timedNet.PNMLTimedNetParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeBehaviour;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
-import de.uni.freiburg.iig.telematik.sepia.serialize.SerializationException;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLTimedNetSerializer;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.rbac.RBACModel;
 import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
@@ -21,6 +19,17 @@ import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
 public class allTimedNetTest {
 	
 	public static void main (String args[]) throws IOException, ParserException{
+		TimedNet net = getRTPNet();
+		
+		PNMLTimedNetSerializer serializer = new PNMLTimedNetSerializer<>(net);
+		serializer.serialize("/tmp/", "test");
+		PNMLParser parser = new PNMLParser<>();
+		AbstractGraphicalPN graphicalNet = parser.parse(new File("/tmp/test.pnml"),true,false);
+		TimedNet timedNet = (TimedNet) graphicalNet.getPetriNet();
+		System.out.println(timedNet.toString());
+	}
+	
+	public static TimedNet getRTPNet(){
 		TimedNet net = new TimedNet();
 		net.addTransition("test");
 		net.addTransition("test2");
@@ -34,14 +43,7 @@ public class allTimedNetTest {
 		net.setResourceContext(new TestRessourceContest());
 		net.setAccessControl(getProcessContext());
 		net.setTimeRessourceContext(new TestTimedResourceContext());
-		
-		PNMLTimedNetSerializer serializer = new PNMLTimedNetSerializer<>(net);
-		serializer.serialize("/tmp/", "test");
-		
-		PNMLParser parser = new PNMLParser<>();
-		AbstractGraphicalPN graphicalNet = parser.parse(new File("/tmp/test.pnml"),true,false);
-		TimedNet timedNet = (TimedNet) graphicalNet.getPetriNet();
-		System.out.println(timedNet.toString());
+		return net;
 	}
 	
 	private static ProcessContext getProcessContext(){

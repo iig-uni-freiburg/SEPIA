@@ -5,6 +5,7 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
+import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
@@ -28,6 +29,11 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
     public String getResourceContextName() {
 		return resourceContextName;
+	}
+
+	@Override
+	public NetType getNetType() {
+		return NetType.RTPTnet;
 	}
 
 	public void setResourceContextName(String resourceContextName) {
@@ -92,5 +98,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     	return result+"\r\n TimeContext: "+getTimeContextName()+" ResourceContext: "+getResourceContextName()+
     			" ProcessContext: "+getProcesContextName();
     }
+    
+    
 
 }
