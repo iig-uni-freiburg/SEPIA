@@ -102,27 +102,6 @@ class TestTimedResourceContext implements TimeRessourceContext{
 	}
 
 	@Override
-	public boolean behaviorIsKnown(String activity, String... ressource) {
-		return false;
-	}
-
-	@Override
-	public void addRessource(String activity, String... ressources) {
-		
-	}
-
-	@Override
-	public List getAllowedRessourcesFor(String activity) {
-		return null;
-	}
-
-	@Override
-	public void removeRessourceUsage(String activity, String... ressources) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public String getName() {
 		return "Test TimedResource-Context";
 	}
@@ -140,9 +119,69 @@ class TestTimedResourceContext implements TimeRessourceContext{
 	}
 
 	@Override
-	public List getRandomAllowedRessourcesFor(String activity, boolean blockRessources) {
+	public ITimeBehaviour getTimeFor(String activity) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void removeTimeBehaviourFor(String activity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTimeBehaviourFor(String activity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addResource(String activity, List resources) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void blockResources(List resources) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List getAllowedResourcesFor(String activity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getRandomAllowedResourcesFor(String activity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean behaviorIsKnown(String activity, List resources) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void removeResourceUsage(String activity, List resources) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addTimeBehaviourFor(String activity, List resources, ITimeBehaviour behaviour) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeTimeBehaviourFor(String activity, List resource) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

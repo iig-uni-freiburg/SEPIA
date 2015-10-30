@@ -15,19 +15,41 @@ import de.invation.code.toval.misc.NamedComponent;
  */
 public interface TimeRessourceContext<T extends ITimeBehaviour> extends NamedComponent {
     
+	/**Time related */
+	
+    public T getTimeFor(String activity);
+    
+    public void removeTimeBehaviourFor(String activity);
+    
+    public void addTimeBehaviourFor(String activity);
+    
+    
+    /**Resource related**/
+    
+    public void addResource(String activity, List<String> resources);
+    
+    public void blockResources(List<String> resources);
+    
+    public List<List<String>> getAllowedResourcesFor(String activity);
+   
+    public List<String> getRandomAllowedResourcesFor(String activity);
+    
     public boolean isAvailable(String ressourceName);
     
-    public boolean behaviorIsKnown(String activity, String... ressource);
+    public boolean behaviorIsKnown(String activity, List<String> resources);
+    
+    
+    /**Time and resource related */
     
     public T getTimeFor(String activity, List<String> resources);
     
-    public void addRessource(String activity, String... ressources);
+    public void removeResourceUsage(String activity, List<String> resources);
     
-    public List<List<String>> getAllowedRessourcesFor(String activity);
+    public void addTimeBehaviourFor(String activity, List<String> resources, T behaviour);
     
-    public List<String> getRandomAllowedRessourcesFor(String activity, boolean blockRessources);
+    public void removeTimeBehaviourFor(String activity, List<String> resource);
     
-    public void removeRessourceUsage(String activity, String... ressources);
+
     
     public String getName();
     
