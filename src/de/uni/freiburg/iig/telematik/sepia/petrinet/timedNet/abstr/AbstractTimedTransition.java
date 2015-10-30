@@ -80,7 +80,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		}
 		
 		TimedMarking marking = (TimedMarking) net.getMarking(); 
-		List<String> resourceSet = net.getTimeRessourceContext().getRandomAllowedRessourcesFor(getLabel(), true);
+		List<String> resourceSet = net.getTimeRessourceContext().getRandomAllowedResourcesFor(getLabel());
+		net.getTimeRessourceContext().blockResources(resourceSet);
 		ITimeBehaviour timeBehaviour = net.getTimeRessourceContext().getTimeFor(getLabel(), resourceSet);
 		double neededTime = timeBehaviour.getNeededTime();
 		
