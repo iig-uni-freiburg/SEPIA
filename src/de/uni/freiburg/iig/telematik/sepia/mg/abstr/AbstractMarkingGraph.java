@@ -59,7 +59,7 @@ public abstract class AbstractMarkingGraph<M extends AbstractMarking<O>, O exten
 			relations.append('\n');
 			firstEntry = false;
 		}
-		return String.format(toStringFormat, getVertices(), startStates.keySet(), endStates.keySet(), events.keySet(), relations.toString());
+		return String.format(toStrFormat, getVertices(), startStates.keySet(), endStates.keySet(), events.keySet(), relations.toString());
 	}
 	
 	@Override

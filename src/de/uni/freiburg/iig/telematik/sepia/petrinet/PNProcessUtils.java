@@ -14,7 +14,9 @@ public class PNProcessUtils {
 	/**
 	 * Creates a new context on basis of the given Petri net transitions.<br>
 	 * Transitions are converted into a list of activity names.
+         * @param name
 	 * @param transitions Petri net transitions to be used as basis for activity names.
+         * @return 
 	 * @throws ParameterException If activity list is <code>null</code> or empty.
 	 */
 	public static ConstraintContext createProcessContext(String name, Collection<AbstractTransition<?,?>> transitions){
@@ -37,11 +39,9 @@ public class PNProcessUtils {
 	public static ConstraintContext createRandomContext(Collection<AbstractTransition<?,?>> transitions, int originatorCount, List<String> roles){
 		ProcessContext duContext = ProcessContext.createRandomContext(PNUtils.getLabelSetFromTransitions(transitions, false), originatorCount, roles);
 		try {
-			return new ConstraintContext(duContext);
+			return ConstraintContext.newInstance(duContext);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 	

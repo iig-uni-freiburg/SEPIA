@@ -36,7 +36,7 @@ public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>,
 	
 	@Override
 	protected AbstractCallable<AbstractMarkingGraph<M,S,?,?>> createCallable() {
-		return new BoundednessCheckCallable<P,T,F,M,S>(getGenerator());
+		return new BoundednessCheckCallable<>(getGenerator());
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class ThreadedBoundednessChecker<P extends AbstractPlace<F,S>,
 
 	@Override
 	protected BoundednessCheckResult<P,T,F,M,S> getResultFromCallableResult(AbstractMarkingGraph<M,S,?,?> callableResult) throws Exception {
-		return new BoundednessCheckResult<P,T,F,M,S>(boundedness, callableResult);
+		return new BoundednessCheckResult<>(boundedness, callableResult);
 	}
 	
 }
