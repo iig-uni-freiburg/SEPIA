@@ -5,6 +5,9 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
+import de.invation.code.toval.validate.Validate;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
+import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
@@ -76,9 +79,9 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
     public void setResourceContext(ResourceContext accessContext) {
         this.accessContext = accessContext;
-        for (T transition : getTransitions()) {
-            transition.setAccessContext(accessContext);
-        }
+//        for (T transition : getTransitions()) {
+//            transition.setAccessContext(accessContext);
+//        }
         resourceContextName=accessContext.getName();
     }
 
@@ -88,8 +91,9 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
     @Override
     public boolean addTransition(String transitionName) {
-        boolean result = super.addTransition(transitionName); //To change body of generated methods, choose Tools | Templates.
-        getTransition(transitionName).setAccessContext(accessContext);
+        boolean result = super.addTransition(transitionName); 
+        //getTransition(transitionName).setAccessContext(accessContext);
+        getTransition(transitionName).setNet(this);
         return result;
     }
     
@@ -98,6 +102,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     	return result+"\r\n TimeContext: "+getTimeContextName()+" ResourceContext: "+getResourceContextName()+
     			" ProcessContext: "+getProcesContextName();
     }
+
     
     
 

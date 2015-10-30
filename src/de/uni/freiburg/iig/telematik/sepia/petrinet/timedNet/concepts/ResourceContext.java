@@ -5,12 +5,15 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
 
+import java.util.List;
+
+import de.invation.code.toval.misc.NamedComponent;
 
 /**
  *
  * @author richard
  */
-public interface ResourceContext {
+public interface ResourceContext extends NamedComponent{
     
     public abstract ResourceContext getInstance();
     
@@ -18,7 +21,9 @@ public interface ResourceContext {
     
     public boolean mayAcces(String subject, String transition);
     
-    public String getSubjectFor(String transition) throws AccessContextException;
+    public List<String> getSubjectsFor(String transition) throws AccessContextException;
+    
+    public String toString();
     
     public String getName();
     

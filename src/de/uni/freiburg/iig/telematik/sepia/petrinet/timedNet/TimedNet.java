@@ -18,6 +18,8 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedNet;
+import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
+
 import java.security.AccessControlContext;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +42,7 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 	public TimedNet() {
 		super();
 		time = 0.0;
+		setAccessControl(new ProcessContext());
 	}
 
 	public static void main(String args[]) throws PNException {

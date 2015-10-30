@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedPTnet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.invation.code.toval.parser.ParserException;
@@ -74,13 +75,21 @@ class TestRessourceContest implements ResourceContext{
 	}
 
 	@Override
-	public String getSubjectFor(String transition) throws AccessContextException {
-		return "Bernd";
+	public List<String> getSubjectsFor(String transition) throws AccessContextException {
+		LinkedList<String> result = new LinkedList<>();
+		result.add("Bernd");
+		return result;
 	}
 
 	@Override
 	public String getName() {
 		return "idTestRessourceContext";
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
@@ -95,11 +104,6 @@ class TestTimedResourceContext implements TimeRessourceContext{
 	@Override
 	public boolean behaviorIsKnown(String activity, String... ressource) {
 		return false;
-	}
-
-	@Override
-	public ITimeBehaviour getTimeFor(String activity, String... ressource) {
-		return null;
 	}
 
 	@Override
@@ -121,6 +125,24 @@ class TestTimedResourceContext implements TimeRessourceContext{
 	@Override
 	public String getName() {
 		return "Test TimedResource-Context";
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ITimeBehaviour getTimeFor(String activity, List resources) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List getRandomAllowedRessourcesFor(String activity, boolean blockRessources) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

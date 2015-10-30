@@ -11,7 +11,9 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
  */
 public class AccessContextException extends Exception {
 
-    public AccessContextException(String message) {
+	private static final long serialVersionUID = 285877720732372948L;
+
+	public AccessContextException(String message) {
         super(message);
     }
     

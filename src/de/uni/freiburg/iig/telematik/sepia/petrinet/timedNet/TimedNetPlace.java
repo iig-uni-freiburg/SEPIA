@@ -19,7 +19,6 @@ public class TimedNetPlace extends AbstractTimedPlace<TimedFlowRelation>{
 
 	public TimedNetPlace(String name) {
 		super(name);
-		// TODO Auto-generated constructor stub
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -33,38 +32,10 @@ public class TimedNetPlace extends AbstractTimedPlace<TimedFlowRelation>{
 		return new TimedNetPlace(name);
 	}
 
-//    @Override
-//    public Integer getState() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 
     @Override
     protected void addTokens(Integer tokens) {
         super.addTokens(tokens);
     }
-//
-//    @Override
-//    protected void removeTokens(Integer tokens) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public boolean canConsume(Integer state) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public boolean hasEmptyState() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    public Integer getEmptyState() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
-//
-//    @Override
-//    protected void stateChange(Integer oldState, Integer newState) {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
+
 }

@@ -25,5 +25,10 @@ public abstract class AbstractTimedPlace<E extends AbstractTimedFlowRelation<? e
     public AbstractTimedPlace(String name, String label){
         super(name, label);
     }
+
+	@Override
+	public void removeTokens(Integer tokens) {
+		super.removeTokens(tokens);
+	}
     
 }

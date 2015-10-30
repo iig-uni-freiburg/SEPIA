@@ -5,7 +5,11 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractMarking;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 
 /**
@@ -14,20 +18,24 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
  */
 public abstract class AbstractTimedMarking extends AbstractPTMarking {
 
-    public AbstractTimedMarking() {
+	private static final long serialVersionUID = -5795568492094277347L;
+	
+	protected Map<Double, List<TokenConstraints<Integer>>> pendingActions = new HashMap<>();
+
+	public AbstractTimedMarking() {
         super();
     }
-
-    /**
-     * Sets the state of the given place in the marking.
-     *
-     * @param place The place whose state is set.
-     * @param tokens The number of tokens in the place.
-     */
-    public void set(String place, int tokens) {
-        validatePlace(place);
-        validateState(tokens);
-        placeStates.put(place, tokens);
-    }
+	
+	public void addPendingAction(String placeName, double time, int tokens) {
+		TokenConstraints<Integer> constraint = new TokenConstraints<>(placeName, tokens);
+		if (pendingActions.containsKey(time) && pendingActions.get(time) != null) {
+			// time entry is available
+			pendingActions.get(time).add(constraint);
+		} else { // List not initialized. Create and add List
+			ArrayList<TokenConstraints<Integer>> pendingActionList = new ArrayList<>();
+			pendingActionList.add(constraint);
+			pendingActions.put(time, pendingActionList);
+		}
+	}
 
 }
