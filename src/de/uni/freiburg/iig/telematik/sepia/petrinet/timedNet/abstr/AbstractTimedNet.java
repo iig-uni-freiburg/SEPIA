@@ -5,11 +5,12 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
-import de.invation.code.toval.validate.Validate;
+import java.util.List;
+
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
-import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
 import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
@@ -53,6 +54,43 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
 	public String getProcesContextName() {
 		return procesContextName;
+	}
+
+	@Override
+	public T fire(String transitionName) throws PNException {
+		boolean cannotFire = true;
+		while (cannotFire) {
+			try {
+				validateFireTransition(transitionName);
+				cannotFire = false;
+			} catch (PNException e) {
+				cannotFire = true;
+				getNextPendingAction(); //if no more pending actions left, this will throw an exception
+			}
+		}
+		T transition = getTransition(transitionName);
+		transition.fire();
+		lastFiredTransition = transition;
+		return transition;
+	}
+
+	/**
+	 * execute the next pending action in the net
+	 * @throws PNException if no pending actions exist
+	 */
+	private void getNextPendingAction() throws PNException {
+		TimedMarking marking = (TimedMarking) getMarking();
+		if (!marking.hasPendingActions())
+			throw new PNException("No more pending actions left.");
+		
+		List<TokenConstraints<Integer>> pendingAction = marking.getNextPendingAction();
+		for (TokenConstraints<Integer> c : pendingAction) {
+			// execute all pending actions that are set for this time
+			getPlace(c.placeName).addTokens(c.tokens);
+		}
+		clock += marking.getTimeOfNextPendingAction();
+		marking.removeNextPendingAction();
+
 	}
 
 	public void setProcesContextName(String procesContextName) {

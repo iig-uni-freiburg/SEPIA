@@ -30,5 +30,10 @@ public abstract class AbstractTimedPlace<E extends AbstractTimedFlowRelation<? e
 	public void removeTokens(Integer tokens) {
 		super.removeTokens(tokens);
 	}
+
+	@Override
+	public void addTokens(Integer tokens) {
+		super.addTokens(tokens);
+	}
     
 }

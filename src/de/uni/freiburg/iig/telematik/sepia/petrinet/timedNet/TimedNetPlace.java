@@ -32,10 +32,4 @@ public class TimedNetPlace extends AbstractTimedPlace<TimedFlowRelation>{
 		return new TimedNetPlace(name);
 	}
 
-
-    @Override
-    protected void addTokens(Integer tokens) {
-        super.addTokens(tokens);
-    }
-
 }

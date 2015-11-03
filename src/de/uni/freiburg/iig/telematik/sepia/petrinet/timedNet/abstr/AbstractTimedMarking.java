@@ -6,9 +6,8 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.TreeMap;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTMarking;
 
@@ -20,7 +19,7 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 
 	private static final long serialVersionUID = -5795568492094277347L;
 	
-	protected Map<Double, List<TokenConstraints<Integer>>> pendingActions = new HashMap<>();
+	protected TreeMap<Double, List<TokenConstraints<Integer>>> pendingActions = new TreeMap<>();
 
 	public AbstractTimedMarking() {
         super();
@@ -36,6 +35,22 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 			pendingActionList.add(constraint);
 			pendingActions.put(time, pendingActionList);
 		}
+	}
+	
+	public List<TokenConstraints<Integer>> getNextPendingAction(){
+		return pendingActions.firstEntry().getValue();
+	}
+	
+	public double getTimeOfNextPendingAction(){
+		return pendingActions.firstKey();
+	}
+	
+	public void removeNextPendingAction(){
+		pendingActions.remove(pendingActions.firstKey());
+	}
+	
+	public boolean hasPendingActions(){
+		return !pendingActions.isEmpty();
 	}
 
 }
