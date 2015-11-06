@@ -12,8 +12,8 @@ public class TokenConstraints<S> {
 		this.tokens = tokens;
 	}
 	
-	public TokenConstraints(String placeName, S tokens){
-		this.placeName=placeName;
+	public TokenConstraints(String transitionName, S tokens){
+		this.placeName=transitionName;
 		this.tokens=tokens;
 	}
 }

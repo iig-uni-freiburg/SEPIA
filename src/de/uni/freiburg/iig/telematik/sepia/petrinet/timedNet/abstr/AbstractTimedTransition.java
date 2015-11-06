@@ -5,22 +5,14 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
-import de.invation.code.toval.types.Multiset;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeBehaviour;
-import de.uni.freiburg.iig.telematik.sewol.accesscontrol.AbstractACModel;
-import de.uni.freiburg.iig.telematik.sewol.accesscontrol.properties.ACModelProperties;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -30,6 +22,10 @@ import java.util.logging.Logger;
 public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractPTTransition<E> {
 
 	private AbstractTimedNet<?, ?, ?, ?> net;
+	
+	private boolean working = false;
+	
+	private List<String>blockedResources;
 
     public AbstractTimedTransition(String name, String label) {
         super(name, label);
@@ -70,41 +66,59 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	@Override
 	public void fire() throws PNException {
-		
-		if(!isEnabled())
-			throw new PNException("Cannot fire transition "+this+": not enabled");
-		try{
+
+		if (!isEnabled())
+			throw new PNException("Cannot fire transition " + this + ": not enabled");
+		try {
 			checkValidity();
-		} catch(PNValidationException e){
-			throw new PNException("Cannot fire transition "+this+": not in valid state ["+e.getMessage()+"]");
+		} catch (PNValidationException e) {
+			throw new PNException("Cannot fire transition " + this + ": not in valid state [" + e.getMessage() + "]");
 		}
-		
-		TimedMarking marking = (TimedMarking) net.getMarking(); 
+
+		TimedMarking marking = (TimedMarking) net.getMarking();
 		List<String> resourceSet = net.getTimeRessourceContext().getRandomAllowedResourcesFor(getLabel());
 		net.getTimeRessourceContext().blockResources(resourceSet);
 		ITimeBehaviour timeBehaviour = net.getTimeRessourceContext().getTimeFor(getLabel(), resourceSet);
 		double neededTime = timeBehaviour.getNeededTime();
-		
-		//remove tokens
-		for (E p:getIncomingRelations()){
+
+		// remove tokens
+		for (E p : getIncomingRelations()) {
 			p.getPlace().removeTokens(p.getConstraint());
 		}
-		
-		//add Pending Actions to marking
-		for (E p:getOutgoingRelations()){
-			marking.addPendingAction(p.getPlace().getName(), neededTime, p.getConstraint());
+
+		if (neededTime > 0) {
+			// add Pending Actions to marking, block used resources
+			blockedResources=resourceSet;
+			working=true;
+			marking.addPendingAction(getLabel(), neededTime);
+//			for (E p : getOutgoingRelations()) {
+//				marking.addPendingAction(getName(), neededTime, p.getConstraint());
+//			}
+
+		} else {
+			// fire normally, no blocking...
+			for (E r : outgoingRelations.values()) {
+				r.getPlace().addTokens(r.getConstraint());
+			}
 		}
-		
-		//inform marking has changed
+
+		// inform marking has changed
 		notifyFiring();
 	}
-    
-//    public void setAccessContext(ResourceContext accessContext){
-//        this.accessContext=accessContext;
-//    }
-//    
-//    public ResourceContext getAccessContext(){
-//        return accessContext;
-//    }
-    
+
+	public boolean isWorking() {
+		return working;
+	}
+
+	public void setWorking(boolean working) {
+		this.working = working;
+	}
+
+	public List<String> getBlockedResources() {
+		return blockedResources;
+	}
+
+	public void unsetBlockedResources() {
+		this.blockedResources = null;
+	}
 }

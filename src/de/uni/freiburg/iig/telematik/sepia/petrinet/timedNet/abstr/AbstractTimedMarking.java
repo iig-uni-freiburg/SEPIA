@@ -19,25 +19,32 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 
 	private static final long serialVersionUID = -5795568492094277347L;
 	
-	protected TreeMap<Double, List<TokenConstraints<Integer>>> pendingActions = new TreeMap<>();
+	protected TreeMap<Double, List<String>> pendingActions = new TreeMap<>();
 
 	public AbstractTimedMarking() {
         super();
     }
 	
-	public void addPendingAction(String placeName, double time, int tokens) {
-		TokenConstraints<Integer> constraint = new TokenConstraints<>(placeName, tokens);
-		if (pendingActions.containsKey(time) && pendingActions.get(time) != null) {
-			// time entry is available
-			pendingActions.get(time).add(constraint);
-		} else { // List not initialized. Create and add List
-			ArrayList<TokenConstraints<Integer>> pendingActionList = new ArrayList<>();
-			pendingActionList.add(constraint);
-			pendingActions.put(time, pendingActionList);
+	public void addPendingAction(String transitionName, double time) {
+		if (pendingActions.containsKey(time)) {
+			pendingActions.get(time).add(transitionName);
+		} else {
+			ArrayList<String> transitions = new ArrayList<>();
+			transitions.add(transitionName);
+			pendingActions.put(time, transitions);
 		}
+//		TokenConstraints<Integer> constraint = new TokenConstraints<>(transitionName);
+//		if (pendingActions.containsKey(time) && pendingActions.get(time) != null) {
+//			// time entry is available
+//			pendingActions.get(time).add(constraint);
+//		} else { // List not initialized. Create and add List
+//			ArrayList<TokenConstraints<Integer>> pendingActionList = new ArrayList<>();
+//			pendingActionList.add(constraint);
+//			pendingActions.put(time, pendingActionList);
+//		}
 	}
 	
-	public List<TokenConstraints<Integer>> getNextPendingAction(){
+	public List<String> getNextPendingAction(){
 		return pendingActions.firstEntry().getValue();
 	}
 	

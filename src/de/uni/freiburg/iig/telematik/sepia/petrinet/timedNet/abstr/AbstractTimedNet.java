@@ -6,6 +6,8 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
@@ -73,20 +75,71 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		lastFiredTransition = transition;
 		return transition;
 	}
+	
+	/**fires a random enabled transition. If no transition is enabled it will check pending operations until a transition is enabled
+	 * @throws PNException if even after the last pending action no transition is enabled**/
+	public T fire() throws PNException {
+		// get random transition
+		int max = getEnabledTransitions().size();
+		if (max > 0) {
+			T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
+			transition.fire();
+			return transition;
+		} else {
+			// no active transition. Check pending Actions
+			while (getMarking().hasPendingActions()) {
+				getNextPendingAction();
+				if (getEnabledTransitions().size() > 0) {
+					max = getEnabledTransitions().size();
+					T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
+					transition.fire();
+					return transition;
+				}
+			}
+		}
+		throw new PNException("Cannot fire any transition. Pending actions is empty. Net is steady");
+	}
+	
+	/**simulates the net until it is finisehd and return the needed time units**/
+	public double simulate() throws PNException{
+		while (!isFinished() && moreToSimulate()){
+			fire();
+		}
+		return clock;
+	}
+	
+	/**return true if there is a token in one of the draining places**/
+	public boolean isFinished(){
+		for (P place: getDrainPlaces()){
+			if(place.getState()>=1) 
+				return true;
+		}
+		return false;
+	}
+	
+	/**return true if the net contains enabled transitions or has pending actions**/
+	public boolean moreToSimulate(){
+		return !getEnabledTransitions().isEmpty() || getMarking().hasPendingActions();
+	}
 
 	/**
 	 * execute the next pending action in the net
 	 * @throws PNException if no pending actions exist
 	 */
 	private void getNextPendingAction() throws PNException {
-		TimedMarking marking = (TimedMarking) getMarking();
+		AbstractTimedMarking marking = getMarking();
 		if (!marking.hasPendingActions())
 			throw new PNException("No more pending actions left.");
 		
-		List<TokenConstraints<Integer>> pendingAction = marking.getNextPendingAction();
-		for (TokenConstraints<Integer> c : pendingAction) {
-			// execute all pending actions that are set for this time
-			getPlace(c.placeName).addTokens(c.tokens);
+		List<String> pendingAction = marking.getNextPendingAction();
+		for (String s:pendingAction) {
+			T transition = getTransition(s);
+			for (F rel: transition.getOutgoingRelations()){
+				rel.getPlace().addTokens(rel.getConstraint());
+			}
+			transition.setWorking(false);
+			getTimeRessourceContext().removeResourceUsage(transition.getLabel(), transition.getBlockedResources());
+			transition.unsetBlockedResources();
 		}
 		clock += marking.getTimeOfNextPendingAction();
 		marking.removeNextPendingAction();
@@ -140,6 +193,16 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     	return result+"\r\n TimeContext: "+getTimeContextName()+" ResourceContext: "+getResourceContextName()+
     			" ProcessContext: "+getProcesContextName();
     }
+    
+	@Override
+	public void reset() {
+		super.reset();
+		clock = 0.0;
+	}
+	
+	public double getCurrentTime() {
+		return clock;
+	}
 
     
     

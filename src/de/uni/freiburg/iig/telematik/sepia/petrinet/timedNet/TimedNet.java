@@ -35,13 +35,12 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 
 	private static final long serialVersionUID = -2596591166620976262L;
 
-	private double time;
-	private Map<Double, List<TokenConstraint>> pendingActions = new HashMap<Double, List<TokenConstraint>>();
+	//private Map<Double, List<TokenConstraint>> pendingActions = new HashMap<Double, List<TokenConstraint>>();
 
 
 	public TimedNet() {
 		super();
-		time = 0.0;
+		clock = 0.0;
 		setAccessControl(new ProcessContext());
 	}
 
@@ -49,15 +48,6 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 		TimedNet test = new TimedNet();
 	}
 
-	public double getCurrentTime() {
-		return time;
-	}
-
-	@Override
-	public void reset() {
-		super.reset();
-		time = 0.0;
-	}
 
 	@Override
 	public Class<?> getMarkingGraphClass() {
@@ -120,25 +110,25 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 		return new TimedNet();
 	}
 
-	private boolean checkPendingActions() {
-		List<Double> actionTimepoints = new ArrayList<Double>();
-		for (double pendingActionTime : pendingActions.keySet()) {
-			if (pendingActionTime <= time) {
-				actionTimepoints.add(pendingActionTime);
-			}
-		}
-		if (actionTimepoints.isEmpty())
-			return false;
-
-		Collections.sort(actionTimepoints);
-		for (Double actionTimepoint : actionTimepoints) {
-			for (TokenConstraint constraint : pendingActions.get(actionTimepoint)) {
-				getPlace(constraint.placeName).addTokens(constraint.tokens);
-			}
-			pendingActions.remove(actionTimepoint);
-		}
-		return true;
-	}
+//	private boolean checkPendingActions() {
+//		List<Double> actionTimepoints = new ArrayList<Double>();
+//		for (double pendingActionTime : pendingActions.keySet()) {
+//			if (pendingActionTime <= clock) {
+//				actionTimepoints.add(pendingActionTime);
+//			}
+//		}
+//		if (actionTimepoints.isEmpty())
+//			return false;
+//
+//		Collections.sort(actionTimepoints);
+//		for (Double actionTimepoint : actionTimepoints) {
+//			for (TokenConstraint constraint : pendingActions.get(actionTimepoint)) {
+//				getPlace(constraint.placeName).addTokens(constraint.tokens);
+//			}
+//			pendingActions.remove(actionTimepoint);
+//		}
+//		return true;
+//	}
 
     @Override
     public NetType getNetType() {
@@ -149,19 +139,6 @@ public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, T
 //    public void transitionFired(TransitionEvent<? extends AbstractTransition<TimedFlowRelation, Integer>> e) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
-
-	private class TokenConstraint {
-		public String placeName = null;
-		public int tokens = 0;
-
-		public void setPlaceName(String placeName) {
-			this.placeName = placeName;
-		}
-
-		public void setTokens(int tokens) {
-			this.tokens = tokens;
-		}
-	}
 
 }
 
