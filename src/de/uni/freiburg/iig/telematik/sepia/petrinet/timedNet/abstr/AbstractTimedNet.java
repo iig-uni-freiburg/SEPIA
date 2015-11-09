@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import de.invation.code.toval.misc.soabase.SOABase;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.SubjectContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
 import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
 
@@ -26,11 +29,14 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
 	private static final long serialVersionUID = 7256025116225123745L;
 	protected double clock = 0;
-    private ResourceContext accessContext;
-    private ProcessContext accessControl;
-	private TimeRessourceContext<?> timeRessourceContext;
+    //private SubjectContext accessContext;
+    //private ProcessContext accessControl;
+	//private TimeRessourceContext<?> timeRessourceContext;
+	private ITimeContext timeContext;
+	private IResourceContext resourceContext;
+	private SOABase accessContext;
 	
-	String resourceContextName, timeContextName, procesContextName;
+	String resourceContextName, timeContextName, accesContextName;
     
 
     public String getResourceContextName() {
@@ -49,13 +55,17 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	public String getTimeContextName() {
 		return timeContextName;
 	}
+	
+	public ITimeContext getTimeContext(){
+		return timeContext;
+	}
 
 	public void setTimeContextName(String timeContextName) {
 		this.timeContextName = timeContextName;
 	}
 
-	public String getProcesContextName() {
-		return procesContextName;
+	public String getAccessContextName() {
+		return accesContextName;
 	}
 
 	@Override
@@ -138,8 +148,9 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 				rel.getPlace().addTokens(rel.getConstraint());
 			}
 			transition.setWorking(false);
-			getTimeRessourceContext().removeResourceUsage(transition.getLabel(), transition.getBlockedResources());
-			transition.unsetBlockedResources();
+			//getTimeRessourceContext().removeResourceUsage(transition.getLabel(), transition.getUsedResources());
+			getResourceContext().unBlockResources(transition.getUsedResources());
+			transition.removeResourceUsage();
 		}
 		clock += marking.getTimeOfNextPendingAction();
 		marking.removeNextPendingAction();
@@ -147,37 +158,37 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	}
 
 	public void setProcesContextName(String procesContextName) {
-		this.procesContextName = procesContextName;
+		this.accesContextName = procesContextName;
 	}
 
-	public ProcessContext getAccessControl() {
-		return accessControl;
+	public SOABase getAccessControl() {
+		return accessContext;
 	}
 
-	public void setAccessControl(ProcessContext accessControl) {
-		this.accessControl = accessControl;
-		procesContextName=accessControl.getName();
+	public void setAccessControl(SOABase accessControl) {
+		this.accessContext = accessControl;
+		accesContextName=accessControl.getName();
 	}
 
-    public TimeRessourceContext<?> getTimeRessourceContext() {
-        return timeRessourceContext;
-    }
+//    public TimeRessourceContext<?> getTimeRessourceContext() {
+//        return timeRessourceContext;
+//    }
+//
+//    public void setTimeRessourceContext(TimeRessourceContext<?> timeRessourceContext) {
+//        this.timeRessourceContext = timeRessourceContext;
+//        timeContextName=timeRessourceContext.getName();
+//    }
 
-    public void setTimeRessourceContext(TimeRessourceContext<?> timeRessourceContext) {
-        this.timeRessourceContext = timeRessourceContext;
-        timeContextName=timeRessourceContext.getName();
-    }
-
-    public void setResourceContext(ResourceContext accessContext) {
-        this.accessContext = accessContext;
+    public void setResourceContext(IResourceContext resourceContext) {
+        this.resourceContext = resourceContext;
 //        for (T transition : getTransitions()) {
 //            transition.setAccessContext(accessContext);
 //        }
-        resourceContextName=accessContext.getName();
+        resourceContextName=resourceContext.getName();
     }
 
-    public ResourceContext getResourceContext() {
-        return accessContext;
+    public IResourceContext getResourceContext() {
+        return resourceContext;
     }
 
     @Override
@@ -191,7 +202,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     public String toString(){
     	String result = super.toString();
     	return result+"\r\n TimeContext: "+getTimeContextName()+" ResourceContext: "+getResourceContextName()+
-    			" ProcessContext: "+getProcesContextName();
+    			" ProcessContext: "+getAccessContextName();
     }
     
 	@Override

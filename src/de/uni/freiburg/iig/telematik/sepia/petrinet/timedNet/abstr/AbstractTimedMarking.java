@@ -19,7 +19,7 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 
 	private static final long serialVersionUID = -5795568492094277347L;
 	
-	protected TreeMap<Double, List<String>> pendingActions = new TreeMap<>();
+	protected TreeMap<Double, List<String>> pendingActions = new TreeMap<>(); //Time and active Transitions
 
 	public AbstractTimedMarking() {
         super();

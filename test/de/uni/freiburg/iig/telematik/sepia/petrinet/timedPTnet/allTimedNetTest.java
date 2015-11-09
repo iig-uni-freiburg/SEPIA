@@ -7,11 +7,14 @@ import java.util.List;
 
 import de.invation.code.toval.parser.ParserException;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalTimedNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResource;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeBehaviour;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ResourceContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.SubjectContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLTimedNetSerializer;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.rbac.RBACModel;
@@ -25,7 +28,7 @@ public class allTimedNetTest {
 		PNMLTimedNetSerializer serializer = new PNMLTimedNetSerializer<>(net);
 		serializer.serialize("/tmp/", "test");
 		PNMLParser parser = new PNMLParser<>();
-		AbstractGraphicalPN graphicalNet = parser.parse(new File("/tmp/test.pnml"),true,false);
+		AbstractGraphicalTimedNet graphicalNet = (AbstractGraphicalTimedNet) parser.parse(new File("/tmp/test.pnml"),true,false);
 		TimedNet timedNet = (TimedNet) graphicalNet.getPetriNet();
 		System.out.println(timedNet.toString());
 	}
@@ -43,7 +46,8 @@ public class allTimedNetTest {
 		net.addFlowRelationTP("test2", "end");
 		net.setResourceContext(new TestRessourceContest());
 		net.setAccessControl(getProcessContext());
-		net.setTimeRessourceContext(new TestTimedResourceContext());
+		net.setTimeContextName("Test-TimeContext");
+		//net.setTimeRessourceContext(new TestTimedResourceContext());
 		return net;
 	}
 	
@@ -57,40 +61,55 @@ public class allTimedNetTest {
 
 }
 
-class TestRessourceContest implements ResourceContext{
+class TestRessourceContest implements IResourceContext{
 
 	@Override
-	public ResourceContext getInstance() {
-		return this;
+	public String getName() {
+		return "Test-ResourceContext";
 	}
 
 	@Override
-	public ResourceContext getInstance(String contextName) {
-		return this;
+	public void setName() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public boolean mayAcces(String subject, String transition) {
-		return true;
+	public void blockResources(List<String> resources) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
-	public List<String> getSubjectsFor(String transition) throws AccessContextException {
+	public void unBlockResources(List<String> resources) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<List<String>> getAllowedResourcesFor(String activity) {
+		return null;
+	}
+
+	@Override
+	public List<String> getRandomAllowedResourcesFor(String activity, boolean blockResources) {
 		LinkedList<String> result = new LinkedList<>();
-		result.add("Bernd");
+		result.add("Gerd");
+		result.add("Hans");
 		return result;
 	}
 
 	@Override
-	public String getName() {
-		return "idTestRessourceContext";
+	public boolean isAvailable(String resourceName) {
+		return true;
 	}
 
 	@Override
-	public void setName(String name) {
+	public IResource getResourceObject(String resourceName) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
+
 	
 }
 

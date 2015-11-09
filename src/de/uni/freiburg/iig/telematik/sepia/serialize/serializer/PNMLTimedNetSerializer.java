@@ -51,7 +51,7 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 		
 		// Add processContext (AccessContext)
 		Element processContextElement = getSupport().createElement(processContext);
-		processContextElement.setTextContent(petriNet.getProcesContextName());
+		processContextElement.setTextContent(petriNet.getAccessContextName());
 		getSupport().getNetElement().appendChild(processContextElement);
 	}
 

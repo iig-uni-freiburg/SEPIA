@@ -9,60 +9,66 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeBehaviour;
 
 import java.util.List;
-
 
 /**
  *
  * @author richard
  */
-public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>> extends AbstractPTTransition<E> {
+public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelation<? extends AbstractTimedPlace<E>, ? extends AbstractTimedTransition<E>>>
+		extends AbstractPTTransition<E> {
 
 	private AbstractTimedNet<?, ?, ?, ?> net;
+
+	private boolean isWorking = false;
+
+	private List<String> usedResources;
+
+	public AbstractTimedTransition(String name, String label) {
+		super(name, label);
+	}
+
+	@Override
+	public synchronized void checkValidity() throws PNValidationException {
+
+		// try {
+		// List<String> subjects =
+		// net.getResourceContext().getSubjectsFor(getLabel());
+		// if(subjects==null||subjects.isEmpty())
+		// throw new PNValidationException("No available subject for
+		// "+getLabel()+" found");
+		// } catch (AccessContextException ex) {
+		// throw new PNValidationException("No available subject for
+		// "+getLabel()+" found",ex);
+		// } catch (NullPointerException e) {
+		// throw new PNValidationException("Transition has no correspopnding
+		// net",e);
+		// }
+
+		super.checkValidity();
+		// check availability of timeContext
+	}
+
+	public AbstractTimedTransition(String name) {
+		super(name);
+	}
+
+	public AbstractTimedTransition(String name, boolean isSilent) {
+		super(name, isSilent);
+	}
+
+	public AbstractTimedTransition(String name, String label, boolean isSilent) {
+		super(name, label, isSilent);
+	}
+
+	public void setNet(AbstractTimedNet<?, ?, ?, ?> net) {
+		this.net = net;
+	}
 	
-	private boolean working = false;
-	
-	private List<String>blockedResources;
-
-    public AbstractTimedTransition(String name, String label) {
-        super(name, label);
-    }
-
-    @Override
-    public synchronized void checkValidity() throws PNValidationException {
-    	
-        try {
-            super.checkValidity();
-            List<String> subjects = net.getResourceContext().getSubjectsFor(getLabel());
-            if(subjects==null||subjects.isEmpty())
-            	throw new PNValidationException("No available subject for "+getLabel()+" found");
-        } catch (AccessContextException ex) {
-            throw new PNValidationException("No available subject for "+getLabel()+" found",ex);
-        } catch (NullPointerException e) {
-        	throw new PNValidationException("Transition has no correspopnding net",e);
-        }
-        //check availability of timeContext
-    }
-
-    public AbstractTimedTransition(String name) {
-        super(name);
-    }
-
-
-    public AbstractTimedTransition(String name, boolean isSilent) {
-        super(name, isSilent);
-    }
-
-    public AbstractTimedTransition(String name, String label, boolean isSilent) {
-        super(name, label, isSilent);
-    }
-    
-    public void setNet(AbstractTimedNet<?, ?, ?, ?> net){
-    	this.net=net;
-    }
+	public void fire(List<String> resources){
+		//TODO
+	}
 
 	@Override
 	public void fire() throws PNException {
@@ -76,10 +82,9 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		}
 
 		TimedMarking marking = (TimedMarking) net.getMarking();
-		List<String> resourceSet = net.getTimeRessourceContext().getRandomAllowedResourcesFor(getLabel());
-		net.getTimeRessourceContext().blockResources(resourceSet);
-		ITimeBehaviour timeBehaviour = net.getTimeRessourceContext().getTimeFor(getLabel(), resourceSet);
-		double neededTime = timeBehaviour.getNeededTime();
+		List<String> resourceSet = net.getResourceContext().getRandomAllowedResourcesFor(getLabel(),true);
+		//net.getTimeRessourceContext().blockResources(resourceSet);
+		double neededTime = net.getTimeContext().getTimeFor(getLabel());
 
 		// remove tokens
 		for (E p : getIncomingRelations()) {
@@ -87,13 +92,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		}
 
 		if (neededTime > 0) {
-			// add Pending Actions to marking, block used resources
-			blockedResources=resourceSet;
-			working=true;
+			// add Pending Actions to marking, insert used resources
+			usedResources = resourceSet;
+			setWorking(true);
 			marking.addPendingAction(getLabel(), neededTime);
-//			for (E p : getOutgoingRelations()) {
-//				marking.addPendingAction(getName(), neededTime, p.getConstraint());
-//			}
 
 		} else {
 			// fire normally, no blocking...
@@ -107,18 +109,18 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	}
 
 	public boolean isWorking() {
-		return working;
+		return isWorking;
 	}
 
 	public void setWorking(boolean working) {
-		this.working = working;
+		this.isWorking = working;
 	}
 
-	public List<String> getBlockedResources() {
-		return blockedResources;
+	public List<String> getUsedResources() {
+		return usedResources;
 	}
 
-	public void unsetBlockedResources() {
-		this.blockedResources = null;
+	public void removeResourceUsage() {
+		this.usedResources.clear();
 	}
 }

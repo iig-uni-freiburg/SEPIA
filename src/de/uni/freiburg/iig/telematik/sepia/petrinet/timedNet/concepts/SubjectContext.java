@@ -13,11 +13,7 @@ import de.invation.code.toval.misc.NamedComponent;
  *
  * @author richard
  */
-public interface ResourceContext extends NamedComponent{
-    
-    public abstract ResourceContext getInstance();
-    
-    public ResourceContext getInstance(String contextName);
+public interface SubjectContext extends NamedComponent{
     
     public boolean mayAcces(String subject, String transition);
     
