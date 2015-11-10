@@ -19,5 +19,7 @@ public interface IResourceContext {
     public boolean isAvailable(String resourceName);
     
     public IResource getResourceObject(String resourceName);
+    
+    public boolean containsBlockedResources();
 
 }

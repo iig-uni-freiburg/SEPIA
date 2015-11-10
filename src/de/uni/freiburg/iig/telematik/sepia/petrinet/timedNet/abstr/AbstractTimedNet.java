@@ -92,6 +92,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		// get random transition
 		int max = getEnabledTransitions().size();
 		if (max > 0) {
+			//get random next transition
 			T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
 			transition.fire();
 			return transition;
@@ -118,6 +119,11 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		return clock;
 	}
 	
+	@Override
+	public M getMarking() {
+		return marking;
+	}
+
 	/**return true if there is a token in one of the draining places**/
 	public boolean isFinished(){
 		for (P place: getDrainPlaces()){
@@ -136,7 +142,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	 * execute the next pending action in the net
 	 * @throws PNException if no pending actions exist
 	 */
-	private void getNextPendingAction() throws PNException {
+	public void getNextPendingAction() throws PNException {
 		AbstractTimedMarking marking = getMarking();
 		if (!marking.hasPendingActions())
 			throw new PNException("No more pending actions left.");
@@ -155,6 +161,10 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		clock += marking.getTimeOfNextPendingAction();
 		marking.removeNextPendingAction();
 
+	}
+	
+	public void setTimeContext(ITimeContext context){
+		this.timeContext=context;
 	}
 
 	public void setProcesContextName(String procesContextName) {

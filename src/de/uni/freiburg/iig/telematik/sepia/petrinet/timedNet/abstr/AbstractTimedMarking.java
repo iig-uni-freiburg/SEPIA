@@ -26,6 +26,7 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
     }
 	
 	public void addPendingAction(String transitionName, double time) {
+		//System.out.println("adding pending action for "+transitionName+"("+time+")");
 		if (pendingActions.containsKey(time)) {
 			pendingActions.get(time).add(transitionName);
 		} else {
@@ -49,10 +50,12 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 	}
 	
 	public double getTimeOfNextPendingAction(){
+		//System.out.println("Getting next pending action");
 		return pendingActions.firstKey();
 	}
 	
 	public void removeNextPendingAction(){
+		//System.out.println("Removing pending action from "+pendingActions.firstEntry().getValue().get(0)+"("+pendingActions.firstKey()+")");
 		pendingActions.remove(pendingActions.firstKey());
 	}
 	

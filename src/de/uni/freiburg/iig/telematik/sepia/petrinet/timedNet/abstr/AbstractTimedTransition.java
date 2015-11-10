@@ -10,6 +10,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	private boolean isWorking = false;
 
-	private List<String> usedResources;
+	private List<String> usedResources = new ArrayList<>();
 
 	public AbstractTimedTransition(String name, String label) {
 		super(name, label);
@@ -121,6 +122,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	}
 
 	public void removeResourceUsage() {
-		this.usedResources.clear();
+		if(usedResources!=null)
+			this.usedResources.clear();
 	}
 }
