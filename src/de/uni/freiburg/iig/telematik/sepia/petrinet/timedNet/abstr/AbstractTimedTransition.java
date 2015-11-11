@@ -85,18 +85,19 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		TimedMarking marking = (TimedMarking) net.getMarking();
 		List<String> resourceSet = net.getResourceContext().getRandomAllowedResourcesFor(getLabel(),true);
 		//net.getTimeRessourceContext().blockResources(resourceSet);
-		double neededTime = net.getTimeContext().getTimeFor(getLabel());
+		
 
 		// remove tokens
 		for (E p : getIncomingRelations()) {
 			p.getPlace().removeTokens(p.getConstraint());
 		}
 
-		if (neededTime > 0) {
+		if (net.getTimeContext().containsActivity(getLabel())) {
+			double neededTime = net.getTimeContext().getTimeFor(getLabel());
 			// add Pending Actions to marking, insert used resources
 			usedResources = resourceSet;
 			setWorking(true);
-			marking.addPendingAction(getLabel(), neededTime);
+			marking.addPendingAction(getLabel(), neededTime+net.getCurrentTime());
 
 		} else {
 			// fire normally, no blocking...

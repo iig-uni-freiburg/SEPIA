@@ -9,5 +9,7 @@ public interface ITimeContext {
 	public double getTimeFor(String activity);
 	
 	public ITimeBehaviour getTimeObjectFor(String activity);
+	
+	public boolean containsActivity(String activity);
 
 }

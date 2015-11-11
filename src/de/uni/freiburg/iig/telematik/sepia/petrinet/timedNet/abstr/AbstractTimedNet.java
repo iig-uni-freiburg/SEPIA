@@ -158,7 +158,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 			getResourceContext().unBlockResources(transition.getUsedResources());
 			transition.removeResourceUsage();
 		}
-		clock += marking.getTimeOfNextPendingAction();
+		clock = marking.getTimeOfNextPendingAction();
 		marking.removeNextPendingAction();
 
 	}
