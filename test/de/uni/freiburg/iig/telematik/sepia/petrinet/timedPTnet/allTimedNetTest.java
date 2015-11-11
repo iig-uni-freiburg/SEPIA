@@ -110,6 +110,12 @@ class TestRessourceContest implements IResourceContext{
 		return null;
 	}
 
+	@Override
+	public boolean containsBlockedResources() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 }
 
