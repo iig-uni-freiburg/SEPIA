@@ -11,5 +11,11 @@ public interface ITimeContext {
 	public ITimeBehaviour getTimeObjectFor(String activity);
 	
 	public boolean containsActivity(String activity);
+	
+	public void reset();
+	
+	public double incrementTime(double inc);
+	
+	public double getTime();
 
 }

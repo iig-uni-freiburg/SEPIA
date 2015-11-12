@@ -34,6 +34,7 @@ import java.util.Map;
 public class TimedNet extends AbstractTimedNet<TimedNetPlace, TimedTransition, TimedFlowRelation, TimedMarking> {
 
 	private static final long serialVersionUID = -2596591166620976262L;
+	
 
 	//private Map<Double, List<TokenConstraint>> pendingActions = new HashMap<Double, List<TokenConstraint>>();
 

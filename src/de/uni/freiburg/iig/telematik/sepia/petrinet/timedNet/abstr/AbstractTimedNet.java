@@ -29,6 +29,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
 	private static final long serialVersionUID = 7256025116225123745L;
 	protected double clock = 0;
+	private double deadline; 
     //private SubjectContext accessContext;
     //private ProcessContext accessControl;
 	//private TimeRessourceContext<?> timeRessourceContext;
@@ -41,6 +42,14 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
     public String getResourceContextName() {
 		return resourceContextName;
+	}
+    
+	public double getDeadline() {
+		return deadline;
+	}
+
+	public void setDeadline(double deadline) {
+		this.deadline = deadline;
 	}
 
 	@Override
@@ -94,6 +103,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		if (max > 0) {
 			//get random next transition
 			T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
+			//T transition = getEnabledTransitions().get(r.nextInt(max));
 			transition.fire();
 			return transition;
 		} else {
@@ -103,6 +113,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 				if (getEnabledTransitions().size() > 0) {
 					max = getEnabledTransitions().size();
 					T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
+					//T transition = getEnabledTransitions().get(r.nextInt(max));
 					transition.fire();
 					return transition;
 				}
@@ -116,6 +127,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		while (!isFinished() && moreToSimulate()){
 			fire();
 		}
+		
 		return clock;
 	}
 	
