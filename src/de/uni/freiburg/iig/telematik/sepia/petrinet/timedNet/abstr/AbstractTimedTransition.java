@@ -9,6 +9,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.WorkflowTimeMachine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 		TimedMarking marking = (TimedMarking) net.getMarking();
 		List<String> resourceSet = net.getResourceContext().getRandomAllowedResourcesFor(getLabel(),true);
+		if(resourceSet==null||resourceSet.isEmpty()){
+			System.out.println(getName()+": Waiting for resources!");
+			return; //cannot fire: not available resources
+		}
 		//net.getTimeRessourceContext().blockResources(resourceSet);
 		
 
@@ -97,7 +102,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			// add Pending Actions to marking, insert used resources
 			usedResources = resourceSet;
 			setWorking(true);
-			marking.addPendingAction(getLabel(), neededTime+net.getCurrentTime());
+			//marking.addPendingAction(getLabel(), neededTime+net.getCurrentTime());
+			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
 
 		} else {
 			// fire normally, no blocking...
@@ -113,6 +119,19 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	public boolean isWorking() {
 		return isWorking;
 	}
+	
+	/**puts tokens in outgoing places, frees up resources, forwards clock of underlying net to time**/
+	public void finishWork() throws PNException{
+		//create tokens in the net
+		for(E r:outgoingRelations.values()){
+			r.getPlace().addTokens(r.getConstraint());
+		}
+		
+		//stop working
+		setWorking(false);
+		clearResourceUsage();
+		//net.setCurrentTime(time);
+	}
 
 	public void setWorking(boolean working) {
 		this.isWorking = working;
@@ -122,8 +141,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		return usedResources;
 	}
 
-	public void removeResourceUsage() {
-		if(usedResources!=null)
+	public void clearResourceUsage() {
+		if(usedResources!=null){
+			net.getResourceContext().unBlockResources(usedResources);
 			this.usedResources.clear();
+		}
 	}
 }

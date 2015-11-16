@@ -106,7 +106,8 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 			//T transition = getEnabledTransitions().get(r.nextInt(max));
 			transition.fire();
 			return transition;
-		} else {
+		} 
+		/**else { //TODO: change. do nothing if their is no pending action
 			// no active transition. Check pending Actions
 			while (getMarking().hasPendingActions()) {
 				getNextPendingAction();
@@ -118,8 +119,18 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 					return transition;
 				}
 			}
+		}**/
+		throw new PNException("Cannot fire any transition.");
+	}
+	
+	public boolean canFire(){
+		int max = getEnabledTransitions().size();
+		if (max==0) return false;
+		for(T t:getEnabledTransitions()){
+			List<String>resources = resourceContext.getRandomAllowedResourcesFor(t.getLabel(), false);
+			if(resources!=null&&!resources.isEmpty()) return true;
 		}
-		throw new PNException("Cannot fire any transition. Pending actions is empty. Net is steady");
+		return false;
 	}
 	
 	/**simulates the net until it is finisehd and return the needed time units**/
@@ -154,7 +165,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	 * execute the next pending action in the net
 	 * @throws PNException if no pending actions exist
 	 */
-	public void getNextPendingAction() throws PNException {
+	protected void getNextPendingAction() throws PNException {
 		AbstractTimedMarking marking = getMarking();
 		if (!marking.hasPendingActions())
 			throw new PNException("No more pending actions left.");
@@ -168,7 +179,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 			transition.setWorking(false);
 			//getTimeRessourceContext().removeResourceUsage(transition.getLabel(), transition.getUsedResources());
 			getResourceContext().unBlockResources(transition.getUsedResources());
-			transition.removeResourceUsage();
+			transition.clearResourceUsage();
 		}
 		clock = marking.getTimeOfNextPendingAction();
 		marking.removeNextPendingAction();
@@ -235,6 +246,14 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public double getCurrentTime() {
 		return clock;
+	}
+	
+	public void setCurrentTime(double time) throws PNException {
+		if(time<clock)
+			throw new PNException("Cannot go back in time!");
+		if (isFinished())
+			throw new PNException("This nets execution has finished!");
+		clock=time;
 	}
 
     

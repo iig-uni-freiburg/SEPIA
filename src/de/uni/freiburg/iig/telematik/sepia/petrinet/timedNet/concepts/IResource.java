@@ -5,5 +5,9 @@ public interface IResource {
 	public String getName();
 	
 	public boolean isAvailable();
+	
+	public void use();
+	
+	public void unUse();
 
 }
