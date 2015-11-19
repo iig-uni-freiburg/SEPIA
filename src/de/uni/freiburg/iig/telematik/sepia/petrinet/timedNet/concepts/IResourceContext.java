@@ -21,5 +21,7 @@ public interface IResourceContext {
     public IResource getResourceObject(String resourceName);
     
     public boolean containsBlockedResources();
+    
+    public void reset();
 
 }

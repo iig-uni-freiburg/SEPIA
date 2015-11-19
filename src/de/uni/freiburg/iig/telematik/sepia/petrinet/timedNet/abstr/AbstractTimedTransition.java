@@ -107,6 +107,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 		} else {
 			// fire normally, no blocking...
+			net.getResourceContext().unBlockResources(resourceSet);
 			for (E r : outgoingRelations.values()) {
 				r.getPlace().addTokens(r.getConstraint());
 			}

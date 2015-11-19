@@ -9,5 +9,7 @@ public interface IResource {
 	public void use();
 	
 	public void unUse();
+	
+	public void reset();
 
 }

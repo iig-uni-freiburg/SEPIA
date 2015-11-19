@@ -116,6 +116,12 @@ class TestRessourceContest implements IResourceContext{
 		return false;
 	}
 
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
 

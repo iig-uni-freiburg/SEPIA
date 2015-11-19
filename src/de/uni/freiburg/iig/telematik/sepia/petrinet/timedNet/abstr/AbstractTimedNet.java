@@ -126,6 +126,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	public boolean canFire(){
 		int max = getEnabledTransitions().size();
 		if (max==0) return false;
+		if(isFinished()) return false;
 		for(T t:getEnabledTransitions()){
 			List<String>resources = resourceContext.getRandomAllowedResourcesFor(t.getLabel(), false);
 			if(resources!=null&&!resources.isEmpty()) return true;
@@ -242,6 +243,9 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	public void reset() {
 		super.reset();
 		clock = 0.0;
+		for(T t:getTransitions()){
+			t.clearResourceUsage();
+		}
 	}
 	
 	public double getCurrentTime() {

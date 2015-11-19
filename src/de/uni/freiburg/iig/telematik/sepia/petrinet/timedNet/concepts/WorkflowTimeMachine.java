@@ -37,8 +37,11 @@ public class WorkflowTimeMachine {
 	/**resets the pending actions and the single nets*/
 	public void resetAll(){
 		reset();
-		for(TimedNet net:nets.values())
+		for(TimedNet net:nets.values()){
 			net.reset();
+			net.getResourceContext().reset();
+		}
+		
 	}
 	
 	public List<AbstractTimedTransition> getNextPendingActions(){
@@ -110,9 +113,12 @@ public class WorkflowTimeMachine {
 			} catch (PNException e) {
 				e.printStackTrace();
 			}
-		} else {
+		} else if(!pending.isEmpty()){
 			//do next pending Action. Set time accordingly to all nets
 			simulateNextPendingAction();
+		} else {
+			System.out.println("No more nets to simulating, no pending actions left");
+			System.out.println("All nets finished? "+allNetsFinished());
 		}
 	}
 	
@@ -138,17 +144,17 @@ public class WorkflowTimeMachine {
 	public boolean canSimulate(){
 		//check pending actions first (speedup)
 		if(!pending.isEmpty()) return true;
-		for(TimedNet net:nets.values()){
-			if(!net.getEnabledTransitions().isEmpty()) 
-				return true; //there is a net that can fire
-		}
+		if(!allNetsFinished()) return true;
 		return false; //pending actions empty, no net that can fire
 	}
 	
 	public boolean allNetsFinished(){
 		for(TimedNet net:nets.values()){
-			if(!net.isFinished()) 
+			if(!net.isFinished()) {
+				//System.out.println("Net "+net.getName()+" not finished!");
+				//System.out.println("can it still simulate? "+net.canFire());
 				return false; //there is a net that can fire
+			}
 		}
 		return true;
 	}
