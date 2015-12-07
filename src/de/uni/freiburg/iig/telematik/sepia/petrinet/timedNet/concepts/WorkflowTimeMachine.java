@@ -38,6 +38,7 @@ public class WorkflowTimeMachine {
 	public void resetAll(){
 		reset();
 		for(TimedNet net:nets.values()){
+			//System.out.println("Context: "+net.getResourceContext().toString());
 			net.reset();
 			net.getResourceContext().reset();
 		}
@@ -74,31 +75,40 @@ public class WorkflowTimeMachine {
 		netNames.remove(netName);
 	}
 	
-	public HashMap<String, ArrayList<Double>> simulateAll(int steps){
+	private HashMap<String, ArrayList<Double>> getResultMap(){
 		HashMap<String, ArrayList<Double>> result = new HashMap<>();
-		for(String s:nets.keySet()){
+		for(String s:nets.keySet()){ //initialize
 			result.put(s, new ArrayList<>());
 		}
+		return result;
+	}
+	
+	public HashMap<String, ArrayList<Double>> simulateAll(int steps){
+		HashMap<String, ArrayList<Double>> result = getResultMap();
 		
 		for (int i = 0;i<steps;i++){
 			simulateAll();
+			
+			//add results
 			for(Entry<String, TimedNet> netEntry:nets.entrySet()){
 				result.get(netEntry.getKey()).add(netEntry.getValue().getCurrentTime());
 			}
+			
 			resetAll();
 		}
 		return result;
 	}
 	
-	public void simulateAll(){
-		while(canSimulate()){
+	public void simulateAll() {
+		while (canSimulate()) {
 			try {
 				simulateSingleStep();
 			} catch (PNException e) {
 				e.printStackTrace();
 			}
 		}
-		if(!allNetsFinished()){
+
+		if (!allNetsFinished()) {
 			System.out.println("Error: a net is not finished");
 			throw new RuntimeException("Not all nets finished!");
 		}
@@ -111,7 +121,7 @@ public class WorkflowTimeMachine {
 			try {
 				net.fire();
 			} catch (PNException e) {
-				e.printStackTrace();
+				e.printStackTrace(); //it couldn't fire.
 			}
 		} else if(!pending.isEmpty()){
 			//do next pending Action. Set time accordingly to all nets
@@ -124,10 +134,12 @@ public class WorkflowTimeMachine {
 	
 	private void simulateNextPendingAction() throws PNException {
 		double currentPendingTime=getNextPendingTime();
+		
 		List<AbstractTimedTransition>transitions = getNextPendingActions();
-		updateTimeForWaitingNets(currentPendingTime);
+		updateTimeForWaitingNets(currentPendingTime); //fast-forward nets to next time.
+		
 		for (AbstractTimedTransition transition:transitions){
-			transition.finishWork();
+			transition.finishWork(); //inform
 		}
 		pending.remove(currentPendingTime);
 		
@@ -135,7 +147,6 @@ public class WorkflowTimeMachine {
 	
 	protected void updateTimeForWaitingNets(double time) throws PNException{
 		for(TimedNet net:nets.values()){
-		//	if(net.getEnabledTransitions().isEmpty())
 			if(!net.isFinished())	
 				net.setCurrentTime(time); 
 		}

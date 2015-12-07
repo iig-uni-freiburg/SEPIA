@@ -9,10 +9,16 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ExecutionState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.WorkflowTimeMachine;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
@@ -25,7 +31,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	private boolean isWorking = false;
 
-	private List<String> usedResources = new ArrayList<>();
+	private List<String> usedResources = new ArrayList<>(); //keep list of used ressources to free them after execution
+	
+	//private Map<Double,ExecutionState> times = new HashMap<>();
+	
 
 	public AbstractTimedTransition(String name, String label) {
 		super(name, label);
@@ -33,21 +42,6 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	@Override
 	public synchronized void checkValidity() throws PNValidationException {
-
-		// try {
-		// List<String> subjects =
-		// net.getResourceContext().getSubjectsFor(getLabel());
-		// if(subjects==null||subjects.isEmpty())
-		// throw new PNValidationException("No available subject for
-		// "+getLabel()+" found");
-		// } catch (AccessContextException ex) {
-		// throw new PNValidationException("No available subject for
-		// "+getLabel()+" found",ex);
-		// } catch (NullPointerException e) {
-		// throw new PNValidationException("Transition has no correspopnding
-		// net",e);
-		// }
-
 		super.checkValidity();
 		// check availability of timeContext
 	}
@@ -86,7 +80,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		TimedMarking marking = (TimedMarking) net.getMarking();
 		List<String> resourceSet = net.getResourceContext().getRandomAllowedResourcesFor(getLabel(),true);
 		if(resourceSet==null||resourceSet.isEmpty()){
-			System.out.println(getName()+": Waiting for resources!");
+			//System.out.println(getName()+": Waiting for resources!");
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.WAIT, this);
 			return; //cannot fire: not available resources
 		}
 		//net.getTimeRessourceContext().blockResources(resourceSet);
@@ -102,8 +97,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			// add Pending Actions to marking, insert used resources
 			usedResources = resourceSet;
 			setWorking(true);
-			//marking.addPendingAction(getLabel(), neededTime+net.getCurrentTime());
 			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.START, this);
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
+
 
 		} else {
 			// fire normally, no blocking...
@@ -121,7 +118,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		return isWorking;
 	}
 	
-	/**puts tokens in outgoing places, frees up resources, forwards clock of underlying net to time**/
+	/**puts tokens in outgoing places, frees up resources**/
 	public void finishWork() throws PNException{
 		//create tokens in the net
 		for(E r:outgoingRelations.values()){
@@ -131,11 +128,18 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		//stop working
 		setWorking(false);
 		clearResourceUsage();
-		//net.setCurrentTime(time);
+		
 	}
 
 	public void setWorking(boolean working) {
 		this.isWorking = working;
+		if(working){
+			//StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.START, this);
+			StatisticListener.getInstance().ressourceUsageChange(net.getCurrentTime(), ExecutionState.START, this, usedResources);
+		} else {
+			//StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.END, this);
+			StatisticListener.getInstance().ressourceUsageChange(net.getCurrentTime(), ExecutionState.END, this, usedResources);
+		}
 	}
 
 	public List<String> getUsedResources() {

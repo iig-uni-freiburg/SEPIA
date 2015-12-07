@@ -6,19 +6,15 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeContext;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.SubjectContext;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
-import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IStatisticListener;
 
 /**
  *
@@ -30,13 +26,10 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	private static final long serialVersionUID = 7256025116225123745L;
 	protected double clock = 0;
 	private double deadline; 
-    //private SubjectContext accessContext;
-    //private ProcessContext accessControl;
-	//private TimeRessourceContext<?> timeRessourceContext;
 	private ITimeContext timeContext;
 	private IResourceContext resourceContext;
 	private SOABase accessContext;
-	
+
 	String resourceContextName, timeContextName, accesContextName;
     
 
@@ -100,6 +93,13 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	public T fire() throws PNException {
 		// get random transition
 		int max = getEnabledTransitions().size();
+		
+		if(max==1){ //no need for random number
+			T transition = getEnabledTransitions().get(0);
+			transition.fire();
+			return transition;
+		}
+		
 		if (max > 0) {
 			//get random next transition
 			T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
