@@ -45,6 +45,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		super.checkValidity();
 		// check availability of timeContext
 	}
+	
+	public AbstractTimedNet<?, ?, ?, ?> getNet() {
+		return net;
+	}
 
 	public AbstractTimedTransition(String name) {
 		super(name);
@@ -71,6 +75,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 		if (!isEnabled())
 			throw new PNException("Cannot fire transition " + this + ": not enabled");
+		if(isWorking())
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.BUSY, this);
 		try {
 			checkValidity();
 		} catch (PNValidationException e) {
@@ -80,8 +86,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		TimedMarking marking = (TimedMarking) net.getMarking();
 		List<String> resourceSet = net.getResourceContext().getRandomAllowedResourcesFor(getLabel(),true);
 		if(resourceSet==null||resourceSet.isEmpty()){
-			//System.out.println(getName()+": Waiting for resources!");
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.WAIT, this);
+			System.out.println(getName()+": Waiting for resources!");
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
 			return; //cannot fire: not available resources
 		}
 		//net.getTimeRessourceContext().blockResources(resourceSet);

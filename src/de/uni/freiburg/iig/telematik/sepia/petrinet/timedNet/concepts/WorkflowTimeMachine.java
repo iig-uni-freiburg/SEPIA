@@ -70,6 +70,12 @@ public class WorkflowTimeMachine {
 		netNames.add(net.getName());
 	}
 	
+	public void addAllNets(List<TimedNet> nets){
+		for(TimedNet net:nets){
+			addNet(net);
+		}
+	}
+	
 	public void removeNet(String netName){
 		nets.remove(netName);
 		netNames.remove(netName);
@@ -87,6 +93,7 @@ public class WorkflowTimeMachine {
 		HashMap<String, ArrayList<Double>> result = getResultMap();
 		
 		for (int i = 0;i<steps;i++){
+			if(i%5000==0)System.out.println(((double)i/steps)*100+"%");
 			simulateAll();
 			
 			//add results
@@ -99,7 +106,7 @@ public class WorkflowTimeMachine {
 		return result;
 	}
 	
-	public void simulateAll() {
+	protected void simulateAll() {
 		while (canSimulate()) {
 			try {
 				simulateSingleStep();

@@ -68,11 +68,6 @@ class TestRessourceContest implements IResourceContext{
 		return "Test-ResourceContext";
 	}
 
-	@Override
-	public void setName() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void blockResources(List<String> resources) {
@@ -118,6 +113,13 @@ class TestRessourceContest implements IResourceContext{
 
 	@Override
 	public void reset() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setName(String name) {
 		// TODO Auto-generated method stub
 		
 	}

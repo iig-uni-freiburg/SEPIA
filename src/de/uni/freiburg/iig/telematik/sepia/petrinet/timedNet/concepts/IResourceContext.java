@@ -2,11 +2,13 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
 
 import java.util.List;
 
-public interface IResourceContext {
+import de.invation.code.toval.misc.NamedComponent;
+
+public interface IResourceContext extends NamedComponent{
 	
 	public String getName();
 	
-	public void setName();
+	public void setName(String name);
 	
     public void blockResources(List<String> resources);
     

@@ -31,7 +31,7 @@ public class StatisticListener implements IStatisticListener{
 	public void transitionStateChange(double time, ExecutionState state, AbstractTimedTransition transition) {
 		if(!workingTimes.containsKey(transition.getLabel()))
 				workingTimes.put(transition.getLabel(), new LinkedList<>());
-		
+
 		workingTimes.get(transition.getLabel()).add(new AbstractMap.SimpleEntry<Double, ExecutionState>(time, state));
 		
 	}
@@ -54,6 +54,8 @@ public class StatisticListener implements IStatisticListener{
 		deadlineMisses.get(netName).add(new AbstractMap.SimpleEntry(time,missed));
 	}
 	
-	
+	class netWorkingTime {
+		private Map<String,List<Entry<Double, ExecutionState>>> workingTimes = new HashMap<>();
+	}
 
 }
