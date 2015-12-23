@@ -128,7 +128,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		if (max==0) return false;
 		if(isFinished()) return false;
 		for(T t:getEnabledTransitions()){
-			List<String>resources = resourceContext.getRandomAllowedResourcesFor(t.getLabel(), false);
+			List<String>resources = resourceContext.getRandomAvailableResourceSetFor(t.getLabel(), false);
 			if(resources!=null&&!resources.isEmpty()) return true;
 		}
 		return false;

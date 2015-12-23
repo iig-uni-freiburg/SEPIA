@@ -84,7 +84,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		}
 
 		TimedMarking marking = (TimedMarking) net.getMarking();
-		List<String> resourceSet = net.getResourceContext().getRandomAllowedResourcesFor(getLabel(),true);
+		List<String> resourceSet = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(),true);
 		if(resourceSet==null||resourceSet.isEmpty()){
 			System.out.println(getName()+": Waiting for resources!");
 			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);

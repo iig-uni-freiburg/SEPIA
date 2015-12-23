@@ -87,7 +87,7 @@ class TestRessourceContest implements IResourceContext{
 	}
 
 	@Override
-	public List<String> getRandomAllowedResourcesFor(String activity, boolean blockResources) {
+	public List<String> getRandomAvailableResourceSetFor(String activity, boolean blockResources) {
 		LinkedList<String> result = new LinkedList<>();
 		result.add("Gerd");
 		result.add("Hans");
