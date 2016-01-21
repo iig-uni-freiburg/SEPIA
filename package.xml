@@ -33,6 +33,7 @@
 
 	<!-- Source and destination directories -->
 	<property name="src.dir" value="${basedir}/src" />
+	<property name="res.dir" value="${basedir}/res" />
 	<property name="test.dir" value="${basedir}/test" />
 	<property name="target.dir" value="${basedir}/bin" />
 	<property name="target.dir.jar" value="${target.dir}/${artifact.name}-${version.name}" />
@@ -99,7 +100,11 @@
 				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
 		</jar>
-		<jar jarfile="${target.dir.jar}/${jar.sources.file.name}.jar" includes="**/*.java,*.txt" basedir="${src.dir}">
+		<jar jarfile="${target.dir.jar}/${jar.sources.file.name}.jar">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="${res.dir}" />
 			<manifest>
 				<attribute name="X-Date" value="${touch.time}" />
 			</manifest>
@@ -122,6 +127,7 @@
 			<fileset dir="${TOVAL.location}/bin/classes-ant" />
 			<fileset dir="${JAGAL.location}/bin/classes-ant" />
 			<fileset dir="${SEWOL.location}/bin/classes-ant" />
+			<fileset dir="${res.dir}" />
 			<zipfileset excludes="META-INF/*.SF" src="${JAGAL.location}/lib/jgraphx-3_1_2_1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/guava-16.0.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${SEWOL.location}/lib/collections-generic-4.01.jar" />
@@ -146,6 +152,7 @@
 		<echo>Compile classes...</echo>
 		<javac destdir="${classes.target.dir}" includeantruntime="false" verbose="true">
 			<src path="${src.dir}" />
+			<src path="${res.dir}" />
 			<classpath refid="SEPIA.classpath" />
 		</javac>
 		<copy includeemptydirs="false" todir="${classes.target.dir}">
@@ -166,6 +173,7 @@
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
 			</fileset>
+			<fileset dir="${res.dir}" />
 			<fileset dir="${TOVAL.location}/src">
 				<include name="**/*.java" />
 			</fileset>
@@ -212,6 +220,9 @@
 		<mkdir dir="${tests.target.dir}" />
 		<copy includeemptydirs="false" todir="${classes.target.dir}">
 			<fileset dir="${src.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+			<fileset dir="${res.dir}">
 				<exclude name="**/*.java" />
 			</fileset>
 		</copy>

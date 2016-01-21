@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<grammar ns="http://www.pnml.org/version-2009/grammar/pnml"
+	xmlns="http://relaxng.org/ns/structure/1.0"
+	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"> 
+
+	<a:documentation>
+		RELAX NG implementation of the Petri Net Type Definition for resource timed petri nets (RTP-nets).
+		This PNTD re-defines the value of nettype.uri for P/T-nets with place capacities and contexts for resources, time, and processes
+		and inherits the marking and annotations from the official PNML P/T-net definition.
+		
+		File name: rtpnet.pntd
+		Version: 2015
+		(c) 2015
+		Adrian Lange
+		IIG Telematics
+		University of Freiburg
+		Germany
+	</a:documentation>
+
+	<a:documentation>
+		The RTP-net type definition.
+		This document also declares its namespace.
+	</a:documentation>
+
+	<include href="http://ifnml.process-security.de/grammar/v1.0/ptnet.pntd"/>
+
+	<define name="nettype.uri" combine="choice">
+		<a:documentation>
+			The URI value for the net type attribute, declaring the type of RTP-nets.
+		</a:documentation>
+		<attribute name="type">
+			<value>http://ifnml.process-security.de/grammar/v1.0/rtpnet</value>
+		</attribute>
+	</define>
+
+	<define name="RTPResourceContext">
+		<a:documentation>
+			Name of the resource context.
+		</a:documentation>
+		<element name="resourcecontext">
+			<ref name="identifier.content"/>
+		</element>
+	</define>
+
+	<define name="RTPTimeContext">
+		<a:documentation>
+			Name of the time context.
+		</a:documentation>
+		<element name="timecontext">
+			<ref name="identifier.content"/>
+		</element>
+	</define>
+
+	<define name="RTPProcessContext">
+		<a:documentation>
+			Name of the process context.
+		</a:documentation>
+		<element name="processcontext">
+			<ref name="identifier.content"/>
+		</element>
+	</define>
+
+	<define name="page.content" combine="interleave">
+		<a:documentation>
+			Adds the names of the resource, time and process contexts.
+		</a:documentation>
+		<interleave>
+			<ref name="RTPResourceContext"/>
+			<ref name="RTPTimeContext"/>
+			<ref name="RTPProcessContext"/>
+		</interleave>
+	</define>
+
+</grammar>

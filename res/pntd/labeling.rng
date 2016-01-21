@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+    <a:documentation>
+        RELAX NG implementation for IF-Net labelings.
+        
+        File name: labeling.rng
+        Version: 2015
+        (c) 2015
+        Adrian Lange
+        IIG Telematics
+        University of Freiburg
+        Germany
+    </a:documentation>
+
+    <a:documentation>
+        Labeling of an IF-Net containing token labels, clearances and classifications.
+        Can be used with any IF-Net with the same transition identifiers, token colors and subjects.
+        Doesn't contain any graphical information.
+        <reference>
+            T. Stocker, F. Böhr: IF-Net: A Meta-model for Security-oriented Process Specification. University of Freiburg. 2013.
+        </reference>
+    </a:documentation>
+
+    <start>
+        <ref name="labeling.element"/>
+    </start>
+
+    <define name="labeling.element">
+        <element name="labeling">
+            <a:documentation>
+                A labeling document consists of classifications for transitions, labels for colors, clearances for subjects and a cross-reference of subjects and activities.
+            </a:documentation>
+            <ref name="identifier.content"/>
+            <ref name="labelingtype.uri"/>
+            <interleave>
+                <ref name="analysiscontext.content"/>
+                <ref name="defaultlevel.content"/>
+                <optional><ref name="classifications.content"/></optional>
+                <optional><ref name="labels.content"/></optional>
+                <optional><ref name="clearances.content"/></optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="identifier.content">
+        <a:documentation>
+            Identifier (id) declaration shared by all objects in any PNML model.
+            The ID data type is a SGML basic type and must follow some specifications (see http://www.w3.org/TR/html4/types.html#h-6.2).
+        </a:documentation>
+        <attribute name="id">
+            <data type="ID"/>
+        </attribute>
+    </define>
+
+    <define name="labelingtype.uri">
+        <a:documentation>
+            The labeling type (labelingtype.uri) of a labeling should be redefined in the grammar for new labeling types. The following value is a default.
+        </a:documentation>
+        <attribute name="type">
+            <value>http://ifnml.process-security.de/grammar/v1.0/labeling</value> 
+        </attribute>
+    </define>
+
+    <define name="classifications.content">
+        <a:documentation>
+            The parent element for the transition classifications.
+        </a:documentation>
+        <element name="classifications">
+            <zeroOrMore>
+                <ref name="classification.content"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="classification.content">
+        <a:documentation>
+            The element for the activity classification.
+        </a:documentation>
+        <element name="classification">
+            <interleave>
+                <element name="activity">
+                    <text/>
+                </element>
+                <ref name="securitydomainlabel.content"/>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="labels.content">
+        <a:documentation>
+            The parent element for the token labels.
+        </a:documentation>
+        <element name="tokenlabels">
+            <zeroOrMore>
+                <ref name="label.content"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="label.content">
+        <a:documentation>
+            The element for the token label.
+        </a:documentation>
+        <element name="tokenlabel">
+            <interleave>
+               <element name="color">
+                   <text/>
+               </element>
+                <ref name="securitydomainlabel.content"/>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="clearances.content">
+        <a:documentation>
+            The parent element for the subject clearances.
+        </a:documentation>
+        <element name="clearances">
+            <zeroOrMore>
+                <ref name="clearance.content"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="clearance.content">
+        <a:documentation>
+            The element for the subject clearance.
+        </a:documentation>
+        <element name="clearance">
+            <interleave>
+                <element name="subject">
+                    <text/>
+                </element>
+                <ref name="securitydomainlabel.content"/>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="securitydomainlabel.content">
+        <a:documentation>
+            A security domain label, represented as an enum value with the choice between "low" and "high".
+            Its sub-elements occur in any order.
+        </a:documentation>
+        <element name="securitydomain">
+            <ref name="securitydomain.choice"/>
+        </element>
+    </define>
+
+    <define name="analysiscontext.content">
+        <a:documentation>
+            The analysis context definition.
+        </a:documentation>
+        <element name="analysiscontext">
+            <text/>
+        </element>
+    </define>
+
+    <define name="defaultlevel.content">
+        <a:documentation>
+            The default security level definition.
+        </a:documentation>
+        <element name="defaultlevel">
+            <ref name="securitydomain.choice"/>
+        </element>
+    </define>
+
+    <define name="securitydomain.choice">
+        <a:documentation>
+            Security level definition.
+        </a:documentation>
+        <choice>
+            <value>low</value>
+            <value>high</value>
+        </choice>                       
+    </define>
+
+</grammar>
