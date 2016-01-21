@@ -22,7 +22,6 @@ import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.parser.XMLParserException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
-import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalTimedNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
@@ -75,6 +74,15 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 
 	/** Relax NG namespace */
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";
+        
+        private static final String PNTD_PATH = "/pntd/";
+        public static final String PTNET_PNTD = PNTD_PATH + "ptnet.pntd";
+        public static final String CPNET_PNTD = PNTD_PATH + "cpnet.pntd";
+        public static final String IFNET_PNTD = PNTD_PATH + "ifnet.pntd";
+        public static final String RTPNET_PNTD = PNTD_PATH + "rtpnet.pntd";
+        public static final String ANALYSISCONTEXT_RNG = PNTD_PATH + "analysiscontext.rng";
+        public static final String CONVENTIONS_RNG = PNTD_PATH + "conventions.rng";
+        public static final String LABELING_RNG = PNTD_PATH + "labeling.rng";
 
 	/**
 	 * Returns the net type name by its URI.
@@ -182,7 +190,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 			netType = NetType.PTNet;
 		}
 
-		if (netType!=NetType.RTPTnet && verifySchema) { //as long as scheme file for rtpn is unavailable
+		if (verifySchema) {
 			verifySchema(pnmlFile, NetType.getVerificationURL(netType));
 		}
 
@@ -268,8 +276,19 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 			throw new PNMLParserException(ErrorCode.VALIDATION_CONFIGURATION_ERROR, e.getMessage());
 		}
 		// Open stream to PNTD
-		URLConnection connection = pntdUrl.openConnection();
-		InputStream in = connection.getInputStream();
+                InputStream in = null;
+                if (pntdUrl.equals(NetType.getVerificationURL(NetType.PTNet))) {
+                        in = PNMLParser.class.getResourceAsStream(PTNET_PNTD);
+                } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.CPN))) {
+                        in = PNMLParser.class.getResourceAsStream(CPNET_PNTD);
+                } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.IFNet))) {
+                        in = PNMLParser.class.getResourceAsStream(IFNET_PNTD);
+                } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.RTPTnet))) {
+                        in = PNMLParser.class.getResourceAsStream(RTPNET_PNTD);
+                } else {
+                        URLConnection connection = pntdUrl.openConnection();
+                        in = connection.getInputStream();
+                }
 		// Create verifier with PNTD input stream and validate
 		Verifier verifier = null;
 		try {
