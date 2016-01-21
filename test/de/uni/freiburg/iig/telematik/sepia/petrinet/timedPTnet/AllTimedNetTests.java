@@ -6,21 +6,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.invation.code.toval.parser.ParserException;
-import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalTimedNet;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.AccessContextException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResource;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ITimeBehaviour;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.SubjectContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.TimeRessourceContext;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLTimedNetSerializer;
 import de.uni.freiburg.iig.telematik.sewol.accesscontrol.rbac.RBACModel;
 import de.uni.freiburg.iig.telematik.sewol.context.process.ProcessContext;
 
-public class allTimedNetTest {
+public class AllTimedNetTests {
 	
 	public static void main (String args[]) throws IOException, ParserException{
 		TimedNet net = getRTPNet();
@@ -87,7 +84,7 @@ class TestRessourceContest implements IResourceContext{
 	}
 
 	@Override
-	public List<String> getRandomAvailableResourceSetFor(String activity, boolean blockResources) {
+	public List<String> getRandomAllowedResourcesFor(String activity, boolean blockResources) {
 		LinkedList<String> result = new LinkedList<>();
 		result.add("Gerd");
 		result.add("Hans");
@@ -117,12 +114,10 @@ class TestRessourceContest implements IResourceContext{
 		
 	}
 
-
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
-	}
+        @Override
+        public void setName() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
 	
 }
