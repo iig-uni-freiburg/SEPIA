@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+
+	<a:documentation>
+		RELAX NG implementation of the IFNML Conventions.
+		These conventions are short cuts for label definitions of
+		the IFNML extension of PNML.
+		
+		File name: conventions.rng
+		Version: 2014
+		(c) 2014
+		Adrian Lange
+		IIG Telematics
+		University of Freiburg
+		Germany
+	</a:documentation>
+
+</grammar>

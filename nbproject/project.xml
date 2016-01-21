@@ -6,6 +6,7 @@
             <name>SEPIA</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.res.dir" name="Resources"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

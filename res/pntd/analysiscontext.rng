@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+    <a:documentation>
+        RELAX NG implementation for IF-Net analysis contexts.
+        
+        File name: analysiscontext.rng
+        Version: 2015
+        (c) 2015
+        Adrian Lange
+        IIG Telematics
+        University of Freiburg
+        Germany
+    </a:documentation>
+
+    <a:documentation>
+        Analysis context of an IF-Net containing subject descriptors.
+        <reference>
+            T. Stocker, F. Böhr: IF-Net: A Meta-model for Security-oriented Process Specification. University of Freiburg. 2013.
+        </reference>
+    </a:documentation>
+
+    <start>
+        <ref name="analysiscontext.element"/>
+    </start>
+
+    <define name="analysiscontext.element">
+        <element name="analysiscontext">
+            <a:documentation>
+                A analysis context document consists of classifications for transitions, labels for colors, clearances for subjects and a cross-reference of subjects and activities.
+            </a:documentation>
+            <ref name="identifier.content"/>
+            <ref name="analysiscontexttype.uri"/>
+            <interleave>
+                <ref name="acmodel.content"/>
+                <optional><ref name="subjectdescriptors.content"/></optional>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="identifier.content">
+        <a:documentation>
+            Identifier (id) declaration shared by all objects in any PNML model.
+            The ID data type is a SGML basic type and must follow some specifications (see http://www.w3.org/TR/html4/types.html#h-6.2).
+        </a:documentation>
+        <attribute name="id">
+            <data type="ID"/>
+        </attribute>
+    </define>
+
+    <define name="analysiscontexttype.uri">
+        <a:documentation>
+            The analysis context type (analysiscontexttype.uri) of a analysis context should be redefined in the grammar for a new analysis context type. The following value is a default.
+        </a:documentation>
+        <attribute name="type">
+            <value>http://ifnml.process-security.de/grammar/v1.0/analysiscontext</value> 
+        </attribute>
+    </define>
+
+    <define name="subjectdescriptors.content">
+        <a:documentation>
+            The parent element of the cross-reference of activities and their subject.
+        </a:documentation>
+        <element name="subjectdescriptors">
+            <zeroOrMore>
+                <ref name="subjectdescriptor.content"/>
+            </zeroOrMore>
+        </element>
+    </define>
+
+    <define name="subjectdescriptor.content">
+        <a:documentation>
+            A single cross-reference of activities and their subject.
+        </a:documentation>
+        <element name="subjectdescriptor">
+            <interleave>
+                <element name="activity">
+                    <text/>
+                </element>
+                <element name="subject">
+                    <text/>
+                </element>
+            </interleave>
+        </element>
+    </define>
+
+    <define name="acmodel.content">
+        <a:documentation>
+            The access control model definition.
+        </a:documentation>
+        <element name="acmodel">
+           <text/>
+        </element>
+    </define>
+
+</grammar>

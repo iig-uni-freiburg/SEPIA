@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<grammar ns="http://www.pnml.org/version-2009/grammar/pnml"
+	xmlns="http://relaxng.org/ns/structure/1.0"
+	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"> 
+
+	<a:documentation>
+		RELAX NG implementation of the Petri Net Type Definition for
+		Colored Petri Nets (CPN). This PNTD re-defines the value
+		of nettype.uri for CPNs.
+		
+		File name: cpnet.pntd
+		Version: 2014
+		(c) 2014
+		Adrian Lange
+		IIG Telematics
+		University of Freiburg
+		Germany
+	</a:documentation>
+
+	<a:documentation>
+		The CPN type definition.
+		This document also declares its namespace.
+		<reference>
+			T. Stocker, F. Böhr: IF-Net: A Meta-model for Security-oriented Process Specification. University of Freiburg. 2013.
+		</reference>
+	</a:documentation>
+
+	<include href="http://www.pnml.org/version-2009/grammar/conventions.rng"/>
+
+	<include href="http://www.pnml.org/version-2009/grammar/pnmlcoremodel.rng"/>
+
+	<define name="nettype.uri" combine="choice">
+		<a:documentation>
+			The URI value for the net type attribute, declaring the type of CPNs.
+		</a:documentation>
+		<attribute name="type">
+			<value>http://ifnml.process-security.de/grammar/v1.0/cpnet</value>
+		</attribute>
+	</define>
+
+	<define name="CPMarking">
+		<a:documentation>
+			Label definition for the initial marking in CPNs.
+			It consists of the element initialMarking containing
+			an non-negative integer value for the amount of
+			control-flow tokens.
+		</a:documentation>
+		<element name="initialMarking">
+			<interleave>
+				<optional>
+					<element name="text">
+						<data type="nonNegativeInteger" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+					</element>
+				</optional>
+				<optional><ref name="ColorSet"/></optional>
+				<ref name="annotationstandard.content"/>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="CPArcAnnotation">
+		<a:documentation>
+			Label definition for the arc inscriptions in CPNs.
+			It consists of the element inscription containing
+			an non-negative integer value for the amount of
+			control-flow tokens and a set of color token names.
+		</a:documentation>
+		<element name="inscription">
+			<interleave>
+				<optional>
+					<element name="text">
+						<data type="nonNegativeInteger" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+					</element>
+				</optional>
+				<optional><ref name="ColorSet"/></optional>
+				<ref name="annotationstandard.content"/>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="place.labels" combine="interleave">
+		<a:documentation>
+			A place of a CPN may have an initial marking of
+			control flow tokens and color tokens and a capacity
+			for the token colors.
+		</a:documentation>
+		<interleave>
+			<optional><ref name="CPMarking"/></optional>
+			<optional><ref name="Capacity"/></optional>
+		</interleave>
+	</define>
+
+	<define name="transition.labels" combine="interleave">
+		<a:documentation>
+			A transition t of a CPN n may be silent. Default is false.
+		</a:documentation>
+		<optional><ref name="IsSilent"/></optional>
+	</define>
+
+	<define name="arc.labels" combine="interleave">
+		<a:documentation>
+			An arc of a colored petri net may have a color inscription.
+		</a:documentation>
+		<optional><ref name="CPArcAnnotation"/></optional>
+	</define>
+
+	<define name="page.content" combine="interleave">
+		<a:documentation>
+			Adds a list of color labels with their specific RGB representation.
+		</a:documentation>
+		<ref name="TokenColors"/>
+	</define>
+        
+        <!-- CONVENTIONS -->
+
+	<define name="colorlabel.content">
+		<a:documentation>
+			A color label, represented as a string value.
+			Its sub-elements occur in any order.
+		</a:documentation>
+		<element name="color">
+			<text/>
+		</element>
+	</define>
+
+	<define name="ColorSet">
+		<a:documentation>
+			Color set used in the initial marking of places and the inscription of arcs.
+			It consists of color elements for each color other than black.
+		</a:documentation>
+		<element name="colors">
+			<interleave>
+				<zeroOrMore>
+					<ref name="colorlabel.content"/>
+				</zeroOrMore>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="subjectannotation.content">
+		<a:documentation>
+			An annotation graphics  element for the subject descriptor of a transition.
+			Its sub-elements occur in any order.
+			It contains the standard annotation content.
+		</a:documentation>
+		<element name="subjectgraphics">
+			<ref name="annotationstandard.content"/>
+		</element>
+	</define>
+
+	<define name="accessmodelabel.content">
+		<a:documentation>
+			An access mode label, represented as some boolean values.
+			Its sub-elements occur in any order.
+		</a:documentation>
+		<element name="accessmodes">
+			<interleave>
+				<optional>
+					<element name="read">
+						<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+					</element>
+				</optional>
+				<optional>
+					<element name="write">
+						<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+					</element>
+				</optional>
+				<optional>
+					<element name="delete">
+						<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+					</element>
+				</optional>
+				<optional>
+					<element name="create">
+						<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+					</element>
+				</optional>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="transitiontypelabel.content">
+		<a:documentation>
+			A transition type label, represented as an
+			enum value with the choice between "regular"
+			and "declassification".
+			Its sub-elements occur in any order.
+		</a:documentation>
+		<element name="transitiontype">
+			<choice>
+				<value>regular</value>
+				<value>declassification</value>
+			</choice>
+		</element>
+	</define>
+
+	<define name="TokenColors">
+		<a:documentation>
+			A list assigning a RGB color representation to each token label.
+		</a:documentation>
+		<element name="tokencolors">
+			<oneOrMore>
+				<ref name="TokenColor"/>
+			</oneOrMore>
+		</element>
+	</define>
+
+	<define name="TokenColor">
+		<a:documentation>
+			A list entry assigning a RGB color representation to a token label.
+		</a:documentation>
+		<element name="tokencolor">
+			<interleave>
+				<ref name="colorlabel.content"/>
+				<ref name="rgbcolor.content"/>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="rgbcolor.content">
+		<a:documentation>
+			A RGB color element containing an integer value for red, green and blue.
+			Its sub-elements occur in any order.
+		</a:documentation>
+		<element name="rgbcolor">
+			<interleave>
+				<element name="r"><ref name="rgbcolor.data"/></element>
+				<element name="g"><ref name="rgbcolor.data"/></element>
+				<element name="b"><ref name="rgbcolor.data"/></element>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="rgbcolor.data">
+		<a:documentation>
+			A color value must be an integer value of the interval [0; 255].
+		</a:documentation>
+		<data type="nonNegativeInteger" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+			<param name='minInclusive'>0</param>
+			<param name='maxInclusive'>255</param>
+		</data>
+	</define>
+
+	<define name="ColorCapacity">
+		<a:documentation>
+			A list entry for places assigning a token color to capacity.
+		</a:documentation>
+		<element name="colorcapacity">
+			<interleave>
+				<ref name="colorlabel.content"/>
+				<element name="capacity">
+					<data type="positiveInteger" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+				</element>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="Capacity">
+		<a:documentation>
+			A list declaring the capacity per token color for a place.
+		</a:documentation>
+		<element name="capacities">
+			<zeroOrMore>
+				<ref name="ColorCapacity"/>
+			</zeroOrMore>
+		</element>
+	</define>
+
+	<define name="IsSilent">
+		<a:documentation>
+			The silent element can contain either the value true or false.
+		</a:documentation>
+		<element name="silent">
+			<choice>
+				<value>true</value>
+				<value>false</value>
+			</choice>
+		</element>
+	</define>
+
+</grammar>
