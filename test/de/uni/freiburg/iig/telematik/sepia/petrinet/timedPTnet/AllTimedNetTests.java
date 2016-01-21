@@ -84,7 +84,7 @@ class TestRessourceContest implements IResourceContext{
 	}
 
 	@Override
-	public List<String> getRandomAllowedResourcesFor(String activity, boolean blockResources) {
+	public List<String> getRandomAvailableResourceSetFor(String activity, boolean blockResources) {
 		LinkedList<String> result = new LinkedList<>();
 		result.add("Gerd");
 		result.add("Hans");
@@ -115,11 +115,9 @@ class TestRessourceContest implements IResourceContext{
 	}
 
         @Override
-        public void setName() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public void setName(String name) {
+                throw new UnsupportedOperationException("Not supported yet."); // TODO
         }
-
-	
 }
 
 class TestTimedResourceContext implements TimeRessourceContext{
