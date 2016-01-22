@@ -27,6 +27,8 @@ import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
+import static de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.AnalysisContextParser.ANALYSIS_CONTEXT_SCHEMA;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.LabelingParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.timedNet.PNMLTimedNetParser;
@@ -285,6 +287,10 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
                         in = PNMLParser.class.getResourceAsStream(IFNET_PNTD);
                 } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.RTPTnet))) {
                         in = PNMLParser.class.getResourceAsStream(RTPNET_PNTD);
+                } else if (pntdUrl.equals(new URL(ANALYSIS_CONTEXT_SCHEMA))) {
+                        in = PNMLParser.class.getResourceAsStream(ANALYSISCONTEXT_RNG);
+                } else if (pntdUrl.equals(new URL(LabelingParser.LABELING_SCHEMA))) {
+                        in = PNMLParser.class.getResourceAsStream(LABELING_RNG);
                 } else {
                         URLConnection connection = pntdUrl.openConnection();
                         in = connection.getInputStream();
