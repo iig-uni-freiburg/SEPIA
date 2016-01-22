@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>de.uni.freiburg.iig.telematik</groupId>
 		<artifactId>tools</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.2</version>
 	</parent>
 	<artifactId>SEPIA</artifactId>
 	<packaging>jar</packaging>
@@ -38,17 +38,17 @@
 		<dependency>
 			<groupId>de.invation.code</groupId>
 			<artifactId>TOVAL</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>de.uni.freiburg.iig.telematik</groupId>
 			<artifactId>JAGAL</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>de.uni.freiburg.iig.telematik</groupId>
 			<artifactId>SEWOL</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.msv</groupId>
@@ -64,27 +64,11 @@
 		<testOutputDirectory>bin/tests</testOutputDirectory>
 		<directory>bin</directory>
 
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>res</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+                <resources>
+                        <resource>
+                                <directory>res</directory>
+                        </resource>
+                </resources>
 
 		<pluginManagement>
 			<plugins>
