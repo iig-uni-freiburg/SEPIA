@@ -34,6 +34,45 @@
 		</attribute>
 	</define>
 
+	<define name="Capacity">
+		<a:documentation>
+			A list declaring the capacities for a place. By default it just contains an element capacity for the overall place capacity.
+		</a:documentation>
+		<element name="capacity">
+			<data type="positiveInteger" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+		</element>
+	</define>
+
+	<define name="place.labels" combine="interleave">
+		<a:documentation>
+			A place p of a P/T-net n may have a capacity.
+		</a:documentation>
+		<interleave>
+			<optional><ref name="Capacity"/></optional>
+		</interleave>
+	</define>
+
+	<define name="IsSilent">
+		<a:documentation>
+			The silent element can contain either the value true or false.
+		</a:documentation>
+		<element name="silent">
+			<choice>
+				<value>true</value>
+				<value>false</value>
+			</choice>
+		</element>
+	</define>
+
+	<define name="transition.labels" combine="interleave">
+		<a:documentation>
+			A transition t of a P/T-net n may be silent. Default is false.
+		</a:documentation>
+		<interleave>
+			<optional><ref name="IsSilent"/></optional>
+		</interleave>
+	</define>
+
 	<define name="RTPResourceContext">
 		<a:documentation>
 			Name of the resource context.
