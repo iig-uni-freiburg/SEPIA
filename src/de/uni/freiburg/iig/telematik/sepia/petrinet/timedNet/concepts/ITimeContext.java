@@ -1,6 +1,8 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
 
-public interface ITimeContext {
+import de.invation.code.toval.misc.NamedComponent;
+
+public interface ITimeContext extends NamedComponent{
 	
 	public String getName();
 	
