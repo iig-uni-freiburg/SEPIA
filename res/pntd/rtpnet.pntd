@@ -23,7 +23,7 @@
 		This document also declares its namespace.
 	</a:documentation>
 
-	<include href="http://ifnml.process-security.de/grammar/v1.0/ptnet.pntd"/>
+	<include href="http://www.pnml.org/version-2009/grammar/ptnet.pntd"/>
 
 	<define name="nettype.uri" combine="choice">
 		<a:documentation>
