@@ -283,7 +283,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public void setCurrentTime(double time) throws PNException {
 		if(time<clock)
-			throw new PNException("Cannot go back in time!");
+			throw new PNException("Cannot go back in time! Nets current time is: "+clock+" requested "+time);
 		if (isFinished())
 			throw new PNException("This nets execution has finished!");
 		clock=time;
