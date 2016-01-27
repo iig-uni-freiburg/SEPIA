@@ -41,17 +41,28 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 	protected void addHeader() {
 		// Add resource context name
 		Element resourceContextElement = getSupport().createElement(resourceContext);
-		resourceContextElement.setTextContent(petriNet.getResourceContextName());
+		String resourceContextName = petriNet.getResourceContextName();
+		if (resourceContextName==null|| resourceContextName.isEmpty())
+			resourceContextName="nullResourceContext";
+		resourceContextElement.setAttribute("id", resourceContextName);
 		getSupport().getNetElement().appendChild(resourceContextElement);
 		
 		// Add time context name
 		Element timeContextElement = getSupport().createElement(timeContext);
-		timeContextElement.setTextContent(petriNet.getTimeContextName());
+		String timeContextName = petriNet.getTimeContextName();
+		if (timeContextName==null|| timeContextName.isEmpty())
+			timeContextName="nullTimeContext";
+		//timeContextElement.setTextContent(petriNet.getTimeContextName());
+		timeContextElement.setAttribute("id", timeContextName);
 		getSupport().getNetElement().appendChild(timeContextElement);
 		
 		// Add processContext (AccessContext)
 		Element processContextElement = getSupport().createElement(processContext);
-		processContextElement.setTextContent(petriNet.getAccessContextName());
+		String processContextName = petriNet.getAccessContextName();
+		if(processContextName==null||processContextName.isEmpty())
+			processContextName="nullProcessContext";
+		//processContextElement.setTextContent(petriNet.getAccessContextName());
+		processContextElement.setAttribute("id", processContextName);
 		getSupport().getNetElement().appendChild(processContextElement);
 	}
 

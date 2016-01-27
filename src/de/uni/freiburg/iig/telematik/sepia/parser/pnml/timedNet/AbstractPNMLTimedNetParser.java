@@ -1,6 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml.timedNet;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -27,9 +28,17 @@ G extends AbstractTimedNetGraphics<P, T, F, M>> extends AbstractPNMLPTNetParser<
 	        super.parseDocument(pnmlDocument);
 	        
 	        //read context names
-	        net.setProcesContextName(getNodeContent(PNMLTimedNetSerializer.processContext, pnmlDocument));
-	        net.setTimeContextName(getNodeContent(PNMLTimedNetSerializer.timeContext, pnmlDocument));
-	        net.setResourceContextName(getNodeContent(PNMLTimedNetSerializer.resourceContext, pnmlDocument));
+	        Element processContextElement = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.processContext).item(0);
+	        String processContextName = processContextElement.getAttribute("id");
+	        net.setProcesContextName(processContextName);
+
+	        Element timeContextElement = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.timeContext).item(0);
+	        String timeContextName = timeContextElement.getAttribute("id");
+	        net.setTimeContextName(timeContextName);
+	        
+	        Element resourceContextElement = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.resourceContext).item(0);
+	        String resourceContextName = resourceContextElement.getAttribute("id");
+	        net.setResourceContextName(resourceContextName);
 	        
 	 }
 	 

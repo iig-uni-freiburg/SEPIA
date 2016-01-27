@@ -67,6 +67,8 @@ public enum NetType {
                                         return new URL(CPNURI + ".pntd");
                                 case IFNet:
                                         return new URL(IFNetURI + ".pntd");
+                                case RTPTnet:
+                                		return new URL(RTPTnetURI+".pntd");
                                 default:
                                         return null;
                         }
