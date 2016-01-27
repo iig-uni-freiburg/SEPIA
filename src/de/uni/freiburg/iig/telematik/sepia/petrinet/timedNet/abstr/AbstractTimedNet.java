@@ -189,6 +189,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public void setTimeContext(ITimeContext context){
 		this.timeContext=context;
+		timeContextName=context.getName();
 	}
 
 	public void setProcesContextName(String procesContextName) {
@@ -239,6 +240,34 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     			" ProcessContext: "+getAccessContextName();
     }
     
+	@Override
+	public boolean addTransition(String transitionName, boolean notifyListeners) {
+		boolean result = super.addTransition(transitionName,notifyListeners);
+		getTransition(transitionName).setNet(this);
+		return result;
+	}
+
+	@Override
+	public boolean addTransition(String transitionName, String transitionLabel) {
+		boolean result = super.addTransition(transitionName, transitionLabel);
+		getTransition(transitionName).setNet(this);
+		return result;
+	}
+
+	@Override
+	public boolean addTransition(String transitionName, String transitionLabel, boolean notifyListeners) {
+		boolean result = super.addTransition(transitionName, transitionLabel, notifyListeners);
+		getTransition(transitionName).setNet(this);
+		return result;
+	}
+
+	@Override
+	protected boolean addTransition(T transition, boolean notifyListeners) {
+		boolean result = super.addTransition(transition, notifyListeners);
+		getTransition(transition.getName()).setNet(this);
+		return result;
+	}
+
 	@Override
 	public void reset() {
 		super.reset();

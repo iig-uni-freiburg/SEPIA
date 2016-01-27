@@ -40,6 +40,10 @@ G extends AbstractTimedNetGraphics<P, T, F, M>> extends AbstractPNMLPTNetParser<
 	        String resourceContextName = resourceContextElement.getAttribute("id");
 	        net.setResourceContextName(resourceContextName);
 	        
+	        for(T transition:net.getTransitions()){
+	        	transition.setNet(net);
+	        }
+	        
 	 }
 	 
 	 protected String getNodeContent(String tagName, Document pnmlDocument){

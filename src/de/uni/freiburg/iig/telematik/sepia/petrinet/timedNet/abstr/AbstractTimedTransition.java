@@ -83,7 +83,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			throw new PNException("Cannot fire transition " + this + ": not in valid state [" + e.getMessage() + "]");
 		}
 
-		TimedMarking marking = (TimedMarking) net.getMarking();
+		//TimedMarking marking = (TimedMarking) net.getMarking();
 		List<String> resourceSet = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(),true);
 		if(resourceSet==null||resourceSet.isEmpty()){
 			System.out.println(getName()+": Waiting for resources!");
