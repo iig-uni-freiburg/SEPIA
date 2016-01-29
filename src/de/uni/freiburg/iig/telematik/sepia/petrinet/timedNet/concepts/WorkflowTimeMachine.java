@@ -45,6 +45,17 @@ public class WorkflowTimeMachine {
 		
 	}
 	
+	public void removeNetFromSimulation(String netName){
+		nets.remove(netName);
+		reset();
+		
+	}
+	
+	public void clearAllNets(){
+		nets.clear();
+		reset();
+	}
+	
 	public List<AbstractTimedTransition> getNextPendingActions(){
 		return pending.firstEntry().getValue();
 	}
@@ -117,7 +128,7 @@ public class WorkflowTimeMachine {
 
 		if (!allNetsFinished()) {
 			System.out.println("Error: a net is not finished");
-			throw new RuntimeException("Not all nets finished!");
+			throw new RuntimeException("Not all nets finished!");  
 		}
 	}
 	
@@ -141,14 +152,18 @@ public class WorkflowTimeMachine {
 	
 	private void simulateNextPendingAction() throws PNException {
 		double currentPendingTime=getNextPendingTime();
+		time = currentPendingTime;
 		
 		List<AbstractTimedTransition>transitions = getNextPendingActions();
+		
+		
 		updateTimeForWaitingNets(currentPendingTime); //fast-forward nets to next time.
 		
 		for (AbstractTimedTransition transition:transitions){
 			transition.finishWork(); //inform
 		}
 		pending.remove(currentPendingTime);
+		//System.out.println(pending.toString());
 		
 	}
 	
@@ -197,6 +212,8 @@ public class WorkflowTimeMachine {
 			actions.add(t);
 			pending.put(timePoint, actions);
 		}
+		
+			//System.out.println(pending.toString());
 	}
 	
 	public HashMap<String, TimedNet> getNets(){

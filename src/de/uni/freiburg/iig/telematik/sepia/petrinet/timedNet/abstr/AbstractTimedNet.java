@@ -5,6 +5,8 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -91,18 +93,21 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	/**fires a random enabled transition. If no transition is enabled it will check pending operations until a transition is enabled
 	 * @throws PNException if even after the last pending action no transition is enabled**/
 	public T fire() throws PNException {
+		
+		List<T> nonWorking = getEnabledAndNonWorkingTransitions();
+		
 		// get random transition
-		int max = getEnabledTransitions().size();
+		int max = nonWorking.size();
 		
 		if(max==1){ //no need for random number
-			T transition = getEnabledTransitions().get(0);
+			T transition = nonWorking.get(0);
 			transition.fire();
 			return transition;
 		}
 		
 		if (max > 0) {
 			//get random next transition
-			T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
+			T transition = nonWorking.get(ThreadLocalRandom.current().nextInt(0, max));
 			//T transition = getEnabledTransitions().get(r.nextInt(max));
 			transition.fire();
 			return transition;
@@ -123,13 +128,24 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		throw new PNException("Cannot fire any transition.");
 	}
 	
+	private List<T> getEnabledAndNonWorkingTransitions() {
+		List<T> enabled = getEnabledTransitions();
+		List<T> notWorking = new ArrayList<>(enabled.size());
+		for (T transition: enabled){
+			if(!transition.isWorking())
+				notWorking.add(transition);
+		}
+		return Collections.unmodifiableList(notWorking);
+	}
+
 	public boolean canFire(){
 		int max = getEnabledTransitions().size();
 		if (max==0) return false;
 		if(isFinished()) return false;
 		for(T t:getEnabledTransitions()){
 			List<String>resources = resourceContext.getRandomAvailableResourceSetFor(t.getLabel(), false);
-			if(resources!=null&&!resources.isEmpty()) return true;
+			if(resources!=null&&!resources.isEmpty()&&!t.isWorking()) 
+					return true;
 		}
 		return false;
 	}

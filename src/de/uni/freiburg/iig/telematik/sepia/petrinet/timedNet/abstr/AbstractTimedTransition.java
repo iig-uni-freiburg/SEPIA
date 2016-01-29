@@ -75,8 +75,10 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 		if (!isEnabled())
 			throw new PNException("Cannot fire transition " + this + ": not enabled");
-		if(isWorking())
+		if(isWorking()){
 			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.BUSY, this);
+			throw new PNException("Transition "+this+" is currently working");
+		}
 		try {
 			checkValidity();
 		} catch (PNValidationException e) {
@@ -98,11 +100,12 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			p.getPlace().removeTokens(p.getConstraint());
 		}
 
-		if (net.getTimeContext().containsActivity(getLabel())) {
+		if (net.getTimeContext().containsActivity(getLabel())&&net.getTimeContext().getTimeFor(getLabel())>0) {
 			double neededTime = net.getTimeContext().getTimeFor(getLabel());
 			// add Pending Actions to marking, insert used resources
 			usedResources = resourceSet;
 			setWorking(true);
+
 			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
 			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.START, this);
 			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
@@ -155,6 +158,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	public void clearResourceUsage() {
 		if(usedResources!=null){
 			net.getResourceContext().unBlockResources(usedResources);
+			//System.out.println(net.getName()+"("+getLabel()+"): Resources unblocked -> "+usedResources.toString());
 			this.usedResources.clear();
 		}
 	}
