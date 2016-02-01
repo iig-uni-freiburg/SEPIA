@@ -16,7 +16,7 @@ public interface IResourceContext extends NamedComponent {
 
         public void unBlockResources(List<String> resources);
 
-        public List<List<String>> getAllowedResourcesFor(String activity);
+        public List<String> getAllowedResourcesFor(String activity);
 
         public List<String> getRandomAvailableResourceSetFor(String activity, boolean blockResources);
 

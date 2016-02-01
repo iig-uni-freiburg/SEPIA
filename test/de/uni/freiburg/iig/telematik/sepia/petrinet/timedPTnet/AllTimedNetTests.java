@@ -79,7 +79,7 @@ class TestRessourceContest implements IResourceContext{
 	}
 
 	@Override
-	public List<List<String>> getAllowedResourcesFor(String activity) {
+	public List<String> getAllowedResourcesFor(String activity) {
 		return null;
 	}
 
