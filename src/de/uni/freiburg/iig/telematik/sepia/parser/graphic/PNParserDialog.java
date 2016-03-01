@@ -39,12 +39,11 @@ public class PNParserDialog extends JDialog {
 
 	private static final long serialVersionUID = -1556400321094068143L;
 
-	private JComboBox formatBox = null;
+	private JTextField formatBox = null;
 	private JTextField pnPathField = null;
 	private AbstractGraphicalPN petriNet = null;
 	private JButton browseButton = null;
 	private JButton okButton = null;
-	private JButton parseButton = null;
 	private JPanel panelButtons = null;
 	private JPanel panelInput = null;
 	private final JPanel centerPanel = new JPanel(new BorderLayout());
@@ -101,12 +100,12 @@ public class PNParserDialog extends JDialog {
 			inputFormatLabel.setHorizontalAlignment(SwingConstants.TRAILING);
 			horizGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(inputFileLabel).addComponent(inputFormatLabel));
 			horizGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(getPNPathField()).addComponent(getFormatBox()));
-			horizGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(getBrowseButton()).addComponent(getParseButton()));
+			horizGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(getBrowseButton()));
 			layout.setHorizontalGroup(horizGroup);
 			
 			SequentialGroup verticalGroup = layout.createSequentialGroup();
 			verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(inputFileLabel).addComponent(getPNPathField()).addComponent(getBrowseButton()));
-			verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(inputFormatLabel).addComponent(getFormatBox()).addComponent(getParseButton()));
+			verticalGroup.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(inputFormatLabel).addComponent(getFormatBox()));
 			layout.setVerticalGroup(verticalGroup);
 		}
 		return panelInput;
@@ -152,10 +151,10 @@ public class PNParserDialog extends JDialog {
 	
 	private void adjustParameterPanel(){
 		parameterPanel.removeAll();
-		switch(getFormat()){
-		case PETRIFY:
+		switch(getFormatBox().getText()){
+		case "Petrifiy":
 			break;
-		case PNML:
+		case "PNML":
 			parameterPanel.add(pnmlParameterPanel, BorderLayout.CENTER);
 			break;
 		}
@@ -173,45 +172,37 @@ public class PNParserDialog extends JDialog {
 			        if (returnVal == JFileChooser.APPROVE_OPTION) {
 			            File file = pnChooser.getSelectedFile();
 			            getPNPathField().setText(file.getAbsolutePath());
-						getFormatBox().setSelectedItem(PNParsing.guessFormat(file));
+						getFormatBox().setText(PNParsing.guessFormat(file).toString());
+						getFormatBox().setEnabled(false);
+						getFormatBox().setVisible(true);
+						
+						// parse
+						if(getPNFileName() == null || getPNFileName().isEmpty()){
+							JOptionPane.showMessageDialog(PNParserDialog.this, "Please choose an input file first!", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
+							return;
+						}	
+						switch(getParsingFormat()){
+						case PETRIFY:
+							//TODO
+							break;
+						case PNML:
+							PNMLParser parser = new PNMLParser();
+							getPNFileName();
+							try {
+								petriNet = parser.parse(getPNFileName(), pnmlParameterPanel.requireNetType(), pnmlParameterPanel.validation());
+								transitionPanel.update(petriNet.getPetriNet());
+							} catch (IOException | ParserException ex) {
+								JOptionPane.showMessageDialog(PNParserDialog.this, "Exception in parsing procedure:\nReason: "+ex.getMessage(), "Parsing Exception", JOptionPane.ERROR_MESSAGE);						
+							}
+							break;
+						}
 			        }
 				}
 			});
 		}
 		return browseButton;
 	}
-	
-	private JButton getParseButton(){
-		if(parseButton == null){
-			parseButton = new JButton("Parse");
-			parseButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(getPNFileName() == null || getPNFileName().isEmpty()){
-						JOptionPane.showMessageDialog(PNParserDialog.this, "Please choose an input file first!", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
-						return;
-					}	
-					switch(getParsingFormat()){
-					case PETRIFY:
-						//TODO
-						break;
-					case PNML:
-						PNMLParser parser = new PNMLParser();
-						getPNFileName();
-						try {
-							petriNet = parser.parse(getPNFileName(), pnmlParameterPanel.requireNetType(), pnmlParameterPanel.validation());
-							transitionPanel.update(petriNet.getPetriNet());
-						} catch (IOException | ParserException ex) {
-							JOptionPane.showMessageDialog(PNParserDialog.this, "Exception in parsing procedure:\nReason: "+ex.getMessage(), "Parsing Exception", JOptionPane.ERROR_MESSAGE);						
-						}
-						break;
-					}
-				}
-			});
-		}
-		return parseButton;
-	}
-	
+		
 	private String getPNFileName(){
 		return getPNPathField().getText();
 	}
@@ -224,24 +215,15 @@ public class PNParserDialog extends JDialog {
 		return pnPathField;
 	}
 
-	private JComboBox getFormatBox(){
+	private JTextField getFormatBox(){
 		if(formatBox == null){
-			formatBox = new JComboBox(PNParsingFormat.values());
-			formatBox.addItemListener(new ItemListener(){
-
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					adjustParameterPanel();
-					centerPanel.validate();
-				}
-				
-			});
+			formatBox = new JTextField("Petrify, PNML");
 		}
 		return formatBox;
 	}
 	
 	private PNParsingFormat getParsingFormat(){
-		return PNParsingFormat.valueOf(getFormatBox().getSelectedItem().toString());
+		return PNParsingFormat.valueOf(getFormatBox().toString());
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -254,9 +236,5 @@ public class PNParserDialog extends JDialog {
 		PNParserDialog dialog = new PNParserDialog(parentWindow);
 		return dialog.getPetriNet();
 	}
-	
-	private PNParsingFormat getFormat(){
-		return (PNParsingFormat) getFormatBox().getSelectedItem();
-	}
-	
+		
 }
