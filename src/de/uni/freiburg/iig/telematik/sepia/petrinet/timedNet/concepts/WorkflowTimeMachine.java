@@ -19,6 +19,7 @@ public class WorkflowTimeMachine {
 	TreeMap<Double, List<AbstractTimedTransition>> pending = new TreeMap<>(); //Time,<NetName,<PendingActions>>
 	HashMap<String,TimedNet> nets = new HashMap<>();
 	ArrayList<String> netNames=new ArrayList<>();
+	HashMap<String, ArrayList<Double>> result;
 	
 	protected WorkflowTimeMachine(){
 		time = 0.0;
@@ -100,7 +101,7 @@ public class WorkflowTimeMachine {
 		return result;
 	}
 	
-	public HashMap<String, ArrayList<Double>> simulateAll(int steps){
+	public HashMap<String, ArrayList<Double>> simulateAll(int steps) throws PNException {
 		HashMap<String, ArrayList<Double>> result = getResultMap();
 		
 		for (int i = 0;i<steps;i++){
@@ -114,16 +115,21 @@ public class WorkflowTimeMachine {
 			
 			resetAll();
 		}
+		this.result=result;
 		return result;
 	}
 	
-	protected void simulateAll() {
+	public boolean hasResult(){
+		return (result!=null && !result.isEmpty());
+	}
+	
+	public HashMap<String, ArrayList<Double>> getResult(){
+		return result;
+	}
+	
+	protected void simulateAll() throws PNException {
 		while (canSimulate()) {
-			try {
 				simulateSingleStep();
-			} catch (PNException e) {
-				e.printStackTrace();
-			}
 		}
 
 		if (!allNetsFinished()) {
@@ -147,6 +153,7 @@ public class WorkflowTimeMachine {
 		} else {
 			System.out.println("No more nets to simulating, no pending actions left");
 			System.out.println("All nets finished? "+allNetsFinished());
+			throw new PNException("No more nets can be simulated. Nets not finished. Nets bounded?");
 		}
 	}
 	

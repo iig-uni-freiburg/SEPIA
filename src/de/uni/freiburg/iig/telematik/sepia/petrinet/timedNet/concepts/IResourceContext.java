@@ -27,5 +27,7 @@ public interface IResourceContext extends NamedComponent {
         public boolean containsBlockedResources();
 
         public void reset();
+        
+        public void renameResource(String oldName, String newName);
 
 }

@@ -118,6 +118,13 @@ class TestRessourceContest implements IResourceContext{
         public void setName(String name) {
                 throw new UnsupportedOperationException("Not supported yet."); // TODO
         }
+
+
+		@Override
+		public void renameResource(String oldName, String newName) {
+			// TODO Auto-generated method stub
+			
+		}
 }
 
 class TestTimedResourceContext implements TimeRessourceContext{

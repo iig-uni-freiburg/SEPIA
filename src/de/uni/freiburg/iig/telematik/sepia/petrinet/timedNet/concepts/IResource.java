@@ -4,6 +4,8 @@ public interface IResource {
 	
 	public String getName();
 	
+	public void setName(String name);
+	
 	public boolean isAvailable();
 	
 	public void use();
