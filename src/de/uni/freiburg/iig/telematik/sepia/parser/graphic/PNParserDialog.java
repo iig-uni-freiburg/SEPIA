@@ -180,7 +180,7 @@ public class PNParserDialog extends JDialog {
 						if(getPNFileName() == null || getPNFileName().isEmpty()){
 							JOptionPane.showMessageDialog(PNParserDialog.this, "Please choose an input file first!", "Parameter Exception", JOptionPane.ERROR_MESSAGE);
 							return;
-						}	
+						}
 						switch(getParsingFormat()){
 						case PETRIFY:
 							//TODO
@@ -223,7 +223,7 @@ public class PNParserDialog extends JDialog {
 	}
 	
 	private PNParsingFormat getParsingFormat(){
-		return PNParsingFormat.valueOf(getFormatBox().toString());
+		return PNParsingFormat.valueOf(getFormatBox().getText());
 	}
 	
 	@SuppressWarnings("rawtypes")
