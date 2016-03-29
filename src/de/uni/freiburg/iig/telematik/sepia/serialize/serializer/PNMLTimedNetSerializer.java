@@ -22,6 +22,7 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 	public static final String resourceContext = "resourcecontext";
 	public static final String timeContext = "timecontext";
 	public static final String processContext = "processcontext";
+	public static final String recurringString = "isRecurring";
 
 	public PNMLTimedNetSerializer(AbstractGraphicalTimedNet<P, T, F, M, N, G> petriNet) {
 		super(petriNet);
@@ -64,6 +65,11 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 		//processContextElement.setTextContent(petriNet.getAccessContextName());
 		processContextElement.setAttribute("id", processContextName);
 		getSupport().getNetElement().appendChild(processContextElement);
+		
+		// Add recurring information
+		Element recurringContext = getSupport().createTextElement(recurringString, Boolean.toString(petriNet.isRecurring()));
+		getSupport().getNetElement().appendChild(recurringContext);
+		
 	}
 
 }

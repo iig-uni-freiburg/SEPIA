@@ -100,14 +100,27 @@
 		</element>
 	</define>
 
+	<define name="IsRecurring">
+        	<a:documentation>
+        		Whether this net should recur after it finished.
+        	</a:documentation>
+        	<element name="isRecurring">
+        		<choice>
+        			<value>true</value>
+        			<value>false</value>
+        		</choice>
+        	</element>
+        </define>
+
 	<define name="page.content" combine="interleave">
 		<a:documentation>
-			Adds the names of the resource, time and process contexts.
+			Adds the names of the resource, time and process contexts as well as the optional recurring value.
 		</a:documentation>
 		<interleave>
 			<ref name="RTPResourceContext"/>
 			<ref name="RTPTimeContext"/>
 			<ref name="RTPProcessContext"/>
+			<optional><ref name="IsRecurring"/></optional>
 		</interleave>
 	</define>
 

@@ -31,6 +31,8 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	private ITimeContext timeContext;
 	private IResourceContext resourceContext;
 	private SOABase accessContext;
+	
+	private boolean recurring;
 
 	String resourceContextName, timeContextName, accesContextName;
     
@@ -303,6 +305,14 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		if (isFinished())
 			throw new PNException("This nets execution has finished!");
 		clock=time;
+	}
+	
+	public boolean isRecurring(){
+		return recurring;
+	}
+	
+	public void setRecurring(boolean recurring){
+		this.recurring=recurring;
 	}
 
     

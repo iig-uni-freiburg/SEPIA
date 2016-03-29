@@ -141,6 +141,7 @@ public class WorkflowTimeMachine {
 	}
 	
 	public void simulateSingleStep() throws PNException{
+		//updateRecurringNets();
 		TimedNet net = drawRandomFireableNet();
 		if(net!=null){
 			//a net can fire
@@ -155,10 +156,19 @@ public class WorkflowTimeMachine {
 		} else {
 			System.out.println("No more nets to simulating, no pending actions left");
 			System.out.println("All nets finished? "+allNetsFinished());
-			throw new PNException("No more nets can be simulated. Nets not finished. Nets bounded?");
+			throw new PNException("No more nets to simulate. Nets not finished. Nets bounded and deadlock free?");
 		}
 	}
 	
+	/** reset any net that is recurring*/
+	private void updateRecurringNets() {
+		for (TimedNet net: nets.values()){
+			if(net.isFinished() && net.isRecurring())
+				net.reset();
+		}
+		
+	}
+
 	private void simulateNextPendingAction() throws PNException {
 		double currentPendingTime=getNextPendingTime();
 		time = currentPendingTime;
