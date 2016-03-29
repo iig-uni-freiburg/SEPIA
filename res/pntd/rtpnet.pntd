@@ -57,10 +57,7 @@
 			The silent element can contain either the value true or false.
 		</a:documentation>
 		<element name="silent">
-			<choice>
-				<value>true</value>
-				<value>false</value>
-			</choice>
+			<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
 		</element>
 	</define>
 
@@ -105,10 +102,7 @@
         		Whether this net should recur after it finished.
         	</a:documentation>
         	<element name="isRecurring">
-        		<choice>
-        			<value>true</value>
-        			<value>false</value>
-        		</choice>
+        		<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
         	</element>
         </define>
 
