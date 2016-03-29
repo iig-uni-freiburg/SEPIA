@@ -85,15 +85,20 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			throw new PNException("Cannot fire transition " + this + ": not in valid state [" + e.getMessage() + "]");
 		}
 
-		//TimedMarking marking = (TimedMarking) net.getMarking();
-		List<String> resourceSet = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(),true);
-		if(resourceSet==null||resourceSet.isEmpty()){
-			//System.out.println(getName()+": Waiting for resources!");
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
-			return; //cannot fire: not available resources
-		}
-		//net.getTimeRessourceContext().blockResources(resourceSet);
+		List<String> resourceSet;
 		
+		if (net.getResourceContext().needsResources(getLabel())) {
+			// TimedMarking marking = (TimedMarking) net.getMarking();
+			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
+			if (usedResources == null || usedResources.isEmpty()) {
+				// System.out.println(getName()+": Waiting for resources!");
+				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
+				return; // cannot fire: not available resources
+			}
+		} else {
+			usedResources = null;
+		}
+		// net.getTimeRessourceContext().blockResources(resourceSet);
 
 		// remove tokens
 		for (E p : getIncomingRelations()) {
@@ -103,7 +108,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		if (net.getTimeContext().containsActivity(getLabel())&&net.getTimeContext().getTimeFor(getLabel())>0) {
 			double neededTime = net.getTimeContext().getTimeFor(getLabel());
 			// add Pending Actions to marking, insert used resources
-			usedResources = resourceSet;
+			//usedResources = resourceSet;
 			setWorking(true);
 
 			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
@@ -112,8 +117,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 
 		} else {
-			// fire normally, no blocking...
-			net.getResourceContext().unBlockResources(resourceSet);
+			// fire normally, no blocking as this transition needs no time...
+			net.getResourceContext().unBlockResources(usedResources);
 			for (E r : outgoingRelations.values()) {
 				r.getPlace().addTokens(r.getConstraint());
 			}

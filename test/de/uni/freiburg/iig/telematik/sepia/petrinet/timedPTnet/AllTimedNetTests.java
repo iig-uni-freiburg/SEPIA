@@ -125,6 +125,12 @@ class TestRessourceContest implements IResourceContext{
 			// TODO Auto-generated method stub
 			
 		}
+
+
+		@Override
+		public boolean needsResources(String name) {
+			return true;
+		}
 }
 
 class TestTimedResourceContext implements TimeRessourceContext{

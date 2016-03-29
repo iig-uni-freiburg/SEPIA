@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.StatisticListener;
 
 public class WorkflowTimeMachine {
 	
@@ -93,7 +94,7 @@ public class WorkflowTimeMachine {
 		netNames.remove(netName);
 	}
 	
-	private HashMap<String, ArrayList<Double>> getResultMap(){
+	private HashMap<String, ArrayList<Double>> createResultMap(){
 		HashMap<String, ArrayList<Double>> result = new HashMap<>();
 		for(String s:nets.keySet()){ //initialize
 			result.put(s, new ArrayList<>());
@@ -102,10 +103,11 @@ public class WorkflowTimeMachine {
 	}
 	
 	public HashMap<String, ArrayList<Double>> simulateAll(int steps) throws PNException {
-		HashMap<String, ArrayList<Double>> result = getResultMap();
+		HashMap<String, ArrayList<Double>> result = createResultMap();
+		StatisticListener.getInstance().reset();
 		
 		for (int i = 0;i<steps;i++){
-			if(i%5000==0)System.out.println(((double)i/steps)*100+"%");
+			if(i%5000==0)System.out.println((i*100/steps)+"%");
 			simulateAll();
 			
 			//add results

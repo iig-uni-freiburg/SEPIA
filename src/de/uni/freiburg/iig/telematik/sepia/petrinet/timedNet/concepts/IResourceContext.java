@@ -29,5 +29,7 @@ public interface IResourceContext extends NamedComponent {
         public void reset();
         
         public void renameResource(String oldName, String newName);
+        
+        public boolean needsResources(String name);
 
 }
