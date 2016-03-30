@@ -54,6 +54,12 @@ public class StatisticListener implements IStatisticListener{
 		deadlineMisses.get(netName).add(new AbstractMap.SimpleEntry(time,missed));
 	}
 	
+	public void reset(){
+		workingTimes.clear();
+		deadlineMisses.clear();
+		resourceUsage.clear();
+	}
+	
 	class netWorkingTime {
 		private Map<String,List<Entry<Double, ExecutionState>>> workingTimes = new HashMap<>();
 	}

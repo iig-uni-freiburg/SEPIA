@@ -57,10 +57,7 @@
 			The silent element can contain either the value true or false.
 		</a:documentation>
 		<element name="silent">
-			<choice>
-				<value>true</value>
-				<value>false</value>
-			</choice>
+			<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
 		</element>
 	</define>
 
@@ -100,14 +97,24 @@
 		</element>
 	</define>
 
+	<define name="IsRecurring">
+        	<a:documentation>
+        		Whether this net should recur after it finished.
+        	</a:documentation>
+        	<element name="isRecurring">
+        		<data type="boolean" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"/>
+        	</element>
+        </define>
+
 	<define name="page.content" combine="interleave">
 		<a:documentation>
-			Adds the names of the resource, time and process contexts.
+			Adds the names of the resource, time and process contexts as well as the optional recurring value.
 		</a:documentation>
 		<interleave>
 			<ref name="RTPResourceContext"/>
 			<ref name="RTPTimeContext"/>
 			<ref name="RTPProcessContext"/>
+			<optional><ref name="IsRecurring"/></optional>
 		</interleave>
 	</define>
 
