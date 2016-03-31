@@ -34,6 +34,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	private boolean recurring;
 
+
 	String resourceContextName, timeContextName, accesContextName;
     
 
@@ -169,8 +170,9 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	/**return true if there is a token in one of the draining places**/
 	public boolean isFinished(){
 		for (P place: getDrainPlaces()){
-			if(place.getState()>=1) 
+			if(place.getState()>=1) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -301,7 +303,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public void setCurrentTime(double time) throws PNException {
 		if(time<clock)
-			throw new PNException("Cannot go back in time! Nets current time is: "+clock+" requested "+time);
+			throw new PNException(getName()+": Cannot go back in time! Current time: "+clock+", requested: "+time);
 		if (isFinished())
 			throw new PNException("This nets execution has finished!");
 		clock=time;
@@ -313,6 +315,21 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public void setRecurring(boolean recurring){
 		this.recurring=recurring;
+	}
+	
+	public AbstractTimedNet<P, T , F , M> clone(){
+		AbstractTimedNet<P, T , F , M> clone = (AbstractTimedNet<P, T, F, M>) super.clone();
+		clone.setTimeContext(getTimeContext());
+		clone.setResourceContext(getResourceContext());
+		clone.setProcesContextName(getAccessContextName());
+		clone.setDeadline(getDeadline());
+		clone.setRecurring(isRecurring());
+		clone.clock=clock;
+		for (T t: clone.getTransitions()){
+			t.setNet(clone);
+		}
+		
+		return clone;
 	}
 
     
