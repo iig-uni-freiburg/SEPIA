@@ -40,8 +40,6 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	protected void addHeader() {
 	    Element tokenColorsElement = getSupport().createElement("tokencolors");
 	    for(String colorName: getPetriNet().getTokenColors()){
-	    	if(colorName.equals(getPetriNet().defaultTokenColor()))
-	    		continue;
 	    	tokenColorsElement.appendChild(createTokenColorElement(colorName));
 	    }
 	    if(tokenColorsElement.getChildNodes().getLength() > 0)
