@@ -5,8 +5,10 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet;
 
+import de.invation.code.toval.validate.ParameterException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.PTFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedFlowRelation;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
 
@@ -45,8 +47,19 @@ public class TimedFlowRelation extends AbstractTimedFlowRelation<TimedNetPlace,T
 //    }
 
     @Override
-    public AbstractFlowRelation<TimedNetPlace, TimedTransition, Integer> clone(TimedNetPlace place, TimedTransition transition, boolean directionPT) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public TimedFlowRelation clone(TimedNetPlace place, TimedTransition transition, boolean directionPT) {
+    	TimedFlowRelation result = null;
+		try {
+			if (getDirectionPT())
+				result = new TimedFlowRelation(place, transition);
+			else
+				result = new TimedFlowRelation(transition, place);
+			result.setDirectionPT(getDirectionPT());
+			result.setWeight(getWeight());
+		} catch (ParameterException e) {
+			e.printStackTrace();
+		}
+		return result;
     }
     
 }

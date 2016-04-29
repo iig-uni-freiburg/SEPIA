@@ -2,6 +2,8 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -10,17 +12,23 @@ import java.util.concurrent.ThreadLocalRandom;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.StatisticListener;
 
 public class WorkflowTimeMachine {
 	
-	protected static WorkflowTimeMachine myTimer =new WorkflowTimeMachine();
+	protected static WorkflowTimeMachine myTimer = new WorkflowTimeMachine();
 	protected double time;
+	
 	
 	TreeMap<Double, List<AbstractTimedTransition>> pending = new TreeMap<>(); //Time,<NetName,<PendingActions>>
 	HashMap<String,TimedNet> nets = new HashMap<>();
-	ArrayList<String> netNames=new ArrayList<>();
+	HashMap<String, ArrayList<Double>> result;
 	
-	protected WorkflowTimeMachine(){
+	private instanceManager instances = new instanceManager();
+	private int pendingActionCount;
+
+	
+	private WorkflowTimeMachine(){
 		time = 0.0;
 	}
 	
@@ -36,12 +44,27 @@ public class WorkflowTimeMachine {
 	
 	/**resets the pending actions and the single nets*/
 	public void resetAll(){
+		//	System.out.println("Resetting all: ");
 		reset();
+		
+		//remove clones
+		for (String clonedNet:instances.getClones()){
+			removeNet(clonedNet);
+		}
+		
+		//rest nets and resource Contexts
 		for(TimedNet net:nets.values()){
 			//System.out.println("Context: "+net.getResourceContext().toString());
 			net.reset();
 			net.getResourceContext().reset();
 		}
+		
+		instances.reset();
+		
+		//System.out.println("Workflow time: "+time);
+		//for (TimedNet n: nets.values()){
+		//	System.out.println("Net: "+n.getName()+": "+n.getCurrentTime());
+		//}
 		
 	}
 	
@@ -78,7 +101,6 @@ public class WorkflowTimeMachine {
 	
 	public void addNet(TimedNet net){
 		nets.put(net.getName(), net);
-		netNames.add(net.getName());
 	}
 	
 	public void addAllNets(List<TimedNet> nets){
@@ -89,10 +111,9 @@ public class WorkflowTimeMachine {
 	
 	public void removeNet(String netName){
 		nets.remove(netName);
-		netNames.remove(netName);
 	}
 	
-	private HashMap<String, ArrayList<Double>> getResultMap(){
+	private HashMap<String, ArrayList<Double>> createResultMap(){
 		HashMap<String, ArrayList<Double>> result = new HashMap<>();
 		for(String s:nets.keySet()){ //initialize
 			result.put(s, new ArrayList<>());
@@ -100,30 +121,42 @@ public class WorkflowTimeMachine {
 		return result;
 	}
 	
-	public HashMap<String, ArrayList<Double>> simulateAll(int steps){
-		HashMap<String, ArrayList<Double>> result = getResultMap();
+	public HashMap<String, ArrayList<Double>> simulateAll(int steps) throws PNException {
+		HashMap<String, ArrayList<Double>> result = createResultMap();
+		StatisticListener.getInstance().reset();
 		
 		for (int i = 0;i<steps;i++){
-			if(i%5000==0)System.out.println(((double)i/steps)*100+"%");
+			if(i%5000==0)System.out.println((i*100/steps)+"%");
 			simulateAll();
 			
 			//add results
 			for(Entry<String, TimedNet> netEntry:nets.entrySet()){
-				result.get(netEntry.getKey()).add(netEntry.getValue().getCurrentTime());
+				if(netEntry.getValue().isFinished())
+					if(!instances.isClonedNet(netEntry.getKey()))
+						result.get(netEntry.getKey()).add(netEntry.getValue().getCurrentTime());
+					else {
+						double neededTime = netEntry.getValue().getCurrentTime()-instances.getOffset(netEntry.getKey());
+						result.get(instances.getOriginalNet(netEntry.getKey())).add(neededTime);
+					}
 			}
 			
 			resetAll();
 		}
+		this.result=result;
 		return result;
 	}
 	
-	protected void simulateAll() {
+	public boolean hasResult(){
+		return (result!=null && !result.isEmpty());
+	}
+	
+	public HashMap<String, ArrayList<Double>> getResult(){
+		return result;
+	}
+	
+	protected void simulateAll() throws PNException {
 		while (canSimulate()) {
-			try {
 				simulateSingleStep();
-			} catch (PNException e) {
-				e.printStackTrace();
-			}
 		}
 
 		if (!allNetsFinished()) {
@@ -133,6 +166,7 @@ public class WorkflowTimeMachine {
 	}
 	
 	public void simulateSingleStep() throws PNException{
+		
 		TimedNet net = drawRandomFireableNet();
 		if(net!=null){
 			//a net can fire
@@ -147,11 +181,38 @@ public class WorkflowTimeMachine {
 		} else {
 			System.out.println("No more nets to simulating, no pending actions left");
 			System.out.println("All nets finished? "+allNetsFinished());
+			throw new PNException("No more nets to simulate. Nets not finished. Nets bounded and deadlock free?");
 		}
+		updateRecurringNets();
 	}
 	
+	/** clone any net that has finished but is recurring */
+	private void updateRecurringNets() {
+		LinkedList<TimedNet> clones = new LinkedList<>();
+		for (TimedNet net : nets.values()) {
+			TimedNet tempNet = null;
+			if (net.isFinished() && net.isRecurring() && instances.newInstanceRequired(net)){
+				tempNet = instances.createNewInstance(net);
+				clones.add(tempNet);
+			}
+		}
+		addAllNets(clones); //is initial marking set?
+	}
+	
+	public void countWorkingNets(){
+		int i = 0;
+		for(TimedNet n:nets.values()){
+			if(!n.isFinished()) i++;
+		}
+		System.out.println(i+" unfinished nets");
+	}
+
 	private void simulateNextPendingAction() throws PNException {
 		double currentPendingTime=getNextPendingTime();
+		
+		if(currentPendingTime<time)
+			throw new PNException("Cannot go back in time. Current time is "+time+" next pending action dictaties "+currentPendingTime);
+		
 		time = currentPendingTime;
 		
 		List<AbstractTimedTransition>transitions = getNextPendingActions();
@@ -161,6 +222,7 @@ public class WorkflowTimeMachine {
 		
 		for (AbstractTimedTransition transition:transitions){
 			transition.finishWork(); //inform
+			if(!instances.isClonedNet(transition.getNet().getName())) pendingActionCount--;
 		}
 		pending.remove(currentPendingTime);
 		//System.out.println(pending.toString());
@@ -169,21 +231,35 @@ public class WorkflowTimeMachine {
 	
 	protected void updateTimeForWaitingNets(double time) throws PNException{
 		for(TimedNet net:nets.values()){
-			if(!net.isFinished())	
-				net.setCurrentTime(time); 
+			if(!net.isFinished()){	
+				if(net.getCurrentTime()>time){
+					System.out.println("Breakpoint. Something wrong. Current overall time: "+time);
+					for (TimedNet n:nets.values()){
+						System.out.println(n.getName()+": "+n.getCurrentTime());
+					}
+				}
+				net.setCurrentTime(time);
+			}
 		}
 	}
 	
 	public boolean canSimulate(){
 		//check pending actions first (speedup)
-		if(!pending.isEmpty()) return true;
+		//if(!pending.isEmpty()) return true; //must ignore clonedNets
+		if(hasPendingActions()) return true;
 		if(!allNetsFinished()) return true;
 		return false; //pending actions empty, no net that can fire
 	}
 	
+	public boolean hasPendingActions(){
+		return pendingActionCount>0;
+	}
+	
 	public boolean allNetsFinished(){
 		for(TimedNet net:nets.values()){
-			if(!net.isFinished()) {
+			if(!net.isFinished() && !instances.isClonedNet(net)) {
+				//System.out.println("Not finished: "+net.getName());
+				//countWorkingNets();
 				//System.out.println("Net "+net.getName()+" not finished!");
 				//System.out.println("can it still simulate? "+net.canFire());
 				return false; //there is a net that can fire
@@ -204,7 +280,12 @@ public class WorkflowTimeMachine {
 		return nets.get(fireableNets.get(index));
 	}
 	
-	public void addPendingAction(double timePoint, AbstractTimedTransition t){
+	public void addPendingAction(double timePoint, AbstractTimedTransition t) {
+		//System.out.println(t.getNet().getName()+": Adding "+t.getName()+" at "+timePoint+". Net time: "+t.getNet().getCurrentTime()+", Workflow time: "+time);
+		
+		//if(timePoint<time)
+		//	System.out.println("Pending action is in the past. Current time: "+time+" queued action finish time: "+timePoint);
+		
 		if(pending.containsKey(timePoint)){
 			pending.get(timePoint).add(t);
 		} else {
@@ -213,11 +294,102 @@ public class WorkflowTimeMachine {
 			pending.put(timePoint, actions);
 		}
 		
+		if(!instances.isClonedNet(t.getNet().getName())){
+			pendingActionCount++;
+		}
+		
 			//System.out.println(pending.toString());
 	}
 	
 	public HashMap<String, TimedNet> getNets(){
 		return nets;
+	}
+	
+	class instanceManager {
+		protected HashMap<String,LinkedList<String>> instances = new HashMap<>(); //original name, cloned instances;
+		protected HashMap<String, Double> offsets = new HashMap<>(); //instance name, time offset
+		protected HashSet<String> activeInstances = new HashSet<>(); //contains clone names
+		protected long instanceCount = 0;
+		protected HashMap<String, String> reverseInstances = new HashMap<>();
+		
+
+		public TimedNet createNewInstance(TimedNet originatingNet){
+			//System.out.println("Cloning "+originatingNet.getName());
+			TimedNet tempNet = (TimedNet) originatingNet.clone();
+			try {
+				tempNet.setCurrentTime(time);
+			} catch (PNException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			tempNet.setName(originatingNet.getName()+instanceCount++);
+			tempNet.setMarking(tempNet.getInitialMarking());
+			tempNet.setRecurring(false);
+			// store instance name and offset
+			insertInstance(originatingNet.getName(), tempNet.getName());
+			offsets.put(tempNet.getName(), tempNet.getCurrentTime());
+			activeInstances.add(tempNet.getName());
+			return tempNet;
+		}
+		
+		private void insertInstance(String originatingNet, String instanceName){
+			if(!instances.containsKey(originatingNet))
+				instances.put(originatingNet, new LinkedList<>());
+			instances.get(originatingNet).add(instanceName);
+			reverseInstances.put(instanceName, originatingNet);
+		}
+		
+		public boolean isClonedNet(TimedNet net) {
+			return isClonedNet(net.getName());
+		}
+
+		public boolean hasClones(String netName){
+			return instances.containsKey(netName);
+		}
+		
+		public boolean hasClones(TimedNet net){
+			return hasClones(net.getName());
+		}
+		
+		public boolean isClonedNet(String netName){
+			return activeInstances.contains(netName);
+		}
+		
+		public double getOffset(String net){
+			return offsets.get(net);
+		}
+		
+		public boolean newInstanceRequired(TimedNet net){
+			//if(isClonedNet(net)) return false;
+			if(!net.isFinished()) return false;
+			if(!instances.containsKey(net.getName())) return true; //has never been cloned before
+			
+			//make new Instance, if it is the original net and all current instances are finished
+			for(String netString:instances.get(net.getName())){
+				if(!nets.get(netString).isFinished()) return false;
+			}
+			return true;
+		}
+		
+		public HashSet<String> getClones(){
+			return activeInstances;
+		}
+		
+		public void reset(){
+			instances.clear();
+			offsets.clear();
+			activeInstances.clear();
+			instanceCount=0;
+			reverseInstances.clear();
+		}
+		
+		public String getOriginalNet(String clonedNet){
+			if (!activeInstances.contains(clonedNet)) return clonedNet;
+			return reverseInstances.get(clonedNet);
+			
+		}
+		
+
 	}
 	
 	

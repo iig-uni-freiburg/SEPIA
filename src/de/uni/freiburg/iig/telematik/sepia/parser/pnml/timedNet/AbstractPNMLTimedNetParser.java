@@ -40,6 +40,15 @@ G extends AbstractTimedNetGraphics<P, T, F, M>> extends AbstractPNMLPTNetParser<
 	        String resourceContextName = resourceContextElement.getAttribute("id");
 	        net.setResourceContextName(resourceContextName);
 	        
+	        //read recurring attribute
+		try {
+			Element recurringContext = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.recurringString).item(0);
+			boolean recurring = Boolean.parseBoolean(recurringContext.getTextContent());
+			net.setRecurring(recurring);
+		} catch (Exception e) {
+			net.setRecurring(false);
+		}
+	        
 	        for(T transition:net.getTransitions()){
 	        	transition.setNet(net);
 	        }
