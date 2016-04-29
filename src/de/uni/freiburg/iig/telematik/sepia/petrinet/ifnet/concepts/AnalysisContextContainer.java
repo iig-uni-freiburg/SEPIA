@@ -48,7 +48,8 @@ import java.util.Map;
  */
 public class AnalysisContextContainer extends AbstractComponentContainer<AnalysisContext> implements ComponentListener<AnalysisContext> {
 
-    public static final String ANALYSIS_CONTEXT_DESCRIPTOR = "AnalysisContext";
+	public static final String ANALYSIS_CONTEXT_DESCRIPTOR = "AnalysisContext";
+    protected static final String ANALYSIS_CONTEXT_FILE_ENDING = "xml";
 
     private final Map<String, LabelingContainer> labelingContainers = new HashMap<>();
     private ACModelContainer availableACModels = null;
@@ -84,7 +85,7 @@ public class AnalysisContextContainer extends AbstractComponentContainer<Analysi
     public void addLabeling(Labeling labeling, String aContextName, boolean storeToFile) throws ProjectComponentException {
         addLabeling(labeling, aContextName, storeToFile, true);
     }
-    
+
     public void addLabeling(Labeling labeling, String aContextName, boolean storeToFile, boolean notifyListeners) throws ProjectComponentException {
         validateComponent(aContextName);
         if(containsLabeling(labeling.getName())){
@@ -221,7 +222,11 @@ public class AnalysisContextContainer extends AbstractComponentContainer<Analysi
             labelingContainer.storeComponents();
         }
     }
-    
+
+    @Override
+    protected String getFileEndingForComponent(AnalysisContext component) {
+        return ANALYSIS_CONTEXT_FILE_ENDING;
+    }
     
 
 }
