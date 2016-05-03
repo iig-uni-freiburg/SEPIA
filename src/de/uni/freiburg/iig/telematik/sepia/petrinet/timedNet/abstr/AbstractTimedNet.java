@@ -104,7 +104,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		
 		if(max==1){ //no need for random number
 			T transition = nonWorking.get(0);
-			transition.fire();
+				transition.fire();
 			return transition;
 		}
 		
