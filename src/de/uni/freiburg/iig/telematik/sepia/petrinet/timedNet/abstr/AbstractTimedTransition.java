@@ -5,6 +5,7 @@
  */
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
+import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
@@ -91,9 +92,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			// TimedMarking marking = (TimedMarking) net.getMarking();
 			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
 			if (usedResources == null || usedResources.isEmpty()) {
-				// System.out.println(getName()+": Waiting for resources!");
 				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
-				return; // cannot fire: not available resources
+				return;
 			}
 		} else {
 			usedResources = null;
@@ -118,6 +118,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 		} else {
 			// fire normally, no blocking as this transition needs no time...
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.INSTANT, this);
 			net.getResourceContext().unBlockResources(usedResources);
 			for (E r : outgoingRelations.values()) {
 				r.getPlace().addTokens(r.getConstraint());
@@ -126,6 +127,31 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 		// inform marking has changed
 		notifyFiring();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((net == null) ? 0 : net.getName().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractTimedTransition other = (AbstractTimedTransition) obj;
+		if (net == null) {
+			if (other.net != null)
+				return false;
+		} else if (!net.equals(other.net))
+			return false;
+		return true;
 	}
 
 	public boolean isWorking() {
@@ -166,5 +192,9 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			//System.out.println(net.getName()+"("+getLabel()+"): Resources unblocked -> "+usedResources.toString());
 			this.usedResources.clear();
 		}
+	}
+	
+	protected void notifyFiring(){
+		listenerSupport.notifyFiring(new TransitionEvent<>(this));
 	}
 }

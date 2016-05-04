@@ -33,11 +33,14 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>, T extends Abstract
 
 	@Override
 	protected void addHeader() {
-		Element tokenColorsElement = getSupport().createElement("tokencolors");
-		for (String colorName : getPetriNet().getTokenColors()) {
-			tokenColorsElement.appendChild(createTokenColorElement(colorName));
-		}
-		getSupport().getNetElement().appendChild(tokenColorsElement);
+	    Element tokenColorsElement = getSupport().createElement("tokencolors");
+	    if (!getPetriNet().getTokenColors().contains("black")) {
+		tokenColorsElement.appendChild(createTokenColorElement("black"));
+	    }
+	    for(String colorName: getPetriNet().getTokenColors()){
+	    	tokenColorsElement.appendChild(createTokenColorElement(colorName));
+	    }
+	    getSupport().getNetElement().appendChild(tokenColorsElement);
 	}
 
 	protected Element createTokenColorElement(String colorName) {
