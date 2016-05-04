@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FireSequence implements Comparable<FireSequence> {
 	
-	private LinkedList<FireElement> entries = new LinkedList<>();
+	protected LinkedList<FireElement> entries = new LinkedList<>();
 	//private String netName;
 	
 	/**Create Fire Sequence**/
