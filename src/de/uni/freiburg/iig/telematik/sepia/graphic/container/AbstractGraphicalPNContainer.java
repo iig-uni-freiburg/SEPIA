@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.uni.freiburg.iig.telematik.sepia.graphic.container;
 
 import de.invation.code.toval.debug.SimpleDebugger;
 import de.invation.code.toval.misc.wd.AbstractComponentContainer;
+import de.invation.code.toval.parser.ParserException;
 import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
@@ -23,6 +19,7 @@ import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNFF_Petrify;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -85,23 +82,23 @@ public class AbstractGraphicalPNContainer<P extends AbstractPlace<F, S>,
     }
 
     @Override
-    protected X loadComponentFromFile(String file) throws Exception {
+    protected X loadComponentFromFile(String file) throws IOException, ParserException {
         AbstractGraphicalPN parsedPN = PNParsing.parse(file, PNParsing.guessFormat(file));
         if (parsedPN == null) {
-            throw new Exception("Unable to parse " + getComponentDescriptor() + ": NULL");
+            throw new ParserException("Unable to parse " + getComponentDescriptor() + ": NULL");
         }
         if (parsedPN.getPetriNet() == null) {
-            throw new Exception("Unable to parse " + getComponentDescriptor() + ": NULL");
+            throw new ParserException("Unable to parse " + getComponentDescriptor() + ": NULL");
         }
         if ((getExpectedNetType() != null) && (parsedPN.getPetriNet().getNetType() != getExpectedNetType())) {
             if(ignoreIncompatibleFiles){
                 return null;
             }
-            throw new Exception("Unexpected net type, expected " + getExpectedNetType() + " but got " + parsedPN.getPetriNet().getNetType());
+            throw new ParserException("Unexpected net type, expected " + getExpectedNetType() + " but got " + parsedPN.getPetriNet().getNetType());
         }
         return (X) parsedPN;
     }
-    
+
     @Override
     protected synchronized void serializeComponent(X component, String serializationPath, String fileName) throws Exception {
         PNSerialization.serialize(component, serializationFormat, serializationPath.concat(File.separator + fileName));

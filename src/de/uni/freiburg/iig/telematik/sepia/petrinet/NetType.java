@@ -22,21 +22,20 @@ public enum NetType {
         public static NetType getNetType(String uri) {
                 Validate.notNull(uri);
 
-                if (uri.equals(OfficialPTNetURI)) {
-                        return PTNet;
-                }
-                if (uri.equals(PTNetURI)) {
-                        return PTNet;
-                }
-                if (uri.equals(CPNURI)) {
-                        return CPN;
-                }
-                if (uri.equals(IFNetURI)) {
-                        return IFNet;
-                }
-                if (uri.equals(RTPTnetURI)) {
-                        return RTPTnet;
-                }
+		switch (uri) {
+			case OfficialPTNetURI:
+				return PTNet;
+			case PTNetURI:
+				return PTNet;
+			case CPNURI:
+				return CPN;
+			case IFNetURI:
+				return IFNet;
+			case RTPTnetURI:
+				return RTPTnet;
+			default:
+				break;
+		}
 
                 return Unknown;
         }

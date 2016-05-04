@@ -4,26 +4,7 @@
 	xmlns="http://relaxng.org/ns/structure/1.0"
 	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
 	datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"> 
-
-	<a:documentation>
-		RELAX NG implementation of the Petri Net Type Definition for page transition nets (P/T-nets) with place capacities.
-		This PNTD re-defines the value of nettype.uri for P/T-nets with place capacities and inherits the marking and annotations from the official PNML P/T-net definition.
-		
-		File name: ptnet.pntd
-		Version: 2014
-		(c) 2014
-		Adrian Lange
-		IIG Telematics
-		University of Freiburg
-		Germany
-	</a:documentation>
-
-	<a:documentation>
-		The P/T-net type definition.
-		This document also declares its namespace.
-	</a:documentation>
 	
-	<!-- START http://www.pnml.org/version-2009/grammar/ptnet.pntd -->
 	<!-- START http://www.pnml.org/version-2009/grammar/conventions.rng -->
 	<define name="nonnegativeintegerlabel.content">
 		<a:documentation>
@@ -143,7 +124,6 @@
 			<choice>
 				<value>http://www.pnml.org/version-2009/grammar/pnmlcoremodel</value>
 				<value>http://www.pnml.org/version-2009/grammar/ptnet</value>
-				<value>http://ifnml.process-security.de/grammar/v1.0/ptnet</value>
 			</choice>
 		</attribute>
 	</define>
@@ -752,42 +732,7 @@
 		</a:documentation>
 		<optional><ref name="PTArcAnnotation"/></optional>
 	</define>
-	<!-- END http://www.pnml.org/version-2009/grammar/ptnet.pntd -->
-
-	<define name="Capacity">
-		<a:documentation>
-			A list declaring the capacities for a place. By default it just contains an element capacity for the overall place capacity.
-		</a:documentation>
-		<element name="capacity">
-			<data type="positiveInteger"/>
-		</element>
-	</define>
-
-	<define name="place.labels" combine="interleave">
-		<a:documentation>
-			A place p of a P/T-net n may have a capacity.
-		</a:documentation>
-		<interleave>
-			<optional><ref name="Capacity"/></optional>
-		</interleave>
-	</define>
-
-	<define name="IsSilent">
-		<a:documentation>
-			The silent element can contain either the value true or false.
-		</a:documentation>
-		<element name="silent">
-			<data type="boolean"/>
-		</element>
-	</define>
-
-	<define name="transition.labels" combine="interleave">
-		<a:documentation>
-			A transition t of a P/T-net n may be silent. Default is false.
-		</a:documentation>
-		<interleave>
-			<optional><ref name="IsSilent"/></optional>
-		</interleave>
-	</define>
 
 </grammar>
+
+

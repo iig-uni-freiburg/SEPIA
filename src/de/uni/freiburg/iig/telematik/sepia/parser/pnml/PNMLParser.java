@@ -76,15 +76,20 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 
 	/** Relax NG namespace */
 	public final static String RNG_NAMESPACE = "http://relaxng.org/ns/structure/1.0";
-        
+
+	public final static String PNMLCOREMODEL_SCHEMA = "http://www.pnml.org/version-2009/grammar/pnmlcoremodel";
+	public final static String PTNET_SCHEMA = "http://www.pnml.org/version-2009/grammar/ptnet";
+
         private static final String PNTD_PATH = "/pntd/";
+        private static final String PNML_PNTD_PATH = "pnmlorg/";
         public static final String PTNET_PNTD = PNTD_PATH + "ptnet.pntd";
         public static final String CPNET_PNTD = PNTD_PATH + "cpnet.pntd";
         public static final String IFNET_PNTD = PNTD_PATH + "ifnet.pntd";
         public static final String RTPNET_PNTD = PNTD_PATH + "rtpnet.pntd";
         public static final String ANALYSISCONTEXT_RNG = PNTD_PATH + "analysiscontext.rng";
-        public static final String CONVENTIONS_RNG = PNTD_PATH + "conventions.rng";
         public static final String LABELING_RNG = PNTD_PATH + "labeling.rng";
+        public static final String PNMLORG_PNMLCOREMODEL_RNG = PNTD_PATH + PNML_PNTD_PATH + "pnmlcoremodel.rng";
+        public static final String PNMLORG_PTNET_PNTD = PNTD_PATH + PNML_PNTD_PATH + "ptnet.pntd";
 
 	/**
 	 * Returns the net type name by its URI.
@@ -278,7 +283,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 			throw new PNMLParserException(ErrorCode.VALIDATION_CONFIGURATION_ERROR, e.getMessage());
 		}
 		// Open stream to PNTD
-                InputStream in = null;
+                InputStream in;
                 if (pntdUrl.equals(NetType.getVerificationURL(NetType.PTNet))) {
                         in = PNMLParser.class.getResourceAsStream(PTNET_PNTD);
                 } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.CPN))) {
@@ -291,6 +296,10 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
                         in = PNMLParser.class.getResourceAsStream(ANALYSISCONTEXT_RNG);
                 } else if (pntdUrl.equals(new URL(LabelingParser.LABELING_SCHEMA))) {
                         in = PNMLParser.class.getResourceAsStream(LABELING_RNG);
+                } else if (pntdUrl.equals(new URL(PNMLCOREMODEL_SCHEMA))) {
+                        in = PNMLParser.class.getResourceAsStream(PNMLORG_PNMLCOREMODEL_RNG);
+                } else if (pntdUrl.equals(new URL(PTNET_SCHEMA))) {
+                        in = PNMLParser.class.getResourceAsStream(PNMLORG_PTNET_PNTD);
                 } else {
                         URLConnection connection = pntdUrl.openConnection();
                         in = connection.getInputStream();

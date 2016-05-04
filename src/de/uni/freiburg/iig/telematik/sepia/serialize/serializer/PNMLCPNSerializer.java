@@ -19,12 +19,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.cpn.abstr.AbstractCPNTransition;
 import de.uni.freiburg.iig.telematik.sepia.serialize.PNSerializer_PNML;
 
-public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>, 
-							   T extends AbstractCPNTransition<F>, 
-							   F extends AbstractCPNFlowRelation<P,T>, 
-							   M extends AbstractCPNMarking,
-							   N extends AbstractCPN<P,T,F,M>,
-							   G extends AbstractCPNGraphics<P,T,F,M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, N, G> {
+public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>, T extends AbstractCPNTransition<F>, F extends AbstractCPNFlowRelation<P, T>, M extends AbstractCPNMarking, N extends AbstractCPN<P, T, F, M>, G extends AbstractCPNGraphics<P, T, F, M>> extends PNSerializer_PNML<P, T, F, M, Multiset<String>, N, G> {
 
 	private final static StyleSheet STYLESHEET = new StyleSheet();
 
@@ -38,37 +33,36 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 
 	@Override
 	protected void addHeader() {
-	    Element tokenColorsElement = getSupport().createElement("tokencolors");
-	    for(String colorName: getPetriNet().getTokenColors()){
-	    	tokenColorsElement.appendChild(createTokenColorElement(colorName));
-	    }
-	    if(tokenColorsElement.getChildNodes().getLength() > 0)
-	    	getSupport().getNetElement().appendChild(tokenColorsElement);
+		Element tokenColorsElement = getSupport().createElement("tokencolors");
+		for (String colorName : getPetriNet().getTokenColors()) {
+			tokenColorsElement.appendChild(createTokenColorElement(colorName));
+		}
+		getSupport().getNetElement().appendChild(tokenColorsElement);
 	}
-	
-	protected Element createTokenColorElement(String colorName){
+
+	protected Element createTokenColorElement(String colorName) {
 		Element tokenColorElement = getSupport().createElement("tokencolor");
 		Element colorElement = getSupport().createTextElement("color", colorName);
 		tokenColorElement.appendChild(colorElement);
 
 		Element rgbElement = getSupport().createElement("rgbcolor");
 		tokenColorElement.appendChild(rgbElement);
-		Color color = null;
+		Color color;
 
-		if(hasGraphics()){
+		if (hasGraphics()) {
 			color = getGraphics().getColors().get(colorName);
 		} else {
 			color = STYLESHEET.stringToColor(colorName);
 		}
 
 		if (color != null) {
-			rgbElement.appendChild(getSupport().createTextElement("r", (new Integer(color.getRed())).toString()));
-			rgbElement.appendChild(getSupport().createTextElement("g", (new Integer(color.getGreen())).toString()));
-			rgbElement.appendChild(getSupport().createTextElement("b", (new Integer(color.getBlue())).toString()));
+			rgbElement.appendChild(getSupport().createTextElement("r", String.valueOf(color.getRed())));
+			rgbElement.appendChild(getSupport().createTextElement("g", String.valueOf(color.getGreen())));
+			rgbElement.appendChild(getSupport().createTextElement("b", String.valueOf(color.getBlue())));
 		} else {
-			rgbElement.appendChild(getSupport().createTextElement("r", (new Integer(0)).toString()));
-			rgbElement.appendChild(getSupport().createTextElement("g", (new Integer(0)).toString()));
-			rgbElement.appendChild(getSupport().createTextElement("b", (new Integer(0)).toString()));
+			rgbElement.appendChild(getSupport().createTextElement("r", "0"));
+			rgbElement.appendChild(getSupport().createTextElement("g", "0"));
+			rgbElement.appendChild(getSupport().createTextElement("b", "0"));
 		}
 
 		return tokenColorElement;
@@ -76,20 +70,20 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 
 	@Override
 	protected void addCapacity(P place, Element placeElement) {
-		if(place.getCapacity() >= 0){
+		if (place.getCapacity() >= 0) {
 			Element capacitiesElement = getSupport().createElement("capacities");
-			for(String color: place.getColorsWithCapacityRestriction()){
+			for (String color : place.getColorsWithCapacityRestriction()) {
 				Element capacityElement = getSupport().createElement("colorcapacity");
 				capacityElement.appendChild(getSupport().createTextElement("color", color));
 				try {
-					capacityElement.appendChild(getSupport().createTextElement("capacity", new Integer(place.getColorCapacity(color)).toString()));
+					capacityElement.appendChild(getSupport().createTextElement("capacity", String.valueOf(place.getColorCapacity(color))));
 				} catch (ParameterException e) {
 					// Should not happen, since we know, that the place has a capacity for this color.
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 				capacitiesElement.appendChild(capacityElement);
 			}
-			
+
 			placeElement.appendChild(capacitiesElement);
 		}
 	}
@@ -97,35 +91,27 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	@Override
 	protected Element addInitialMarking(Element placeElement, Multiset<String> state) {
 		Element markingElement = getSupport().createElement("initialMarking");
-//		try {
-			markingElement.appendChild(getSupport().createTextElement("text", (new Integer(state.multiplicity(getPetriNet().defaultTokenColor()))).toString()));
-//		} catch (ParameterException e) {
-//			// Should not happen, since default token color is not null
-//			e.printStackTrace();
-//		}
-		
+		markingElement.appendChild(getSupport().createTextElement("text", String.valueOf(state.multiplicity(getPetriNet().defaultTokenColor()))));
+
 		Element colorsElement = createColorsElement(state);
-		if(colorsElement.getChildNodes().getLength() > 0)
+		if (colorsElement.getChildNodes().getLength() > 0) {
 			markingElement.appendChild(colorsElement);
-		
+		}
+
 		placeElement.appendChild(markingElement);
 		return markingElement;
 	}
 
-	protected Element createColorsElement(Multiset<String> state){
+	protected Element createColorsElement(Multiset<String> state) {
 		Element colorsElement = getSupport().createElement("colors");
-		for(String tokenColor: state.support()){
-			if(tokenColor.equals(getPetriNet().defaultTokenColor()))
+		for (String tokenColor : state.support()) {
+			if (tokenColor.equals(getPetriNet().defaultTokenColor())) {
 				continue;
-			
-//			try {
-				for(int i=0; i<state.multiplicity(tokenColor); i++){
-					colorsElement.appendChild(getSupport().createTextElement("color", tokenColor));
-				}
-//			} catch (ParameterException e) {
-//				// Should not happen, since tokenColor is not null
-//				e.printStackTrace();
-//			}
+			}
+
+			for (int i = 0; i < state.multiplicity(tokenColor); i++) {
+				colorsElement.appendChild(getSupport().createTextElement("color", tokenColor));
+			}
 		}
 		return colorsElement;
 	}
@@ -133,34 +119,30 @@ public class PNMLCPNSerializer<P extends AbstractCPNPlace<F>,
 	@Override
 	protected void addConstraint(Element arcElement, Multiset<String> constraint, AnnotationGraphics annotationGraphics) {
 		Element inscriptionElement = getSupport().createElement("inscription");
-		
+
 		int defaultTokenColorTokens = 0;
-		for(String tokenColor: constraint.support()){
-			if(tokenColor.equals(getPetriNet().defaultTokenColor())){
-//				try {
-					defaultTokenColorTokens += constraint.multiplicity(tokenColor);
-//				} catch (ParameterException e) {
-//					// Should not happen, since tokenColor is not null
-//					e.printStackTrace();
-//				}
+		for (String tokenColor : constraint.support()) {
+			if (tokenColor.equals(getPetriNet().defaultTokenColor())) {
+				defaultTokenColorTokens += constraint.multiplicity(tokenColor);
 			}
 		}
 		Element textElement = getSupport().createTextElement("text", String.valueOf(defaultTokenColorTokens));
 		inscriptionElement.appendChild(textElement);
-		
+
 		Element colorsElement = createColorsElement(constraint);
-		if(colorsElement.getChildNodes().getLength() > 0)
+		if (colorsElement.getChildNodes().getLength() > 0) {
 			inscriptionElement.appendChild(colorsElement);
-		
-		if(annotationGraphics != null && annotationGraphics.hasContent()){
+		}
+
+		if (annotationGraphics != null && annotationGraphics.hasContent()) {
 			Element graphicsElement = getSupport().createTextGraphicsElement(annotationGraphics);
-			if(graphicsElement != null)
+			if (graphicsElement != null) {
 				inscriptionElement.appendChild(graphicsElement);
+			}
 		}
 		arcElement.appendChild(inscriptionElement);
 	}
-	
-	
+
 	@Override
 	public NetType acceptedNetType() {
 		return NetType.CPN;
