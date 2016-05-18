@@ -42,6 +42,7 @@ public class WorkflowTimeMachine {
 	public void reset(){
 		time=0.0;
 		pending.clear();
+		pendingActionCount=0;
 	}
 	
 	/**resets the pending actions and the single nets*/
@@ -113,7 +114,8 @@ public class WorkflowTimeMachine {
 	}
 	
 	private HashMap<String, ArrayList<Double>> createResultMap(){
-		HashMap<String, ArrayList<Double>> result = new HashMap<>();
+		//HashMap<String, ArrayList<Double>> result = new HashMap<>();
+		result=new HashMap<>();
 		for(String s:nets.keySet()){ //initialize
 			result.put(s, new ArrayList<>());
 		}
@@ -121,7 +123,8 @@ public class WorkflowTimeMachine {
 	}
 	
 	public HashMap<String, ArrayList<Double>> simulateAll(int steps) throws PNException {
-		HashMap<String, ArrayList<Double>> result = createResultMap();
+		//HashMap<String, ArrayList<Double>> result = createResultMap();
+		createResultMap();
 		StatisticListener.getInstance().reset();
 		
 		for (int i = 0;i<steps;i++){
@@ -129,20 +132,64 @@ public class WorkflowTimeMachine {
 			simulateAll();
 			
 			//add results
-			for(Entry<String, TimedNet> netEntry:nets.entrySet()){
-				if(netEntry.getValue().isFinished())
-					if(!instances.isClonedNet(netEntry.getKey()))
-						result.get(netEntry.getKey()).add(netEntry.getValue().getCurrentTime());
-					//else {
-					//	double neededTime = netEntry.getValue().getCurrentTime()-instances.getOffset(netEntry.getKey());
-					//	result.get(instances.getOriginalNet(netEntry.getKey())).add(neededTime);
-					//}
-			}
+			updateResultMap();
+
 			
 			resetAll();
 		}
-		this.result=result;
+		//this.result=result;
 		return result;
+	}
+	
+	public HashMap<String, ArrayList<Double>> simulateExecutionPlan(int steps, FireSequence seq) throws PNException {
+		nets.clear();//remove old nets
+		for (TimedNet net: seq.getContainingNets())
+			nets.put(net.getName(), net);
+		resetAll(); // reset recently added nets.
+
+		HashMap<String, ArrayList<Double>> result = createResultMap();
+		StatisticListener.getInstance().reset();
+		
+		for(int i = 0;i<steps;i++){
+			simulateExecutionPlan(seq);
+			updateResultMap();
+			resetAll();
+		}
+
+		return result;
+	}
+	
+	private void simulateExecutionPlan(FireSequence seq) throws PNException {
+		for (FireElement e: seq.getSequence()) {
+			boolean hasFired = false;
+			while (!hasFired) {
+				if (e.getTransition().canFire()){
+					e.getTransition().fire();
+					hasFired=true;
+				} else if(!pending.isEmpty())
+					simulateNextPendingAction();
+				else 
+					System.out.println("finished? "+allNetsFinished());
+			}
+			//the last transition got fired but the pending action was never finished
+			if(!pending.isEmpty())
+				simulateNextPendingAction();
+		}
+	}
+	
+	private void updateResultMap(){
+		
+		for(Entry<String, TimedNet> netEntry:nets.entrySet()){
+			if(netEntry.getValue().isFinished()){
+				if(!instances.isClonedNet(netEntry.getKey()))
+					result.get(netEntry.getKey()).add(netEntry.getValue().getCurrentTime());}
+			else 
+				System.out.println("A net is not finished but it should be!");
+				//else {
+				//	double neededTime = netEntry.getValue().getCurrentTime()-instances.getOffset(netEntry.getKey());
+				//	result.get(instances.getOriginalNet(netEntry.getKey())).add(neededTime);
+				//}
+		}
 	}
 	
 	public boolean hasResult(){
@@ -249,6 +296,7 @@ public class WorkflowTimeMachine {
 		return false; //pending actions empty, no net that can fire
 	}
 	
+	/**return true if uncloned nets have actions pending**/
 	public boolean hasPendingActions(){
 		return pendingActionCount>0;
 	}

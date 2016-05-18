@@ -6,7 +6,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FireSequence implements Comparable<FireSequence> {
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
+
+public class FireSequence implements Comparable<Object> {
 	
 	protected LinkedList<FireElement> entries = new LinkedList<>();
 	//private String netName;
@@ -51,8 +53,9 @@ public class FireSequence implements Comparable<FireSequence> {
 
 	@Override
 	/**compares durations of the FireSequence**/
-	public int compareTo(FireSequence o) {
-		return new Double(getDuration()).compareTo(o.getDuration());
+	public int compareTo(Object o) {
+		return new Double(getDuration()).compareTo(((FireSequence) o).getDuration());
+			
 	}
 	
 	public Collection<String> getNetNames(){
@@ -82,8 +85,8 @@ public class FireSequence implements Comparable<FireSequence> {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
 		FireSequence other = (FireSequence) obj;
 		if (entries == null) {
 			if (other.entries != null)
@@ -104,6 +107,14 @@ public class FireSequence implements Comparable<FireSequence> {
 			b.append(",");
 		}
 		return b.toString();
+	}
+	
+	public HashSet<TimedNet> getContainingNets(){
+		HashSet<TimedNet> result = new HashSet<>();
+		for (FireElement e:entries){
+			result.add((TimedNet) e.getTransition().getNet());
+		}
+		return result;
 	}
 	
 	

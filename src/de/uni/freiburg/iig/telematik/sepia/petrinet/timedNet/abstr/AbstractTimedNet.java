@@ -146,9 +146,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		if (max==0) return false;
 		if(isFinished()) return false;
 		for(T t:getEnabledTransitions()){
-			List<String>resources = resourceContext.getRandomAvailableResourceSetFor(t.getLabel(), false);
-			if(resources!=null&&!resources.isEmpty()&&!t.isWorking()) 
-					return true;
+			if (t.canFire()) return true;
 		}
 		return false;
 	}
@@ -256,8 +254,10 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     
     public String toString(){
     	String result = super.toString();
+    	String time = " current time: "+getCurrentTime();
+    	String finished = " is finished: "+isFinished();
     	return result+"\r\n TimeContext: "+getTimeContextName()+" ResourceContext: "+getResourceContextName()+
-    			" ProcessContext: "+getAccessContextName();
+    			" ProcessContext: "+getAccessContextName()+time+finished;
     }
     
 	@Override

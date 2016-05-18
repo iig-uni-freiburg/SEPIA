@@ -11,6 +11,7 @@ import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ExecutionState;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.WorkflowTimeMachine;
 
 import java.util.AbstractMap;
@@ -39,6 +40,20 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	public AbstractTimedTransition(String name, String label) {
 		super(name, label);
+	}
+	
+	/**
+	 * returns if the transition can reserve the required ressources to fire and
+	 * is enabled according to the fire rules specified in the petri-net class.
+	 * After a call to this function the transition must fire instantenouse as
+	 * fireing of a nother net might reserve the required ressources and render
+	 * this transition unfireable
+	 **/
+	public boolean canFire() {
+		IResourceContext context = getNet().getResourceContext();
+		List<String> resources = context.getRandomAvailableResourceSetFor(getLabel(), false);
+		return (isEnabled() && resources != null && !resources.isEmpty() && !isWorking());
+
 	}
 
 	@Override
@@ -172,7 +187,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	}
 
 	public void setWorking(boolean working) {
-		this.isWorking = working;
+		//this.isWorking = working;
 		if(working){
 			//StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.START, this);
 			StatisticListener.getInstance().ressourceUsageChange(net.getCurrentTime(), ExecutionState.START, this, usedResources);
@@ -187,6 +202,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	}
 
 	public void clearResourceUsage() {
+		isWorking=false;
 		if(usedResources!=null){
 			net.getResourceContext().unBlockResources(usedResources);
 			//System.out.println(net.getName()+"("+getLabel()+"): Resources unblocked -> "+usedResources.toString());
