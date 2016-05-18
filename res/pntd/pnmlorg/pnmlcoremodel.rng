@@ -1,62 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<grammar ns="http://www.pnml.org/version-2009/grammar/pnml"
-	xmlns="http://relaxng.org/ns/structure/1.0"
-	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
-	datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"> 
-
-	<a:documentation>
-		RELAX NG implementation of the Petri Net Type Definition for page transition nets (P/T-nets) with place capacities.
-		This PNTD re-defines the value of nettype.uri for P/T-nets with place capacities and inherits the marking and annotations from the official PNML P/T-net definition.
-		
-		File name: ptnet.pntd
-		Version: 2014
-		(c) 2014
-		Adrian Lange
-		IIG Telematics
-		University of Freiburg
-		Germany
-	</a:documentation>
-
-	<a:documentation>
-		The P/T-net type definition.
-		This document also declares its namespace.
-	</a:documentation>
+<grammar ns="http://www.pnml.org/version-2009/grammar/pnml" xmlns="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
 	
-	<!-- START http://www.pnml.org/version-2009/grammar/ptnet.pntd -->
-	<!-- START http://www.pnml.org/version-2009/grammar/conventions.rng -->
-	<define name="nonnegativeintegerlabel.content">
-		<a:documentation>
-			A non negative integer label is an annotation with a 
-			natural number as its value.
-			Its sub-elements occur in any order.
-			It contains the standard annotation content.
-		</a:documentation>
-		<interleave>
-			<element name="text">
-				<data type="nonNegativeInteger"/>
-			</element>
-			<ref name="annotationstandard.content"/>
-		</interleave>
-	</define>
-	
-	<define name="positiveintegerlabel.content">
-		<a:documentation>
-			A positive integer label is an annotation with a natural
-			number as its value, zero excluded.
-			Its sub-elements occur in any order.
-			It contains the standard annotation content.
-		</a:documentation>
-		<interleave>
-			<element name="text">
-				<data type="positiveInteger"/>
-			</element>
-			<ref name="annotationstandard.content"/>
-		</interleave>
-	</define>
-	<!-- END http://www.pnml.org/version-2009/grammar/conventions.rng -->
-	
-	<!-- START http://www.pnml.org/version-2009/grammar/pnmlcoremodel.rng -->
 	<!-- START http://www.pnml.org/version-2009/grammar/anyElement.rng -->
 	<define name="anyElement">
 		<element>
@@ -140,11 +85,7 @@
 			for P/T Nets. The following value is a default.
 		</a:documentation>
 		<attribute name="type">
-			<choice>
-				<value>http://www.pnml.org/version-2009/grammar/pnmlcoremodel</value>
-				<value>http://www.pnml.org/version-2009/grammar/ptnet</value>
-				<value>http://ifnml.process-security.de/grammar/v1.0/ptnet</value>
-			</choice>
+			<value>http://www.pnml.org/version-2009/grammar/pnmlcoremodel</value> 
 		</attribute>
 	</define>
 
@@ -709,85 +650,5 @@
 			</zeroOrMore>
 		</element>
 	</define>
-	<!-- END http://www.pnml.org/version-2009/grammar/pnmlcoremodel.rng -->
 	
-	<define name="PTMarking">
-		<a:documentation>
-			Label definition for initial marking in nets like P/T-nets.
-			<contributed>Michael Weber</contributed>
-			<date>2003-06-16</date>
-			<reference>
-				W. Reisig: Place/transition systems. In: LNCS 254. 1987.
-			</reference>
-		</a:documentation>
-		<element name="initialMarking">
-			<ref name="nonnegativeintegerlabel.content"/>
-		</element>
-	</define>
-
-	<define name="PTArcAnnotation">
-		<a:documentation>
-			Label definition for arc inscriptions in P/T-nets.
-			<contributed>Michael Weber, AFNOR</contributed>
-			<date>2003-06-16</date>
-			<reference>
-				W. Reisig: Place/transition systems. In: LNCS 254. 1987.
-			</reference>
-		</a:documentation>
-		<element name="inscription">
-			<ref name="positiveintegerlabel.content"/>
-		</element>
-	</define>
-
-	<define name="place.labels" combine="interleave">
-		<a:documentation>
-			A place of a P/T net may have an initial marking.
-		</a:documentation> 
-		<optional><ref name="PTMarking"/></optional>
-	</define>
-
-	<define name="arc.labels" combine="interleave">
-		<a:documentation>
-			An arc of a P/T net may have an inscription.
-		</a:documentation>
-		<optional><ref name="PTArcAnnotation"/></optional>
-	</define>
-	<!-- END http://www.pnml.org/version-2009/grammar/ptnet.pntd -->
-
-	<define name="Capacity">
-		<a:documentation>
-			A list declaring the capacities for a place. By default it just contains an element capacity for the overall place capacity.
-		</a:documentation>
-		<element name="capacity">
-			<data type="positiveInteger"/>
-		</element>
-	</define>
-
-	<define name="place.labels" combine="interleave">
-		<a:documentation>
-			A place p of a P/T-net n may have a capacity.
-		</a:documentation>
-		<interleave>
-			<optional><ref name="Capacity"/></optional>
-		</interleave>
-	</define>
-
-	<define name="IsSilent">
-		<a:documentation>
-			The silent element can contain either the value true or false.
-		</a:documentation>
-		<element name="silent">
-			<data type="boolean"/>
-		</element>
-	</define>
-
-	<define name="transition.labels" combine="interleave">
-		<a:documentation>
-			A transition t of a P/T-net n may be silent. Default is false.
-		</a:documentation>
-		<interleave>
-			<optional><ref name="IsSilent"/></optional>
-		</interleave>
-	</define>
-
 </grammar>

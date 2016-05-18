@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="14.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options/>
+    </meta>
+    <projectTree name="ifnml.xpr">
+        <file name="analysiscontext.rng"/>
+        <file name="conventions.rng"/>
+        <file name="cpnet.pntd"/>
+        <file name="ifnet.pntd"/>
+        <file name="labeling.rng"/>
+        <file name="pnml/pnmlcoremodel.rng"/>
+        <file name="pnml/ptnet.pntd"/>
+        <file name="ptnet.pntd"/>
+        <file name="rtpnet.pntd"/>
+    </projectTree>
+</project>

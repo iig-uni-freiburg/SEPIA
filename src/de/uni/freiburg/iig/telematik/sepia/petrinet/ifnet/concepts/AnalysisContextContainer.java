@@ -227,6 +227,4 @@ public class AnalysisContextContainer extends AbstractComponentContainer<Analysi
     protected String getFileEndingForComponent(AnalysisContext component) {
         return ANALYSIS_CONTEXT_FILE_ENDING;
     }
-    
-
 }
