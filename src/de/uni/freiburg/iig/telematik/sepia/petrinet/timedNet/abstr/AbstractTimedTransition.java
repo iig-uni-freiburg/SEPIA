@@ -42,6 +42,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		super(name, label);
 	}
 	
+	
 	/**
 	 * returns if the transition can reserve the required ressources to fire and
 	 * is enabled according to the fire rules specified in the petri-net class.
@@ -101,7 +102,6 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			throw new PNException("Cannot fire transition " + this + ": not in valid state [" + e.getMessage() + "]");
 		}
 
-		List<String> resourceSet;
 		
 		if (net.getResourceContext().needsResources(getLabel())) {
 			// TimedMarking marking = (TimedMarking) net.getMarking();
@@ -202,7 +202,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	}
 
 	public void clearResourceUsage() {
-		isWorking=false;
+		//isWorking=false;
 		if(usedResources!=null){
 			net.getResourceContext().unBlockResources(usedResources);
 			//System.out.println(net.getName()+"("+getLabel()+"): Resources unblocked -> "+usedResources.toString());

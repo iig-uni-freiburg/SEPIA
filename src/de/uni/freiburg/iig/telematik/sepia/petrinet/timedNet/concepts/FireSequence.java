@@ -1,16 +1,14 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 
 public class FireSequence implements Comparable<Object> {
 	
-	protected LinkedList<FireElement> entries = new LinkedList<>();
+	protected ArrayList<FireElement> entries = new ArrayList<>();
 	//private String netName;
 	
 	/**Create Fire Sequence**/
@@ -25,16 +23,16 @@ public class FireSequence implements Comparable<Object> {
 	public double getEndingTime(){
 		if(entries==null||entries.isEmpty())
 			return Double.NaN;
-		return entries.getLast().getEndTime();
+		return entries.get(entries.size()-1).getEndTime();
 	}
 	
 	public double getStartingTime(){
 		if(entries==null||entries.isEmpty())
 			return Double.NaN;
-		return entries.getFirst().getTime();
+		return entries.get(0).getTime();
 	}
 	
-	public LinkedList<FireElement> getSequence(){
+	public ArrayList<FireElement> getSequence(){
 		return entries;
 	}
 	
@@ -67,7 +65,7 @@ public class FireSequence implements Comparable<Object> {
 	}
 	
 	public String getNetName(){
-		return entries.getFirst().getTransition().getNet().getName();
+		return entries.get(0).getTransition().getNet().getName();
 	}
 
 	@Override

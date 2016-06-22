@@ -147,7 +147,7 @@ public class WorkflowTimeMachine {
 			nets.put(net.getName(), net);
 		resetAll(); // reset recently added nets.
 
-		HashMap<String, ArrayList<Double>> result = createResultMap();
+		createResultMap();
 		StatisticListener.getInstance().reset();
 		
 		for(int i = 0;i<steps;i++){
@@ -160,16 +160,19 @@ public class WorkflowTimeMachine {
 	}
 	
 	private void simulateExecutionPlan(FireSequence seq) throws PNException {
-		for (FireElement e: seq.getSequence()) {
+		for (int i = 0;i<seq.getSequence().size();i++) {
+			FireElement e = seq.getSequence().get(i);
 			boolean hasFired = false;
-			while (!hasFired) {
+			while (!hasFired && !allNetsFinished()) {
 				if (e.getTransition().canFire()){
 					e.getTransition().fire();
+					//System.out.println("fireing "+i+" in sequence");
 					hasFired=true;
 				} else if(!pending.isEmpty())
 					simulateNextPendingAction();
 				else 
 					System.out.println("finished? "+allNetsFinished());
+				continueFireingRemainingTransitions(i,seq);
 			}
 			//the last transition got fired but the pending action was never finished
 			if(!pending.isEmpty())
@@ -177,6 +180,17 @@ public class WorkflowTimeMachine {
 		}
 	}
 	
+	private void continueFireingRemainingTransitions(int i, FireSequence seq) {
+		for(int j = i;j<seq.getSequence().size();j++){
+			if(seq.getSequence().get(j).getTransition().canFire())
+				try {
+					seq.getSequence().get(j).getTransition().fire();
+					//System.out.println("Fireing "+j+" in sequence out of band");
+				} catch (PNException e) {}
+		}
+		
+	}
+
 	private void updateResultMap(){
 		
 		for(Entry<String, TimedNet> netEntry:nets.entrySet()){

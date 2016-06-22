@@ -22,6 +22,7 @@ public class TimedTransition extends AbstractTimedTransition<TimedFlowRelation> 
     private TimedTransition(String name) {
         super(name);
     }
+
     
     public TimedTransition(String name,String  label, boolean isSilent){
         super(name, label, isSilent);
