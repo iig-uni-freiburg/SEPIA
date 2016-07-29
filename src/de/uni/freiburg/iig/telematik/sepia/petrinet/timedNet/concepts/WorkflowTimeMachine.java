@@ -170,8 +170,8 @@ public class WorkflowTimeMachine {
 					hasFired=true;
 				} else if(!pending.isEmpty())
 					simulateNextPendingAction();
-				else 
-					System.out.println("finished? "+allNetsFinished());
+				//else 
+				//	System.out.println("finished? "+allNetsFinished());
 				continueFireingRemainingTransitions(i,seq);
 			}
 			//the last transition got fired but the pending action was never finished

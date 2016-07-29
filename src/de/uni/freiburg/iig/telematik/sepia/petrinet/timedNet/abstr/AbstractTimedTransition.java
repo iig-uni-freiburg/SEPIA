@@ -51,6 +51,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	 * this transition unfireable
 	 **/
 	public boolean canFire() {
+		//return isEnabled()&&!isWorking; // <-- results in deadlock
 		IResourceContext context = getNet().getResourceContext();
 		List<String> resources = context.getRandomAvailableResourceSetFor(getLabel(), false);
 		return (isEnabled() && resources != null && !resources.isEmpty() && !isWorking());
@@ -108,9 +109,12 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
 			if (usedResources == null || usedResources.isEmpty()) {
 				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
+				//TODO: queue this!
+				System.out.println(getLabel()+" ("+getNet().getName()+"): waiting for resource!");
 				return;
 			}
 		} else {
+			System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
 			usedResources = null;
 		}
 		// net.getTimeRessourceContext().blockResources(resourceSet);
