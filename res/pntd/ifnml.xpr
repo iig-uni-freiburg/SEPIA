@@ -10,8 +10,9 @@
         <file name="cpnet.pntd"/>
         <file name="ifnet.pntd"/>
         <file name="labeling.rng"/>
-        <file name="pnml/pnmlcoremodel.rng"/>
-        <file name="pnml/ptnet.pntd"/>
+        <file name="pnmlorg/pnmlcoremodel.rng"/>
+        <file name="ptcnet.pntd"/>
+        <file name="pnmlorg/ptnet.pntd"/>
         <file name="ptnet.pntd"/>
         <file name="rtpnet.pntd"/>
     </projectTree>
