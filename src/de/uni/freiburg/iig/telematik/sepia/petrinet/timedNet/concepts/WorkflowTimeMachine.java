@@ -227,7 +227,7 @@ public class WorkflowTimeMachine {
 		if(net!=null) {
 			//a net can fire
 			try {
-				System.out.println("trying to fire net: "+net.getName());
+				//System.out.println("trying to fire net: "+net.getName());
 				net.fire(); //fire and add to sequence
 			} catch (PNException e) {
 				e.printStackTrace(); //it couldn't fire.
@@ -291,7 +291,7 @@ public class WorkflowTimeMachine {
 				for (AbstractTimedTransition transition:net.getWaitingTransitions()){
 					try {
 						transition.resume();
-						System.out.println("Resuming: "+transition.getLabel()+"("+net.getName()+") at time: "+net.getCurrentTime());
+						//System.out.println("Resuming: "+transition.getLabel()+"("+net.getName()+") at time: "+net.getCurrentTime());
 					} catch (PNException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -305,7 +305,7 @@ public class WorkflowTimeMachine {
 	protected void updateTimeForWaitingNets(double time) throws PNException{
 		for(TimedNet net:nets.values()){
 			if(!net.isFinished()){
-				System.out.println("Updating time for: "+net.getName());
+				//System.out.println("Updating time for: "+net.getName());
 				if(net.getCurrentTime()>time){
 					System.out.println("Breakpoint. Something wrong. Current overall time: "+time);
 					for (TimedNet n:nets.values()){
@@ -314,9 +314,9 @@ public class WorkflowTimeMachine {
 				}
 				net.setCurrentTime(time);
 			} else {
-				System.out.println(net.getName()+" seems to be FINISHED at time "+net.getCurrentTime());
+				//System.out.println(net.getName()+" seems to be FINISHED at time "+net.getCurrentTime());
 				for(TimedNetPlace p:net.getDrainPlaces()){
-					System.out.println("possilbe drain place "+p.getName()+" state?: "+p.getState());
+					//System.out.println("possilbe drain place "+p.getName()+" state?: "+p.getState());
 				}
 			}
 		}
@@ -372,10 +372,10 @@ public class WorkflowTimeMachine {
 	public void addPendingAction(double timePoint, AbstractTimedTransition t) {
 		
 		
-		System.out.println(t.getNet().getName()+": Adding "+t.getName()+" at "+timePoint+". Net time: "+t.getNet().getCurrentTime()+", Workflow time: "+time);
+		//System.out.println(t.getNet().getName()+": Adding "+t.getName()+" at "+timePoint+". Net time: "+t.getNet().getCurrentTime()+", Workflow time: "+time);
 		
-		if(timePoint<time)
-			System.out.println("Pending action is in the past. Current time: "+time+" queued action finish time: "+timePoint);
+		//if(timePoint<time)
+			//System.out.println("Pending action is in the past. Current time: "+time+" queued action finish time: "+timePoint);
 		
 		if(pending.containsKey(timePoint)){
 			pending.get(timePoint).add(t);

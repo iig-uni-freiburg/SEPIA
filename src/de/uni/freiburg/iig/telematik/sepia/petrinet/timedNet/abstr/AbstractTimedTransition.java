@@ -104,9 +104,9 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	/**if the AbstractTimesTransition could not fire because of ressource shortage, 
 	 * this method will return itself. If the transition could fire it will return null **/
 	public AbstractTimedTransition fireWithResult() throws PNException {
-		System.out.println("Trying to fire "+getLabel()+" ("+getName()+") from net "+getNet().getName());
-		if(isWaiting)
-			System.out.println("is waiting");
+		//System.out.println("Trying to fire "+getLabel()+" ("+getName()+") from net "+getNet().getName());
+		//if(isWaiting)
+			//System.out.println("is waiting");
 
 		if (!isEnabled())
 			throw new PNException("Cannot fire transition " + this + ": not enabled");
@@ -134,7 +134,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 				return this;
 			}
 		} else {
-			System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
+			//System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
 			usedResources = null;
 		}
 		// net.getTimeRessourceContext().blockResources(resourceSet);
@@ -163,29 +163,29 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		// inform marking has changed
 		notifyFiring();
 		isWaiting=false;
-		System.out.println("... successfully!");
+		//System.out.println("... successfully!");
 		return null;
 	}
 	
 	private void removeTokens(){
 		if (isWaiting){
-			System.out.println(this+" not removing anything... isWaiting");
+			//System.out.println(this+" not removing anything... isWaiting");
 			return; //there is nothing to remove if this transition is waiting
 		}
 					
 		for (E p : getIncomingRelations()) {
-			System.out.println("Removing tokens from "+p.getPlace());
+			//System.out.println("Removing tokens from "+p.getPlace());
 			p.getPlace().removeTokens(p.getConstraint());
 		}
 	}
 	
 	private void putTokens(){
-		System.out.println(getName()+"("+getLabel()+") putting tokens in... ");
+		//System.out.println(getName()+"("+getLabel()+") putting tokens in... ");
 		for (E r : outgoingRelations.values()) {
 			r.getPlace().addTokens(r.getConstraint());
-			System.out.println(r.getPlace().getLabel()+", ");
+			//System.out.println(r.getPlace().getLabel()+", ");
 		}
-		System.out.println("");
+		//System.out.println("");
 	}
 
 	@Override
@@ -266,11 +266,11 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		if (net.getResourceContext().needsResources(getLabel())) {
 			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
 			if (usedResources == null || usedResources.isEmpty()) { //cannot fire because of resource shortage
-				System.out.println(getLabel()+" ("+getNet().getName()+"): STILL waiting for resource! (time: "+getNet().getCurrentTime()+")");
+				//System.out.println(getLabel()+" ("+getNet().getName()+"): STILL waiting for resource! (time: "+getNet().getCurrentTime()+")");
 				return false; //could not fire
 			}
 		} else { 
-			System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
+			//System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
 			usedResources = null;
 		}
 

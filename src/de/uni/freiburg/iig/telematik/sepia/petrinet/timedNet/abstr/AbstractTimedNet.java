@@ -337,7 +337,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	}
 	
 	public void setCurrentTime(double time) throws PNException {
-		System.out.println(getName()+": Time from "+getCurrentTime()+" to -> "+time);
+		//System.out.println(getName()+": Time from "+getCurrentTime()+" to -> "+time);
 		if(time<clock)
 			throw new PNException(getName()+": Cannot go back in time! Current time: "+clock+", requested: "+time);
 		if (isFinished())
@@ -369,7 +369,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	}
 
 	public void addWaitingTransition(AbstractTimedTransition abstractTimedTransition) {
-		System.out.println("adding "+abstractTimedTransition.getLabel()+"("+abstractTimedTransition.getName()+") from net: "+getName()+"as WAITING transition");
+		//System.out.println("adding "+abstractTimedTransition.getLabel()+"("+abstractTimedTransition.getName()+") from net: "+getName()+"as WAITING transition");
 		waitingTransitions.add(abstractTimedTransition);
 	}
 	
