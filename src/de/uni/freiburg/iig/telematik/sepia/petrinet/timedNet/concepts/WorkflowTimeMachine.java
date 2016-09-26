@@ -47,7 +47,6 @@ public class WorkflowTimeMachine {
 	
 	/**resets the pending actions and the single nets*/
 	public void resetAll(){
-		//	System.out.println("Resetting all: ");
 		reset();
 		
 		//remove clones
@@ -64,7 +63,7 @@ public class WorkflowTimeMachine {
 		
 		instances.reset();
 		
-		StatisticListener.getInstance().simulationRestarted();
+		StatisticListener.getInstance().simulationRestarted(); //inform of new simulation run
 		
 	}
 	
@@ -114,7 +113,6 @@ public class WorkflowTimeMachine {
 	}
 	
 	private HashMap<String, ArrayList<Double>> createResultMap(){
-		//HashMap<String, ArrayList<Double>> result = new HashMap<>();
 		result=new HashMap<>();
 		for(String s:nets.keySet()){ //initialize
 			result.put(s, new ArrayList<>());
@@ -123,21 +121,19 @@ public class WorkflowTimeMachine {
 	}
 	
 	public HashMap<String, ArrayList<Double>> simulateAll(int steps) throws PNException {
-		//HashMap<String, ArrayList<Double>> result = createResultMap();
 		createResultMap();
 		StatisticListener.getInstance().reset();
 		
 		for (int i = 0;i<steps;i++){
-			if(i%5000==0)System.out.println((i*100/steps)+"%");
+			if(i%5000==0)System.out.println((i*100/steps)+"%"); //as info
 			simulateAll();
 			
-			//add results
+			//add results to result-map
 			updateResultMap();
 
 			
 			resetAll();
 		}
-		//this.result=result;
 		return result;
 	}
 	
@@ -145,7 +141,7 @@ public class WorkflowTimeMachine {
 		nets.clear();//remove old nets
 		for (TimedNet net: seq.getContainingNets())
 			nets.put(net.getName(), net);
-		resetAll(); // reset recently added nets.
+		resetAll(); // reset the just added nets.
 
 		createResultMap();
 		StatisticListener.getInstance().reset();
@@ -172,7 +168,7 @@ public class WorkflowTimeMachine {
 					simulateNextPendingAction();
 				//else 
 				//	System.out.println("finished? "+allNetsFinished());
-				continueFireingRemainingTransitions(i,seq);
+				checkForFireableTransitionsWithinExecutionPlan(i,seq);
 			}
 			//the last transition got fired but the pending action was never finished
 			if(!pending.isEmpty())
@@ -180,7 +176,8 @@ public class WorkflowTimeMachine {
 		}
 	}
 	
-	private void continueFireingRemainingTransitions(int i, FireSequence seq) {
+	/**Try to fire the activities presented in the execution plan **/
+	private void checkForFireableTransitionsWithinExecutionPlan(int i, FireSequence seq) {
 		for(int j = i;j<seq.getSequence().size();j++){
 			if(seq.getSequence().get(j).getTransition().canFire())
 				try {
@@ -199,10 +196,6 @@ public class WorkflowTimeMachine {
 					result.get(netEntry.getKey()).add(netEntry.getValue().getCurrentTime());}
 			else 
 				System.out.println("A net is not finished but it should be!");
-				//else {
-				//	double neededTime = netEntry.getValue().getCurrentTime()-instances.getOffset(netEntry.getKey());
-				//	result.get(instances.getOriginalNet(netEntry.getKey())).add(neededTime);
-				//}
 		}
 	}
 	
@@ -228,7 +221,7 @@ public class WorkflowTimeMachine {
 	public void simulateSingleStep() throws PNException{
 		updateRecurringNets();
 		TimedNet net = drawRandomFireableNet();
-		if(net!=null){
+		if(net!=null) {
 			//a net can fire
 			try {
 				net.fire(); //fire and add to sequence
@@ -449,10 +442,5 @@ public class WorkflowTimeMachine {
 			return reverseInstances.get(clonedNet);
 			
 		}
-		
-
 	}
-	
-	
-
 }

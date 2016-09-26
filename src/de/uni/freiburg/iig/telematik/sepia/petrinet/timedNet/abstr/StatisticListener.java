@@ -23,7 +23,7 @@ public class StatisticListener implements IStatisticListener{
 	private Map<String,List<Entry<Double, ExecutionState>>> resourceUsage = new HashMap<>();
 	private Map<String,List<Entry<Double,Boolean>>> deadlineMisses = new HashMap<>();
 	HashMap<String,ArrayList<FireSequence>> fireSequences= new HashMap<>(); //netName: List of FireSequences (inidividual sim runs)
-	private ArrayList<FireSequence> overallLog = new ArrayList<>(1000); //simulationRun<FireSequence>
+	private ArrayList<FireSequence> overallLog = new ArrayList<>(); //simulationRun<FireSequence>
 	
 	FireElement lastProcessedElement;
 	
@@ -75,6 +75,8 @@ public class StatisticListener implements IStatisticListener{
 
 	@Override
 	public void ressourceUsageChange(double time, ExecutionState state, AbstractTimedTransition transition, List<String> resources) {
+		if(resources==null||resources.isEmpty())
+			System.out.println("Break");
 		for(String res:resources){
 			if(!resourceUsage.containsKey(res))
 				resourceUsage.put(res, new LinkedList<>());

@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.xml.bind.annotation.XmlAccessorOrder;
+
 import de.invation.code.toval.misc.soabase.SOABase;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
@@ -33,6 +35,8 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	private SOABase accessContext;
 	
 	private boolean recurring;
+	
+	private T nextTransition;
 
 
 	String resourceContextName, timeContextName, accesContextName;
@@ -97,6 +101,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	 * @throws PNException if even after the last pending action no transition is enabled**/
 	public T fire() throws PNException {
 		
+		//only non-working transitions may fire
 		List<T> nonWorking = getEnabledAndNonWorkingTransitions();
 		
 		// get random transition
@@ -111,7 +116,6 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		if (max > 0) {
 			//get random next transition
 			T transition = nonWorking.get(ThreadLocalRandom.current().nextInt(0, max));
-			//T transition = getEnabledTransitions().get(r.nextInt(max));
 			transition.fire();
 			return transition;
 		} 
