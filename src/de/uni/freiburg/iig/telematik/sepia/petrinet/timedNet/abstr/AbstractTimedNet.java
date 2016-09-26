@@ -6,7 +6,9 @@
 package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -36,7 +38,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	private boolean recurring;
 	
-	private T nextTransition;
+	private HashSet<AbstractTimedTransition> waitingTransitions=new HashSet<>();
 
 
 	String resourceContextName, timeContextName, accesContextName;
@@ -101,6 +103,12 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	 * @throws PNException if even after the last pending action no transition is enabled**/
 	public T fire() throws PNException {
 		
+//		if(nextTransition!=null){
+//			System.out.println("Firing queued transition");
+//			nextTransition=nextTransition.fireWithResult();
+//			return (T) nextTransition;
+//		}
+//		
 		//only non-working transitions may fire
 		List<T> nonWorking = getEnabledAndNonWorkingTransitions();
 		
@@ -109,16 +117,25 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		
 		if(max==1){ //no need for random number
 			T transition = nonWorking.get(0);
-				transition.fire();
+			//transition.fire();
+			transition.fireWithResult();
 			return transition;
 		}
 		
 		if (max > 0) {
 			//get random next transition
 			T transition = nonWorking.get(ThreadLocalRandom.current().nextInt(0, max));
-			transition.fire();
+			//transition.fire();
+			transition.fireWithResult();
 			return transition;
 		} 
+		
+		//try waiting transitions
+//		for (AbstractTimedTransition waitingTransition: waitingTransitions){
+//			waitingTransition.resume();
+//		}
+		
+		
 		/**else { //TODO: change. do nothing if their is no pending action
 			// no active transition. Check pending Actions
 			while (getMarking().hasPendingActions()) {
@@ -146,15 +163,28 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	}
 
 	public boolean canFire(){
+				
 		int max = getEnabledTransitions().size();
 		if (max==0) return false;
 		if(isFinished()) return false;
+		
+//		for(AbstractTimedTransition waitingTransition: waitingTransitions)
+//			if(waitingTransition.canFire() && getEnabledTransitions().contains(waitingTransition)) return true;
+		
 		for(T t:getEnabledTransitions()){
 			if (t.canFire()) return true;
 		}
 		return false;
 	}
 	
+//	@Override
+//	public List<T> getEnabledTransitions() {
+//		List<T> fireableTransitions = new ArrayList<>();
+//		fireableTransitions.addAll(super.getEnabledTransitions());
+//		fireableTransitions.addAll(getWaitingTransitions().);
+//		return fireableTransitions;
+//	}
+
 	/**simulates the net until it is finisehd and return the needed time units**/
 	public double simulate() throws PNException{
 		while (!isFinished() && moreToSimulate()){
@@ -171,6 +201,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
 	/**return true if there is a token in one of the draining places**/
 	public boolean isFinished(){
+		Collection<P> list = getDrainPlaces();
 		for (P place: getDrainPlaces()){
 			if(place.getState()>=1) {
 				return true;
@@ -306,6 +337,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	}
 	
 	public void setCurrentTime(double time) throws PNException {
+		System.out.println(getName()+": Time from "+getCurrentTime()+" to -> "+time);
 		if(time<clock)
 			throw new PNException(getName()+": Cannot go back in time! Current time: "+clock+", requested: "+time);
 		if (isFinished())
@@ -336,7 +368,19 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		return clone;
 	}
 
-    
+	public void addWaitingTransition(AbstractTimedTransition abstractTimedTransition) {
+		System.out.println("adding "+abstractTimedTransition.getLabel()+"("+abstractTimedTransition.getName()+") from net: "+getName()+"as WAITING transition");
+		waitingTransitions.add(abstractTimedTransition);
+	}
+	
+	public HashSet<AbstractTimedTransition> getWaitingTransitions(){
+		return waitingTransitions;
+	}
+
+    public boolean removeFromWaitingTransitions(AbstractTimedTransition transition){
+    	waitingTransitions.remove(transition);
+    	return true;
+    }
     
 
 }

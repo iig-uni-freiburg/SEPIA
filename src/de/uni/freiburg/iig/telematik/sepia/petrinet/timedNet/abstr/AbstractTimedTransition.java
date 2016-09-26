@@ -13,6 +13,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ExecutionState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.WorkflowTimeMachine;
+import sun.security.action.GetLongAction;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.sun.javafx.geom.transform.GeneralTransform3D;
 
 /**
  *
@@ -32,6 +35,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	private AbstractTimedNet<?, ?, ?, ?> net;
 
 	private boolean isWorking = false;
+	
+	private boolean isWaiting = false;
 
 	private List<String> usedResources = new ArrayList<>(); //keep list of used ressources to free them after execution
 	
@@ -51,6 +56,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	 * this transition unfireable
 	 **/
 	public boolean canFire() {
+		//if(isWaiting)
+		//	return true;
 		//return isEnabled()&&!isWorking; // <-- results in deadlock
 		IResourceContext context = getNet().getResourceContext();
 		List<String> resources = context.getRandomAvailableResourceSetFor(getLabel(), false);
@@ -60,6 +67,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	@Override
 	public synchronized void checkValidity() throws PNValidationException {
+		//if(isWaiting) return;
 		super.checkValidity();
 		// check availability of timeContext
 	}
@@ -90,6 +98,15 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	@Override
 	public void fire() throws PNException {
+		fireWithResult();
+	}
+	
+	/**if the AbstractTimesTransition could not fire because of ressource shortage, 
+	 * this method will return itself. If the transition could fire it will return null **/
+	public AbstractTimedTransition fireWithResult() throws PNException {
+		System.out.println("Trying to fire "+getLabel()+" ("+getName()+") from net "+getNet().getName());
+		if(isWaiting)
+			System.out.println("is waiting");
 
 		if (!isEnabled())
 			throw new PNException("Cannot fire transition " + this + ": not enabled");
@@ -107,11 +124,14 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		if (net.getResourceContext().needsResources(getLabel())) {
 			// TimedMarking marking = (TimedMarking) net.getMarking();
 			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
-			if (usedResources == null || usedResources.isEmpty()) {
-				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
-				//TODO: queue this!
-				System.out.println(getLabel()+" ("+getNet().getName()+"): waiting for resource!");
-				return;
+			if (usedResources == null || usedResources.isEmpty()) { //cannot fire because of resource shortage
+				if(!isWaiting)
+					StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
+				//System.out.println(getLabel()+" ("+getNet().getName()+"): waiting for resource!");
+				removeTokens();
+				isWaiting=true;
+				getNet().addWaitingTransition(this);
+				return this;
 			}
 		} else {
 			System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
@@ -119,10 +139,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		}
 		// net.getTimeRessourceContext().blockResources(resourceSet);
 
-		// remove tokens
-		for (E p : getIncomingRelations()) {
-			p.getPlace().removeTokens(p.getConstraint());
-		}
+		removeTokens();
+
 
 		if (net.getTimeContext().containsActivity(getLabel())&&net.getTimeContext().getTimeFor(getLabel())>0) {
 			double neededTime = net.getTimeContext().getTimeFor(getLabel());
@@ -139,13 +157,35 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			// fire normally, no blocking as this transition needs no time...
 			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.INSTANT, this);
 			net.getResourceContext().unBlockResources(usedResources);
-			for (E r : outgoingRelations.values()) {
-				r.getPlace().addTokens(r.getConstraint());
-			}
+			putTokens();
 		}
 
 		// inform marking has changed
 		notifyFiring();
+		isWaiting=false;
+		System.out.println("... successfully!");
+		return null;
+	}
+	
+	private void removeTokens(){
+		if (isWaiting){
+			System.out.println(this+" not removing anything... isWaiting");
+			return; //there is nothing to remove if this transition is waiting
+		}
+					
+		for (E p : getIncomingRelations()) {
+			System.out.println("Removing tokens from "+p.getPlace());
+			p.getPlace().removeTokens(p.getConstraint());
+		}
+	}
+	
+	private void putTokens(){
+		System.out.println(getName()+"("+getLabel()+") putting tokens in... ");
+		for (E r : outgoingRelations.values()) {
+			r.getPlace().addTokens(r.getConstraint());
+			System.out.println(r.getPlace().getLabel()+", ");
+		}
+		System.out.println("");
 	}
 
 	@Override
@@ -179,10 +219,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	
 	/**puts tokens in outgoing places, frees up resources**/
 	public void finishWork() throws PNException{
-		//create tokens in the net
-		for(E r:outgoingRelations.values()){
-			r.getPlace().addTokens(r.getConstraint());
-		}
+		putTokens();
 		
 		//stop working
 		setWorking(false);
@@ -216,5 +253,58 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	
 	protected void notifyFiring(){
 		listenerSupport.notifyFiring(new TransitionEvent<>(this));
+	}
+
+
+	/**if the transition is in a waiting state, resume its work here
+	 * @throws PNException **/
+	public boolean resume() throws PNException {
+		
+		if(!isWaiting) 
+			throw new PNException("This transition cannot resume. It does not wait for resources to become available!");
+		
+		if (net.getResourceContext().needsResources(getLabel())) {
+			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
+			if (usedResources == null || usedResources.isEmpty()) { //cannot fire because of resource shortage
+				System.out.println(getLabel()+" ("+getNet().getName()+"): STILL waiting for resource! (time: "+getNet().getCurrentTime()+")");
+				return false; //could not fire
+			}
+		} else { 
+			System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
+			usedResources = null;
+		}
+
+
+		if (net.getTimeContext().containsActivity(getLabel())&&net.getTimeContext().getTimeFor(getLabel())>0) {
+			double neededTime = net.getTimeContext().getTimeFor(getLabel());
+			// add Pending Actions to marking, insert used resources
+			//usedResources = resourceSet;
+			setWorking(true);
+			isWaiting=false;
+			net.removeFromWaitingTransitions(this);
+
+			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESUME, this);
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
+
+
+		} else {
+			// fire normally, no blocking as this transition needs no time...
+			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.INSTANT, this);
+			net.getResourceContext().unBlockResources(usedResources);
+			isWaiting=false;
+			net.removeFromWaitingTransitions(this);
+			putTokens();
+		}
+		return true;
+		
+	}
+	
+//	public boolean isEnabled() {
+//		return (isWaiting||enabled);
+//	}
+	
+	public boolean isWaiting() {
+		return isWaiting;
 	}
 }

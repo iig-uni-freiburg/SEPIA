@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNetPlace;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.StatisticListener;
@@ -164,8 +165,10 @@ public class WorkflowTimeMachine {
 					e.getTransition().fire();
 					//System.out.println("fireing "+i+" in sequence");
 					hasFired=true;
-				} else if(!pending.isEmpty())
+				} else if(!pending.isEmpty()){
 					simulateNextPendingAction();
+					simulateWaitingTransitions();
+				}
 				//else 
 				//	System.out.println("finished? "+allNetsFinished());
 				checkForFireableTransitionsWithinExecutionPlan(i,seq);
@@ -224,6 +227,7 @@ public class WorkflowTimeMachine {
 		if(net!=null) {
 			//a net can fire
 			try {
+				System.out.println("trying to fire net: "+net.getName());
 				net.fire(); //fire and add to sequence
 			} catch (PNException e) {
 				e.printStackTrace(); //it couldn't fire.
@@ -231,6 +235,7 @@ public class WorkflowTimeMachine {
 		} else if(!pending.isEmpty()){
 			//do next pending Action. Set time accordingly to all nets
 			simulateNextPendingAction();
+			simulateWaitingTransitions();
 		} else {
 			System.out.println("No more nets to simulating, no pending actions left");
 			System.out.println("All nets finished? "+allNetsFinished());
@@ -277,13 +282,30 @@ public class WorkflowTimeMachine {
 			if(!instances.isClonedNet(transition.getNet().getName())) pendingActionCount--;
 		}
 		pending.remove(currentPendingTime);
-		//System.out.println(pending.toString());
 		
 	}
 	
+	private void simulateWaitingTransitions() {
+		for(TimedNet net:nets.values()){
+			if(!net.getWaitingTransitions().isEmpty()){
+				for (AbstractTimedTransition transition:net.getWaitingTransitions()){
+					try {
+						transition.resume();
+						System.out.println("Resuming: "+transition.getLabel()+"("+net.getName()+") at time: "+net.getCurrentTime());
+					} catch (PNException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+	}
+
 	protected void updateTimeForWaitingNets(double time) throws PNException{
 		for(TimedNet net:nets.values()){
-			if(!net.isFinished()){	
+			if(!net.isFinished()){
+				System.out.println("Updating time for: "+net.getName());
 				if(net.getCurrentTime()>time){
 					System.out.println("Breakpoint. Something wrong. Current overall time: "+time);
 					for (TimedNet n:nets.values()){
@@ -291,6 +313,11 @@ public class WorkflowTimeMachine {
 					}
 				}
 				net.setCurrentTime(time);
+			} else {
+				System.out.println(net.getName()+" seems to be FINISHED at time "+net.getCurrentTime());
+				for(TimedNetPlace p:net.getDrainPlaces()){
+					System.out.println("possilbe drain place "+p.getName()+" state?: "+p.getState());
+				}
 			}
 		}
 	}
@@ -300,9 +327,18 @@ public class WorkflowTimeMachine {
 		//if(!pending.isEmpty()) return true; //must ignore clonedNets
 		if(hasPendingActions()) return true;
 		if(!allNetsFinished()) return true;
+		if(netsHaveWaitingTransitions()) return true;
 		return false; //pending actions empty, no net that can fire
 	}
 	
+	private boolean netsHaveWaitingTransitions() {
+		for(TimedNet net:nets.values()){
+			if(net.getWaitingTransitions().isEmpty())
+				return false;
+		}
+		return true;
+	}
+
 	/**return true if uncloned nets have actions pending**/
 	public boolean hasPendingActions(){
 		return pendingActionCount>0;
@@ -334,10 +370,12 @@ public class WorkflowTimeMachine {
 	}
 	
 	public void addPendingAction(double timePoint, AbstractTimedTransition t) {
-		//System.out.println(t.getNet().getName()+": Adding "+t.getName()+" at "+timePoint+". Net time: "+t.getNet().getCurrentTime()+", Workflow time: "+time);
 		
-		//if(timePoint<time)
-		//	System.out.println("Pending action is in the past. Current time: "+time+" queued action finish time: "+timePoint);
+		
+		System.out.println(t.getNet().getName()+": Adding "+t.getName()+" at "+timePoint+". Net time: "+t.getNet().getCurrentTime()+", Workflow time: "+time);
+		
+		if(timePoint<time)
+			System.out.println("Pending action is in the past. Current time: "+time+" queued action finish time: "+timePoint);
 		
 		if(pending.containsKey(timePoint)){
 			pending.get(timePoint).add(t);
