@@ -168,19 +168,23 @@ public class WorkflowTimeMachine {
 				} else if(!pending.isEmpty()){
 					simulateNextPendingAction();
 					simulateWaitingTransitions();
+					//checkForFireableTransitionsWithinExecutionPlan(i,seq);
 				}
 				//else 
 				//	System.out.println("finished? "+allNetsFinished());
 				checkForFireableTransitionsWithinExecutionPlan(i,seq);
 			}
 			//the last transition got fired but the pending action was never finished
-			if(!pending.isEmpty())
+			if(!pending.isEmpty()){
 				simulateNextPendingAction();
+			    checkForFireableTransitionsWithinExecutionPlan(i,seq);
+			}
 		}
 	}
 	
 	/**Try to fire the activities presented in the execution plan **/
 	private void checkForFireableTransitionsWithinExecutionPlan(int i, FireSequence seq) {
+		//if(true) return; //deactivate
 		for(int j = i;j<seq.getSequence().size();j++){
 			if(seq.getSequence().get(j).getTransition().canFire())
 				try {
