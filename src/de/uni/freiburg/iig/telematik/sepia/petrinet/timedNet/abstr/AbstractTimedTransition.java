@@ -54,14 +54,19 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	 * After a call to this function the transition must fire instantenouse as
 	 * fireing of a nother net might reserve the required ressources and render
 	 * this transition unfireable
+	 * @throws PNException 
 	 **/
-	public boolean canFire() {
+	public boolean canFire() throws PNException {
 		//if(isWaiting)
 		//	return true;
 		//return isEnabled()&&!isWorking; // <-- results in deadlock
+		try{
 		IResourceContext context = getNet().getResourceContext();
 		List<String> resources = context.getRandomAvailableResourceSetFor(getLabel(), false);
 		return (isEnabled() && resources != null && !resources.isEmpty() && !isWorking());
+		} catch (Exception e) {
+			throw new PNException(this+" no resources or resource context");
+		}
 
 	}
 

@@ -42,6 +42,8 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 
 
 	String resourceContextName, timeContextName, accesContextName;
+	private double costPerTimeUnit=0;
+	private double costPerTimeUnitAfterDeadline=0;
     
 
     public String getResourceContextName() {
@@ -162,7 +164,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 		return Collections.unmodifiableList(notWorking);
 	}
 
-	public boolean canFire(){
+	public boolean canFire() throws PNException{
 				
 		int max = getEnabledTransitions().size();
 		if (max==0) return false;
@@ -351,6 +353,22 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public void setRecurring(boolean recurring){
 		this.recurring=recurring;
+	}
+	
+	public double getCostPerTimeUnit(){
+		return costPerTimeUnit;
+	}
+	
+	public void setCostPerTimeUnit(double cost){
+		costPerTimeUnit=cost;
+	}
+	
+	public double getCostPerTimeUnitAfterDeadline(){
+		return costPerTimeUnitAfterDeadline;
+	}
+	
+	public void setCostPerTimeUnitAfterDeadline(double deadlineCost){
+		costPerTimeUnitAfterDeadline=deadlineCost;
 	}
 	
 	public AbstractTimedNet<P, T , F , M> clone(){

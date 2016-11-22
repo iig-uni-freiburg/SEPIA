@@ -13,6 +13,7 @@ public class FireElement {
 	private AbstractTimedTransition t;
 	private List<String> resources = new LinkedList<>();
 	
+
 	private static final DecimalFormat format = new DecimalFormat("##.##");
 	
 	public FireElement(AbstractTimedTransition t) {
@@ -29,6 +30,10 @@ public class FireElement {
 		this.t=t;
 		this.time=time;
 		this.resources.addAll(t.getUsedResources());
+	}
+	
+	public List<String> getResources() {
+		return resources;
 	}
 	
 	public double getTime() {

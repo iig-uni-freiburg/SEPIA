@@ -41,13 +41,34 @@ G extends AbstractTimedNetGraphics<P, T, F, M>> extends AbstractPNMLPTNetParser<
 	        net.setResourceContextName(resourceContextName);
 	        
 	        //read recurring attribute
-		try {
-			Element recurringContext = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.recurringString).item(0);
-			boolean recurring = Boolean.parseBoolean(recurringContext.getTextContent());
-			net.setRecurring(recurring);
-		} catch (Exception e) {
-			net.setRecurring(false);
-		}
+	        try {
+	        	Element recurringContext = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.recurringString).item(0);
+	        	boolean recurring = Boolean.parseBoolean(recurringContext.getTextContent());
+	        	net.setRecurring(recurring);
+	        } catch (Exception e) {
+	        	net.setRecurring(false);
+	        }
+	        
+	        //read cost per time unit
+	        try{
+	        	Element costPerTimeUnit = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.costPerTimeUnitString).item(0);
+	        	double cost = Double.parseDouble(costPerTimeUnit.getTextContent());
+	        	net.setCostPerTimeUnit(cost);
+	        	
+	        } catch (Exception e) {
+	        	net.setCostPerTimeUnit(0);
+	        }
+	        
+	      //read cost per time unit after deadline was missed
+	        try{
+	        	Element costPerTimeUnitDeadline = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.costPerTimeUnitAfterDeadlineString).item(0);
+	        	double costDeadline = Double.parseDouble(costPerTimeUnitDeadline.getTextContent());
+	        	net.setCostPerTimeUnitAfterDeadline(costDeadline);
+	        	
+	        } catch (Exception e) {
+	        	net.setCostPerTimeUnitAfterDeadline(0);
+	        }
+	        
 	        
 	        for(T transition:net.getTransitions()){
 	        	transition.setNet(net);

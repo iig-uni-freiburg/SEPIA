@@ -23,6 +23,8 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 	public static final String timeContext = "timecontext";
 	public static final String processContext = "processcontext";
 	public static final String recurringString = "isRecurring";
+	public static final String costPerTimeUnitString = "costPerTimeUnit";
+	public static final String costPerTimeUnitAfterDeadlineString = "costPerTimeUnitAfterDeadline";
 
 	public PNMLTimedNetSerializer(AbstractGraphicalTimedNet<P, T, F, M, N, G> petriNet) {
 		super(petriNet);
@@ -69,6 +71,14 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 		// Add recurring information
 		Element recurringContext = getSupport().createTextElement(recurringString, Boolean.toString(petriNet.isRecurring()));
 		getSupport().getNetElement().appendChild(recurringContext);
+		
+		// Add cost per time unit
+		Element costElement = getSupport().createTextElement(costPerTimeUnitString, Double.toString(petriNet.getCostPerTimeUnit()));
+		getSupport().getNetElement().appendChild(costElement);
+		
+		//Add cost per time unit after deadline was missed
+		Element costDeadlineElement = getSupport().createTextElement(costPerTimeUnitAfterDeadlineString, Double.toString(petriNet.getCostPerTimeUnitAfterDeadline()));
+		getSupport().getNetElement().appendChild(costDeadlineElement);
 		
 	}
 

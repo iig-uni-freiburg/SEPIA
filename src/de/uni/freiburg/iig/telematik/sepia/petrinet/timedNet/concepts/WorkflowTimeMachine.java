@@ -62,6 +62,7 @@ public class WorkflowTimeMachine {
 			net.getResourceContext().reset();
 		}
 		
+		
 		instances.reset();
 		
 		StatisticListener.getInstance().simulationRestarted(); //inform of new simulation run
@@ -186,8 +187,9 @@ public class WorkflowTimeMachine {
 	private void checkForFireableTransitionsWithinExecutionPlan(int i, FireSequence seq) {
 		//if(true) return; //deactivate
 		for(int j = i;j<seq.getSequence().size();j++){
+			try {
 			if(seq.getSequence().get(j).getTransition().canFire())
-				try {
+				
 					seq.getSequence().get(j).getTransition().fire();
 					//System.out.println("Fireing "+j+" in sequence out of band");
 				} catch (PNException e) {}
@@ -361,7 +363,7 @@ public class WorkflowTimeMachine {
 		return true;
 	}
 
-	protected TimedNet drawRandomFireableNet(){
+	protected TimedNet drawRandomFireableNet() throws PNException{
 		ArrayList<String> fireableNets = new ArrayList<>();
 		for(TimedNet net: nets.values()){
 			if(!net.isFinished() && net.canFire())

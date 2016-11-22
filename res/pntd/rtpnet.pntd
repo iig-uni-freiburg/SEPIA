@@ -826,16 +826,36 @@
         		<data type="boolean"/>
         	</element>
         </define>
+        
+    <define name="CostPerTimeUnit">
+    		<a:documentation>
+    			Cost per time unit.
+    		</a:documentation>
+    		<element name="costPerTimeUnit">
+        		<data type="double"/>
+        	</element>
+    </define>
+    
+    <define name="CostPerTimeUnitAfterDeadline">
+    		<a:documentation>
+    			The cost per time unit after the deadline. This is the total cost for every time unit beyond the deadline
+    		</a:documentation>
+    		<element name="costPerTimeUnitAfterDeadline">
+    			<data type="double"/>
+    		</element>
+    </define>
 
 	<define name="page.content" combine="interleave">
 		<a:documentation>
-			Adds the names of the resource, time and process contexts as well as the optional recurring value.
+			Adds the names of the resource, time and process contexts as well as the optional recurring value and cost per time value.
 		</a:documentation>
 		<interleave>
 			<ref name="RTPResourceContext"/>
 			<ref name="RTPTimeContext"/>
 			<ref name="RTPProcessContext"/>
 			<optional><ref name="IsRecurring"/></optional>
+			<optional><ref name="CostPerTimeUnit"/></optional>
+			<optional><ref name="CostPerTimeUnitAfterDeadline"/></optional>
 		</interleave>
 	</define>
 
