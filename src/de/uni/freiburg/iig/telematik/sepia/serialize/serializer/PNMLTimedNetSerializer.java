@@ -25,6 +25,7 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 	public static final String recurringString = "isRecurring";
 	public static final String costPerTimeUnitString = "costPerTimeUnit";
 	public static final String costPerTimeUnitAfterDeadlineString = "costPerTimeUnitAfterDeadline";
+	public static final String netWeight = "netWeight";
 
 	public PNMLTimedNetSerializer(AbstractGraphicalTimedNet<P, T, F, M, N, G> petriNet) {
 		super(petriNet);
@@ -79,6 +80,10 @@ G extends AbstractTimedNetGraphics<P,T,F,M>> extends PNMLPTNetSerializer<P, T, F
 		//Add cost per time unit after deadline was missed
 		Element costDeadlineElement = getSupport().createTextElement(costPerTimeUnitAfterDeadlineString, Double.toString(petriNet.getCostPerTimeUnitAfterDeadline()));
 		getSupport().getNetElement().appendChild(costDeadlineElement);
+		
+		//Add netWeight
+		Element netWeightElement = getSupport().createTextElement(netWeight, Double.toString(petriNet.getNetWeight()));
+		getSupport().getNetElement().appendChild(netWeightElement);
 		
 	}
 

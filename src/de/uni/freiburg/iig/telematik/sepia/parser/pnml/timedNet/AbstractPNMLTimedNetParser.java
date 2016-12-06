@@ -69,6 +69,15 @@ G extends AbstractTimedNetGraphics<P, T, F, M>> extends AbstractPNMLPTNetParser<
 	        	net.setCostPerTimeUnitAfterDeadline(0);
 	        }
 	        
+	        //read net weight
+	        try{
+	        	Element netWeight = (Element) pnmlDocument.getElementsByTagName(PNMLTimedNetSerializer.netWeight).item(0);
+	        	double weight= Double.parseDouble(netWeight.getTextContent());
+	        	net.setNetWeight(weight);
+	        } catch (Exception e) {
+	        	net.setNetWeight(1);
+	        }
+	        
 	        
 	        for(T transition:net.getTransitions()){
 	        	transition.setNet(net);

@@ -844,6 +844,15 @@
     			<data type="double"/>
     		</element>
     </define>
+    
+    <define name="NetWeight">
+    		<a:documentation>
+    			The weight of this net for simulation purpose
+    		</a:documentation>	
+    		<element name="netWeight">
+    			<data type="double"/>
+    		</element>
+    </define>
 
 	<define name="page.content" combine="interleave">
 		<a:documentation>
@@ -856,6 +865,7 @@
 			<optional><ref name="IsRecurring"/></optional>
 			<optional><ref name="CostPerTimeUnit"/></optional>
 			<optional><ref name="CostPerTimeUnitAfterDeadline"/></optional>
+			<optional><ref name="NetWeight"/></optional>
 		</interleave>
 	</define>
 

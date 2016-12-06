@@ -44,6 +44,7 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	String resourceContextName, timeContextName, accesContextName;
 	private double costPerTimeUnit=0;
 	private double costPerTimeUnitAfterDeadline=0;
+	private double netWeight=1;
     
 
     public String getResourceContextName() {
@@ -365,6 +366,14 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	
 	public double getCostPerTimeUnitAfterDeadline(){
 		return costPerTimeUnitAfterDeadline;
+	}
+	
+	public double getNetWeight(){
+		return netWeight;
+	}
+	
+	public void setNetWeight(double netWeight){
+		this.netWeight=netWeight;
 	}
 	
 	public void setCostPerTimeUnitAfterDeadline(double deadlineCost){

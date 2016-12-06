@@ -122,7 +122,7 @@ public class WorkflowTimeMachine {
 		return result;
 	}
 	
-	public HashMap<String, ArrayList<Double>> simulateAll(int steps) throws PNException {
+	public HashMap<String, ArrayList<Double>> simulateAll(long steps) throws PNException {
 		createResultMap();
 		StatisticListener.getInstance().reset();
 		
