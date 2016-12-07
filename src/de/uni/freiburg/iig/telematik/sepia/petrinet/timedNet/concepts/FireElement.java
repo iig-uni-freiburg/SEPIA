@@ -53,14 +53,18 @@ public class FireElement {
 		// return t.getNet().getName()+": "+t.getLabel()+" ("+time+")";
 		String sTime=format.format(time);
 		if(endTime==Double.NaN)
-			return t.getLabel()+printRes()+" ("+sTime+")";
+			return t.getLabel()+printUnderlyingNet()+printResources()+" ("+sTime+")";
 		else{
 			String sEndTime=format.format(endTime);
-			return t.getLabel()+printRes()+" ("+sTime+"-"+sEndTime+")";
+			return t.getLabel()+printUnderlyingNet()+printResources()+" ("+sTime+"-"+sEndTime+")";
 		}
 	}
 	
-	private String printRes(){
+	private String printUnderlyingNet() {
+		return "-"+t.getNet().getName();
+	}
+
+	private String printResources(){
 		String result = "";
 		for(String res:resources)
 			result+=(res+" ");

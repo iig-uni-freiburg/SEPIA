@@ -2,6 +2,7 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
@@ -9,6 +10,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 public class FireSequence implements Comparable<Object> {
 	
 	protected ArrayList<FireElement> entries = new ArrayList<>();
+	protected HashMap<String, Double> finishTimeOfNets = new HashMap<>();
 	//private String netName;
 	
 	/**Create Fire Sequence**/
@@ -64,9 +66,9 @@ public class FireSequence implements Comparable<Object> {
 		return set;
 	}
 	
-	public String getNetName(){
-		return entries.get(0).getTransition().getNet().getName();
-	}
+//	public String getNetName(){
+//		return entries.get(0).getTransition().getNet().getName();
+//	}
 
 	@Override
 	public int hashCode() {
@@ -113,6 +115,18 @@ public class FireSequence implements Comparable<Object> {
 			result.add((TimedNet) e.getTransition().getNet());
 		}
 		return result;
+	}
+	
+	public void addFinishTime(String netName, double finishTime){
+		finishTimeOfNets.put(netName, finishTime);
+	}
+	
+	public HashMap<String, Double> getFinishTimes(){
+		return finishTimeOfNets;
+	}
+	
+	public double getFinishTimeForNet(String netName){
+		return finishTimeOfNets.get(netName);
 	}
 	
 	

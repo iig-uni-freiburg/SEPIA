@@ -12,7 +12,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNetPlace;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.AbstractTimedTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr.StatisticListener;
 
@@ -149,6 +148,9 @@ public class WorkflowTimeMachine {
 		StatisticListener.getInstance().reset();
 		
 		for(int i = 0;i<steps;i++){
+			if(i%100==0)
+				System.out.println(i/(double)steps+"%");
+			
 			simulateExecutionPlan(seq);
 			updateResultMap();
 			resetAll();
@@ -188,13 +190,11 @@ public class WorkflowTimeMachine {
 		//if(true) return; //deactivate
 		for(int j = i;j<seq.getSequence().size();j++){
 			try {
-			if(seq.getSequence().get(j).getTransition().canFire())
-				
+				if(seq.getSequence().get(j).getTransition().canFire())
 					seq.getSequence().get(j).getTransition().fire();
 					//System.out.println("Fireing "+j+" in sequence out of band");
 				} catch (PNException e) {}
 		}
-		
 	}
 
 	private void updateResultMap(){
@@ -220,6 +220,8 @@ public class WorkflowTimeMachine {
 		while (canSimulate()) {
 				simulateSingleStep();
 		}
+		
+		StatisticListener.getInstance().netsFinished(getNets().values());
 
 		if (!allNetsFinished()) {
 			System.out.println("Error: a net is not finished");
@@ -241,7 +243,7 @@ public class WorkflowTimeMachine {
 		} else if(!pending.isEmpty()){
 			//do next pending Action. Set time accordingly to all nets
 			simulateNextPendingAction();
-			simulateWaitingTransitions();
+			simulateWaitingTransitions(); //new tokens. Start the transition that waited for ressources
 		} else {
 			System.out.println("No more nets to simulating, no pending actions left");
 			System.out.println("All nets finished? "+allNetsFinished());

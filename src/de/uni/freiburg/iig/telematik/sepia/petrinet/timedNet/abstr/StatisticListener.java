@@ -3,12 +3,16 @@ package de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.abstr;
 import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
+
+import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedNet;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedTransition;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ExecutionState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.FireElement;
@@ -21,9 +25,10 @@ public class StatisticListener implements IStatisticListener{
 	
 	private Map<String,List<Entry<Double, ExecutionState>>> workingTimes = new HashMap<>(); //Transition,<(time, state)>
 	private Map<String,List<Entry<Double, ExecutionState>>> resourceUsage = new HashMap<>();
-	private Map<String,List<Entry<Double,Boolean>>> deadlineMisses = new HashMap<>();
-	HashMap<String,ArrayList<FireSequence>> fireSequences= new HashMap<>(); //netName: List of FireSequences (inidividual sim runs)
-	private ArrayList<FireSequence> overallLog = new ArrayList<>(); //simulationRun<FireSequence>
+	//private Map<String,List<Entry<Double,Boolean>>> deadlineMisses = new HashMap<>();
+	HashMap<String,ArrayList<FireSequence>> fireSequences= new HashMap<>(); //netName: List of FireSequences (inidividual sim runs): net1:[1:(t1-t2-t3), 2:(t2-t1-t3)], net2:[...]
+	private ArrayList<FireSequence> overallLog = new ArrayList<>(); //simulationRun<FireSequence>: [run1:(t1-t2-t3), run2:(t1-t3-t2),...]
+	int i = 0;
 	
 	FireElement lastProcessedElement;
 	
@@ -48,13 +53,12 @@ public class StatisticListener implements IStatisticListener{
 		workingTimes.get(transition.getLabel()).add(new AbstractMap.SimpleEntry<Double, ExecutionState>(time, state));
 		
 
-		
 		switch (state) {
 		case START:
 			lastProcessedElement = addToFireSequence(transition, time);
 			break;
 		case END:
-			//fireSequences.get(transition.getNet().getName()).getLast().getSequence().getLast().setEndTime(time);
+			//this works only correct because time machine produces the end time-entry right after the start entry was generated
 			lastProcessedElement.setEndTime(time);
 			break;
 		case INSTANT:
@@ -85,17 +89,17 @@ public class StatisticListener implements IStatisticListener{
 		
 	}
 
-	@Override
-	public void reachedDeadline(String netName, double time, double deadline, boolean missed) {
-		if(!deadlineMisses.containsKey(netName))
-			deadlineMisses.put(netName, new LinkedList<>());
+//	@Override
+//	public void reachedDeadline(String netName, double time, double deadline, boolean missed) {
+//		if(!deadlineMisses.containsKey(netName))
+//			deadlineMisses.put(netName, new LinkedList<>());
 		
-		deadlineMisses.get(netName).add(new AbstractMap.SimpleEntry(time,missed));
-	}
+//		deadlineMisses.get(netName).add(new AbstractMap.SimpleEntry(time,missed));
+//	}
 	
 	public void reset(){
 		workingTimes.clear();
-		deadlineMisses.clear();
+//		deadlineMisses.clear();
 		resourceUsage.clear();
 		fireSequences.clear();
 		overallLog.clear();
@@ -155,8 +159,20 @@ public class StatisticListener implements IStatisticListener{
 		return overallLog;
 	}
 	
+	public void netsFinished(Collection<TimedNet> collection) {
+		// put end times on each fireSequence...
+		FireSequence seq = overallLog.get(overallLog.size()-1); //get current (last) Element
+		for(TimedNet net:collection){
+			seq.addFinishTime(net.getName(), net.getCurrentTime());
+		}
+		
+		
+	}
+	
 	class netWorkingTime {
 		private Map<String,List<Entry<Double, ExecutionState>>> workingTimes = new HashMap<>();
 	}
+
+
 
 }
