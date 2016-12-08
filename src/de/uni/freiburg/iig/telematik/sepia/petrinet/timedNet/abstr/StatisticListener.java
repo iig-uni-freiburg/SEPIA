@@ -81,8 +81,8 @@ public class StatisticListener implements IStatisticListener{
 
 	@Override
 	public void ressourceUsageChange(double time, ExecutionState state, AbstractTimedTransition transition, List<String> resources) {
-		if(resources==null||resources.isEmpty())
-			System.out.println("Break");
+//		if(resources==null||resources.isEmpty())
+//			System.out.println("Break");
 		for(String res:resources){
 			if(!resourceUsage.containsKey(res))
 				resourceUsage.put(res, new LinkedList<>());
