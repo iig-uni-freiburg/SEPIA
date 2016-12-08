@@ -190,8 +190,9 @@ public class WorkflowTimeMachine {
 		//if(true) return; //deactivate
 		for(int j = i;j<seq.getSequence().size();j++){
 			try {
-				if(seq.getSequence().get(j).getTransition().canFire())
+				if(seq.getSequence().get(j).getTransition().canFire()){
 					seq.getSequence().get(j).getTransition().fire();
+				}
 					//System.out.println("Fireing "+j+" in sequence out of band");
 				} catch (PNException e) {}
 		}

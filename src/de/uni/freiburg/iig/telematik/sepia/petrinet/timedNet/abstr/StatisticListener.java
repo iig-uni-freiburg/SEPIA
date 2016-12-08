@@ -55,6 +55,7 @@ public class StatisticListener implements IStatisticListener{
 
 		switch (state) {
 		case START:
+		case RESUME:
 			lastProcessedElement = addToFireSequence(transition, time);
 			break;
 		case END:
@@ -62,7 +63,8 @@ public class StatisticListener implements IStatisticListener{
 			lastProcessedElement.setEndTime(time);
 			break;
 		case INSTANT:
-			addToFireSequence(transition, time).setEndTime(time);
+			lastProcessedElement=addToFireSequence(transition, time);
+			lastProcessedElement.setEndTime(time);
 			//fireSequences.get(transition.getNet().getName()).getLast().getSequence().getLast().setEndTime(time);
 			break;
 
