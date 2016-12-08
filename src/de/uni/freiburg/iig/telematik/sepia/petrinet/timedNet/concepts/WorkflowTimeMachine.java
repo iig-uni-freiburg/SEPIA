@@ -296,7 +296,7 @@ public class WorkflowTimeMachine {
 	
 	private void simulateWaitingTransitions() {
 		for(TimedNet net:nets.values()){
-			if(!net.getWaitingTransitions().isEmpty()){
+			if(net.hasWaitingTransitions()){
 				for (AbstractTimedTransition transition:net.getWaitingTransitions()){
 					try {
 						transition.resume();
@@ -372,14 +372,33 @@ public class WorkflowTimeMachine {
 			if(!net.isFinished() && net.canFire())
 				fireableNets.add(net.getName());
 		}
+		
 		if(fireableNets.isEmpty()) return null;
 		
 		int index = ThreadLocalRandom.current().nextInt(fireableNets.size());
 		return nets.get(fireableNets.get(index));
 	}
 	
-	public void addPendingAction(double timePoint, AbstractTimedTransition t) {
+	private double getCurrentTime(){
+		double time =0;
+		for(TimedNet net:nets.values()){
+			if(net.getCurrentTime()>time)
+				time=net.getCurrentTime();
+		}
+		return time;
+	}
+	
+	public double addPendingActionForResumingTransitions(double duration, AbstractTimedTransition t) throws PNException{
+		//This could all be avoided if there would be only on clock. Not individual clocks for each net...
+		addPendingAction(duration+getCurrentTime(), t);
+		return duration+getCurrentTime();
 		
+	}
+	
+	public void addPendingAction(double timePoint, AbstractTimedTransition t) throws PNException {
+		
+		if (timePoint<getCurrentTime())
+			throw new PNException("Cannot go back in time. Transition "+t.getLabel()+" from "+t.getNet().getName());
 		
 		//System.out.println(t.getNet().getName()+": Adding "+t.getName()+" at "+timePoint+". Net time: "+t.getNet().getCurrentTime()+", Workflow time: "+time);
 		

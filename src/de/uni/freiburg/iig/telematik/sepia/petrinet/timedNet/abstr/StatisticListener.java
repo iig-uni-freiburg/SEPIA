@@ -38,6 +38,7 @@ public class StatisticListener implements IStatisticListener{
 
 	private StatisticListener() {
 		overallLog.add(new FireSequence());
+		//overallLog=new ArrayList<>();
 	}
 	
 	public static StatisticListener getInstance(){

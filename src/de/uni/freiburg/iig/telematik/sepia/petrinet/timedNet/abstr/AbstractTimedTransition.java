@@ -263,7 +263,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 
 	/**if the transition is in a waiting state, resume its work here
 	 * @throws PNException **/
-	public boolean resume() throws PNException {
+	public boolean resume() throws PNException {	
+		//Reminder: the net could be finished by now as the transition was waiting but maybe was not needed to fullfill the net		
 		
 		if(!isWaiting) 
 			throw new PNException("This transition cannot resume. It does not wait for resources to become available!");
@@ -288,9 +289,16 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 			isWaiting=false;
 			net.removeFromWaitingTransitions(this);
 
-			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESUME, this);
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
+			if(getNet().isFinished()){
+				double endPoint = WorkflowTimeMachine.getInstance().addPendingActionForResumingTransitions(neededTime, this);
+				StatisticListener.getInstance().transitionStateChange(endPoint-neededTime, ExecutionState.RESUME, this);
+				StatisticListener.getInstance().transitionStateChange(endPoint, ExecutionState.END, this);
+			} else {
+				WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
+				WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
+				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESUME, this);
+				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
+			}
 
 
 		} else {

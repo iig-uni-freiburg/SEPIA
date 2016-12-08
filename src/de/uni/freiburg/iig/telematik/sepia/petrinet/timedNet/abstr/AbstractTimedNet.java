@@ -409,5 +409,9 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
     	return true;
     }
     
+    public boolean hasWaitingTransitions(){
+    	return !waitingTransitions.isEmpty();
+    }
+    
 
 }
