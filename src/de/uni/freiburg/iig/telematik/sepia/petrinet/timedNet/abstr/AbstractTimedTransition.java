@@ -295,7 +295,7 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 				StatisticListener.getInstance().transitionStateChange(endPoint, ExecutionState.END, this);
 			} else {
 				WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
-				WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
+				//WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
 				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESUME, this);
 				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
 			}
