@@ -148,10 +148,11 @@ public class WorkflowTimeMachine {
 		StatisticListener.getInstance().reset();
 		
 		for(int i = 0;i<steps;i++){
-			if(i%100==0)
-				System.out.println(i/(double)steps+"%");
+			//if(i%100==0)
+				//System.out.println(i/(double)steps+"%");
 			
 			simulateExecutionPlan(seq);
+			StatisticListener.getInstance().netsFinished(getNets().values());
 			updateResultMap();
 			resetAll();
 		}
