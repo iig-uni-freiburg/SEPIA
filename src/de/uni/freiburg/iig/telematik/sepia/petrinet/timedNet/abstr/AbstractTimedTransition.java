@@ -106,91 +106,81 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		fireWithResult();
 	}
 	
-	/**if the AbstractTimesTransition could not fire because of ressource shortage, 
-	 * this method will return itself. If the transition could fire it will return null **/
+	/**
+	 * if the AbstractTimesTransition could not fire because of ressource
+	 * shortage, this method will return itself. If the transition could fire it
+	 * will return null
+	 **/
 	public AbstractTimedTransition fireWithResult() throws PNException {
-		//System.out.println("Trying to fire "+getLabel()+" ("+getName()+") from net "+getNet().getName());
-		//if(isWaiting)
-			//System.out.println("is waiting");
+		
+		StatisticListener statistics = StatisticListener.getInstance();
+		double curTime = net.getCurrentTime();
 
 		if (!isEnabled())
 			throw new PNException("Cannot fire transition " + this + ": not enabled");
-		if(isWorking()){
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.BUSY, this);
-			throw new PNException("Transition "+this+" is currently working");
+		if (isWorking()) {
+			statistics.transitionStateChange(curTime, ExecutionState.BUSY, this);
+			throw new PNException("Transition " + this + " is currently working");
 		}
+
 		try {
 			checkValidity();
 		} catch (PNValidationException e) {
 			throw new PNException("Cannot fire transition " + this + ": not in valid state [" + e.getMessage() + "]");
 		}
 
-		
 		if (net.getResourceContext().needsResources(getLabel())) {
-			// TimedMarking marking = (TimedMarking) net.getMarking();
-			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
-			if (usedResources == null || usedResources.isEmpty()) { //cannot fire because of resource shortage
-				if(!isWaiting)
-					StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESOURCE_WAIT, this);
-				//System.out.println(getLabel()+" ("+getNet().getName()+"): waiting for resource!");
+			usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
+			if (usedResources == null || usedResources.isEmpty()) { // cannot fire: resource shortage
+				if (!isWaiting)
+					statistics.transitionStateChange(curTime, ExecutionState.RESOURCE_WAIT, this);
 				removeTokens();
-				isWaiting=true;
+				isWaiting = true;
 				getNet().addWaitingTransition(this);
 				return this;
 			}
 		} else {
-			//System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
-			usedResources = null;
+			usedResources = null; //no ressources needed and transition is not waiting
 		}
-		// net.getTimeRessourceContext().blockResources(resourceSet);
 
 		removeTokens();
 
-
-		if (net.getTimeContext().containsActivity(getLabel())&&net.getTimeContext().getTimeFor(getLabel())>0) {
+		if (net.getTimeContext().containsActivity(getLabel()) && net.getTimeContext().getTimeFor(getLabel()) > 0) {
 			double neededTime = net.getTimeContext().getTimeFor(getLabel());
 			// add Pending Actions to marking, insert used resources
-			//usedResources = resourceSet;
 			setWorking(true);
 
-			WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.START, this);
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
-
+			WorkflowTimeMachine.getInstance().addPendingAction(curTime + neededTime, this);
+			statistics.transitionStateChange(curTime, ExecutionState.START, this);
+			statistics.transitionStateChange(curTime + neededTime, ExecutionState.END, this);
 
 		} else {
 			// fire normally, no blocking as this transition needs no time...
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.INSTANT, this);
+			statistics.transitionStateChange(curTime, ExecutionState.INSTANT, this);
 			net.getResourceContext().unBlockResources(usedResources);
 			putTokens();
 		}
 
 		// inform marking has changed
 		notifyFiring();
-		isWaiting=false;
-		//System.out.println("... successfully!");
+		isWaiting = false;
 		return null;
 	}
 	
 	private void removeTokens(){
 		if (isWaiting){
-			//System.out.println(this+" not removing anything... isWaiting");
 			return; //there is nothing to remove if this transition is waiting
 		}
 					
 		for (E p : getIncomingRelations()) {
-			//System.out.println("Removing tokens from "+p.getPlace());
 			p.getPlace().removeTokens(p.getConstraint());
 		}
 	}
 	
 	private void putTokens(){
-		//System.out.println(getName()+"("+getLabel()+") putting tokens in... ");
 		for (E r : outgoingRelations.values()) {
 			r.getPlace().addTokens(r.getConstraint());
-			//System.out.println(r.getPlace().getLabel()+", ");
 		}
-		//System.out.println("");
 	}
 
 	@Override
@@ -233,12 +223,9 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	}
 
 	public void setWorking(boolean working) {
-		//this.isWorking = working;
 		if(working){
-			//StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.START, this);
 			StatisticListener.getInstance().ressourceUsageChange(net.getCurrentTime(), ExecutionState.START, this, usedResources);
 		} else {
-			//StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.END, this);
 			StatisticListener.getInstance().ressourceUsageChange(net.getCurrentTime(), ExecutionState.END, this, usedResources);
 		}
 	}
@@ -264,6 +251,8 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 	/**if the transition is in a waiting state, resume its work here
 	 * @throws PNException **/
 	public boolean resume() throws PNException {	
+		
+		StatisticListener statistics = StatisticListener.getInstance();
 		//Reminder: the net could be finished by now as the transition was waiting but maybe was not needed to fullfill the net		
 		
 		if(!isWaiting) 
@@ -272,11 +261,9 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		if (net.getResourceContext().needsResources(getLabel())) {
 			 usedResources = net.getResourceContext().getRandomAvailableResourceSetFor(getLabel(), true);
 			if (usedResources == null || usedResources.isEmpty()) { //cannot fire because of resource shortage
-				//System.out.println(getLabel()+" ("+getNet().getName()+"): STILL waiting for resource! (time: "+getNet().getCurrentTime()+")");
 				return false; //could not fire
 			}
 		} else { 
-			//System.out.println("Does not need ressources: "+getLabel()+"( "+getNet().getName()+")");
 			usedResources = null;
 		}
 
@@ -284,38 +271,33 @@ public abstract class AbstractTimedTransition<E extends AbstractTimedFlowRelatio
 		if (net.getTimeContext().containsActivity(getLabel())&&net.getTimeContext().getTimeFor(getLabel())>0) {
 			double neededTime = net.getTimeContext().getTimeFor(getLabel());
 			// add Pending Actions to marking, insert used resources
-			//usedResources = resourceSet;
 			setWorking(true);
 			isWaiting=false;
 			net.removeFromWaitingTransitions(this);
 
 			if(getNet().isFinished()){
 				double endPoint = WorkflowTimeMachine.getInstance().addPendingActionForResumingTransitions(neededTime, this);
-				StatisticListener.getInstance().transitionStateChange(endPoint-neededTime, ExecutionState.RESUME, this);
-				StatisticListener.getInstance().transitionStateChange(endPoint, ExecutionState.END, this);
+				statistics.transitionStateChange(endPoint-neededTime, ExecutionState.RESUME, this);
+				statistics.transitionStateChange(endPoint, ExecutionState.END, this);
 			} else {
 				WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
-				//WorkflowTimeMachine.getInstance().addPendingAction(net.getCurrentTime()+neededTime, this);
-				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.RESUME, this);
-				StatisticListener.getInstance().transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
+				statistics.transitionStateChange(net.getCurrentTime(), ExecutionState.RESUME, this);
+				statistics.transitionStateChange(net.getCurrentTime()+neededTime, ExecutionState.END, this);
 			}
 
 
 		} else {
 			// fire normally, no blocking as this transition needs no time...
-			StatisticListener.getInstance().transitionStateChange(net.getCurrentTime(), ExecutionState.INSTANT, this);
+			statistics.transitionStateChange(net.getCurrentTime(), ExecutionState.INSTANT, this);
 			net.getResourceContext().unBlockResources(usedResources);
 			isWaiting=false;
 			net.removeFromWaitingTransitions(this);
 			putTokens();
 		}
+		
 		return true;
 		
 	}
-	
-//	public boolean isEnabled() {
-//		return (isWaiting||enabled);
-//	}
 	
 	public boolean isWaiting() {
 		return isWaiting;

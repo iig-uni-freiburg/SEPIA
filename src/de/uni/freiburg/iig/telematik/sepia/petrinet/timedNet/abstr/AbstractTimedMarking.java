@@ -26,7 +26,6 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
     }
 	
 	public void addPendingAction(String transitionName, double time) {
-		//System.out.println("adding pending action for "+transitionName+"("+time+")");
 		if (pendingActions.containsKey(time)) {
 			pendingActions.get(time).add(transitionName);
 		} else {
@@ -34,15 +33,6 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 			transitions.add(transitionName);
 			pendingActions.put(time, transitions);
 		}
-//		TokenConstraints<Integer> constraint = new TokenConstraints<>(transitionName);
-//		if (pendingActions.containsKey(time) && pendingActions.get(time) != null) {
-//			// time entry is available
-//			pendingActions.get(time).add(constraint);
-//		} else { // List not initialized. Create and add List
-//			ArrayList<TokenConstraints<Integer>> pendingActionList = new ArrayList<>();
-//			pendingActionList.add(constraint);
-//			pendingActions.put(time, pendingActionList);
-//		}
 	}
 	
 	public List<String> getNextPendingAction(){
@@ -50,12 +40,10 @@ public abstract class AbstractTimedMarking extends AbstractPTMarking {
 	}
 	
 	public double getTimeOfNextPendingAction(){
-		//System.out.println("Getting next pending action");
 		return pendingActions.firstKey();
 	}
 	
 	public void removeNextPendingAction(){
-		//System.out.println("Removing pending action from "+pendingActions.firstEntry().getValue().get(0)+"("+pendingActions.firstKey()+")");
 		pendingActions.remove(pendingActions.firstKey());
 	}
 	

@@ -92,13 +92,6 @@ public class StatisticListener implements IStatisticListener{
 		
 	}
 
-//	@Override
-//	public void reachedDeadline(String netName, double time, double deadline, boolean missed) {
-//		if(!deadlineMisses.containsKey(netName))
-//			deadlineMisses.put(netName, new LinkedList<>());
-		
-//		deadlineMisses.get(netName).add(new AbstractMap.SimpleEntry(time,missed));
-//	}
 	
 	public void reset(){
 		workingTimes.clear();
@@ -109,23 +102,6 @@ public class StatisticListener implements IStatisticListener{
 		overallLog.add(new FireSequence());
 	}
 	
-//	public List<FireElement> getFireSequence(String netName){
-//		LinkedList<FireElement> result = new LinkedList<>();
-//		
-//		for (Entry<String, List<Entry<Double, ExecutionState>>> entry:workingTimes.entrySet()){
-//			if(entry.getKey().getNet().getName().equals(netName)) {
-//				for(Entry<Double, ExecutionState> state:entry.getValue()){
-//					if (state.getValue().equals(ExecutionState.START)){
-//						result.add(new FireElement(entry.getKey(),state.getKey()));
-//					}
-//				}
-//			}
-//				
-//			
-//		}
-//		return result;
-//
-//	}
 	
 	/**adds new FireElement to the fire Sequence of the transition's net and overall Log. The corresponding FireElement is returned**/
 	private FireElement addToFireSequence(AbstractTimedTransition transition, double time){

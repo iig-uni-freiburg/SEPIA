@@ -105,54 +105,21 @@ public abstract class AbstractTimedNet<P extends AbstractTimedPlace<F>, T extend
 	/**fires a random enabled transition. If no transition is enabled it will check pending operations until a transition is enabled
 	 * @throws PNException if even after the last pending action no transition is enabled**/
 	public T fire() throws PNException {
-		
-//		if(nextTransition!=null){
-//			System.out.println("Firing queued transition");
-//			nextTransition=nextTransition.fireWithResult();
-//			return (T) nextTransition;
-//		}
-//		
-		//only non-working transitions may fire
+
+		// only non-working transitions may fire
 		List<T> nonWorking = getEnabledAndNonWorkingTransitions();
-		
+
 		// get random transition
 		int max = nonWorking.size();
-		
-		if(max==1){ //no need for random number
-			T transition = nonWorking.get(0);
-			//transition.fire();
-			transition.fireWithResult();
-			return transition;
+		T transition = nonWorking.get(ThreadLocalRandom.current().nextInt(0, max));
+
+		if (transition == null) {
+			throw new PNException("Cannot fire any transition.");
 		}
-		
-		if (max > 0) {
-			//get random next transition
-			T transition = nonWorking.get(ThreadLocalRandom.current().nextInt(0, max));
-			//transition.fire();
-			transition.fireWithResult();
-			return transition;
-		} 
-		
-		//try waiting transitions
-//		for (AbstractTimedTransition waitingTransition: waitingTransitions){
-//			waitingTransition.resume();
-//		}
-		
-		
-		/**else { //TODO: change. do nothing if their is no pending action
-			// no active transition. Check pending Actions
-			while (getMarking().hasPendingActions()) {
-				getNextPendingAction();
-				if (getEnabledTransitions().size() > 0) {
-					max = getEnabledTransitions().size();
-					T transition = getEnabledTransitions().get(ThreadLocalRandom.current().nextInt(0, max));
-					//T transition = getEnabledTransitions().get(r.nextInt(max));
-					transition.fire();
-					return transition;
-				}
-			}
-		}**/
-		throw new PNException("Cannot fire any transition.");
+
+		transition.fireWithResult();
+		return transition;
+
 	}
 	
 	private List<T> getEnabledAndNonWorkingTransitions() {
