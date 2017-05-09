@@ -1,5 +1,7 @@
 package de.uni.freiburg.iig.telematik.sepia.parser.pnml;
 
+import static de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.AnalysisContextParser.ANALYSIS_CONTEXT_SCHEMA;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,10 +29,10 @@ import de.uni.freiburg.iig.telematik.sepia.parser.PNParserInterface;
 import de.uni.freiburg.iig.telematik.sepia.parser.PNParsingFormat;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.PNMLParserException.ErrorCode;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.cpn.PNMLCPNParser;
-import static de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.AnalysisContextParser.ANALYSIS_CONTEXT_SCHEMA;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.LabelingParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ifnet.PNMLIFNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.pt.PNMLPTNetParser;
+import de.uni.freiburg.iig.telematik.sepia.parser.pnml.ptc.PNMLPTCNetParser;
 import de.uni.freiburg.iig.telematik.sepia.parser.pnml.timedNet.PNMLTimedNetParser;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.NetType;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.abstr.AbstractFlowRelation;
@@ -86,6 +88,7 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
         public static final String CPNET_PNTD = PNTD_PATH + "cpnet.pntd";
         public static final String IFNET_PNTD = PNTD_PATH + "ifnet.pntd";
         public static final String RTPNET_PNTD = PNTD_PATH + "rtpnet.pntd";
+        public static final String PTCNET_PNTD = PNTD_PATH + "ptcnet.pntd";
         public static final String ANALYSISCONTEXT_RNG = PNTD_PATH + "analysiscontext.rng";
         public static final String LABELING_RNG = PNTD_PATH + "labeling.rng";
         public static final String PNMLORG_PNMLCOREMODEL_RNG = PNTD_PATH + PNML_PNTD_PATH + "pnmlcoremodel.rng";
@@ -222,6 +225,10 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
 			PNMLTimedNetParser rtpnParser = new PNMLTimedNetParser();
 			graphicalPN = rtpnParser.parse(pnmlDocument);
 			break;
+		case PTCNet:
+			PNMLPTCNetParser ptcnetParser = new PNMLPTCNetParser();
+			graphicalPN = ptcnetParser.parse(pnmlDocument);
+			break;
 		}
 
 		if (graphicalPN != null)
@@ -292,6 +299,8 @@ public class PNMLParser <P extends AbstractPlace<F, S>,
                         in = PNMLParser.class.getResourceAsStream(IFNET_PNTD);
                 } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.RTPTnet))) {
                         in = PNMLParser.class.getResourceAsStream(RTPNET_PNTD);
+                } else if (pntdUrl.equals(NetType.getVerificationURL(NetType.PTCNet))) {
+                    in = PNMLParser.class.getResourceAsStream(PTCNET_PNTD);
                 } else if (pntdUrl.equals(new URL(ANALYSIS_CONTEXT_SCHEMA))) {
                         in = PNMLParser.class.getResourceAsStream(ANALYSISCONTEXT_RNG);
                 } else if (pntdUrl.equals(new URL(LabelingParser.LABELING_SCHEMA))) {

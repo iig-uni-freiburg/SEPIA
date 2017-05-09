@@ -10,10 +10,12 @@ import de.invation.code.toval.validate.Validate;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalIFNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPN;
+import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTCNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.AbstractGraphicalTimedNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalCPN;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalIFNet;
+import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTCNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalPTNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.GraphicalTimedNet;
 import de.uni.freiburg.iig.telematik.sepia.graphic.netgraphics.AbstractPNGraphics;
@@ -28,6 +30,7 @@ import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTNet;
 import de.uni.freiburg.iig.telematik.sepia.serialize.formats.PNSerializationFormat;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLCPNSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLIFNetSerializer;
+import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLPTCNetSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLPTNetSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PNMLTimedNetSerializer;
 import de.uni.freiburg.iig.telematik.sepia.serialize.serializer.PetrifyPTNetSerializer;
@@ -64,6 +67,9 @@ public class PNSerialization {
 			}
 			if(netObject instanceof GraphicalTimedNet) {
 				serializer = new PNMLTimedNetSerializer((AbstractGraphicalTimedNet)net);
+			}
+			if(netObject instanceof GraphicalPTCNet) {
+				serializer = new PNMLPTCNetSerializer((AbstractGraphicalPTCNet)net);
 			}
 			
 			break;
