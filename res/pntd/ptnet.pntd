@@ -560,6 +560,18 @@
 		</data>
 	</define>
 
+	<define name="nonNegativeDecimal.content" ns="http://www.w3.org/2001/XMLSchema-datatypes">
+		<a:documentation>
+			Definition of a restricted positive decimals domain with a total digits 
+			number of 4 and 1 fraction digit. Ranges from 0 (inclusive) to 999.9
+		</a:documentation>
+		<data type='decimal'>
+			<param name='totalDigits'>4</param>
+			<param name='fractionDigits'>1</param>
+			<param name='minInclusive'>0</param>
+		</data>
+	</define>
+
 	<define name="fill.element">
 		<a:documentation>
 			A fill element describes the interior colour, the gradient colour,
@@ -615,7 +627,7 @@
 			</optional>
 			<optional>
 				<attribute name="width">
-					<ref name="positiveDecimal.content"/>
+					<ref name="nonNegativeDecimal.content"/>
 				</attribute>
 			</optional>
 			<optional>
