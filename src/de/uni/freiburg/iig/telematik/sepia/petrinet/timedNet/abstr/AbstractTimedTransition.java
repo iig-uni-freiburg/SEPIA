@@ -9,21 +9,11 @@ import de.uni.freiburg.iig.telematik.sepia.event.TransitionEvent;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNException;
 import de.uni.freiburg.iig.telematik.sepia.exception.PNValidationException;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.pt.abstr.AbstractPTTransition;
-import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.TimedMarking;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.ExecutionState;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.IResourceContext;
 import de.uni.freiburg.iig.telematik.sepia.petrinet.timedNet.concepts.WorkflowTimeMachine;
-import sun.security.action.GetLongAction;
-
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import com.sun.javafx.geom.transform.GeneralTransform3D;
 
 /**
  *
